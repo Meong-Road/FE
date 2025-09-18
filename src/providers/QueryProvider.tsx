@@ -17,7 +17,7 @@ export default function QueryProvider({
             // 필요에 따라 다른 옵션 설정
           },
         },
-      })
+      }),
   );
 
   return (

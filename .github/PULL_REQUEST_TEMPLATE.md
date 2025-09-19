@@ -30,4 +30,4 @@ assignees: ''
 
 <!-- PR과 연결할 관련 이슈를 적어주세요 (자동으로 닫히지 않음) -->
 
-Linked issues: #1
+resolves #1

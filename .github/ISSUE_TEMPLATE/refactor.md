@@ -1,10 +1,3 @@
----
-name: Refactor
-about: 리팩토링 시 사용해주세요
-title: '[REFACTOR] '
-assignees: ''
----
-
 ## 작업 내용을 작성해주세요
 
 <!-- 수행할 작업 내용을 작성해주세요 -->

@@ -1,4 +1,5 @@
 import { setupServer } from "msw/node";
 
-// MSW 서버를 설정
-export const server = setupServer();
+import { postsHandlers } from "./handlers/posts";
+
+export const server = setupServer(...postsHandlers);

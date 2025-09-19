@@ -1,4 +1,5 @@
 import { setupWorker } from "msw/browser";
 
-// 브라우저에서 MSW 실행
-export const worker = setupWorker();
+import { postsHandlers } from "./handlers/posts";
+
+export const worker = setupWorker(...postsHandlers);

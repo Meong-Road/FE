@@ -8,9 +8,9 @@ on:
   pull_request:
     branches:
       - dev # dev → preview PR 열릴 때
-  # push:
-  #   branches:
-  #     - dev # 머지되어 dev에 push될 때
+  push:
+    branches:
+      - dev # 머지되어 dev에 push될 때
 
 jobs:
   Deploy-Preview:

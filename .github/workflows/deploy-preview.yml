@@ -25,6 +25,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: 의존성(라이브러리) 설치
         run: pnpm install --frozen-lockfile
 
@@ -32,7 +37,7 @@ jobs:
         run: pnpm run test
 
       - name: Vercel CLI 설치
-        run: pnpm install --global vercel@latest
+        run: pnpm add -g vercel@latest
 
       - name: Vercel 환경 정보 가져오기
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}

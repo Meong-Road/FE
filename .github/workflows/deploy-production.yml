@@ -27,8 +27,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10 
 
       - name: 의존성(라이브러리) 설치
         run: pnpm install --frozen-lockfile

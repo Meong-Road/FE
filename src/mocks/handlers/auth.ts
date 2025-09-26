@@ -13,6 +13,18 @@ export const authHandlers = [
       name: string;
     };
 
+    // 0) 입력값들 존재하는지 검증
+    if (!email || !password || !name) {
+      return HttpResponse.json(
+        {
+          code: "VALIDATION_ERROR",
+          parameter: "email, password, name",
+          message: "입력값이 존재하지 않습니다",
+        },
+        { status: 400 },
+      );
+    }
+
     // 1) 이메일 형식 검증 (간단 예시)
     if (!email.includes("@")) {
       return HttpResponse.json(
@@ -25,7 +37,7 @@ export const authHandlers = [
       );
     }
 
-    // 2) 성공 응답
+    // 3) 성공 응답
     return HttpResponse.json(
       {
         message: "사용자 생성 성공",

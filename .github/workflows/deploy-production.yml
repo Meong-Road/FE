@@ -7,10 +7,10 @@ env:
 on:
   pull_request:
     branches:
-      - main   # dev → main PR 열릴 때
+      - main # dev → main PR 열릴 때
   push:
     branches:
-      - main   # 머지되어 main에 push될 때
+      - main # 머지되어 main에 push될 때
 
 jobs:
   Deploy-Production:

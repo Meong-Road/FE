@@ -1,12 +1,6 @@
+// SignupForm.tsx
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { z } from "zod";
-
-import { authApi } from "@/app/(auth)/signup/_api/signup";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,68 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
 
-// ===================== 회원가입 폼 스키마 Validate =====================
-const formSchema = z
-  .object({
-    name: z
-      .string()
-      .min(1, "이름을 입력하세요.")
-      .max(50, "이름은 50자 이하여야 합니다.")
-      .regex(/^[가-힣a-zA-Z\s]+$/, "이름은 한글, 영문만 입력 가능합니다."),
-    email: z
-      .email("유효한 이메일을 입력해주세요.")
-      .min(1, "이메일을 입력해주세요.")
-      .max(50, "이메일은 50자 이하여야 합니다."),
-    password: z
-      .string()
-      .min(8, "비밀번호는 8자 이상이어야 합니다.")
-      .max(50, "비밀번호는 50자 이하여야 합니다."),
-    confirmPassword: z
-      .string()
-      .min(8, "비밀번호는 8자 이상이어야 합니다.")
-      .max(50, "비밀번호는 50자 이하여야 합니다."),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["confirmPassword"],
-  });
+import { useSignupForm } from "../_hooks/useSignupForm";
+import { useSignupMutation } from "../_hooks/useSignupMutation";
 
-// ===================== 회원가입 폼 스키마 타입 =====================
-type SignupFormSchema = z.infer<typeof formSchema>;
-
-// ===================== 회원가입 폼 컴포넌트 =====================
 export default function SignupForm() {
-  // 1. form 초기화 (react-hook-form)
-  const form = useForm<SignupFormSchema>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-    mode: "onSubmit",
-  });
+  const form = useSignupForm();
+  const signupMutation = useSignupMutation();
 
-  // 2. 회원가입 요청 뮤테이션 (useMutation)
-  const queryClient = useQueryClient();
-  const signupMutation = useMutation({
-    mutationFn: authApi.signup,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["signup"] });
-      toast.success("회원가입 성공");
-      console.log("회원가입 성공");
-      console.log(data);
-    },
-  });
-
-  // 3. 폼 제출 핸들러
-  function handleSubmit(payload: SignupFormSchema): void {
-    console.log(payload);
-    signupMutation.mutate(payload);
+  function handleSubmit(values: Parameters<typeof signupMutation.mutate>[0]) {
+    signupMutation.mutate(values);
   }
 
-  // 4. 폼 렌더링
   return (
     <>
       <Toaster richColors closeButton position="top-center" />
@@ -90,6 +33,7 @@ export default function SignupForm() {
           noValidate
           className="w-full max-w-sm space-y-4 rounded-md border border-gray-300 p-4"
         >
+          {/* 이름 */}
           <FormField
             control={form.control}
             name="name"
@@ -120,8 +64,6 @@ export default function SignupForm() {
                     type="email"
                     placeholder="이메일을 입력하세요."
                     {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -141,8 +83,6 @@ export default function SignupForm() {
                     type="password"
                     placeholder="비밀번호를 입력하세요."
                     {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -162,14 +102,13 @@ export default function SignupForm() {
                     type="password"
                     placeholder="비밀번호를 입력하세요."
                     {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <Button
             className="w-full"
             type="submit"

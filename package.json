@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@tanstack/react-query": "^5.90.2",
@@ -27,8 +28,12 @@
     "jest-fixed-jsdom": "^0.0.10",
     "lucide-react": "^0.544.0",
     "next": "15.5.3",
+    "next-themes": "^0.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-hook-form": "^7.63.0",
+    "sonner": "^2.0.7",
+    "zod": "^4.1.11",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

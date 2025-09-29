@@ -8,7 +8,7 @@ import QueryProvider from "@/providers/QueryProvider";
 import "./globals.css";
 
 const pretendardVariable = localFont({
-  src: "./src/assets/fonts/PretendardVariable.woff2",
+  src: "../assets/fonts/PretendardVariable.woff2",
 });
 
 export const metadata: Metadata = {

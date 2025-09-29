@@ -1,20 +1,12 @@
 // SignupForm.tsx
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
 
 import { useSignupForm } from "../_hooks/useSignupForm";
 import { useSignupMutation } from "../_hooks/useSignupMutation";
+
+import { Form } from "./Form";
 
 export default function SignupForm() {
   const form = useSignupForm();
@@ -23,92 +15,85 @@ export default function SignupForm() {
   return (
     <>
       <Toaster richColors closeButton position="top-center" />
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSignup)}
-          noValidate
-          className="w-full max-w-sm space-y-4 rounded-md border border-gray-300 p-4"
-        >
-          {/* 이름 */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>이름</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="이름을 입력하세요."
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <Form form={form} onSubmit={handleSignup}>
+        {/* 이름 */}
+        <Form.Field
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>이름</Form.Label>
+              <Form.Control>
+                <Form.Input
+                  placeholder="이름을 입력하세요."
+                  type="text"
+                  {...field}
+                />
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
 
-          {/* 이메일 */}
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>이메일</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="이메일을 입력하세요."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* 이메일 */}
+        <Form.Field
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>이메일</Form.Label>
+              <Form.Control>
+                <Form.Input
+                  type="email"
+                  placeholder="이메일을 입력하세요."
+                  {...field}
+                />
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
 
-          {/* 비밀번호 */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>비밀번호</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="비밀번호를 입력하세요."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* 비밀번호 */}
+        <Form.Field
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>비밀번호</Form.Label>
+              <Form.Control>
+                <Form.Input
+                  type="password"
+                  placeholder="비밀번호를 입력하세요."
+                  {...field}
+                />
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
 
-          {/* 비밀번호 확인 */}
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>비밀번호 확인</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="비밀번호를 입력하세요."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* 비밀번호 확인 */}
+        <Form.Field
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>비밀번호 확인</Form.Label>
+              <Form.Control>
+                <Form.Input
+                  type="password"
+                  placeholder="비밀번호를 입력하세요."
+                  {...field}
+                />
+              </Form.Control>
+              <Form.Message />
+            </Form.Item>
+          )}
+        />
 
-          <Button className="w-full" type="submit" disabled={isPending}>
-            {isPending ? "처리중..." : "전송"}
-          </Button>
-        </form>
+        {/* 전송 버튼 */}
+        <Form.SubmitButton isPending={isPending} />
       </Form>
     </>
   );

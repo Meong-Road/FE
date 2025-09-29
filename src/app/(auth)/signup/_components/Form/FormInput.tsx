@@ -14,7 +14,7 @@ export function Input({ className, ...props }: Props) {
         "rounded-md",
         "border-none",
         "bg-gray-50",
-        "focus-visible:ring-1 focus-visible:ring-orange-400",
+        "focus-visible:ring-1 focus-visible:ring-orange-500",
         "text-sm font-medium",
         "placeholder:text-gray-400",
         className,

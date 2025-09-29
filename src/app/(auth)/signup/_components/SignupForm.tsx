@@ -16,6 +16,8 @@ export default function SignupForm() {
     <>
       <Toaster richColors closeButton position="top-center" />
       <Form form={form} onSubmit={handleSignup}>
+        <Form.Title>회원가입</Form.Title>
+
         {/* 이름 */}
         <Form.Field
           control={form.control}

@@ -7,6 +7,7 @@ import { Item } from "./FormItem";
 import { Label } from "./FormLabel";
 import { Message } from "./FormMessage";
 import { SubmitButton } from "./FormSubmitButton";
+import { Title } from "./FormTitle";
 
 export const Form = Object.assign(BaseForm, {
   Field,
@@ -17,6 +18,7 @@ export const Form = Object.assign(BaseForm, {
   Message,
   SubmitButton,
   Input,
+  Title,
 });
 
 export * from "./types";

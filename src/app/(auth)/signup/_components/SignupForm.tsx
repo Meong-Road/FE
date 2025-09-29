@@ -18,18 +18,14 @@ import { useSignupMutation } from "../_hooks/useSignupMutation";
 
 export default function SignupForm() {
   const form = useSignupForm();
-  const signupMutation = useSignupMutation();
-
-  function handleSubmit(values: Parameters<typeof signupMutation.mutate>[0]) {
-    signupMutation.mutate(values);
-  }
+  const { handleSignup, isPending } = useSignupMutation();
 
   return (
     <>
       <Toaster richColors closeButton position="top-center" />
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit)}
+          onSubmit={form.handleSubmit(handleSignup)}
           noValidate
           className="w-full max-w-sm space-y-4 rounded-md border border-gray-300 p-4"
         >
@@ -109,12 +105,8 @@ export default function SignupForm() {
             )}
           />
 
-          <Button
-            className="w-full"
-            type="submit"
-            disabled={signupMutation.isPending}
-          >
-            {signupMutation.isPending ? "처리중..." : "전송"}
+          <Button className="w-full" type="submit" disabled={isPending}>
+            {isPending ? "처리중..." : "전송"}
           </Button>
         </form>
       </Form>

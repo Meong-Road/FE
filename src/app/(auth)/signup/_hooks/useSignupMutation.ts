@@ -11,7 +11,7 @@ import { SignupFormSchema } from "./useSignupForm";
 export function useSignupMutation() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (payload: SignupFormSchema) => authApi.signup(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["signup"] });
@@ -23,4 +23,10 @@ export function useSignupMutation() {
       console.error(error);
     },
   });
+
+  const handleSignup = (payload: SignupFormSchema) => {
+    mutate(payload);
+  };
+
+  return { handleSignup, isPending };
 }

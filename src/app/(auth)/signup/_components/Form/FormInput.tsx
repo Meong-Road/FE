@@ -10,3 +10,4 @@ type Props = React.ComponentProps<typeof BaseInput>;
 export function Input({ className, ...props }: Props) {
   return <BaseInput className={cn("w-full", "h-12", className)} {...props} />;
 }
+//커밋용

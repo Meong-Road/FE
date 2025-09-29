@@ -1,3 +1,11 @@
+---
+name: Refactor Report
+about: 리팩토링 할 때 사용해주세요
+title: "[REFACTPOR] "
+labels: refactor
+assignees: ""
+---
+
 ## 작업 내용을 작성해주세요
 
 <!-- 수행할 작업 내용을 작성해주세요 -->

@@ -14,10 +14,8 @@ interface PostSignupResponse {
 
 export const authApi = {
   signup: async (payload: PostSignupType): Promise<PostSignupResponse> => {
-    const response = await customFetch("/auth/signup", {
-      method: "POST",
+    return await customFetch.post<PostSignupResponse>("/auth/signup", {
       body: JSON.stringify(payload),
     });
-    return response as PostSignupResponse;
   },
 };

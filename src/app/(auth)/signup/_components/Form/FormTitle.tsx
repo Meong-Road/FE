@@ -11,7 +11,10 @@ export function Title({
 }: React.ComponentProps<"h3"> & { children: React.ReactNode }) {
   return (
     <h3
-      className={cn("text-foreground mb-4 text-2xl font-bold", className)}
+      className={cn(
+        "text-foreground mb-8 text-center text-2xl font-bold",
+        className,
+      )}
       {...props}
     >
       {children}

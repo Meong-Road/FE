@@ -19,7 +19,7 @@ export function Form<TFieldValues extends FieldValues = FieldValues>(
         onSubmit={form.handleSubmit(onSubmit)}
         noValidate
         className={cn(
-          "w-full max-w-xl space-y-6 rounded-md border border-gray-100 px-14 py-12",
+          "w-full max-w-xl min-w-sm space-y-6 rounded-md border border-gray-100 px-14 py-12",
           className,
         )}
         {...rest}

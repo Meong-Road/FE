@@ -11,7 +11,7 @@ export function Label({ className, ...props }: Props) {
   return (
     <BaseFormLabel
       className={cn(
-        "text-sm font-medium",
+        "text-md font-medium",
         // 에러 상태에 관계없이 기본 색상 유지
         "!text-foreground data-[error=true]:!text-foreground",
         className,

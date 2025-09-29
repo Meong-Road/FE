@@ -8,18 +8,5 @@ import { cn } from "@/lib/utils";
 type Props = React.ComponentProps<typeof BaseInput>;
 
 export function Input({ className, ...props }: Props) {
-  return (
-    <BaseInput
-      className={cn(
-        "rounded-md",
-        "border-none",
-        "bg-gray-50",
-        "focus-visible:ring-1 focus-visible:ring-orange-500",
-        "text-sm font-medium",
-        "placeholder:text-gray-400",
-        className,
-      )}
-      {...props}
-    />
-  );
+  return <BaseInput className={cn("w-full", "h-12", className)} {...props} />;
 }

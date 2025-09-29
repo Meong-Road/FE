@@ -39,6 +39,7 @@ const eslintConfig = [
         },
       ],
     },
+    ignorePatterns: ["node_modules", ".next", "next-env.d.ts"],
   }),
 ];
 

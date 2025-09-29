@@ -1,3 +1,11 @@
+---
+name: Bug Report
+about: 버그를 신고할 때 사용해주세요
+title: "[BUG] "
+labels: bug
+assignees: ""
+---
+
 ## 어떤 버그인가요?
 
 <!-- 어떤 버그인지 간단하게 작성해주세요 -->

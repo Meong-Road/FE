@@ -1,3 +1,11 @@
+---
+name: Feature Report
+about: 새로울 기능을 추가할 때 사용해주세요
+title: "[FEAT] "
+labels: feature
+assignees: ""
+---
+
 ## 어떤 기능인가요?
 
 <!-- 기능 이름과 간단한 설명을 작성해주세요 -->

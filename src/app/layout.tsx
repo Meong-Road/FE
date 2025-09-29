@@ -25,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${pretendardVariable.className} antialiased`}>
+      <body
+        className={`${pretendardVariable.className} bg-[#f6f7f9] antialiased`}
+      >
         <QueryProvider>
           <MSWProvider>{children}</MSWProvider>
         </QueryProvider>

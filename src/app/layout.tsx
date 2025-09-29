@@ -9,8 +9,6 @@ import "./globals.css";
 
 const pretendardVariable = localFont({
   src: "./src/assets/fonts/PretendardVariable.woff2",
-  display: "swap",
-  variable: "--font-pretendard",
 });
 
 export const metadata: Metadata = {

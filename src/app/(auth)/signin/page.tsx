@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import walkImage from "@/assets/images/image.png";
+
 export default function SignInPage() {
   return (
     <div className="flex bg-[#F3F4F6]">
@@ -13,12 +15,7 @@ export default function SignInPage() {
             한줄소개 있으면 좋을 것 같습니다.
           </div>
         </div>
-        <Image
-          src="/assets/images/image.png"
-          alt="image"
-          width={630}
-          height={630}
-        />
+        <Image src={walkImage} alt="image" width={630} height={630} />
       </div>
 
       {/* right block */}

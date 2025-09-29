@@ -1,10 +1,3 @@
----
-name: Pull Request
-about: PR 작성 시 사용해주세요
-title: '[] '
-assignees: ''
----
-
 ## 어떤 기능인지 설명해주세요
 
 <!-- 어떤 기능에 대한 PR인지 설명해주세요 -->

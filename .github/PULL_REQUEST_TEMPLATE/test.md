@@ -1,8 +1,8 @@
 ---
 name: TEST Pull Request
 about: TEST PR 작성 시 사용해주세요
-title: '[] '
-assignees: ''
+title: "[] "
+assignees: ""
 ---
 
 ## 어떤 테스트인지 설명해주세요

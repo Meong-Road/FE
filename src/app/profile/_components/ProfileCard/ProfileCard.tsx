@@ -6,7 +6,11 @@ import { ProfileCardName } from "./ProfileCardName";
 import { type ProfileCardProps } from "./types";
 
 export function ProfileCard({ children }: ProfileCardProps) {
-  return <section>{children}</section>;
+  return (
+    <section className="rounded-3xl border-2 border-gray-200 bg-white px-6 py-4">
+      {children}
+    </section>
+  );
 }
 
 ProfileCard.Header = ProfileCardHeader;

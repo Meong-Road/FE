@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 
+import EditBtn from "./_components/EditBtn";
 import { ProfileCard } from "./_components/ProfileCard";
 import { Tab } from "./_components/Tab/Tab";
 
@@ -9,17 +10,22 @@ export default function Profile() {
   const currentTab = searchParams.get("tab") || "profile";
 
   return (
-    <section>
-      <h2>마이페이지</h2>
+    <section className="mx-auto max-w-[1132px] pt-[65px]">
+      <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
       <ProfileCard>
-        <ProfileCard.Header>내 프로필</ProfileCard.Header>
+        <div className="mb-3 flex items-center justify-between">
+          <ProfileCard.Header>내 프로필</ProfileCard.Header>
+          <EditBtn />
+        </div>
         <ProfileCard.Content>
           <ProfileCard.Image></ProfileCard.Image>
-          <ProfileCard.Name>럽원즈올</ProfileCard.Name>
-          <dl>
-            <ProfileCard.Info label="ID" value="Example2" />
-            <ProfileCard.Info label="E-mail" value="Example@naver.com" />
-          </dl>
+          <div className="pt-4">
+            <ProfileCard.Name>럽원즈올</ProfileCard.Name>
+            <dl>
+              <ProfileCard.Info label="ID" value="Example2" />
+              <ProfileCard.Info label="E-mail" value="Example@naver.com" />
+            </dl>
+          </div>
         </ProfileCard.Content>
       </ProfileCard>
       <Tab>

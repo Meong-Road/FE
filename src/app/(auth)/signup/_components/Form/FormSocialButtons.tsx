@@ -33,7 +33,7 @@ export function SocialButtons({
       {/* 구분선 - 반응형 패딩 조정 */}
       <div className="flex w-full items-center pt-4 md:pt-7">
         <div className="flex-1 border-t border-gray-300" />
-        <p className="px-2 text-xs font-medium text-gray-500 md:px-3 md:text-sm">
+        <p className="px-2 text-xs font-medium text-gray-500 select-none md:px-3 md:text-sm">
           또는
         </p>
         <div className="flex-1 border-t border-gray-300" />

@@ -31,7 +31,7 @@ export function SocialButtons({
   return (
     <>
       {/* 구분선 - 반응형 패딩 조정 */}
-      <div className="flex w-full items-center pt-4 md:pt-7">
+      <div className="flex w-full items-center pt-4">
         <div className="flex-1 border-t border-gray-300" />
         <p className="px-2 text-xs font-medium text-gray-500 select-none md:px-3 md:text-sm">
           또는
@@ -40,7 +40,7 @@ export function SocialButtons({
       </div>
 
       {/* 소셜 버튼들  */}
-      <div className="flex w-full justify-center gap-4 p-3 md:gap-8 md:p-4">
+      <div className="flex w-full justify-center gap-4 p-2 md:gap-8">
         <button
           className={cn(
             "flex items-center justify-center rounded-full transition-colors",

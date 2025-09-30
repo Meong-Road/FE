@@ -46,6 +46,6 @@ export function useSignupForm() {
       password: "",
       confirmPassword: "",
     },
-    mode: "onSubmit",
+    mode: "onChange",
   });
 }

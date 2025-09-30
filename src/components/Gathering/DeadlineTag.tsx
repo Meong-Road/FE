@@ -1,7 +1,7 @@
 import { AlarmClock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { getRegistrationDeadlineInfo } from "@/utils/dateTime";
+import { getRegistrationDeadlineInfo } from "@/lib/utils/dateTime";
 
 import Tag from "../Tag";
 

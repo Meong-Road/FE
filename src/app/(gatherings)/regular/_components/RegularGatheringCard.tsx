@@ -6,16 +6,16 @@ import LikeButton from "@/components/Gathering/LikeButton";
 import ProgressBar from "@/components/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { QuickGatheringType } from "@/lib/types/gathering";
-import { formatDate } from "@/lib/utils/dateTime";
+import { EDayOfWeek } from "@/lib/types/date";
+import { RegularGatheringType } from "@/lib/types/gathering";
 
-interface QuickGatheringCardProps {
-  gathering: QuickGatheringType;
+interface RegularGatheringCardProps {
+  gathering: RegularGatheringType;
 }
 
-export default function QuickGatheringCard({
+export default function RegularGatheringCard({
   gathering,
-}: QuickGatheringCardProps) {
+}: RegularGatheringCardProps) {
   const handleParticipateButtonClick = () => {
     // TODO
     console.log("참여하기");
@@ -47,9 +47,12 @@ export default function QuickGatheringCard({
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <div className="text-sm font-medium text-slate-400">날짜</div>
-                  <div className="text-sm font-medium tracking-tighter text-slate-500">
-                    {formatDate(gathering.dateTime)}
+                  <div className="text-sm font-medium text-slate-400">요일</div>
+                  <div className="text-sm font-medium text-slate-500">
+                    <span className="mr-1">
+                      {gathering.day.map((d) => EDayOfWeek[d]).join(", ")}
+                    </span>
+                    <span>{gathering.time}시</span>
                   </div>
                 </div>
               </div>

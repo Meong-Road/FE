@@ -1,22 +1,30 @@
+import {
+  EGatheringType,
+  QuickGatheringType,
+  RegularGatheringType,
+} from "@/lib/types/gathering";
 import { PaginationRequest, PaginationResponse } from "@/mocks/data/common";
-import { QuickGatheringType } from "@/utils/types/gathering";
 
-export const getRegularGatherings = async ({
+export async function getRegularGatherings({
   page,
   pageSize,
-}: PaginationRequest): Promise<PaginationResponse<QuickGatheringType>> => {
+  sortBy,
+  sortOrder,
+}: PaginationRequest): Promise<PaginationResponse<RegularGatheringType>> {
   const response = await fetch(
-    `/api/gatherings?type=REGULAR&page=${page}&pageSize=${pageSize}`,
+    `/api/gatherings?type=${EGatheringType.REGULAR}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
   );
   return response.json();
-};
+}
 
-export const getQuickGatherings = async ({
+export async function getQuickGatherings({
   page,
   pageSize,
-}: PaginationRequest): Promise<PaginationResponse<QuickGatheringType>> => {
+  sortBy,
+  sortOrder,
+}: PaginationRequest): Promise<PaginationResponse<QuickGatheringType>> {
   const response = await fetch(
-    `/api/gatherings?type=QUICK&page=${page}&pageSize=${pageSize}`,
+    `/api/gatherings?type=${EGatheringType.QUICK}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
   );
   return response.json();
-};
+}

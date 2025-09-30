@@ -1,20 +1,14 @@
-"use client";
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
-
 import { buttonVariants } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { DAY_OF_WEEK } from "@/lib/constants/date";
 import { cn } from "@/lib/utils";
 
 export default function FilterPopover() {
-  const [date, setDate] = useState<DateRange>();
-
   return (
     <Popover>
       <PopoverTrigger
@@ -47,8 +41,17 @@ export default function FilterPopover() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="text-sm font-medium">모임 날짜</div>
-          <Calendar selected={date} onSelect={setDate} mode="range" />
+          <div className="text-sm font-medium">요일</div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            {DAY_OF_WEEK.map((day) => (
+              <div key={day.key} className="flex items-center gap-2">
+                <Checkbox id={`day-of-week-${day.key}`} />
+                <label htmlFor={`day-of-week-${day.key}`} className="text-sm">
+                  {day.name}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">

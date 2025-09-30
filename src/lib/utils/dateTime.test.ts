@@ -72,12 +72,12 @@ describe("dateTime", () => {
       });
     });
 
-    it("마감까지 남은 시간이 12시간 이내인 경우, 'n시간 뒤 마감'과 'primary'를 반환해야 한다", () => {
-      const registrationEnd = "2025-10-01T21:00:00"; // 11시간 뒤
+    it("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 뒤 마감'과 'primary'를 반환해야 한다", () => {
+      const registrationEnd = "2025-10-02T09:00:00"; // 23시간 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
 
       expect(result).toEqual({
-        text: "11시간 뒤 마감",
+        text: "23시간 뒤 마감",
         variant: "primary",
       });
     });

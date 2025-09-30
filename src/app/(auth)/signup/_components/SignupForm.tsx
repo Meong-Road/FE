@@ -95,7 +95,10 @@ export default function SignupForm() {
         />
 
         {/* 전송 버튼 */}
-        <Form.SubmitButton isPending={isPending} />
+        <Form.SubmitButton
+          isPending={isPending}
+          isValid={form.formState.isValid}
+        />
       </Form>
     </>
   );

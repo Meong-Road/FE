@@ -6,9 +6,17 @@ import { Loader2 } from "lucide-react";
 import { Button as BaseButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type Props = React.ComponentProps<typeof BaseButton> & { isPending?: boolean };
+type Props = React.ComponentProps<typeof BaseButton> & {
+  isPending?: boolean;
+  isValid?: boolean;
+};
 
-export function SubmitButton({ className, isPending, ...props }: Props) {
+export function SubmitButton({
+  className,
+  isPending,
+  isValid,
+  ...props
+}: Props) {
   return (
     <BaseButton
       className={cn(
@@ -20,7 +28,7 @@ export function SubmitButton({ className, isPending, ...props }: Props) {
         className,
       )}
       type="submit"
-      disabled={isPending}
+      disabled={isPending || !isValid}
       {...props}
     >
       {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "회원가입"}

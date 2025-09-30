@@ -8,7 +8,7 @@ export function LoginLink() {
       <span className="text-sm text-gray-600">이미 회원이신가요?</span>
       <Link
         href="/signin"
-        className="text-sm font-medium text-orange-500 underline underline-offset-2 transition-colors hover:text-orange-600"
+        className="text-primary text-sm font-medium underline underline-offset-2 transition-colors hover:opacity-80"
       >
         로그인
       </Link>

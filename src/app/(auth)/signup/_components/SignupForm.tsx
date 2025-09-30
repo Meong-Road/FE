@@ -10,12 +10,12 @@ import { Form } from "./Form";
 
 export default function SignupForm() {
   const form = useSignupForm();
-  const { handleSignup, isPending } = useSignupMutation();
+  const { signupMutate, isPending } = useSignupMutation();
 
   return (
     <>
       <Toaster richColors closeButton position="top-center" />
-      <Form form={form} onSubmit={handleSignup}>
+      <Form form={form} onSubmit={signupMutate}>
         <Form.Title>회원가입</Form.Title>
 
         {/* 이름 */}

@@ -24,9 +24,9 @@ export function useSignupMutation() {
     },
   });
 
-  const handleSignup = (payload: SignupFormSchema) => {
+  const signupMutate = (payload: SignupFormSchema) => {
     mutate(payload);
   };
 
-  return { handleSignup, isPending };
+  return { signupMutate, isPending };
 }

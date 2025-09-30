@@ -2,13 +2,16 @@ import EditBtn from "./_components/EditBtn";
 import { ProfileCard } from "./_components/ProfileCard";
 import { Tab } from "./_components/Tab/Tab";
 
-interface PageProps {
+interface ProfileProps {
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
-export default function Profile({ searchParams }: PageProps) {
+export default async function Profile({ searchParams }: ProfileProps) {
+  const resolvedSearchParams = await searchParams;
   const currentTab =
-    typeof searchParams?.tab === "string" ? searchParams.tab : "joined";
+    typeof resolvedSearchParams?.tab === "string"
+      ? resolvedSearchParams.tab
+      : "joined";
 
   return (
     <section className="mx-auto max-w-[1132px] pt-16">

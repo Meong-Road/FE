@@ -3,7 +3,7 @@ import { TabList } from "./TabList";
 import { type TabProps } from "./types";
 
 export function Tab({ children }: TabProps) {
-  return <nav>{children}</nav>;
+  return <nav className="mt-16 border-b-1 border-[#ddd]">{children}</nav>;
 }
 
 Tab.List = TabList;

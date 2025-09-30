@@ -1,16 +1,17 @@
-"use client";
-import { useSearchParams } from "next/navigation";
-
 import EditBtn from "./_components/EditBtn";
 import { ProfileCard } from "./_components/ProfileCard";
 import { Tab } from "./_components/Tab/Tab";
 
-export default function Profile() {
-  const searchParams = useSearchParams();
-  const currentTab = searchParams.get("tab") || "profile";
+interface PageProps {
+  searchParams?: Record<string, string | string[] | undefined>;
+}
+
+export default function Profile({ searchParams }: PageProps) {
+  const currentTab =
+    typeof searchParams?.tab === "string" ? searchParams.tab : "joined";
 
   return (
-    <section className="mx-auto max-w-[1132px] pt-[65px]">
+    <section className="mx-auto max-w-[1132px] pt-16">
       <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
       <ProfileCard>
         <div className="mb-3 flex items-center justify-between">
@@ -30,10 +31,7 @@ export default function Profile() {
       </ProfileCard>
       <Tab>
         <Tab.List>
-          <Tab.Item
-            href="/profile?tab=joined"
-            isActive={currentTab === "joined"}
-          >
+          <Tab.Item href="/profile" isActive={currentTab === "joined"}>
             내 모임
           </Tab.Item>
           <Tab.Item

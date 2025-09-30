@@ -26,7 +26,7 @@ const eslintConfig = [
             // Packages `react` related packages come first.
             ["^react", "^next", "^@?\\w"],
             // Internal packages.
-            ["^(@|components)(/.*|$)"],
+            ["^(@|@/|components)(/.*|$)"],
             // Side effect imports.
             ["^\\u0000"],
             // Parent imports. Put `..` last.

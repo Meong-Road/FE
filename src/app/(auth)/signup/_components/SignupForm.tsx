@@ -94,11 +94,17 @@ export default function SignupForm() {
           )}
         />
 
-        {/* 전송 버튼 */}
+        {/* 회원가입 버튼 */}
         <Form.SubmitButton
           isPending={isPending}
           isValid={form.formState.isValid}
         />
+
+        {/* 소셜 로그인 버튼 */}
+        <Form.SocialButtons />
+
+        {/* 로그인 링크 */}
+        <Form.LoginLink />
       </Form>
     </>
   );

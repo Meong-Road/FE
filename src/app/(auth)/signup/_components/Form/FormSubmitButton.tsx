@@ -20,8 +20,8 @@ export function SubmitButton({
   return (
     <BaseButton
       className={cn(
-        "h-12 w-full",
-        "md:h-14",
+        "h-12 w-full md:h-14",
+        "mt-4",
         "bg-primary",
         "rounded-2xl",
         "text-primary-foreground text-xl font-semibold",

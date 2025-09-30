@@ -7,18 +7,19 @@ export const authHandlers = [
 
   http.post("/auth/signup", async ({ request }) => {
     const body = await request.json();
-    const { email, password, name } = body as {
+    const { email, password, name, confirmPassword } = body as {
       email: string;
       password: string;
       name: string;
+      confirmPassword: string;
     };
 
     // 0) 입력값들 존재하는지 검증
-    if (!email || !password || !name) {
+    if (!email || !password || !name || !confirmPassword) {
       return HttpResponse.json(
         {
           code: "VALIDATION_ERROR",
-          parameter: "email, password, name",
+          parameter: "email, password, name, confirmPassword",
           message: "입력값이 존재하지 않습니다",
         },
         { status: 400 },

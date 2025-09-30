@@ -1,5 +1,5 @@
-import { UserRound } from "lucide-react";
 import Image from "next/image";
+import { UserRound } from "lucide-react";
 
 import DeadlineTag from "@/components/Gathering/DeadlineTag";
 import LikeButton from "@/components/Gathering/LikeButton";

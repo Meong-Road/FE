@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
 import { usePathname } from "next/navigation";
+import { render, screen } from "@testing-library/react";
 
 import Header from "../Header";
 

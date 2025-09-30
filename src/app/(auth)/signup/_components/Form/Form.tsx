@@ -19,7 +19,7 @@ export function Form<TFieldValues extends FieldValues = FieldValues>(
         onSubmit={form.handleSubmit(onSubmit)}
         noValidate
         className={cn(
-          "bg-card w-full max-w-xl min-w-xs space-y-4 rounded-[40px] md:space-y-6",
+          "bg-card w-full max-w-lg min-w-xs space-y-4 rounded-[40px]",
           "p-6 md:p-12",
           className,
         )}

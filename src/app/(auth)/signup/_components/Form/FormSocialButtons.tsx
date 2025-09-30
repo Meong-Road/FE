@@ -44,7 +44,7 @@ export function SocialButtons({
         <button
           className={cn(
             "flex items-center justify-center rounded-full transition-colors",
-            "h-14 w-14 md:h-16 md:w-16", // 모바일: 48px, 데스크톱: 64px
+            "h-14 w-14", //56px
             "bg-white hover:bg-gray-50 active:bg-gray-100",
             "border border-gray-200",
             className,
@@ -61,7 +61,7 @@ export function SocialButtons({
         <button
           className={cn(
             "flex items-center justify-center rounded-full transition-colors",
-            "h-14 w-14 md:h-16 md:w-16", // 모바일: 48px, 데스크톱: 64px
+            "h-14 w-14", //56px
             "bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500",
             "border border-gray-200",
             className,

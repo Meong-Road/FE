@@ -20,7 +20,7 @@ export function Form<TFieldValues extends FieldValues = FieldValues>(
         noValidate
         className={cn(
           "bg-card w-full max-w-xl min-w-xs space-y-4 rounded-[40px] md:space-y-6",
-          "p-7 md:p-14",
+          "p-6 md:p-12",
           className,
         )}
         {...rest}

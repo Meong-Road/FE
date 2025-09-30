@@ -12,7 +12,7 @@ export function Title({
   return (
     <h3
       className={cn(
-        "text-foreground mb-10 text-center text-xl font-bold md:mb-14 md:text-2xl",
+        "text-foreground mb-8 text-center text-xl font-bold select-none md:mb-10 md:text-2xl",
         className,
       )}
       {...props}

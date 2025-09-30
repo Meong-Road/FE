@@ -5,13 +5,13 @@ import walkImage from "@/assets/images/image.png";
 
 export default function SignupPage() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center px-4 py-8">
+    <div className="flex min-h-svh w-full items-center justify-center px-4 py-8 xl:gap-10">
       <Image
         src={walkImage}
         alt="image"
-        width={630}
-        height={630}
-        className="hidden min-w-[315px] lg:block"
+        width={400}
+        height={400}
+        className="hidden h-full min-w-[315px] xl:block"
       />
       <SignupForm />
     </div>

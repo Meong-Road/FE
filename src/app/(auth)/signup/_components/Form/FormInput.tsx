@@ -8,5 +8,5 @@ import { cn } from "@/lib/utils";
 type Props = React.ComponentProps<typeof BaseInput>;
 
 export function Input({ className, ...props }: Props) {
-  return <BaseInput className={cn("w-full", "h-12", className)} {...props} />;
+  return <BaseInput className={cn(className)} {...props} />;
 }

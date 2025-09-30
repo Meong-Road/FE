@@ -3,7 +3,7 @@ import { ProfileCard } from "./_components/ProfileCard";
 import { Tab } from "./_components/Tab/Tab";
 
 interface ProfileProps {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function Profile({ searchParams }: ProfileProps) {

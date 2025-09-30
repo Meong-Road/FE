@@ -4,15 +4,15 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
-import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gathering";
+import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gathering";
 
 import LocationSelect from "../_components/LocationSelect";
 import SortBySelector from "../_components/SortBySelector";
 
 import FilterPopover from "./_components/FilterPopover";
-import QuickGatheringCard from "./_components/QuickGatheringCard";
+import RegularGatheringCard from "./_components/RegularGatheringCard";
 
-export default function QuickGatheringListPage() {
+export default function RegularGatheringListPage() {
   const { ref, inView } = useInView();
   const {
     data: gatherings,
@@ -21,7 +21,7 @@ export default function QuickGatheringListPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetInfiniteQuickGatherings();
+  } = useGetInfiniteRegularGatherings();
 
   useEffect(() => {
     if (inView) fetchNextPage();
@@ -54,7 +54,7 @@ export default function QuickGatheringListPage() {
         <ul className="grid grid-cols-2 gap-4">
           {gatherings.map((gathering) => (
             <li key={gathering.id}>
-              <QuickGatheringCard gathering={gathering} />
+              <RegularGatheringCard gathering={gathering} />
             </li>
           ))}
         </ul>

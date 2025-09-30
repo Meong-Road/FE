@@ -1,6 +1,8 @@
 // src/mocks/handlers/auth.ts
 import { http, HttpResponse } from "msw";
 
+import { EGatheringType } from "@/lib/types/gathering";
+
 import { PAGINATION_DATA } from "../data/common";
 import { QUICK_GATHERINGS, REGULAR_GATHERINGS } from "../data/gatherings";
 
@@ -10,7 +12,7 @@ export const gatheringsHandlers = [
     const type = url.searchParams.get("type");
     const pageSize = url.searchParams.get("pageSize");
 
-    if (type === "QUICK") {
+    if (type === EGatheringType.QUICK) {
       return HttpResponse.json(
         PAGINATION_DATA(QUICK_GATHERINGS, {
           pageSize: Number(pageSize),

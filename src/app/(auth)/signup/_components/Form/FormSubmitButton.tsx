@@ -25,6 +25,7 @@ export function SubmitButton({
         "bg-primary",
         "rounded-2xl",
         "text-primary-foreground text-xl font-semibold",
+        "disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50",
         className,
       )}
       type="submit"

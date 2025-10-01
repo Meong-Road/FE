@@ -18,9 +18,9 @@ export function useSigninMutation() {
     },
   });
 
-  const handleSignin = (payload: SigninFormSchema) => {
+  const signinMutate = (payload: SigninFormSchema) => {
     mutate(payload);
   };
 
-  return { handleSignin, isPending };
+  return { signinMutate, isPending };
 }

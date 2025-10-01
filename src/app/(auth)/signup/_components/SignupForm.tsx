@@ -3,7 +3,7 @@
 
 import { Toaster } from "@/components/ui/sonner";
 
-import { useSignupForm } from "../_hooks/useSignupForm";
+import { SignupFormSchema, useSignupForm } from "../_hooks/useSignupForm";
 import { useSignupMutation } from "../_hooks/useSignupMutation";
 
 import { Form } from "./Form";
@@ -12,10 +12,14 @@ export default function SignupForm() {
   const form = useSignupForm();
   const { signupMutate, isPending } = useSignupMutation();
 
+  const handleSubmit = (data: SignupFormSchema) => {
+    signupMutate(data);
+  };
+
   return (
     <>
       <Toaster richColors closeButton position="top-center" />
-      <Form form={form} onSubmit={signupMutate}>
+      <Form form={form} onSubmit={handleSubmit}>
         <Form.Title>회원가입</Form.Title>
 
         {/* 이름 */}

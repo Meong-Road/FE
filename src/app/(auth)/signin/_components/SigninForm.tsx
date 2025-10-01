@@ -1,16 +1,20 @@
 "use client";
 
 import { Form } from "../../signup/_components/Form";
-import { useSigninForm } from "../_hooks/useSigninForm";
+import { SigninFormSchema, useSigninForm } from "../_hooks/useSigninForm";
 import { useSigninMutation } from "../_hooks/useSigninMutation";
 
 export default function SigninForm() {
   const form = useSigninForm();
-  const { handleSignin, isPending } = useSigninMutation();
+  const { signinMutate, isPending } = useSigninMutation();
+
+  const handleSubmit = (data: SigninFormSchema) => {
+    signinMutate(data);
+  };
 
   return (
     <>
-      <Form form={form} onSubmit={handleSignin}>
+      <Form form={form} onSubmit={handleSubmit}>
         <Form.Title>로그인</Form.Title>
 
         {/* 이메일 */}

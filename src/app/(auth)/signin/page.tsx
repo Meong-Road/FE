@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import walkImage from "@/assets/images/image.png";
 
+import SigninForm from "./_components/SigninForm";
+
 export default function SignInPage() {
   return (
     <div className="flex bg-[#F3F4F6]">
@@ -18,9 +20,7 @@ export default function SignInPage() {
         <Image src={walkImage} alt="image" width={630} height={630} />
       </div>
 
-      {/* right block */}
-      <div className="flex h-[769px] w-[568px] shrink-0 flex-col items-center justify-center rounded-[40px] bg-[#FFF] px-[56px] py-[81.5px]">
-        {/* right block 1: input, login buttons */}
+      {/* <div className="flex h-[769px] w-[568px] shrink-0 flex-col items-center justify-center rounded-[40px] bg-[#FFF] px-[56px] py-[81.5px]">
         <div className="flex w-[456px] flex-col items-start gap-[40px]">
           <div className="flex h-[32px] items-center justify-center gap-[341px] self-stretch text-2xl font-bold tracking-[-0.72px] text-[#111827]">
             로그인
@@ -68,7 +68,6 @@ export default function SignInPage() {
           </div>
         </div>
 
-        {/* right block 2: --- 또는 --- */}
         <div className="flex w-[451px] flex-wrap content-start items-start gap-x-[30px] gap-y-[24px] pt-[30px]">
           <div className="flex h-[18px] w-[456px] shrink-0 flex-col items-start justify-center gap-[72px] py-[9px]">
             <div className="flex h-[18px] w-[456px] shrink-0 items-center gap-[72px] py-[9px]">
@@ -81,7 +80,6 @@ export default function SignInPage() {
           </div>
         </div>
 
-        {/* right block 3: three circles */}
         <div className="flex w-[456px] items-center gap-[30px] px-[103px] pt-[23px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +109,9 @@ export default function SignInPage() {
             <circle cx="32.5" cy="33" r="32.5" fill="#EEEEEE" />
           </svg>
         </div>
-      </div>
+      </div> */}
+
+      <SigninForm />
     </div>
   );
 }

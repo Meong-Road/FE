@@ -9,12 +9,14 @@ import { cn } from "@/lib/utils";
 type Props = React.ComponentProps<typeof BaseButton> & {
   isPending?: boolean;
   isValid?: boolean;
+  label: string;
 };
 
 export function SubmitButton({
   className,
   isPending,
   isValid,
+  label,
   ...props
 }: Props) {
   return (
@@ -33,7 +35,7 @@ export function SubmitButton({
       disabled={isPending || !isValid}
       {...props}
     >
-      {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "회원가입"}
+      {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : label}
     </BaseButton>
   );
 }

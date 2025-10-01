@@ -3,10 +3,9 @@
 
 import { Toaster } from "@/components/ui/sonner";
 
+import { Form } from "../../../../components/Form";
 import { SignupFormSchema, useSignupForm } from "../_hooks/useSignupForm";
 import { useSignupMutation } from "../_hooks/useSignupMutation";
-
-import { Form } from "./Form";
 
 export default function SignupForm() {
   const form = useSignupForm();

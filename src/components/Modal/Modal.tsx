@@ -1,14 +1,16 @@
 import React from "react";
-import { createPortal } from "react-dom";
+
+import PetInfoModal from "./PetInfoModal";
 
 interface ModalProps {
-  children: React.ReactNode;
-  onClose: () => void;
+  type: "first-login" | "add-pet" | "edit-pet";
+  onClose?: () => void;
 }
 
-export default function Modal({ children, onClose }: ModalProps) {
-  return createPortal(
-    <div>{children}</div>,
-    document.getElementById("modal-root")!,
+export default function Modal({ type, onClose }: ModalProps) {
+  return (
+    <>
+      <PetInfoModal type={type} onClose={onClose} />
+    </>
   );
 }

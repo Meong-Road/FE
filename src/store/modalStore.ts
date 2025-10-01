@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-export type ModalType = "requiredPetInfo" | "addPetInfo" | null;
+export type ModalType = "requiredPetInfo" | "addPetInfo" | "editPetInfo" | null;
 
 interface ModalStore {
   isOpen: boolean;
   modalType: ModalType;
-  openModal: (type: ModalType) => void;
+  openModal: (type?: ModalType) => void;
   closeModal: () => void;
 }
 

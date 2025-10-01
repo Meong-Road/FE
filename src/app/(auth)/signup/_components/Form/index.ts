@@ -7,6 +7,7 @@ import { Item } from "./FormItem";
 import { Label } from "./FormLabel";
 import { LoginLink } from "./FormLoginLink";
 import { Message } from "./FormMessage";
+import { SignupLink } from "./FormSignupLink";
 import { SocialButtons } from "./FormSocialButtons";
 import { SubmitButton } from "./FormSubmitButton";
 import { Title } from "./FormTitle";
@@ -23,6 +24,7 @@ export const Form = Object.assign(BaseForm, {
   Title,
   SocialButtons,
   LoginLink,
+  SignupLink,
 });
 
 export * from "./types";

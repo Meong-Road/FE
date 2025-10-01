@@ -100,6 +100,7 @@ export default function SignupForm() {
         <Form.SubmitButton
           isPending={isPending}
           isValid={form.formState.isValid}
+          label="회원가입"
         />
 
         {/* 소셜 로그인 버튼 */}

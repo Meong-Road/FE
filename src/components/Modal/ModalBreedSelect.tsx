@@ -1,6 +1,7 @@
 import React from "react";
 
-import { dogBreeds } from "./dogBreed";
+import { dogBreeds } from "../../lib/constants/dogBreed";
+
 import { FormLabel } from "./FormLabel";
 import { ModalSelect } from "./ModalSelect";
 

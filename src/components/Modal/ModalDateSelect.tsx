@@ -1,6 +1,7 @@
 import React from "react";
 
-import { days, months, years } from "./date";
+import { days, months, years } from "../../lib/constants/brtihdayDate";
+
 import { FormLabel } from "./FormLabel";
 import { ModalSelect } from "./ModalSelect";
 

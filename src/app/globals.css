@@ -54,104 +54,107 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* 그라디언트 테마 추가 */
+  --gradient-primary: linear-gradient(to right, #ffd664, #ff8400);
 }
 
 :root {
   --radius: 0.625rem;
 
   /* 기본 */
-  --background: #FAFAFA;          /* Gray Background */
-  --foreground: #111827;          /* Default Font */
+  --background: #fafafa; /* Gray Background */
+  --foreground: #111827; /* Default Font */
 
   /* 카드/팝오버 */
-  --card: #FFFFFF;
+  --card: #ffffff;
   --card-foreground: #111827;
-  --popover: #FFFFFF;
+  --popover: #ffffff;
   --popover-foreground: #111827;
 
   /* 브랜드 */
-  --primary: #FF8400;             /* Main Orange */
-  --primary-foreground: #FFFFFF;
-  --secondary: #FFE59E;           /* Sub Orange */
+  --primary: #ff8400; /* Main Orange */
+  --primary-foreground: #ffffff;
+  --secondary: #ffe59e; /* Sub Orange */
   --secondary-foreground: #111827;
 
   /* 보조/무채 */
-  --muted: #EEEEEE;               /* Inactivated Button */
-  --muted-foreground: #A4A4A4;    /* Font in Inactive Button */
-  --accent: #F9FAFB;              /* Input Field */
-  --accent-foreground: #737373;   /* Font in Input Field */
+  --muted: #eeeeee; /* Inactivated Button */
+  --muted-foreground: #a4a4a4; /* Font in Inactive Button */
+  --accent: #f9fafb; /* Input Field */
+  --accent-foreground: #737373; /* Font in Input Field */
 
   /* 강조 */
-  --destructive: #FF5757;         /* Required Field */
+  --destructive: #ff5757; /* Required Field */
 
   /* 경계/입력 */
-  --border: #E0E0E0;
-  --input: #F9FAFB;
+  --border: #e0e0e0;
+  --input: #f9fafb;
   --ring: #737373;
 
   /* 폰트 계열 */
   --font-default: #111827;
   --font-input: #737373;
-  --font-inactive: #A4A4A4;
+  --font-inactive: #a4a4a4;
 
   /* 그래프(임의) */
-  --chart-1: #FF8400;
-  --chart-2: #FFE59E;
-  --chart-3: #FF5757;
-  --chart-4: #A4A4A4;
+  --chart-1: #ff8400;
+  --chart-2: #ffe59e;
+  --chart-3: #ff5757;
+  --chart-4: #a4a4a4;
   --chart-5: #737373;
 
   /* 사이드바 */
-  --sidebar: #FFFFFF;
+  --sidebar: #ffffff;
   --sidebar-foreground: #111827;
-  --sidebar-primary: #FF8400;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #FFE59E;
+  --sidebar-primary: #ff8400;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffe59e;
   --sidebar-accent-foreground: #111827;
-  --sidebar-border: #E0E0E0;
+  --sidebar-border: #e0e0e0;
   --sidebar-ring: #737373;
 }
 
 .dark {
   /* 다크 모드: 배경/글자 반전 */
   --background: #111827;
-  --foreground: #FAFAFA;
+  --foreground: #fafafa;
 
-  --card: #1F2937;
-  --card-foreground: #FAFAFA;
-  --popover: #1F2937;
-  --popover-foreground: #FAFAFA;
+  --card: #1f2937;
+  --card-foreground: #fafafa;
+  --popover: #1f2937;
+  --popover-foreground: #fafafa;
 
   /* 브랜드 컬러(유지) */
-  --primary: #FF8400;
-  --primary-foreground: #FFFFFF;
-  --secondary: #FFE59E;
+  --primary: #ff8400;
+  --primary-foreground: #ffffff;
+  --secondary: #ffe59e;
   --secondary-foreground: #111827;
 
   --muted: #374151;
-  --muted-foreground: #A4A4A4;
-  --accent: #4B5563;
-  --accent-foreground: #D1D5DB;
+  --muted-foreground: #a4a4a4;
+  --accent: #4b5563;
+  --accent-foreground: #d1d5db;
 
-  --destructive: #FF5757;
+  --destructive: #ff5757;
 
   --border: #374151;
-  --input: #1F2937;
-  --ring: #9CA3AF;
+  --input: #1f2937;
+  --ring: #9ca3af;
 
-  --font-default: #FAFAFA;
-  --font-input: #D1D5DB;
-  --font-inactive: #6B7280;
+  --font-default: #fafafa;
+  --font-input: #d1d5db;
+  --font-inactive: #6b7280;
 
   /* 사이드바 */
-  --sidebar: #1F2937;
-  --sidebar-foreground: #FAFAFA;
-  --sidebar-primary: #FF8400;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #FFE59E;
+  --sidebar: #1f2937;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #ff8400;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffe59e;
   --sidebar-accent-foreground: #111827;
   --sidebar-border: #374151;
-  --sidebar-ring: #9CA3AF;
+  --sidebar-ring: #9ca3af;
 }
 
 @layer base {
@@ -160,5 +163,14 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .border-gradient-primary {
+    border-image: var(--gradient-primary) 1;
   }
 }

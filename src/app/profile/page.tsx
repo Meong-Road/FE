@@ -1,6 +1,7 @@
 import EditBtn from "./_components/EditBtn";
+import JoinedSection from "./_components/JoinedSection";
 import { ProfileCard } from "./_components/ProfileCard";
-import { Tab } from "./_components/Tab/Tab";
+import { Tab } from "./_components/Tab";
 
 interface ProfileProps {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -54,6 +55,9 @@ export default async function Profile({ searchParams }: ProfileProps) {
           </Tab.Item>
         </Tab.List>
       </Tab>
+      <section className="mt-6">
+        {currentTab === "joined" && <JoinedSection />}
+      </section>
     </section>
   );
 }

@@ -1,32 +1,27 @@
-import { ModalBody } from "./ModalBody";
-import { ModalClose } from "./ModalClose";
-import { ModalContent } from "./ModalContent";
-import { ModalFooter } from "./ModalFooter";
-import { ModalHeader } from "./ModalHeader";
-import { ModalOverlay } from "./ModalOverlay";
-import { ModalPortal } from "./ModalPortal";
-import { ModalRoot } from "./ModalRoot";
+import { ModalBreedSelect } from "./ModalBreedSelect";
+import { ModalButton } from "./ModalButton";
+import { ModalDateSelect } from "./ModalDateSelect";
+import { ModalForm } from "./ModalForm";
+import { ModalFormWrapper } from "./ModalFormWrapper";
+import { ModalImageUpload } from "./ModalImageUpload";
+import { ModalLayout } from "./ModalLayout";
+import { ModalRadioInput } from "./ModalRadioInput";
+import { ModalSelect } from "./ModalSelect";
+import { ModalTextInput } from "./ModalTextInput";
+import { ModalTitle } from "./ModalTitle";
 
-export {
-  ModalBody,
-  ModalClose,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  ModalPortal,
-  ModalRoot,
+const Modal = {
+  Layout: ModalLayout,
+  Title: ModalTitle,
+  Form: ModalForm,
+  Button: ModalButton,
+  BreedSelect: ModalBreedSelect,
+  FormWrapper: ModalFormWrapper,
+  ImageUpload: ModalImageUpload,
+  RadioInput: ModalRadioInput,
+  Select: ModalSelect,
+  TextInput: ModalTextInput,
+  DateSelect: ModalDateSelect,
 };
-
-export const Modal = {
-  Portal: ModalPortal,
-  Root: ModalRoot,
-  Overlay: ModalOverlay,
-  Content: ModalContent,
-  Header: ModalHeader,
-  Body: ModalBody,
-  Footer: ModalFooter,
-  Close: ModalClose,
-} as const;
 
 export default Modal;

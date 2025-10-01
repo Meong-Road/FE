@@ -62,11 +62,11 @@ export default function SigninForm() {
           label="로그인"
         />
 
-        {/* 회원가입 링크 */}
-        <Form.SignupLink />
-
         {/* 소셜 로그인 버튼 */}
         <Form.SocialButtons />
+
+        {/* 회원가입 링크 */}
+        <Form.SignupLink />
       </Form>
     </>
   );

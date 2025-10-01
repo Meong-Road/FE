@@ -1,12 +1,55 @@
 "use client";
 
 import * as React from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { Input as BaseInput } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-type Props = React.ComponentProps<typeof BaseInput>;
+type Props = Omit<React.ComponentProps<typeof BaseInput>, "type"> & {
+  type: "text" | "email" | "password";
+};
 
-export function Input({ className, ...props }: Props) {
-  return <BaseInput className={cn(className)} {...props} />;
+function ShowPasswordButton({
+  isShowPassword,
+  onClick,
+}: {
+  isShowPassword: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <>
+      {isShowPassword ? (
+        <EyeIcon
+          onClick={onClick}
+          className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2"
+        />
+      ) : (
+        <EyeOffIcon
+          onClick={onClick}
+          className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2"
+        />
+      )}
+    </>
+  );
+}
+
+export function Input({ className, type, ...props }: Props) {
+  const [isShowPassword, setIsShowPassword] = React.useState(false);
+
+  return (
+    <div className="relative">
+      <BaseInput
+        className={cn(type === "password" && "pr-10", className)}
+        {...props}
+        type={type !== "password" ? type : isShowPassword ? "text" : "password"}
+      />
+      {type === "password" && (
+        <ShowPasswordButton
+          isShowPassword={isShowPassword}
+          onClick={() => setIsShowPassword(!isShowPassword)}
+        />
+      )}
+    </div>
+  );
 }

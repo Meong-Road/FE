@@ -47,6 +47,7 @@ export default function SigninForm() {
                 <Form.Input
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
+                  autoComplete="current-password"
                   {...field}
                 />
               </Form.Control>

@@ -57,6 +57,11 @@
 
   /* 그라디언트 테마 추가 */
   --gradient-primary: linear-gradient(to right, #ffd664, #ff8400);
+  --gradient-primary-opacity: linear-gradient(
+    to right,
+    rgba(255, 214, 100, 0.15),
+    rgba(255, 132, 0, 0.15)
+  );
 }
 
 :root {
@@ -169,6 +174,9 @@
 @layer utilities {
   .bg-gradient-primary {
     background: var(--gradient-primary);
+  }
+  .bg-gradient-opacity {
+    background: var(--gradient-primary-opacity);
   }
   .border-gradient-primary {
     border-image: var(--gradient-primary) 1;

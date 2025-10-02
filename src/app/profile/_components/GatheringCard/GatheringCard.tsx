@@ -10,8 +10,10 @@ import { type GatheringCardProps } from "./types";
 
 export function GatheringCard({ children, bgColor }: GatheringCardProps) {
   return (
-    <li className={`rounded-4xl ${bgColor === "white" ? "bg-white" : ""}`}>
-      <Link href="/" className="h-full w-full p-6">
+    <li
+      className={`rounded-4xl ${bgColor === "white" ? "bg-white" : "bg-gradient-opacity"}`}
+    >
+      <Link href="/" className="block h-full w-full p-6">
         {children}
       </Link>
     </li>

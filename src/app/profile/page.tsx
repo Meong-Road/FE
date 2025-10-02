@@ -1,3 +1,4 @@
+import CreatedSection from "./_components/CreatedSection";
 import EditBtn from "./_components/EditBtn";
 import JoinedSection from "./_components/JoinedSection";
 import { ProfileCard } from "./_components/ProfileCard";
@@ -57,6 +58,7 @@ export default async function Profile({ searchParams }: ProfileProps) {
       </Tab>
       <section className="mt-6">
         {currentTab === "joined" && <JoinedSection />}
+        {currentTab === "created" && <CreatedSection />}
       </section>
     </section>
   );

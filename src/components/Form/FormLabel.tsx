@@ -5,9 +5,11 @@ import * as React from "react";
 import { FormLabel as BaseFormLabel } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 
-type Props = React.ComponentProps<typeof BaseFormLabel>;
+type Props = React.ComponentProps<typeof BaseFormLabel> & {
+  required?: boolean;
+};
 
-export function Label({ className, ...props }: Props) {
+export function Label({ className, children, required, ...props }: Props) {
   return (
     <BaseFormLabel
       className={cn(
@@ -17,6 +19,9 @@ export function Label({ className, ...props }: Props) {
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+      {required && <span className="text-primary">*</span>}
+    </BaseFormLabel>
   );
 }

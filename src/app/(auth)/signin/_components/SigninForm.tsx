@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "../../signup/_components/Form";
+import { Form } from "../../../../components/Form";
 import { SigninFormSchema, useSigninForm } from "../_hooks/useSigninForm";
 import { useSigninMutation } from "../_hooks/useSigninMutation";
 

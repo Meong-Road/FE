@@ -1,38 +1,29 @@
 import React from "react";
 
 import { days, months, years } from "../../lib/constants/brtihdayDate";
-
-import { FormLabel } from "./FormLabel";
-import { ModalSelect } from "./ModalSelect";
+import { Select } from "../Form/FormSelect";
 
 interface ModalDateSelectProps {
-  label: string;
-  required?: boolean;
   name: string;
 }
 
-export function ModalDateSelect({
-  label,
-  required,
-  name,
-}: ModalDateSelectProps) {
+export function ModalDateSelect({ name }: ModalDateSelectProps) {
   return (
     <div className="w-full">
-      <FormLabel label={label} required={required} />
       <div className="flex w-full gap-2.5">
-        <ModalSelect
+        <Select
           name={`${name}-year`}
           placeholder="년"
           options={years}
           className="bg-accent flex-1 rounded-xl px-1 py-2"
         />
-        <ModalSelect
+        <Select
           name={`${name}-year`}
           placeholder="월"
           options={months}
           className="bg-accent flex-1 rounded-xl px-1 py-2"
         />
-        <ModalSelect
+        <Select
           name={`${name}-year`}
           placeholder="일"
           options={days}

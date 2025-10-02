@@ -1,25 +1,18 @@
 import React from "react";
 
 import { dogBreeds } from "../../lib/constants/dogBreed";
-
-import { FormLabel } from "./FormLabel";
-import { ModalSelect } from "./ModalSelect";
+import { Form } from "../Form";
 
 interface ModalBreedSelectProps {
-  label: string;
-  required?: boolean;
   name: string;
+  htmlFor?: string;
 }
 
-export function ModalBreedSelect({
-  label,
-  required,
-  name,
-}: ModalBreedSelectProps) {
+export function ModalBreedSelect({ name, htmlFor }: ModalBreedSelectProps) {
   return (
     <div className="flex w-full flex-col">
-      <FormLabel label={label} required={required} />
-      <ModalSelect
+      <Form.Select
+        id={htmlFor}
         placeholder="견종을 선택해주세요"
         name={name}
         options={dogBreeds}

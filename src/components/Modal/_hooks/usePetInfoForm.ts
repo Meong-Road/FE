@@ -7,12 +7,16 @@ const PetInfoFormSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   neuter: z.enum(["did", "didnot"]).optional(),
-  birthday: z.object({
-    year: z.number(),
-    month: z.number(),
-    day: z.number(),
-  }),
-  breed: z.string(),
+  birthday: z
+    .object({
+      year: z.number(),
+      month: z.number(),
+      day: z.number(),
+    })
+    .refine((data) => data.year > 0 && data.month > 0 && data.day > 0, {
+      message: "정확한 생일을 선택해주세요",
+    }),
+  breed: z.string().min(1, "견종을 선택해주세요"),
 });
 
 export type PetInfoFormSchema = z.infer<typeof PetInfoFormSchema>;
@@ -23,7 +27,7 @@ export function usePetInfoForm(initialValues?: Partial<PetInfoFormSchema>) {
     name: "",
     gender: "male" as const,
     neuter: "did" as const,
-    birthday: { year: 2025, month: 1, day: 1 },
+    birthday: { year: 0, month: 0, day: 0 },
     breed: "",
   };
 

@@ -58,7 +58,6 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                 <Form.Label className="flex justify-center">
                   사진을 등록해주세요
                 </Form.Label>
-                <Form.Message />
               </Form.Item>
             )}
           />
@@ -75,6 +74,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                     {...field}
                   />
                 </Form.Control>
+                <Form.Message />
               </Form.Item>
             )}
           />
@@ -105,7 +105,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                   <Form.Radio
                     label="gender"
                     options={NEUTER_OPTIONS}
-                    defaultChecked="did"
+                    // defaultChecked="did"
                     {...field}
                   />
                 </Form.Control>
@@ -119,8 +119,13 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
               <Form.Item>
                 <Form.Label required>생일</Form.Label>
                 <Form.Control>
-                  <Modal.DateSelect {...field} name="birthday" />
+                  <Modal.DateSelect
+                    name="birthday"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </Form.Control>
+                <Form.Message />
               </Form.Item>
             )}
           />
@@ -131,13 +136,20 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
               <Form.Item>
                 <Form.Label required>견종</Form.Label>
                 <Form.Control>
-                  <Modal.BreedSelect {...field} name="breed" htmlFor="breed" />
+                  <Modal.BreedSelect
+                    name="breed"
+                    htmlFor="breed"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </Form.Control>
+                <Form.Message />
               </Form.Item>
             )}
           />
           <Form.SubmitButton
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
+            isValid={form.formState.isValid}
           />
         </Form>
         {type === "first-login" && (

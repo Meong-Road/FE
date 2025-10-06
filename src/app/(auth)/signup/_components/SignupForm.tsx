@@ -9,11 +9,9 @@ import { useSignupMutation } from "../_hooks/useSignupMutation";
 
 export default function SignupForm() {
   const form = useSignupForm();
-  const { signupMutate, isPending } = useSignupMutation();
+  const { mutate: signupMutate, isPending } = useSignupMutation();
 
-  const handleSubmit = (data: SignupFormSchema) => {
-    signupMutate(data);
-  };
+  const handleSubmit = (data: SignupFormSchema) => signupMutate(data);
 
   return (
     <>
@@ -44,27 +42,37 @@ export default function SignupForm() {
         <Form.Field
           control={form.control}
           name="email"
-          render={({ field }) => (
-            <Form.Item>
-              <Form.Label>이메일</Form.Label>
-              <div className="flex flex-1 items-center justify-between gap-2">
-                <Form.Control>
-                  <Form.Input
+          render={({ field }) => {
+            const emailCheckPassed = form.watch("emailCheckPassed");
+            const hasError = form.formState.errors.email;
+
+            return (
+              <Form.Item>
+                <Form.Label>이메일</Form.Label>
+                <div className="flex w-full items-center gap-2">
+                  <Form.Control className="min-w-0 flex-1">
+                    <Form.Input
+                      type="email"
+                      placeholder="이메일을 입력하세요."
+                      {...field}
+                    />
+                  </Form.Control>
+                  <Form.DuplicateCheckButton
+                    form={form}
+                    field="email"
                     type="email"
-                    placeholder="이메일을 입력하세요."
-                    className="min-w-0 flex-1"
-                    {...field}
+                    checkPassedField="emailCheckPassed"
                   />
-                </Form.Control>
-                <Form.EmailDuplicateCheckButton
-                  form={form}
-                  field="email"
-                  errorMessage="이미 사용 중인 이메일입니다."
-                />
-              </div>
-              <Form.Message />
-            </Form.Item>
-          )}
+                </div>
+                {emailCheckPassed && !hasError && (
+                  <p className="pl-1 text-xs text-green-600">
+                    사용 가능한 이메일입니다
+                  </p>
+                )}
+                <Form.Message />
+              </Form.Item>
+            );
+          }}
         />
 
         {/* 비밀번호 */}

@@ -4,17 +4,34 @@ interface PostSignupReq {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  nickName: string;
+}
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  nickName: string;
+  image: string;
+  isPetInfoSubmitted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface PostSignupRes {
+  success: boolean;
+  code: number;
   message: string;
-  petInfo: null;
+  result: {
+    token: string;
+    user: User;
+    message: string;
+  };
 }
 
 export const authApi = {
   signup: async (payload: PostSignupReq): Promise<PostSignupRes> => {
-    return await customFetch.post<PostSignupRes>("/auth/signup", {
+    return await customFetch.post<PostSignupRes>("/meong-road/user", {
       body: JSON.stringify(payload),
     });
   },

@@ -11,11 +11,26 @@ import { SignupFormSchema } from "./useSignupForm";
 export function useSignupMutation() {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (payload: SignupFormSchema) => authApi.signup(payload),
+  return useMutation({
+    mutationFn: (payload: SignupFormSchema) => {
+      // confirmPassword와 체크 필드 제외하고 전송
+      const {
+        confirmPassword,
+        emailCheckPassed,
+        nicknameCheckPassed,
+        ...signupData
+      } = payload;
+      return authApi.signup(signupData);
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["signup"] });
       toast.success("회원가입 성공");
+
+      // 토큰 저장
+      if (data.result?.token) {
+        localStorage.setItem("accessToken", data.result.token);
+      }
+
       console.log("회원가입 성공", data);
     },
     onError: (error: unknown) => {
@@ -23,10 +38,4 @@ export function useSignupMutation() {
       console.error(error);
     },
   });
-
-  const signupMutate = (payload: SignupFormSchema) => {
-    mutate(payload);
-  };
-
-  return { signupMutate, isPending };
 }

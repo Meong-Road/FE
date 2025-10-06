@@ -9,7 +9,7 @@ export const authHandlers = [
       email: string;
       password: string;
       name: string;
-      nickName: string;
+      nickName?: string;
     };
 
     // 실패 케이스: 이미 존재하는 이메일

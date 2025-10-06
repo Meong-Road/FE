@@ -27,6 +27,7 @@ export function useSignupMutation() {
       // }
 
       console.log("회원가입 성공", data);
+      console.log("유저 데이터", data.result.user);
     },
     onError: (error: unknown) => {
       toast.error("회원가입 실패");

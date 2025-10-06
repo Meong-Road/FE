@@ -47,13 +47,21 @@ export default function SignupForm() {
           render={({ field }) => (
             <Form.Item>
               <Form.Label>이메일</Form.Label>
-              <Form.Control>
-                <Form.Input
-                  type="email"
-                  placeholder="이메일을 입력하세요."
-                  {...field}
+              <div className="flex flex-1 items-center justify-between gap-2">
+                <Form.Control>
+                  <Form.Input
+                    type="email"
+                    placeholder="이메일을 입력하세요."
+                    className="min-w-0 flex-1"
+                    {...field}
+                  />
+                </Form.Control>
+                <Form.EmailDuplicateCheckButton
+                  form={form}
+                  field="email"
+                  errorMessage="이미 사용 중인 이메일입니다."
                 />
-              </Form.Control>
+              </div>
               <Form.Message />
             </Form.Item>
           )}

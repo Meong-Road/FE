@@ -3,31 +3,31 @@
 import { useState } from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
-import { customFetch } from "../_api/customFetch";
+import { customFetch } from "@/app/(auth)/signup/_api/customFetch";
 
-interface UseEmailDuplicateCheckProps<T extends FieldValues> {
+interface UseNicknameDuplicateCheckProps<T extends FieldValues> {
   form: UseFormReturn<T>;
   field: Path<T>;
   errorMessage?: string;
 }
 
-interface EmailCheckResponse {
-  result?: { exists?: boolean };
+interface NicknameCheckResponse {
+  result?: boolean;
 }
 
-export function useEmailDuplicateCheck<T extends FieldValues>({
+export function useNicknameDuplicateCheck<T extends FieldValues>({
   form,
   field,
-  errorMessage = "이미 사용 중인 이메일입니다.",
-}: UseEmailDuplicateCheckProps<T>) {
+  errorMessage = "이미 사용 중인 닉네임입니다.",
+}: UseNicknameDuplicateCheckProps<T>) {
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [lastChecked, setLastChecked] = useState("");
 
-  const checkEmailDuplicate = async () => {
-    const email = String(form.getValues(field) ?? "").trim();
+  const checkNicknameDuplicate = async () => {
+    const nickname = String(form.getValues(field) ?? "").trim();
 
-    if (!email) {
+    if (!nickname) {
       return;
     }
 
@@ -39,12 +39,13 @@ export function useEmailDuplicateCheck<T extends FieldValues>({
     setIsChecking(true);
 
     try {
-      const response = await customFetch.get<EmailCheckResponse>(
-        `/meong-road/user/exists?email=${encodeURIComponent(email)}`,
+      const response = await customFetch.post<NicknameCheckResponse>(
+        "/meong-road/user/nickname/check",
+        { body: JSON.stringify({ nickName: nickname }) },
       );
-      const isDuplicate = Boolean(response?.result?.exists);
+      const isDuplicate = Boolean(response?.result);
 
-      setLastChecked(email);
+      setLastChecked(nickname);
 
       if (isDuplicate) {
         form.setError(field, { type: "manual", message: errorMessage });
@@ -54,10 +55,10 @@ export function useEmailDuplicateCheck<T extends FieldValues>({
         setIsAvailable(true);
       }
     } catch (error) {
-      console.error("이메일 중복검사 오류:", error);
+      console.error("닉네임 중복검사 오류:", error);
       form.setError(field, {
         type: "server",
-        message: "이메일 중복 확인에 실패했습니다.",
+        message: "닉네임 중복 확인에 실패했습니다.",
       });
       setIsAvailable(null);
     } finally {
@@ -75,7 +76,7 @@ export function useEmailDuplicateCheck<T extends FieldValues>({
     Boolean(fieldError);
 
   return {
-    checkEmailDuplicate,
+    checkNicknameDuplicate,
     isChecking,
     isButtonDisabled,
     isAvailable,

@@ -1,3 +1,5 @@
+import { EDayOfWeek } from "@/lib/types/date";
+
 import { GatheringCardInfoProps } from "./types";
 
 function TextWrapper({ children }: { children: React.ReactNode }) {
@@ -22,6 +24,7 @@ export function GatheringCardInfo({
   location,
   date,
   time,
+  days,
 }: GatheringCardInfoProps) {
   return (
     <div className="flex items-center gap-2.5">
@@ -29,16 +32,37 @@ export function GatheringCardInfo({
         <Title>위치</Title>
         <Content>{location}</Content>
       </TextWrapper>
-      <Bar />
-      <TextWrapper>
-        <Title>날짜</Title>
-        <Content>{date}</Content>
-      </TextWrapper>
-      <Bar />
-      <TextWrapper>
-        <Title>시간</Title>
-        <Content>{time}</Content>
-      </TextWrapper>
+      {date && (
+        <>
+          <Bar />
+          <TextWrapper>
+            <Title>날짜</Title>
+            <Content>{date}</Content>
+          </TextWrapper>
+        </>
+      )}
+      {days && (
+        <>
+          <Bar />
+          <TextWrapper>
+            <Title>요일</Title>
+            <Content>
+              {(JSON.parse(days) as (keyof typeof EDayOfWeek)[])
+                .map((d) => EDayOfWeek[d])
+                .join(", ")}
+            </Content>
+          </TextWrapper>
+        </>
+      )}
+      {time && (
+        <>
+          <Bar />
+          <TextWrapper>
+            <Title>시간</Title>
+            <Content>{time}</Content>
+          </TextWrapper>
+        </>
+      )}
     </div>
   );
 }

@@ -28,7 +28,3 @@ export const DAY_OF_WEEK = [
     name: "일",
   },
 ];
-
-export const DAY_OF_WEEK_MAP = Object.fromEntries(
-  DAY_OF_WEEK.map((day) => [day.key, day.name]),
-);

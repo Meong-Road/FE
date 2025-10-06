@@ -52,42 +52,42 @@ describe("dateTime", () => {
       jest.setSystemTime(new Date("2025-10-01T10:00:00"));
     });
 
-    it("이미 마감된 경우 '마감 완료'와 'secondary'를 반환해야 한다", () => {
+    it("이미 마감된 경우 '모집 마감'와 'secondary'를 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T09:00:00"; // 1시간 전
       const result = getRegistrationDeadlineInfo(registrationEnd);
 
       expect(result).toEqual({
-        text: "마감 완료",
+        text: "모집 마감",
         variant: "secondary",
       });
     });
 
-    it("마감까지 남은 시간이 1시간 이내인 경우, 'n분 뒤 마감'과 'primary'를 반환해야 한다", () => {
+    it("마감까지 남은 시간이 1시간 이내인 경우, 'n분 후 마감'과 'primary'를 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T10:30:00"; // 30분 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
 
       expect(result).toEqual({
-        text: "30분 뒤 마감",
+        text: "30분 후 마감",
         variant: "primary",
       });
     });
 
-    it("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 뒤 마감'과 'primary'를 반환해야 한다", () => {
+    it("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 후 마감'과 'primary'를 반환해야 한다", () => {
       const registrationEnd = "2025-10-02T09:00:00"; // 23시간 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
 
       expect(result).toEqual({
-        text: "23시간 뒤 마감",
+        text: "23시간 후 마감",
         variant: "primary",
       });
     });
 
-    it("마감까지 남은 시간이 24시간 이상인 경우, '마감 n일 전'과 'secondary'를 반환해야 한다", () => {
+    it("마감까지 남은 시간이 24시간 이상인 경우, 'n일 후 마감'과 'secondary'를 반환해야 한다", () => {
       const registrationEnd = "2025-10-04T10:00:00"; // 3일 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
 
       expect(result).toEqual({
-        text: "마감 3일 전",
+        text: "3일 후 마감",
         variant: "secondary",
       });
     });

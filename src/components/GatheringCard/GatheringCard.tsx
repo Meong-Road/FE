@@ -1,7 +1,10 @@
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
+
 import { GatheringCardAttendanceBadge } from "./GatheringCardAttendanceBadge";
 import { GatheringCardConfirmedBadge } from "./GatheringCardConfirmedBadge";
+import GatheringCardDeadlineBadge from "./GatheringCardDeadlineBadge";
 import { GatheringCardImage } from "./GatheringCardImage";
 import { GatheringCardInfo } from "./GatheringCardInfo";
 import { GatheringCardJoinBtn } from "./GatheringCardJoinBtn";
@@ -10,12 +13,15 @@ import { GatheringCardPeople } from "./GatheringCardPeople";
 import { GatheringCardTitle } from "./GatheringCardTitle";
 import { type GatheringCardProps } from "./types";
 
-export function GatheringCard({ children, bgColor }: GatheringCardProps) {
+export function GatheringCard({ children, bgColor, id }: GatheringCardProps) {
   return (
     <li
-      className={`rounded-4xl ${bgColor === "white" ? "bg-white" : "bg-gradient-opacity"} relative`}
+      className={cn(
+        "relative rounded-4xl",
+        bgColor === "white" ? "bg-white" : "bg-gradient-opacity",
+      )}
     >
-      <Link href="/" className="block h-full w-full p-6">
+      <Link href={`/gatherings/${id}`} className="block h-full w-full p-6">
         {children}
       </Link>
     </li>
@@ -25,6 +31,7 @@ export function GatheringCard({ children, bgColor }: GatheringCardProps) {
 GatheringCard.Image = GatheringCardImage;
 GatheringCard.AttendanceBadge = GatheringCardAttendanceBadge;
 GatheringCard.ConfirmedBadge = GatheringCardConfirmedBadge;
+GatheringCard.DeadlineBadge = GatheringCardDeadlineBadge;
 GatheringCard.Title = GatheringCardTitle;
 GatheringCard.People = GatheringCardPeople;
 GatheringCard.Info = GatheringCardInfo;

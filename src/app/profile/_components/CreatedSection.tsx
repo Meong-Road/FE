@@ -1,4 +1,4 @@
-import { GatheringCard } from "./GatheringCard/GatheringCard";
+import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
 
 export default function CreatedSection() {
   return (

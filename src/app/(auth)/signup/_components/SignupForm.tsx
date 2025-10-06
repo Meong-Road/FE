@@ -42,37 +42,27 @@ export default function SignupForm() {
         <Form.Field
           control={form.control}
           name="email"
-          render={({ field }) => {
-            const emailCheckPassed = form.watch("emailCheckPassed");
-            const hasError = form.formState.errors.email;
-
-            return (
-              <Form.Item>
-                <Form.Label>이메일</Form.Label>
-                <div className="flex w-full items-center gap-2">
-                  <Form.Control className="min-w-0 flex-1">
-                    <Form.Input
-                      type="email"
-                      placeholder="이메일을 입력하세요."
-                      {...field}
-                    />
-                  </Form.Control>
-                  <Form.DuplicateCheckButton
-                    form={form}
-                    field="email"
+          render={({ field }) => (
+            <Form.Item>
+              <Form.Label>이메일</Form.Label>
+              <div className="flex w-full items-center gap-2">
+                <Form.Control className="min-w-0 flex-1">
+                  <Form.Input
                     type="email"
-                    checkPassedField="emailCheckPassed"
+                    placeholder="이메일을 입력하세요."
+                    {...field}
                   />
-                </div>
-                {emailCheckPassed && !hasError && (
-                  <p className="pl-1 text-xs text-green-600">
-                    사용 가능한 이메일입니다
-                  </p>
-                )}
-                <Form.Message />
-              </Form.Item>
-            );
-          }}
+                </Form.Control>
+                <Form.DuplicateCheckButton
+                  form={form}
+                  field="email"
+                  type="email"
+                  checkPassedField="emailCheckPassed"
+                />
+              </div>
+              <Form.Message />
+            </Form.Item>
+          )}
         />
 
         {/* 비밀번호 */}

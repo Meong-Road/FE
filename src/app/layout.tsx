@@ -29,7 +29,10 @@ export default function RootLayout({
         className={`${pretendardVariable.className} bg-background antialiased`}
       >
         <QueryProvider>
-          <MSWProvider>{children}</MSWProvider>
+          <MSWProvider>
+            {children}
+            <div id="modal-root"></div>
+          </MSWProvider>
         </QueryProvider>
       </body>
     </html>

@@ -1,10 +1,8 @@
 "use client";
 
-import * as React from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { useDuplicateCheck } from "@/hooks/duplicateCheck/useDuplicateCheck";
 import { cn } from "@/lib/utils";
 
@@ -35,29 +33,53 @@ export function DuplicateCheckButton<T extends FieldValues>({
       errorMessage,
     });
 
-  const hasError = form.formState.errors[field];
+  const hasError = !!form.formState.errors[field];
+  const isSuccess = isAvailable === true && !hasError;
 
   return (
-    <Button
+    <button
       type="button"
-      variant="ghost"
       onClick={checkDuplicate}
       disabled={isButtonDisabled}
       className={cn(
-        "bg-background h-10 w-16 shrink-0 text-xs whitespace-nowrap shadow-none select-none",
-        isAvailable &&
-          !hasError &&
-          "text-green-800 hover:bg-green-50 hover:text-green-600",
+        // 기본 레이아웃
+        "h-10 shrink-0 rounded-md border",
+        "w-[70px] px-2.5 sm:w-20",
+        "text-xs font-medium sm:text-sm",
+        "transition-all duration-200",
+        "focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none",
+
+        // 상태별 스타일 (enabled일 때만 hover 적용)
+        {
+          // 성공 상태
+          "border-primary bg-primary text-primary-foreground": isSuccess,
+          "hover:bg-primary/90": isSuccess && !isButtonDisabled,
+
+          // 기본 상태
+          "bg-primary text-background": !isSuccess,
+          "hover:bg-primary hover:text-background":
+            !isSuccess && !isButtonDisabled,
+        },
+
+        // Disabled 상태 (호버 효과 자동으로 무시됨)
+        "disabled:cursor-not-allowed disabled:opacity-50",
+
         className,
       )}
     >
       {isChecking ? (
-        <Loader2 className="h-3 w-3 animate-spin" />
-      ) : isAvailable && !hasError ? (
-        "사용가능"
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : isSuccess ? (
+        <div className="flex items-center justify-center gap-1">
+          <Check className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">완료</span>
+        </div>
       ) : (
-        "중복확인"
+        <>
+          <span className="hidden sm:inline">중복 확인</span>
+          <span className="inline sm:hidden">확인</span>
+        </>
       )}
-    </Button>
+    </button>
   );
 }

@@ -1,4 +1,4 @@
-import { GatheringCard } from "./GatheringCard/GatheringCard";
+import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
 
 export default function JoinedSection() {
   return (
@@ -21,6 +21,8 @@ export default function JoinedSection() {
               />
             </div>
           </div>
+          <GatheringCard.LikeBtn />
+          <GatheringCard.JoinBtn />
         </GatheringCard>
       </ul>
     </section>

@@ -38,7 +38,7 @@ export function Input({ className, type, ...props }: Props) {
   const [isShowPassword, setIsShowPassword] = React.useState(false);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <BaseInput
         className={cn(type === "password" && "pr-10", className)}
         {...props}

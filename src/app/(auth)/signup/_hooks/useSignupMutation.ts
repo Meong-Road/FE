@@ -14,12 +14,7 @@ export function useSignupMutation() {
   return useMutation({
     mutationFn: (payload: SignupFormSchema) => {
       // confirmPassword와 체크 필드 제외하고 전송
-      const {
-        confirmPassword,
-        emailCheckPassed,
-        nicknameCheckPassed,
-        ...signupData
-      } = payload;
+      const { confirmPassword, emailCheckPassed, ...signupData } = payload;
       return authApi.signup(signupData);
     },
     onSuccess: (data) => {

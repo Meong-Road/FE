@@ -14,6 +14,7 @@ interface DuplicateCheckButtonProps<T extends FieldValues> {
   type: "email" | "nickname";
   checkPassedField?: Path<T>;
   errorMessage?: string;
+  successMessage?: string;
   className?: string;
 }
 
@@ -23,31 +24,40 @@ export function DuplicateCheckButton<T extends FieldValues>({
   type,
   checkPassedField,
   errorMessage,
+  successMessage,
   className,
 }: DuplicateCheckButtonProps<T>) {
-  const { checkDuplicate, isChecking, isButtonDisabled } = useDuplicateCheck<T>(
-    type,
-    {
+  const { checkDuplicate, isChecking, isButtonDisabled, isAvailable } =
+    useDuplicateCheck<T>(type, {
       form,
       field,
       checkPassedField,
       errorMessage,
-    },
-  );
+    });
+
+  const hasError = form.formState.errors[field];
 
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="ghost"
       onClick={checkDuplicate}
       disabled={isButtonDisabled}
       className={cn(
-        "h-10 shrink-0 whitespace-nowrap shadow-none select-none",
-        type === "email" ? "w-20" : "w-15",
+        "bg-background h-10 w-16 shrink-0 text-xs whitespace-nowrap shadow-none select-none",
+        isAvailable &&
+          !hasError &&
+          "text-green-800 hover:bg-green-50 hover:text-green-600",
         className,
       )}
     >
-      {isChecking ? <Loader2 className="h-3 w-3 animate-spin" /> : "중복확인"}
+      {isChecking ? (
+        <Loader2 className="h-3 w-3 animate-spin" />
+      ) : isAvailable && !hasError ? (
+        "사용가능"
+      ) : (
+        "중복확인"
+      )}
     </Button>
   );
 }

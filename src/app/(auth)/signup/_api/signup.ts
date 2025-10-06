@@ -4,7 +4,6 @@ interface PostSignupReq {
   name: string;
   email: string;
   password: string;
-  nickName: string;
 }
 
 interface User {

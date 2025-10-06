@@ -22,13 +22,15 @@ export function useDuplicateCheck<T extends FieldValues>(
 
   // 필드 값이 변경되면 중복확인 통과 상태를 초기화
   useEffect(() => {
-    if (currentFieldValue !== lastChecked && checkPassedField) {
-      const currentPassed = form.getValues(checkPassedField);
-      if (currentPassed) {
-        form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
-          shouldValidate: false,
-        });
-        setIsAvailable(null);
+    if (currentFieldValue !== lastChecked) {
+      setIsAvailable(null);
+      if (checkPassedField) {
+        const currentPassed = form.getValues(checkPassedField);
+        if (currentPassed) {
+          form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
+            shouldValidate: true,
+          });
+        }
       }
     }
   }, [currentFieldValue, lastChecked, checkPassedField, form]);
@@ -57,20 +59,20 @@ export function useDuplicateCheck<T extends FieldValues>(
 
       if (isDuplicate) {
         form.setError(field, { type: "manual", message: defaultErrorMessage });
+        setIsAvailable(false);
         if (checkPassedField) {
           form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
             shouldValidate: true,
           });
         }
-        setIsAvailable(false);
       } else {
         form.clearErrors(field);
+        setIsAvailable(true);
         if (checkPassedField) {
           form.setValue(checkPassedField, true as PathValue<T, Path<T>>, {
             shouldValidate: true,
           });
         }
-        setIsAvailable(true);
       }
     } catch (error) {
       const errorType = type === "email" ? "이메일" : "닉네임";
@@ -81,12 +83,12 @@ export function useDuplicateCheck<T extends FieldValues>(
         message: `${errorType} 중복 확인에 실패했습니다.`,
       });
 
+      setIsAvailable(null);
       if (checkPassedField) {
         form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
           shouldValidate: true,
         });
       }
-      setIsAvailable(null);
     } finally {
       setIsChecking(false);
     }
@@ -104,6 +106,5 @@ export function useDuplicateCheck<T extends FieldValues>(
     isChecking,
     isButtonDisabled,
     isAvailable,
-    lastChecked,
   };
 }

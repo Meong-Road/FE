@@ -43,26 +43,20 @@ export function DuplicateCheckButton<T extends FieldValues>({
       disabled={isButtonDisabled}
       className={cn(
         // 기본 레이아웃
-        "h-10 shrink-0 rounded-md border",
-        "w-[70px] px-2.5 sm:w-20",
-        "text-xs font-medium sm:text-sm",
+        "h-10 shrink-0 rounded-md",
+        "flex w-18 items-center justify-center",
+        "text-xs font-medium",
         "transition-all duration-200",
         "focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none",
 
-        // 상태별 스타일 (enabled일 때만 hover 적용)
-        {
-          // 성공 상태
-          "border-primary bg-primary text-primary-foreground": isSuccess,
-          "hover:bg-primary/90": isSuccess && !isButtonDisabled,
+        // Primary filled 스타일 (모든 상태 동일)
+        "border-primary bg-primary text-primary-foreground border",
 
-          // 기본 상태
-          "bg-primary text-background": !isSuccess,
-          "hover:bg-primary hover:text-background":
-            !isSuccess && !isButtonDisabled,
-        },
+        // Hover (enabled일 때만)
+        !isButtonDisabled && "hover:bg-primary/90",
 
-        // Disabled 상태 (호버 효과 자동으로 무시됨)
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        // Disabled 상태
+        "disabled:opacity-60",
 
         className,
       )}
@@ -72,12 +66,11 @@ export function DuplicateCheckButton<T extends FieldValues>({
       ) : isSuccess ? (
         <div className="flex items-center justify-center gap-1">
           <Check className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">완료</span>
+          <span>완료</span>
         </div>
       ) : (
         <>
-          <span className="hidden sm:inline">중복 확인</span>
-          <span className="inline sm:hidden">확인</span>
+          <span>중복확인</span>
         </>
       )}
     </button>

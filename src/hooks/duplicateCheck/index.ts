@@ -1,8 +1,8 @@
 export { checkEmailDuplicate, checkNicknameDuplicate } from "./api";
 export type {
   DuplicateCheckType,
-  EmailCheckResponse,
-  NicknameCheckResponse,
+  GetEmailDuplicateCheckRes,
+  PostNicknameDuplicateCheckRes,
   UseDuplicateCheckProps,
 } from "./types";
 export { useDuplicateCheck } from "./useDuplicateCheck";

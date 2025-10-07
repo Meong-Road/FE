@@ -7,11 +7,11 @@ export interface UseDuplicateCheckProps<T extends FieldValues> {
   errorMessage?: string;
 }
 
-export interface EmailCheckResponse {
+export interface GetEmailDuplicateCheckRes {
   result?: { exists?: boolean };
 }
 
-export interface NicknameCheckResponse {
+export interface PostNicknameDuplicateCheckRes {
   result?: boolean;
 }
 

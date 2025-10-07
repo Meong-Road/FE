@@ -122,6 +122,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                 <Form.Control>
                   <Modal.DateSelect
                     name="birthday"
+                    htmlFor="birthday"
                     value={field.value}
                     onChange={field.onChange}
                   />

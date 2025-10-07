@@ -4,6 +4,7 @@ import z from "zod";
 
 const PetInfoFormSchema = z.object({
   photo: z.instanceof(File).optional(),
+  existingPhotoUrl: z.string().optional(),
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   neuter: z.enum(["did", "didnot"]).optional(),
@@ -24,6 +25,7 @@ export type PetInfoFormSchema = z.infer<typeof PetInfoFormSchema>;
 export function usePetInfoForm(initialValues?: Partial<PetInfoFormSchema>) {
   const defaultValues = {
     photo: undefined,
+    existingPhotoUrl: undefined,
     name: "",
     gender: "male" as const,
     neuter: "did" as const,

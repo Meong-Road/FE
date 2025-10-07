@@ -50,6 +50,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                   <Form.ImageUpload
                     onChange={onChange}
                     value={value}
+                    existingImageUrl={undefined}
                     {...field}
                   >
                     <Dog />

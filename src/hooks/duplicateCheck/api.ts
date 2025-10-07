@@ -1,9 +1,12 @@
 import { customFetch } from "@/app/(auth)/signup/_api/customFetch";
 
-import type { EmailCheckResponse, NicknameCheckResponse } from "./types";
+import type {
+  GetEmailDuplicateCheckRes,
+  PostNicknameDuplicateCheckRes,
+} from "./types";
 
 export async function checkEmailDuplicate(email: string): Promise<boolean> {
-  const response = await customFetch.get<EmailCheckResponse>(
+  const response = await customFetch.get<GetEmailDuplicateCheckRes>(
     `/meong-road/user/exists?email=${encodeURIComponent(email)}`,
   );
   return Boolean(response?.result?.exists);
@@ -12,7 +15,7 @@ export async function checkEmailDuplicate(email: string): Promise<boolean> {
 export async function checkNicknameDuplicate(
   nickname: string,
 ): Promise<boolean> {
-  const response = await customFetch.post<NicknameCheckResponse>(
+  const response = await customFetch.post<PostNicknameDuplicateCheckRes>(
     "/meong-road/user/nickname/check",
     { body: JSON.stringify({ nickName: nickname }) },
   );

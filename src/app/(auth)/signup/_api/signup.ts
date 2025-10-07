@@ -6,7 +6,7 @@ interface PostSignupReq {
   password: string;
 }
 
-interface User {
+interface UserType {
   id: number;
   email: string;
   name: string;
@@ -23,7 +23,7 @@ interface PostSignupRes {
   message: string;
   result: {
     token: string;
-    user: User;
+    user: UserType;
     message: string;
   };
 }

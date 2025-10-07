@@ -28,7 +28,7 @@ export default function SignupForm() {
               <Form.Label>이름</Form.Label>
               <Form.Control>
                 <Form.Input
-                  placeholder="이름을 입력하세요."
+                  placeholder="이름을 입력해주세요"
                   type="text"
                   {...field}
                 />
@@ -49,7 +49,7 @@ export default function SignupForm() {
                 <Form.Control className="min-w-0 flex-1">
                   <Form.Input
                     type="email"
-                    placeholder="이메일을 입력하세요."
+                    placeholder="이메일을 입력해주세요"
                     {...field}
                   />
                 </Form.Control>
@@ -75,7 +75,7 @@ export default function SignupForm() {
               <Form.Control>
                 <Form.Input
                   type="password"
-                  placeholder="비밀번호를 입력하세요."
+                  placeholder="비밀번호를 입력해주세요"
                   autoComplete="new-password"
                   {...field}
                 />
@@ -95,7 +95,7 @@ export default function SignupForm() {
               <Form.Control>
                 <Form.Input
                   type="password"
-                  placeholder="비밀번호를 입력하세요."
+                  placeholder="비밀번호를 한번 더 입력해주세요"
                   autoComplete="new-password"
                   {...field}
                 />

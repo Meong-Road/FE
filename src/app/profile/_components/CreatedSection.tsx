@@ -1,10 +1,14 @@
 import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
 
 export default function CreatedSection() {
+  const gathering = {
+    id: 1,
+  };
+
   return (
     <section>
       <ul>
-        <GatheringCard bgColor="gradient">
+        <GatheringCard bgColor="gradient" id={gathering.id}>
           <div className="flex items-center gap-6">
             <GatheringCard.Image />
             <div>

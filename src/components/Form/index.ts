@@ -1,6 +1,7 @@
 import { Form as BaseForm } from "./Form";
 import { Control } from "./FormControl";
 import { Description } from "./FormDescription";
+import { DuplicateCheckButton } from "./FormDuplicateCheckButton";
 import { Field } from "./FormField";
 import { ImageUpload } from "./FormImageUpload";
 import { Input } from "./FormInput";
@@ -31,6 +32,7 @@ export const Form = Object.assign(BaseForm, {
   Select,
   ImageUpload,
   Radio,
+  DuplicateCheckButton,
 });
 
 export * from "./types";

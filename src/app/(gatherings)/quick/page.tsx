@@ -51,11 +51,9 @@ export default function QuickGatheringListPage() {
         </div>
 
         {/* 모임 목록 */}
-        <ul className="grid grid-cols-2 gap-4">
+        <ul className="grid grid-cols-1 gap-6">
           {gatherings.map((gathering) => (
-            <li key={gathering.id}>
-              <QuickGatheringCard gathering={gathering} />
-            </li>
+            <QuickGatheringCard key={gathering.id} gathering={gathering} />
           ))}
         </ul>
         {isFetchingNextPage && <div>Loading...</div>}

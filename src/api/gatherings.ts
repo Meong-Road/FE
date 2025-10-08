@@ -1,9 +1,14 @@
 import {
   EGatheringType,
+  GatheringType,
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gathering";
-import { PaginationRequest, PaginationResponse } from "@/mocks/data/common";
+import {
+  PaginationRequest,
+  PaginationResponse,
+  Response,
+} from "@/mocks/data/common";
 
 export async function getRegularGatherings({
   page,
@@ -26,5 +31,28 @@ export async function getQuickGatherings({
   const response = await fetch(
     `/api/gatherings?type=${EGatheringType.QUICK}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
   );
+  return response.json();
+}
+
+export async function getIsLiked(
+  id: GatheringType["id"],
+): Promise<Response<{ isLiked: boolean }>> {
+  const response = await fetch(`/api/gatherings/${id}/bookmarks`);
+  return response.json();
+}
+
+export async function like(id: GatheringType["id"]): Promise<Response<void>> {
+  const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
+    method: "POST",
+  });
+  return response.json();
+}
+
+export async function cancelLike(
+  id: GatheringType["id"],
+): Promise<Response<void>> {
+  const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
+    method: "DELETE",
+  });
   return response.json();
 }

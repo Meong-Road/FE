@@ -33,7 +33,7 @@ export function getRegistrationDeadlineInfo(registrationEnd: string): {
   // 이미 마감된 경우
   if (diffMs <= 0)
     return {
-      text: "마감 완료",
+      text: "모집 마감",
       variant: "secondary",
     };
 
@@ -41,7 +41,7 @@ export function getRegistrationDeadlineInfo(registrationEnd: string): {
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
   if (diffMinutes < 60)
     return {
-      text: `${diffMinutes}분 뒤 마감`,
+      text: `${diffMinutes}분 후 마감`,
       variant: "primary",
     };
 
@@ -49,14 +49,14 @@ export function getRegistrationDeadlineInfo(registrationEnd: string): {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   if (diffHours < 24)
     return {
-      text: `${diffHours}시간 뒤 마감`,
+      text: `${diffHours}시간 후 마감`,
       variant: "primary",
     };
 
   // 그 이상 - n일 전 표시
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   return {
-    text: `마감 ${diffDays}일 전`,
+    text: `${diffDays}일 후 마감`,
     variant: "secondary",
   };
 }

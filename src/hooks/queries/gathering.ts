@@ -1,6 +1,12 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 
-import { getQuickGatherings, getRegularGatherings } from "@/api/gatherings";
+import {
+  cancelLike,
+  getIsLiked,
+  getQuickGatherings,
+  getRegularGatherings,
+  like,
+} from "@/api/gatherings";
 import { EGatheringType, GatheringType } from "@/lib/types/gathering";
 
 export const GATHERING_QUERY_KEY = {
@@ -8,6 +14,7 @@ export const GATHERING_QUERY_KEY = {
     "gatherings",
     type,
   ],
+  IS_LIKED: ({ id }: { id: GatheringType["id"] }) => ["isLiked", id],
 };
 
 export const useGetInfiniteRegularGatherings = () => {
@@ -43,5 +50,44 @@ export const useGetInfiniteQuickGatherings = () => {
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.hasNext ? pageParam + 1 : undefined,
     select: (data) => data.pages.flatMap((page) => page.data),
+  });
+};
+
+export const useGetIsLiked = ({ id }: { id: GatheringType["id"] }) => {
+  return useQuery({
+    queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
+    queryFn: () => {
+      return getIsLiked(id);
+    },
+  });
+};
+
+export const useLike = ({
+  id,
+  onSuccess,
+}: {
+  id: GatheringType["id"];
+  onSuccess: () => void;
+}) => {
+  return useMutation({
+    mutationFn: () => {
+      return like(id);
+    },
+    onSuccess,
+  });
+};
+
+export const useCancelLike = ({
+  id,
+  onSuccess,
+}: {
+  id: GatheringType["id"];
+  onSuccess: () => void;
+}) => {
+  return useMutation({
+    mutationFn: () => {
+      return cancelLike(id);
+    },
+    onSuccess,
   });
 };

@@ -1,10 +1,11 @@
 import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
 
 export default function JoinedSection() {
+  const gathering = { id: 1 };
   return (
     <section>
       <ul>
-        <GatheringCard bgColor="white">
+        <GatheringCard bgColor="white" id={gathering.id}>
           <div className="flex items-center gap-6">
             <GatheringCard.Image />
             <div>
@@ -21,7 +22,7 @@ export default function JoinedSection() {
               />
             </div>
           </div>
-          <GatheringCard.LikeBtn />
+          <GatheringCard.LikeBtn id={gathering.id} />
           <GatheringCard.JoinBtn />
         </GatheringCard>
       </ul>

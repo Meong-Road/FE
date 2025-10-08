@@ -1,12 +1,4 @@
-import Image from "next/image";
-import { UserRound } from "lucide-react";
-
-import DeadlineTag from "@/components/Gathering/DeadlineTag";
-import LikeButton from "@/components/Gathering/LikeButton";
-import ProgressBar from "@/components/ProgressBar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { EDayOfWeek } from "@/lib/types/date";
+import { GatheringCard } from "@/components/GatheringCard";
 import { RegularGatheringType } from "@/lib/types/gathering";
 
 interface RegularGatheringCardProps {
@@ -16,83 +8,42 @@ interface RegularGatheringCardProps {
 export default function RegularGatheringCard({
   gathering,
 }: RegularGatheringCardProps) {
-  const handleParticipateButtonClick = () => {
-    // TODO
-    console.log("참여하기");
-  };
-
   return (
-    <Card className="flex flex-row gap-6 p-4">
-      <div className="relative aspect-square w-full max-w-40 shrink-0">
+    <GatheringCard bgColor="white" id={gathering.id}>
+      <div className="flex h-full flex-row gap-6">
         {gathering.image && (
-          <Image
-            src={gathering.image}
-            className="rounded-3xl bg-slate-200 object-cover"
-            alt={gathering.name}
-            fill
+          <GatheringCard.Image
+          // src={gathering.image}
+          // alt={gathering.name}
           />
         )}
-      </div>
-
-      <div className="flex w-full flex-col gap-10 py-2">
-        <div className="flex w-full justify-between gap-2">
-          <div className="flex flex-col gap-2">
-            <div className="text-xl font-bold">{gathering.name}</div>
-            <div>
-              <div className="flex flex-wrap gap-x-6 gap-y-1">
-                <div className="flex gap-2">
-                  <div className="text-sm font-medium text-slate-400">위치</div>
-                  <div className="text-sm font-medium text-slate-500">
-                    {gathering.location}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <div className="text-sm font-medium text-slate-400">요일</div>
-                  <div className="text-sm font-medium text-slate-500">
-                    <span className="mr-1">
-                      {gathering.day.map((d) => EDayOfWeek[d]).join(", ")}
-                    </span>
-                    <span>{gathering.time}시</span>
-                  </div>
-                </div>
-              </div>
+        <div className="flex h-full flex-col justify-between gap-y-11 py-2">
+          <div className="flex flex-col gap-y-4">
+            <div className="flex flex-row justify-start gap-x-2">
+              <GatheringCard.DeadlineBadge
+                registrationEnd={gathering.registrationEnd}
+              />
+              {gathering.participantCount >= 5 && (
+                <GatheringCard.ConfirmedBadge />
+              )}
             </div>
+            <GatheringCard.Title>{gathering.name}</GatheringCard.Title>
           </div>
-          <LikeButton />
-        </div>
-
-        <div className="flex items-end justify-between gap-10">
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-wrap gap-2">
-              <DeadlineTag registrationEnd={gathering.registrationEnd} />
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex flex-grow items-center gap-2">
-                <UserRound className="size-5 shrink-0 fill-slate-500 stroke-transparent" />
-                <ProgressBar
-                  percentage={Math.ceil(
-                    (gathering.participantCount / gathering.capacity) * 100,
-                  )}
-                />
-              </div>
-              <div className="text-sm text-slate-500">
-                <span className="text-primary">
-                  {gathering.participantCount}
-                </span>
-                /{gathering.capacity}
-              </div>
-            </div>
+          <div>
+            <GatheringCard.People
+              people={gathering.participantCount}
+              limit={gathering.capacity}
+            />
+            <GatheringCard.Info
+              location={gathering.location}
+              time={`${gathering.time}:00`}
+              days={gathering.day}
+            />
           </div>
-
-          <Button
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary/10 hover:text-primary cursor-pointer"
-            onClick={handleParticipateButtonClick}
-          >
-            참여하기
-          </Button>
         </div>
       </div>
-    </Card>
+      <GatheringCard.LikeBtn id={gathering.id} />
+      <GatheringCard.JoinBtn />
+    </GatheringCard>
   );
 }

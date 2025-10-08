@@ -1,5 +1,3 @@
-import { EDayOfWeek } from "./date";
-
 export interface CommonGatheringType {
   id: number;
   name: string;
@@ -27,7 +25,7 @@ export interface QuickGatheringType extends CommonGatheringType {
 
 export interface RegularGatheringType extends CommonGatheringType {
   type: EGatheringType.REGULAR;
-  day: (keyof typeof EDayOfWeek)[];
+  day: string;
   time: number;
 }
 

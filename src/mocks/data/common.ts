@@ -10,6 +10,25 @@ export const PAGINATION_DATA = <T>(
   };
 };
 
+export type Response<T> = SuccessResponse<T> | ErrorResponse;
+
+interface SuccessResponse<T> {
+  success: true;
+  code: number;
+  message: string;
+  result: T;
+  errorCode: null;
+}
+
+interface ErrorResponse {
+  success: false;
+  code: null;
+  message: string;
+  result: null;
+  errorCode: string;
+}
+
+// ! 변경 필요
 export interface PaginationResponse<T> {
   data: T[];
   totalPages: number;

@@ -170,7 +170,7 @@ export const REGULAR_GATHERINGS = [
     isParticipating: true,
     canceledAt: null,
     hostId: 201,
-    day: ["SAT"],
+    day: '["SAT"]',
     time: 9,
   },
   {
@@ -186,7 +186,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: true,
     isParticipating: false,
     canceledAt: null,
-    day: ["TUE", "THU"],
+    day: '["TUE", "THU"]',
     time: 19,
   },
   {
@@ -203,7 +203,7 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: null,
     hostId: 202,
-    day: ["SUN"],
+    day: '["SUN"]',
     time: 16,
   },
   {
@@ -219,7 +219,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: true,
     isParticipating: true,
     canceledAt: null,
-    day: ["FRI", "SAT"],
+    day: '["FRI", "SAT"]',
     time: 18,
   },
   {
@@ -235,7 +235,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,
-    day: ["MON", "WED", "FRI"],
+    day: '["MON", "WED", "FRI"]',
     time: 7,
   },
   {
@@ -252,7 +252,7 @@ export const REGULAR_GATHERINGS = [
     isParticipating: true,
     canceledAt: null,
     hostId: 203,
-    day: ["MON", "TUE", "WED", "THU", "FRI"],
+    day: '["MON", "TUE", "WED", "THU", "FRI"]',
     time: 20,
   },
   {
@@ -268,7 +268,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,
-    day: ["SUN"],
+    day: '["SUN"]',
     time: 14,
   },
   {
@@ -284,7 +284,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: true,
     canceledAt: null,
-    day: ["MON"],
+    day: '["MON"]',
     time: 6,
   },
   {
@@ -300,7 +300,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: true,
     isParticipating: false,
     canceledAt: null,
-    day: ["SAT", "SUN"],
+    day: '["SAT", "SUN"]',
     time: 10,
   },
   {
@@ -316,7 +316,10 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: false,
     canceledAt: new Date("2025-09-25T12:00:00"),
-    day: ["WED"],
+    day: '["WED"]',
     time: 18,
   },
 ];
+
+// 찜하기 상태 관리
+export const isLikedSet = new Set<string>();

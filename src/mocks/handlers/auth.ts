@@ -61,7 +61,8 @@ export const authHandlers = [
     });
   }),
 
-  // 로그인 API
+  //================= 로그인 ================================
+
   http.post(`${BASE_URL}/meong-road/auth/login`, async ({ request }) => {
     const body = (await request.json()) as {
       email: string;
@@ -111,7 +112,7 @@ export const authHandlers = [
       refreshToken: string;
     };
 
-    // 실패 케이스
+    // 🚩 401: 비밀번호 불일치
     if (!body.refreshToken || body.refreshToken === "invalid") {
       return HttpResponse.json(
         {

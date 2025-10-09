@@ -1,32 +1,31 @@
 import React from "react";
 
-import { days, months, years } from "../../lib/constants/brtihdayDate";
-import { Select } from "../Form/FormSelect";
+import { years } from "../../lib/constants/brtihdayDate";
+import { Form } from "../Form";
 
 interface ModalDateSelectProps {
   name: string;
+  htmlFor?: string;
+  value?: number;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export function ModalDateSelect({ name }: ModalDateSelectProps) {
+export function ModalDateSelect({
+  name,
+  htmlFor,
+  value,
+  onChange,
+}: ModalDateSelectProps) {
   return (
     <div className="w-full">
-      <div className="flex w-full gap-2.5">
-        <Select
-          name={`${name}-year`}
-          placeholder="년"
+      <div className="flex w-full flex-col">
+        <Form.Select
+          id={htmlFor}
+          name={name}
+          placeholder="연도"
           options={years}
-          className="bg-accent flex-1 rounded-xl px-1 py-2"
-        />
-        <Select
-          name={`${name}-year`}
-          placeholder="월"
-          options={months}
-          className="bg-accent flex-1 rounded-xl px-1 py-2"
-        />
-        <Select
-          name={`${name}-year`}
-          placeholder="일"
-          options={days}
+          value={value}
+          onChange={onChange}
           className="bg-accent flex-1 rounded-xl px-1 py-2"
         />
       </div>

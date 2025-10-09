@@ -7,6 +7,7 @@ interface ModalButtonProps {
   className: string;
   disabled?: boolean;
   type: "button" | "submit";
+  onClick?: () => void;
 }
 
 export default function Button({
@@ -14,9 +15,15 @@ export default function Button({
   className,
   disabled,
   type,
+  onClick,
 }: ModalButtonProps) {
   return (
-    <button type={type} disabled={disabled} className={cn(`${className}`)}>
+    <button
+      type={type}
+      disabled={disabled}
+      className={cn(`${className}`)}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

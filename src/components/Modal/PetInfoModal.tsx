@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useParams } from "next/navigation";
+
+import { postPetInfo, putPetInfo } from "@/api/pets";
+import { useModalStore } from "@/store/modalStore";
 
 import Dog from "../../assets/images/dog.svg";
 import Button from "../Button";
@@ -29,10 +33,31 @@ interface PetInfoModalProps {
 
 export default function PetInfoModal({ type }: PetInfoModalProps) {
   const form = usePetInfoForm();
-  const handleSubmit = (data: PetInfoFormSchema) => {
-    console.log(`form data : ${data}`);
-    // api 로직 추가
+  const [isLoading, setIsLoading] = useState(false);
+  const { closeModal } = useModalStore();
+
+  const { id } = useParams();
+
+  const handleSubmit = async (data: PetInfoFormSchema) => {
+    setIsLoading(true);
+
+    try {
+      if (type === "edit-pet") {
+        // 해당 반려동물 수정 버튼을 누르면 petId가 path에 뜬다고 가정
+        await putPetInfo(Number(id), data);
+        closeModal();
+      } else {
+        await postPetInfo(data);
+        // 성공 토스트가 있으면 좋을 듯
+        closeModal();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(true);
+    }
   };
+
   return (
     <>
       <Modal.Title
@@ -50,6 +75,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                   <Form.ImageUpload
                     onChange={onChange}
                     value={value}
+                    existingImageUrl={undefined}
                     {...field}
                   >
                     <Dog />
@@ -58,7 +84,6 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                 <Form.Label className="flex justify-center">
                   사진을 등록해주세요
                 </Form.Label>
-                <Form.Message />
               </Form.Item>
             )}
           />
@@ -75,6 +100,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                     {...field}
                   />
                 </Form.Control>
+                <Form.Message />
               </Form.Item>
             )}
           />
@@ -105,7 +131,7 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
                   <Form.Radio
                     label="gender"
                     options={NEUTER_OPTIONS}
-                    defaultChecked="did"
+                    // defaultChecked="did"
                     {...field}
                   />
                 </Form.Control>
@@ -119,8 +145,14 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
               <Form.Item>
                 <Form.Label required>생일</Form.Label>
                 <Form.Control>
-                  <Modal.DateSelect {...field} name="birthday" />
+                  <Modal.DateSelect
+                    name="birthday"
+                    htmlFor="birthday"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </Form.Control>
+                <Form.Message />
               </Form.Item>
             )}
           />
@@ -131,13 +163,21 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
               <Form.Item>
                 <Form.Label required>견종</Form.Label>
                 <Form.Control>
-                  <Modal.BreedSelect {...field} name="breed" htmlFor="breed" />
+                  <Modal.BreedSelect
+                    name="breed"
+                    htmlFor="breed"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </Form.Control>
+                <Form.Message />
               </Form.Item>
             )}
           />
           <Form.SubmitButton
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
+            isValid={form.formState.isValid}
+            disabled={isLoading}
           />
         </Form>
         {type === "first-login" && (

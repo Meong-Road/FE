@@ -4,7 +4,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { authApi } from "@/app/(auth)/signup/_api/signup";
+import { authApi } from "@/api/auth";
 
 import { SignupFormSchema } from "./useSignupForm";
 
@@ -26,6 +26,7 @@ export function useSignupMutation() {
       //   localStorage.setItem("accessToken", data.result.token);
       // }
 
+      // 테스트용 로그
       console.log("회원가입 성공", data);
       console.log("유저 데이터", data.result.user);
     },

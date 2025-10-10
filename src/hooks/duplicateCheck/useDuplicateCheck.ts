@@ -3,8 +3,14 @@
 import { useEffect, useState } from "react";
 import type { FieldValues, Path, PathValue } from "react-hook-form";
 
-import { checkEmailDuplicate, checkNicknameDuplicate } from "./api";
-import type { DuplicateCheckType, UseDuplicateCheckProps } from "./types";
+import {
+  checkEmailDuplicate,
+  checkNicknameDuplicate,
+} from "@/api/duplicateCheck";
+import type {
+  DuplicateCheckType,
+  UseDuplicateCheckProps,
+} from "@/lib/types/duplicateCheck";
 
 export function useDuplicateCheck<T extends FieldValues>(
   type: DuplicateCheckType,

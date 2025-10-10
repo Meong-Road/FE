@@ -2,6 +2,7 @@
 
 import GoogleIcon from "@/assets/icons/google-icon.svg";
 import KakaoIcon from "@/assets/icons/kakao-icon.svg";
+import NaverIcon from "@/assets/icons/naver-icon.svg";
 import { cn } from "@/lib/utils";
 
 function GoogleIconSvg({
@@ -22,6 +23,16 @@ function KakaoIconSvg({
   className?: string;
 }) {
   return <KakaoIcon width={width} height={width} className={className} />;
+}
+
+function NaverIconSvg({
+  width,
+  className,
+}: {
+  width: number;
+  className?: string;
+}) {
+  return <NaverIcon width={width} height={width} className={className} />;
 }
 
 export function SocialButtons({
@@ -73,6 +84,22 @@ export function SocialButtons({
           {...props}
         >
           <KakaoIconSvg width={28} className="md:h-8 md:w-8" />
+        </button>
+
+        <button
+          className={cn(
+            "flex items-center justify-center rounded-full transition-colors",
+            "h-14 w-14",
+            "overflow-hidden",
+            "border border-gray-200",
+            className,
+          )}
+          onClick={() => {
+            window.open("https://naver.com", "_blank");
+          }}
+          {...props}
+        >
+          <NaverIconSvg width={28} className="h-full w-full" />
         </button>
       </div>
     </>

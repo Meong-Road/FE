@@ -87,3 +87,51 @@ export function getTimeAgo(createdAt: string): string {
 
   return `${year}.${month}.${day}`;
 }
+
+/**
+ * 날짜를 "YYYY.MM.DD" 형식으로 포맷팅합니다.
+ * @param dateString - 날짜 문자열
+ * @returns "2024.01.25" 형태의 문자열
+ */
+export function formatDateShort(dateString: string): string {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+}
+
+/**
+ * 시간을 "HH:MM" 형식으로 포맷팅합니다.
+ * @param timeNumber - 시간 숫자 (예: 1730, 1800)
+ * @returns "17:30" 형태의 문자열
+ */
+// export function formatTime(timeNumber: number): string {
+//   const timeStr = String(timeNumber).padStart(4, "0");
+//   const hours = timeStr.slice(0, 2);
+//   const minutes = timeStr.slice(2, 4);
+//   return `${hours}:${minutes}`;
+// }
+
+/**
+ * 요일 배열을 한글 요일 문자열로 포맷팅합니다.
+ * @param daysString - JSON 형식의 요일 배열 문자열 (예: '["MON", "WED", "FRI"]')
+ * @returns "월, 수, 금" 형태의 문자열
+ */
+export function formatDays(daysString: string): string {
+  try {
+    const daysArray = JSON.parse(daysString) as string[];
+    const dayMap: Record<string, string> = {
+      MON: "월",
+      TUE: "화",
+      WED: "수",
+      THU: "목",
+      FRI: "금",
+      SAT: "토",
+      SUN: "일",
+    };
+    return daysArray.map((day) => dayMap[day]).join(", ");
+  } catch {
+    return "";
+  }
+}

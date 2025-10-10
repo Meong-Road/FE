@@ -37,7 +37,7 @@ export default function RegularGatheringCard({
             <GatheringCard.Info
               location={gathering.location}
               time={`${gathering.time}:00`}
-              days={gathering.day}
+              days={gathering.days}
             />
           </div>
         </div>

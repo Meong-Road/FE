@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FieldValues, Path, PathValue } from "react-hook-form";
 
 import {
@@ -20,41 +20,41 @@ export function useDuplicateCheck<T extends FieldValues>(
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [lastChecked, setLastChecked] = useState("");
 
+  const currentValue = (form.watch(field) as string)?.trim() ?? "";
+
   const defaultErrorMessage =
-    errorMessage ||
+    errorMessage ??
     `이미 사용 중인 ${type === "email" ? "이메일" : "닉네임"}입니다.`;
 
-  const currentFieldValue = form.watch(field) as string;
-
-  // 필드 값이 변경되면 중복확인 통과 상태를 초기화
-  useEffect(() => {
-    if (currentFieldValue !== lastChecked) {
-      setIsAvailable(null);
+  /** ✅ 공통 상태 초기화 함수 */
+  const resetCheckState = useCallback(
+    (available: boolean | null, passed: boolean) => {
+      setIsAvailable(available);
       if (checkPassedField) {
-        const currentPassed = form.getValues(checkPassedField);
-        if (currentPassed) {
-          form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
-            shouldValidate: true,
-          });
-        }
+        form.setValue(checkPassedField, passed as PathValue<T, Path<T>>, {
+          shouldValidate: true,
+        });
       }
-    }
-  }, [currentFieldValue, lastChecked, checkPassedField, form]);
+    },
+    [form, checkPassedField],
+  );
 
-  const checkDuplicate = async () => {
-    const value = String(form.getValues(field) ?? "").trim();
-
-    if (!value) {
-      return;
+  /** ✅ 필드 값 변경 시 중복확인 상태 초기화 */
+  useEffect(() => {
+    if (currentValue !== lastChecked) {
+      resetCheckState(null, false);
     }
+  }, [currentValue, lastChecked, resetCheckState]);
+
+  /** ✅ 중복 검사 실행 함수 */
+  const checkDuplicate = useCallback(async () => {
+    const value = currentValue;
+    if (!value) return;
 
     const isValid = await form.trigger(field);
-    if (!isValid) {
-      return;
-    }
+    if (!isValid) return;
 
     setIsChecking(true);
-
     try {
       const isDuplicate =
         type === "email"
@@ -65,47 +65,32 @@ export function useDuplicateCheck<T extends FieldValues>(
 
       if (isDuplicate) {
         form.setError(field, { type: "manual", message: defaultErrorMessage });
-        setIsAvailable(false);
-        if (checkPassedField) {
-          form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
-            shouldValidate: true,
-          });
-        }
+        resetCheckState(false, false);
       } else {
         form.clearErrors(field);
-        setIsAvailable(true);
-        if (checkPassedField) {
-          form.setValue(checkPassedField, true as PathValue<T, Path<T>>, {
-            shouldValidate: true,
-          });
-        }
+        resetCheckState(true, true);
       }
     } catch (error) {
-      const errorType = type === "email" ? "이메일" : "닉네임";
-      console.error(`${errorType} 중복검사 오류:`, error);
+      const label = type === "email" ? "이메일" : "닉네임";
+      console.error(`${label} 중복검사 실패:`, error);
 
       form.setError(field, {
         type: "server",
-        message: `${errorType} 중복 확인에 실패했습니다.`,
+        message: `${label} 중복 확인 중 오류가 발생했습니다.`,
       });
 
-      setIsAvailable(null);
-      if (checkPassedField) {
-        form.setValue(checkPassedField, false as PathValue<T, Path<T>>, {
-          shouldValidate: true,
-        });
-      }
+      resetCheckState(null, false);
     } finally {
       setIsChecking(false);
     }
-  };
+  }, [form, field, type, currentValue, defaultErrorMessage, resetCheckState]);
 
-  const fieldError = form.formState.errors[field];
-  const hasValue = Boolean(currentFieldValue?.trim());
-  const isSameAsLastChecked = String(currentFieldValue).trim() === lastChecked;
-
-  const isButtonDisabled =
-    isChecking || !hasValue || isSameAsLastChecked || Boolean(fieldError);
+  // 버튼 비활성화 조건 계산 함수
+  const isButtonDisabled = useMemo(() => {
+    const hasError = !!form.formState.errors[field];
+    const sameAsLast = currentValue === lastChecked;
+    return isChecking || !currentValue || sameAsLast || hasError;
+  }, [isChecking, currentValue, lastChecked, form.formState.errors, field]);
 
   return {
     checkDuplicate,

@@ -42,3 +42,10 @@ export interface PaginationRequest {
   sortBy: string;
   sortOrder: string;
 }
+
+// !
+export interface PaginationReq {
+  page: number;
+  size: number;
+  sort?: string[];
+}

@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { cn } from "@/lib/utils";
 
 import { GatheringCardAttendanceBadge } from "./GatheringCardAttendanceBadge";
@@ -13,17 +11,20 @@ import { GatheringCardPeople } from "./GatheringCardPeople";
 import { GatheringCardTitle } from "./GatheringCardTitle";
 import { type GatheringCardProps } from "./types";
 
-export function GatheringCard({ children, bgColor, id }: GatheringCardProps) {
+export function GatheringCard({
+  className,
+  children,
+  bgColor,
+}: GatheringCardProps) {
   return (
     <li
       className={cn(
-        "relative rounded-4xl",
+        "relative list-none rounded-4xl p-6",
         bgColor === "white" ? "bg-white" : "bg-gradient-opacity",
+        className,
       )}
     >
-      <Link href={`/gatherings/${id}`} className="block h-full w-full p-6">
-        {children}
-      </Link>
+      {children}
     </li>
   );
 }

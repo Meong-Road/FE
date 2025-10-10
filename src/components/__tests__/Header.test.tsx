@@ -79,7 +79,7 @@ describe("Header", () => {
     );
     expect(screen.getByRole("link", { name: "모든 리뷰" })).toHaveAttribute(
       "href",
-      "/review",
+      "/reviews",
     );
   });
 

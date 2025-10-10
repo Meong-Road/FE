@@ -23,7 +23,7 @@ const HEADER_ITEMS = [
   },
   {
     name: "모든 리뷰",
-    href: "/review",
+    href: "/reviews",
   },
 ];
 

@@ -26,7 +26,7 @@ export function useDuplicateCheck<T extends FieldValues>(
     errorMessage ??
     `이미 사용 중인 ${type === "email" ? "이메일" : "닉네임"}입니다.`;
 
-  /** ✅ 공통 상태 초기화 함수 */
+  /** 공통 상태 초기화 함수 */
   const resetCheckState = useCallback(
     (available: boolean | null, passed: boolean) => {
       setIsAvailable(available);
@@ -39,14 +39,14 @@ export function useDuplicateCheck<T extends FieldValues>(
     [form, checkPassedField],
   );
 
-  /** ✅ 필드 값 변경 시 중복확인 상태 초기화 */
+  /** 필드 값 변경 시 중복확인 상태 초기화 */
   useEffect(() => {
     if (currentValue !== lastChecked) {
       resetCheckState(null, false);
     }
   }, [currentValue, lastChecked, resetCheckState]);
 
-  /** ✅ 중복 검사 실행 함수 */
+  /** 중복 검사 실행 함수 */
   const checkDuplicate = useCallback(async () => {
     const value = currentValue;
     if (!value) return;

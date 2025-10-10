@@ -56,3 +56,12 @@ export async function cancelLike(
   });
   return response.json();
 }
+
+export async function getGatheringDetail({
+  id,
+}: {
+  id: GatheringType["id"];
+}): Promise<Response<GatheringType>> {
+  const response = await fetch(`/api/gatherings/${id}`);
+  return response.json();
+}

@@ -5,6 +5,7 @@ import { EGatheringType } from "@/lib/types/gathering";
 
 import { PAGINATION_DATA } from "../data/common";
 import {
+  GATHERING_DETAILS,
   isLikedSet,
   QUICK_GATHERINGS,
   REGULAR_GATHERINGS,
@@ -29,6 +30,28 @@ export const gatheringsHandlers = [
         pageSize: Number(pageSize),
       }),
     );
+  }),
+
+  //================= 모임 상세 조회 ================================
+  http.get("/api/gatherings/:id", (req) => {
+    const id = req.params.id;
+
+    if (!id)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: GATHERING_DETAILS,
+      errorCode: null,
+    });
   }),
 
   //================= 모임 찜하기 상태 조회 ================================
@@ -110,11 +133,25 @@ export const gatheringsHandlers = [
       });
 
     isLikedSet.delete(id as string);
+  }),
+
+  http.get("/api/gatherings/:id", (req) => {
+    const id = req.params.id;
+
+    if (!id)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
     return HttpResponse.json({
       success: true,
       code: 200,
       message: "성공",
-      result: { isLiked: false },
+      result: GATHERING_DETAILS,
       errorCode: null,
     });
   }),

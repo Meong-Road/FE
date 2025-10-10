@@ -1,7 +1,7 @@
 import { GatheringType } from "@/lib/types/gathering";
 
 export interface GatheringCardProps {
-  id: GatheringType["id"];
+  className?: string;
   children: React.ReactNode;
   bgColor: "white" | "gradient";
 }
@@ -17,6 +17,7 @@ export interface GatheringCardPeopleProps {
 }
 
 export interface GatheringCardInfoProps {
+  className?: string;
   location: GatheringType["location"];
   date?: string;
   time?: string;

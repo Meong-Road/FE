@@ -322,4 +322,4 @@ export const REGULAR_GATHERINGS = [
 ];
 
 // 찜하기 상태 관리
-export const isLikedSet = new Set<string>();
+export const isLikedSet = new Set<string>(["1", "2", "4", "11", "12", "14"]);

@@ -1,8 +1,14 @@
-import { formatDate, getRegistrationDeadlineInfo } from "./dateTime";
+import {
+  formatDate,
+  getRegistrationDeadlineInfo,
+  getTimeAgo,
+} from "./dateTime";
 
 describe("dateTime", () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    // 기준 시간을 2025-10-01 10:00:00으로 설정
+    jest.setSystemTime(new Date("2025-10-01T10:00:00"));
   });
 
   afterEach(() => {
@@ -47,11 +53,6 @@ describe("dateTime", () => {
   });
 
   describe("getRegistrationDeadlineInfo", () => {
-    beforeEach(() => {
-      // 기준 시간을 2025-10-01 10:00:00으로 설정
-      jest.setSystemTime(new Date("2025-10-01T10:00:00"));
-    });
-
     it("이미 마감된 경우 '모집 마감'와 'secondary'를 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T09:00:00"; // 1시간 전
       const result = getRegistrationDeadlineInfo(registrationEnd);
@@ -90,6 +91,44 @@ describe("dateTime", () => {
         text: "3일 후 마감",
         variant: "secondary",
       });
+    });
+  });
+
+  describe("getTimeAgo", () => {
+    it("방금 전을 반환해야 한다", () => {
+      const createdAt = "2025-10-01T09:59:50"; // 10초 전
+      const result = getTimeAgo(createdAt);
+      expect(result).toBe("방금 전");
+    });
+
+    it("10분 전을 반환해야 한다", () => {
+      const createdAt = "2025-10-01T09:50:00"; // 정확히 10분 전
+      const result = getTimeAgo(createdAt);
+      expect(result).toBe("10분 전");
+    });
+
+    it("1시간 전을 반환해야 한다", () => {
+      const createdAt = "2025-10-01T09:00:00"; // 정확히 1시간 전
+      const result = getTimeAgo(createdAt);
+      expect(result).toBe("1시간 전");
+    });
+
+    it("1일 전을 반환해야 한다", () => {
+      const createdAt = "2025-09-30T10:00:00"; // 하루 전
+      const result = getTimeAgo(createdAt);
+      expect(result).toBe("1일 전");
+    });
+
+    it("2일 전을 반환해야 한다", () => {
+      const createdAt = "2025-09-29T10:00:00"; // 이틀 전
+      const result = getTimeAgo(createdAt);
+      expect(result).toBe("2일 전");
+    });
+
+    it("7일 전부터는 날짜를 반환해야 한다", () => {
+      const createdAt = "2025-09-24T10:00:00"; // 7일 전
+      const result = getTimeAgo(createdAt);
+      expect(result).toBe("2025.09.24");
     });
   });
 });

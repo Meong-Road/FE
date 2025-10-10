@@ -60,3 +60,30 @@ export function getRegistrationDeadlineInfo(registrationEnd: string): {
     variant: "secondary",
   };
 }
+
+/**
+ * 리뷰가 생성된 시간과 현재 시간의 차이를 계산해
+ * "10분 전", "1시간 전", "1일 전" 또는 "YYYY.MM.DD" 형식으로 반환합니다.
+ * @param createdAt - 리뷰가 생성된 시간 (ISO 문자열)
+ * @returns 예: "방금 전", "10분 전", "1시간 전", "1일 전", 7일 이상이면 "YYYY.MM.DD"
+ */
+export function getTimeAgo(createdAt: string): string {
+  const created = new Date(createdAt);
+  const now = new Date();
+
+  const diffMs = now.getTime() - created.getTime();
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMinutes < 1) return "방금 전";
+  if (diffMinutes < 60) return `${diffMinutes}분 전`;
+  if (diffHours < 24) return `${diffHours}시간 전`;
+  if (diffDays < 7) return `${diffDays}일 전`;
+
+  const year = created.getFullYear();
+  const month = String(created.getMonth() + 1).padStart(2, "0");
+  const day = String(created.getDate()).padStart(2, "0");
+
+  return `${year}.${month}.${day}`;
+}

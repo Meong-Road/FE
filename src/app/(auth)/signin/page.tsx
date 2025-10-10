@@ -1,8 +1,7 @@
 import Image from "next/image";
 
+import SigninForm from "@/app/(auth)/signin/SigninForm";
 import walkImage from "@/assets/images/image.png";
-
-import SigninForm from "./_components/SigninForm";
 
 export default function SignInPage() {
   return (

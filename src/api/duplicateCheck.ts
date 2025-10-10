@@ -1,9 +1,8 @@
-import { customFetch } from "@/app/(auth)/signup/_api/customFetch";
-
+import { customFetch } from "@/api/customFetch";
 import type {
   GetEmailDuplicateCheckRes,
   PostNicknameDuplicateCheckRes,
-} from "./types";
+} from "@/lib/types/duplicateCheck";
 
 export async function checkEmailDuplicate(email: string): Promise<boolean> {
   const response = await customFetch.get<GetEmailDuplicateCheckRes>(

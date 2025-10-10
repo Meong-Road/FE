@@ -85,6 +85,7 @@ const createMethodRequest =
   };
 
 /**
+ * 임시 customFetch입니다.
  * @param endpoint request URL
  * @param options request options (headers, method, body, etc.)
  * @returns response data as JSON

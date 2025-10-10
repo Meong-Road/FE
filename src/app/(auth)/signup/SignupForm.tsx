@@ -1,11 +1,10 @@
 // SignupForm.tsx
 "use client";
 
+import { Form } from "@/components/Form";
 import { Toaster } from "@/components/ui/sonner";
-
-import { Form } from "../../../../components/Form";
-import { SignupFormSchema, useSignupForm } from "../_hooks/useSignupForm";
-import { useSignupMutation } from "../_hooks/useSignupMutation";
+import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
+import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 
 export default function SignupForm() {
   const form = useSignupForm();

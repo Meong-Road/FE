@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: ["localhost", "example.com", "images.unsplash.com"],
+  },
+
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

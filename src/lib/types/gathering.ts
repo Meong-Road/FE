@@ -25,7 +25,7 @@ export interface QuickGatheringType extends CommonGatheringType {
 
 export interface RegularGatheringType extends CommonGatheringType {
   type: EGatheringType.REGULAR;
-  day: string;
+  days: string;
   time: number;
 }
 

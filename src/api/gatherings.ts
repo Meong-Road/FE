@@ -1,4 +1,5 @@
 import {
+  BookmarkType,
   EGatheringType,
   GatheringType,
   QuickGatheringType,
@@ -54,5 +55,22 @@ export async function cancelLike(
   const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
     method: "DELETE",
   });
+  return response.json();
+}
+
+export async function getMyBookmarkedGatherings({
+  type,
+  page,
+  size,
+  sort,
+}: BookmarkType) {
+  const queryParams = new URLSearchParams({
+    type: type,
+    page: page.toString(),
+    size: size.toString(),
+    sort: sort,
+  });
+
+  const response = await fetch(`/api/gatherings/bookmarks?${queryParams}`);
   return response.json();
 }

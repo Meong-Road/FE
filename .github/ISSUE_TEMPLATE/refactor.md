@@ -1,7 +1,7 @@
 ---
 name: Refactor Report
 about: 리팩토링 할 때 사용해주세요
-title: "[REFACTPOR] "
+title: "[REFACTOR] "
 labels: refactor
 assignees: ""
 ---

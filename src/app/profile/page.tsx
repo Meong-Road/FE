@@ -1,6 +1,7 @@
 import CreatedSection from "./_components/CreatedSection";
 import EditBtn from "./_components/EditBtn";
 import JoinedSection from "./_components/JoinedSection";
+import PetCardSection from "./_components/PetCardSection";
 import { ProfileCard } from "./_components/ProfileCard";
 import ReviewSection from "./_components/ReviewSection";
 import { Tab } from "./_components/Tab";
@@ -61,6 +62,7 @@ export default async function Profile({ searchParams }: ProfileProps) {
         {currentTab === "joined" && <JoinedSection />}
         {currentTab === "created" && <CreatedSection />}
         {currentTab === "reviews" && <ReviewSection />}
+        {currentTab === "pets" && <PetCardSection />}
       </section>
     </section>
   );

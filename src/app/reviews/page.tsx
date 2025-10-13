@@ -1,11 +1,9 @@
 "use client";
 
-import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import {
   LocationSelect,
-  ReviewCardSkeletonList,
   ReviewDashboard,
   ReviewListContainer,
 } from "./_components";
@@ -32,9 +30,7 @@ function ReviewsContent() {
 export default function ReviewsPage() {
   return (
     <section className="mx-auto max-w-screen-lg p-4 pt-22">
-      <Suspense fallback={<ReviewCardSkeletonList count={10} />}>
-        <ReviewsContent />
-      </Suspense>
+      <ReviewsContent />
     </section>
   );
 }

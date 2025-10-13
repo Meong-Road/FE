@@ -1,10 +1,10 @@
 "use client";
 
+import { Pagination } from "@/components/Pagination";
+import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { useGetReviews } from "@/hooks/queries/reviews";
 
-import { ReviewCardSkeletonList } from "./ReviewCardSkeleton";
 import { ReviewList } from "./ReviewList";
-import { ReviewPagination } from "./ReviewPagination";
 
 interface ReviewListContainerProps {
   location: string;
@@ -17,7 +17,7 @@ export function ReviewListContainer({
 }: ReviewListContainerProps) {
   const {
     data: reviews,
-    isLoading,
+    isPending,
     isError,
   } = useGetReviews({
     location: location || null,
@@ -26,7 +26,7 @@ export function ReviewListContainer({
     sort: "createdAt,desc",
   });
 
-  if (isLoading) {
+  if (isPending) {
     return <ReviewCardSkeletonList count={10} />;
   }
 
@@ -38,14 +38,14 @@ export function ReviewListContainer({
     );
   }
 
-  const content = reviews?.result?.content || [];
-  const totalPages = reviews?.result?.totalPages || 0;
-  const currentPage = reviews?.result?.page || 0;
+  const content = reviews.result?.content || [];
+  const totalPages = reviews.result?.totalPages || 0;
+  const currentPage = reviews.result?.page || 0;
 
   return (
     <section>
       <ReviewList reviews={content} />
-      <ReviewPagination currentPage={currentPage} totalPages={totalPages} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
     </section>
   );
 }

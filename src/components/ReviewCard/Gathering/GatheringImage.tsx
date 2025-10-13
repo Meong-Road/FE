@@ -8,7 +8,7 @@ import { ReviewCardGatheringImageProps } from "../types";
 export function GatheringImage({ image }: ReviewCardGatheringImageProps) {
   const [imageError, setImageError] = useState(false);
   return (
-    <div className="h-[188px] w-[188px] rounded-3xl bg-gray-200">
+    <div className="h-[188px] w-[188px] rounded-3xl bg-gray-200 select-none">
       {" "}
       {image && !imageError && (
         <Image

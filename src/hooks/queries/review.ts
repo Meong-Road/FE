@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import REVIEW_API from "@/api/reviews";
-import { GatheringType } from "@/lib/types/gathering";
-import { GetReviewReq } from "@/lib/types/reviews";
+import { GetReviewsByGatheringReq } from "@/lib/types/reviews";
 import { PaginationReq } from "@/mocks/data/common";
 
 export const REVIEW_QUERY_KEY = {
@@ -11,7 +10,7 @@ export const REVIEW_QUERY_KEY = {
     gatheringId,
     paginationReq,
   }: {
-    gatheringId: GatheringType["id"];
+    gatheringId: GetReviewsByGatheringReq["gatheringId"];
     paginationReq: PaginationReq;
   }) => ["reviews", gatheringId, paginationReq],
 };
@@ -19,7 +18,7 @@ export const REVIEW_QUERY_KEY = {
 export const useGetReviewsByGathering = ({
   gatheringId,
   ...paginationReq
-}: GetReviewReq) => {
+}: GetReviewsByGatheringReq) => {
   return useQuery({
     queryKey: REVIEW_QUERY_KEY.REVIEWS_BY_GATHERING({
       gatheringId,

@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 import {
   BookmarkType,
   EGatheringType,
@@ -20,7 +21,7 @@ export const gatheringApi = {
     sortOrder,
   }: PaginationRequest): Promise<PaginationResponse<RegularGatheringType>> => {
     const response = await fetch(
-      `/api/gatherings?type=${EGatheringType.REGULAR}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      `${API_ENDPOINTS.GATHERING}?type=${EGatheringType.REGULAR}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
     );
     return response.json();
   },
@@ -32,7 +33,7 @@ export const gatheringApi = {
     sortOrder,
   }: PaginationRequest): Promise<PaginationResponse<QuickGatheringType>> => {
     const response = await fetch(
-      `/api/gatherings?type=${EGatheringType.QUICK}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      `${API_ENDPOINTS.GATHERING}?type=${EGatheringType.QUICK}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
     );
     return response.json();
   },
@@ -42,7 +43,7 @@ export const gatheringApi = {
   }: {
     id: GatheringType["id"];
   }): Promise<Response<GatheringType>> => {
-    const response = await fetch(`/api/gatherings/${id}`);
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}`);
     return response.json();
   },
   // 모임 찜 조회

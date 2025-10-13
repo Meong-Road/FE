@@ -1,9 +1,11 @@
 import { http, HttpResponse } from "msw";
 
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+
 import { mockReviews } from "../data/reviews";
 
 export const reviewsHandlers = [
-  http.get("/meong-road/reviews", ({ request }) => {
+  http.get(`${API_ENDPOINTS.REVIEW}`, ({ request }) => {
     const url = new URL(request.url);
     const location = url.searchParams.get("location");
     const page = Number(url.searchParams.get("page") ?? 0);
@@ -32,7 +34,7 @@ export const reviewsHandlers = [
       errorCode: null,
     });
   }),
-  http.get("/api/reviews/gatherings/:id", () => {
+  http.get(`${API_ENDPOINTS.REVIEW}/gatherings/:id`, () => {
     return HttpResponse.json({
       success: true,
       code: 0,

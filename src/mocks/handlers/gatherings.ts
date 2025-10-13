@@ -1,6 +1,7 @@
 // src/mocks/handlers/gatherings.ts
 import { http, HttpResponse } from "msw";
 
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { EGatheringType } from "@/lib/types/gathering";
 
 import { PAGINATION_DATA } from "../data/common";
@@ -13,7 +14,7 @@ import {
 
 export const gatheringsHandlers = [
   //================= 모임 목록 조회 ================================
-  http.get("/api/gatherings", (req) => {
+  http.get(API_ENDPOINTS.GATHERING, (req) => {
     const url = new URL(req.request.url);
     const type = url.searchParams.get("type");
     const pageSize = url.searchParams.get("pageSize");
@@ -33,7 +34,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 상세 조회 ================================
-  http.get("/api/gatherings/:id", (req) => {
+  http.get(`${API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -55,7 +56,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 찜하기 상태 조회 ================================
-  http.get("/api/gatherings/:id/bookmarks", (req) => {
+  http.get(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -77,7 +78,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 찜하기 ================================
-  http.post("/api/gatherings/:id/bookmarks", (req) => {
+  http.post(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -110,7 +111,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 찜 해제 ================================
-  http.delete("/api/gatherings/:id/bookmarks", (req) => {
+  http.delete(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
     if (!id)

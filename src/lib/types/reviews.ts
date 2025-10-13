@@ -35,7 +35,7 @@ export interface PaginatedRes<T> {
   last: boolean;
 }
 
-export type GetReviewRes = Response<PaginatedRes<ReviewType>>;
-export interface GetReviewReq extends PaginationReq {
+export interface GetReviewsByGatheringReq extends PaginationReq {
   gatheringId: ReviewType["gatheringId"];
 }
+export type GetReviewsByGatheringRes = Response<PaginatedRes<ReviewType>>;

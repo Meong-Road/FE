@@ -93,9 +93,13 @@ export const useCancelLike = ({
   });
 };
 
-export const useGetInfiniteBookmarkedGatherings = (currentTab: string) => {
+export const useGetInfiniteBookmarkedGatherings = (
+  currentTab: string,
+  size: number = 10,
+  sort: string = "createdAt",
+) => {
   return useInfiniteQuery({
-    queryKey: ["bookmarkedGatherings", currentTab],
+    queryKey: ["bookmarkedGatherings", currentTab, size, sort],
     queryFn: ({ pageParam }) => {
       return getMyBookmarkedGatherings({
         type:
@@ -103,12 +107,14 @@ export const useGetInfiniteBookmarkedGatherings = (currentTab: string) => {
             ? EGatheringType.REGULAR
             : EGatheringType.QUICK,
         page: Number(pageParam),
-        size: 10,
-        sort: "createAt",
+        size,
+        sort,
       });
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
       !lastPage.result.last ? allPages.length : undefined,
+    select: (data) =>
+      data.pages.flatMap((page) => page.result.content || []) || [],
   });
 };

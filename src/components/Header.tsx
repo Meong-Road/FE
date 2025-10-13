@@ -38,7 +38,7 @@ export default function Header({ className }: { className?: string }) {
         className,
       )}
     >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-2">
         <Link href="/" className="shrink-0">
           <Logo width={92} />
         </Link>

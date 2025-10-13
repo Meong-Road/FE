@@ -32,4 +32,20 @@ export const reviewsHandlers = [
       errorCode: null,
     });
   }),
+  http.get("/api/reviews/gatherings/:id", () => {
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "string",
+      result: {
+        content: mockReviews,
+        page: 0,
+        size: 10,
+        totalElements: 100,
+        totalPages: 10,
+        last: false,
+      },
+      errorCode: "string",
+    });
+  }),
 ];

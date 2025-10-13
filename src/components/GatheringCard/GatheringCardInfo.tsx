@@ -1,4 +1,5 @@
 import { EDayOfWeek } from "@/lib/types/date";
+import { cn } from "@/lib/utils";
 
 import { GatheringCardInfoProps } from "./types";
 
@@ -21,13 +22,14 @@ function Bar() {
 }
 
 export function GatheringCardInfo({
+  className,
   location,
   date,
   time,
   days,
 }: GatheringCardInfoProps) {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className={cn("flex items-center gap-2.5", className)}>
       <TextWrapper>
         <Title>위치</Title>
         <Content>{location}</Content>

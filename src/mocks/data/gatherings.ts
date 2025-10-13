@@ -12,7 +12,7 @@ export const QUICK_GATHERINGS = [
     isPetRequired: true,
     isParticipating: true,
     canceledAt: null,
-    hostId: 101,
+    hostId: 1,
     dateTime: new Date("2025-10-01T15:00:00"),
   },
   {
@@ -313,3 +313,9 @@ export const REGULAR_GATHERINGS = [
 
 // 찜하기 상태 관리
 export const isLikedSet = new Set<string>();
+
+export const GATHERING_DETAILS = {
+  ...QUICK_GATHERINGS[0],
+  days: "",
+  time: "",
+};

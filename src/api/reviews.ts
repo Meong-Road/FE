@@ -1,5 +1,6 @@
 // src/api/reviews/getReviews.ts
 import { GetReviewsReq, GetReviewsRes } from "@/lib/types/review";
+import { GetReviewReq, GetReviewRes } from "@/lib/types/reviews";
 import { Response } from "@/mocks/data/common";
 
 import { customFetch } from "./customFetch"; // 네가 만든 fetch 래퍼가 있다면 이걸 사용
@@ -24,3 +25,17 @@ export async function getReviews({
     isPublic: true, // 공개 API - 인증 불필요
   });
 }
+
+const REVIEW_API = {
+  getReviewsByGathering: async ({
+    gatheringId,
+    page,
+    size,
+    sort,
+  }: GetReviewReq): Promise<GetReviewRes> => {
+    const response = await fetch(`/api/reviews/gatherings/${gatheringId}`);
+    return response.json();
+  },
+};
+
+export default REVIEW_API;

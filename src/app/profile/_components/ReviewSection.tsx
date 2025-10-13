@@ -1,5 +1,6 @@
+import { ReviewCard } from "@/components/ReviewCard";
+
 import EditBtn from "./EditBtn";
-import { ReviewCard } from "./ReviewCard";
 
 export default function ReviewSection() {
   return (

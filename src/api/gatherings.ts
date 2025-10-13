@@ -65,10 +65,10 @@ export async function getMyBookmarkedGatherings({
   sort,
 }: BookmarkType) {
   const queryParams = new URLSearchParams({
-    type: type,
+    type,
     page: page.toString(),
     size: size.toString(),
-    sort: sort,
+    sort,
   });
 
   const response = await fetch(`/api/gatherings/bookmarks?${queryParams}`);

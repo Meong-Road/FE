@@ -16,9 +16,9 @@ export interface ReviewType {
 
 export interface GetReviewsReq {
   location?: string | null;
-  page?: number;
-  size?: number;
-  sort?: string;
+  page: number;
+  size: number;
+  sort: string;
 }
 
 export interface GetReviewsRes {
@@ -28,6 +28,4 @@ export interface GetReviewsRes {
   totalElements: number;
   totalPages: number;
   last: boolean;
-  first?: boolean;
-  empty?: boolean;
 }

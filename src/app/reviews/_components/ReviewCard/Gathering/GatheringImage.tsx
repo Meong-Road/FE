@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export function ReviewCardImage({ image }: { image: string | null }) {
+import { ReviewCardGatheringImageProps } from "../types";
+
+export function GatheringImage({ image }: ReviewCardGatheringImageProps) {
   const [imageError, setImageError] = useState(false);
 
   // image가 없거나 로드 실패 시 기본 UI

@@ -21,22 +21,20 @@ export function ReviewList({ reviews }: ReviewListProps) {
       {reviews.map((review) => (
         <ReviewCard key={review.id}>
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:gap-8">
-            <ReviewCard.Image image={review.gathering.image} />
+            <ReviewCard.GatheringImage image={review.gathering.image} />
             <div className="flex flex-1 flex-col justify-between">
-              <ReviewCard.Profile
+              <ReviewCard.Header
                 profileImage={review.user.image}
                 score={review.score}
                 nickName={review.user.nickName}
                 createdAt={review.createdAt}
               />
-              <div className="flex flex-col gap-2.5">
-                <ReviewCard.Title>{review.gathering.name}</ReviewCard.Title>
-                <ReviewCard.Info
-                  location={review.gathering.location}
-                  days={formatDays(review.gathering.days)}
-                />
-                <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>
-              </div>
+              <ReviewCard.Body
+                gatheringName={review.gathering.name}
+                location={review.gathering.location}
+                days={formatDays(review.gathering.days)}
+                comment={review.comment}
+              />
             </div>
           </div>
         </ReviewCard>

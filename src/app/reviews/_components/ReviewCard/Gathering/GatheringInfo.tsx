@@ -3,7 +3,7 @@
 // ->> 그래서 분을 00으로 추가해서 임시로 포맷팅 함
 import { cn } from "@/lib/utils";
 
-import { ReviewCardInfoProps } from "./types";
+import { ReviewCardGatheringInfoProps } from "../types";
 
 function Divider({ size = "sm" }: { size?: "sm" | "md" }) {
   return (
@@ -26,7 +26,10 @@ function InfoItem({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-export function ReviewCardInfo({ location, days }: ReviewCardInfoProps) {
+export function GatheringInfo({
+  location,
+  days,
+}: ReviewCardGatheringInfoProps) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm">
       {location && (

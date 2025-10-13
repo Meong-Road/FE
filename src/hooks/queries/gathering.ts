@@ -1,14 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 
-import {
-  cancelLike,
-  getGatheringDetail,
-  getIsLiked,
-  getMyBookmarkedGatherings,
-  getQuickGatherings,
-  getRegularGatherings,
-  like,
-} from "@/api/gatherings";
+import { gatheringApi } from "@/api/gatherings";
 import { EGatheringType, GatheringType } from "@/lib/types/gathering";
 
 export const GATHERING_QUERY_KEY = {
@@ -24,7 +16,7 @@ export const useGetInfiniteRegularGatherings = () => {
   return useInfiniteQuery({
     queryKey: GATHERING_QUERY_KEY.GATHERINGS({ type: EGatheringType.REGULAR }),
     queryFn: ({ pageParam }) => {
-      return getRegularGatherings({
+      return gatheringApi.getRegularGatherings({
         page: pageParam,
         pageSize: 10,
         sortBy: "createdAt",
@@ -42,7 +34,7 @@ export const useGetInfiniteQuickGatherings = () => {
   return useInfiniteQuery({
     queryKey: GATHERING_QUERY_KEY.GATHERINGS({ type: EGatheringType.QUICK }),
     queryFn: ({ pageParam }) => {
-      return getQuickGatherings({
+      return gatheringApi.getQuickGatherings({
         page: pageParam,
         pageSize: 10,
         sortBy: "createdAt",
@@ -60,7 +52,7 @@ export const useGetIsLiked = ({ id }: { id: GatheringType["id"] }) => {
   return useQuery({
     queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
     queryFn: () => {
-      return getIsLiked(id);
+      return gatheringApi.getIsLiked(id);
     },
   });
 };
@@ -74,7 +66,7 @@ export const useLike = ({
 }) => {
   return useMutation({
     mutationFn: () => {
-      return like(id);
+      return gatheringApi.like(id);
     },
     onSuccess,
   });
@@ -89,7 +81,7 @@ export const useCancelLike = ({
 }) => {
   return useMutation({
     mutationFn: () => {
-      return cancelLike(id);
+      return gatheringApi.cancelLike(id);
     },
     onSuccess,
   });
@@ -103,7 +95,7 @@ export const useGetInfiniteBookmarkedGatherings = (
   return useInfiniteQuery({
     queryKey: ["bookmarkedGatherings", currentTab, size, sort],
     queryFn: ({ pageParam }) => {
-      return getMyBookmarkedGatherings({
+      return gatheringApi.getMyBookmarkedGatherings({
         type:
           currentTab === "regular"
             ? EGatheringType.REGULAR
@@ -124,6 +116,6 @@ export const useGetInfiniteBookmarkedGatherings = (
 export const useGetGatheringDetail = ({ id }: { id: GatheringType["id"] }) => {
   return useQuery({
     queryKey: GATHERING_QUERY_KEY.GATHERING_DETAIL({ id }),
-    queryFn: () => getGatheringDetail({ id }),
+    queryFn: () => gatheringApi.getGatheringDetail({ id }),
   });
 };

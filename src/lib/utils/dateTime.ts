@@ -1,3 +1,5 @@
+import { DAY_MAP_KR } from "../constants/date";
+
 /**
  * 날짜를 "YY. MM. DD (요일) HH:MM" 형태로 포맷팅합니다.
  * @param date - 날짜 문자열 또는 Date 객체
@@ -31,27 +33,30 @@ export function getRegistrationDeadlineInfo(registrationEnd: string): {
   const diffMs = endTime.getTime() - now.getTime();
 
   // 이미 마감된 경우
-  if (diffMs <= 0)
+  if (diffMs <= 0) {
     return {
       text: "모집 마감",
       variant: "secondary",
     };
+  }
 
   // 1시간 이내
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
-  if (diffMinutes < 60)
+  if (diffMinutes < 60) {
     return {
       text: `${diffMinutes}분 후 마감`,
       variant: "primary",
     };
+  }
 
   // 24시간 이내
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  if (diffHours < 24)
+  if (diffHours < 24) {
     return {
       text: `${diffHours}시간 후 마감`,
       variant: "primary",
     };
+  }
 
   // 그 이상 - n일 전 표시
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -76,10 +81,18 @@ export function getTimeAgo(createdAt: string): string {
   const diffHours = Math.floor(diffMinutes / 60);
   const diffDays = Math.floor(diffHours / 24);
 
-  if (diffMinutes < 1) return "방금 전";
-  if (diffMinutes < 60) return `${diffMinutes}분 전`;
-  if (diffHours < 24) return `${diffHours}시간 전`;
-  if (diffDays < 7) return `${diffDays}일 전`;
+  if (diffMinutes < 1) {
+    return "방금 전";
+  }
+  if (diffMinutes < 60) {
+    return `${diffMinutes}분 전`;
+  }
+  if (diffHours < 24) {
+    return `${diffHours}시간 전`;
+  }
+  if (diffDays < 7) {
+    return `${diffDays}일 전`;
+  }
 
   const year = created.getFullYear();
   const month = String(created.getMonth() + 1).padStart(2, "0");
@@ -109,16 +122,7 @@ export function formatDateShort(dateString: string): string {
 export function formatDays(daysString: string): string {
   try {
     const daysArray = JSON.parse(daysString) as string[];
-    const dayMap: Record<string, string> = {
-      MON: "월",
-      TUE: "화",
-      WED: "수",
-      THU: "목",
-      FRI: "금",
-      SAT: "토",
-      SUN: "일",
-    };
-    return daysArray.map((day) => dayMap[day]).join(", ");
+    return daysArray.map((day) => DAY_MAP_KR[day]).join(", ");
   } catch {
     return "";
   }

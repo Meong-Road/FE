@@ -4,8 +4,8 @@ import React, { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getMyBookmarkedGatherings } from "@/api/gatherings";
-import QuickGatheringCard from "@/app/(gatherings)/quick/_components/QuickGatheringCard";
-import RegularGatheringCard from "@/app/(gatherings)/regular/_components/RegularGatheringCard";
+import QuickGatheringCard from "@/app/_components/QuickGatheringCard";
+import RegularGatheringCard from "@/app/_components/RegularGatheringCard";
 import { EGatheringType } from "@/lib/types/gathering";
 
 export default function FavoritesList({ currentTab }: { currentTab: string }) {

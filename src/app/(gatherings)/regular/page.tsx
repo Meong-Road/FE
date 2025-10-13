@@ -6,11 +6,11 @@ import Link from "next/link";
 
 import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gathering";
 
+import RegularGatheringCard from "../../_components/RegularGatheringCard";
 import LocationSelect from "../_components/LocationSelect";
 import SortBySelector from "../_components/SortBySelector";
 
 import FilterPopover from "./_components/FilterPopover";
-import RegularGatheringCard from "./_components/RegularGatheringCard";
 
 export default function RegularGatheringListPage() {
   const { ref, inView } = useInView();

@@ -27,6 +27,5 @@ export const useGetReviews = ({
         sort,
       }),
     initialData,
-    staleTime: 1000 * 60, // 1분간 데이터를 fresh로 유지
   });
 };

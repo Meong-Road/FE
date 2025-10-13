@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import ArrowLeft from "@/assets/icons/arrow-left.svg";
+import ArrowRight from "@/assets/icons/arrow-right.svg";
 import { Button } from "@/components/ui/button";
 import {
   Pagination as UIPagination,
@@ -16,6 +16,11 @@ import { ELLIPSIS } from "@/hooks/pagenation/_utils";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  /**
+   * 페이지 이동 시 스크롤 동작 제어
+   * @default false (스크롤 위치 유지)
+   */
+  scroll?: boolean;
 }
 
 function PageButton({
@@ -36,7 +41,7 @@ function PageButton({
         isActive={isActive}
         className={
           isActive
-            ? "h-9 w-9 cursor-pointer rounded-lg bg-[#FEF0C7] font-semibold text-gray-900 hover:bg-[#FEE5A0] sm:h-10 sm:w-10"
+            ? "text-primary h-9 w-9 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-10 sm:w-10"
             : "h-9 w-9 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-10 sm:w-10"
         }
       >
@@ -55,7 +60,7 @@ function NavButton({
   disabled: boolean;
   onClick: () => void;
 }) {
-  const Icon = direction === "prev" ? ChevronLeft : ChevronRight;
+  const Icon = direction === "prev" ? ArrowLeft : ArrowRight;
 
   return (
     <PaginationItem>
@@ -66,13 +71,17 @@ function NavButton({
         disabled={disabled}
         className="h-9 w-9 rounded-lg hover:bg-gray-100 disabled:opacity-30 sm:h-10 sm:w-10"
       >
-        <Icon className="h-4 w-4 text-gray-600 sm:h-5 sm:w-5" />
+        <Icon className="size-5 fill-gray-800 sm:size-6" />
       </Button>
     </PaginationItem>
   );
 }
 
-export function Pagination({ currentPage, totalPages }: PaginationProps) {
+export function Pagination({
+  currentPage,
+  totalPages,
+  scroll = false,
+}: PaginationProps) {
   const {
     currentPageNumber,
     mobilePageNumbers,
@@ -82,7 +91,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
     goToPage,
     goToPrev,
     goToNext,
-  } = usePagenation({ currentPage, totalPages });
+  } = usePagenation({ currentPage, totalPages, scroll });
 
   if (totalPages <= 1) {
     return null;

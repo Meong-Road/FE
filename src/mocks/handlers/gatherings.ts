@@ -144,10 +144,18 @@ export const gatheringsHandlers = [
     const hasNext = endIndex < bookmarkedGatherings.length;
 
     return HttpResponse.json({
-      data: currentPageData,
-      totalPages: Math.ceil(bookmarkedGatherings.length / size),
-      totalItems: bookmarkedGatherings.length,
-      hasNext,
+      success: true,
+      code: 0,
+      message: "성공",
+      result: {
+        content: currentPageData,
+        page: page,
+        size: size,
+        totalElements: bookmarkedGatherings.length,
+        totalPages: Math.ceil(bookmarkedGatherings.length / size),
+        last: !hasNext,
+      },
+      errorCode: null,
     });
   }),
 ];

@@ -109,6 +109,6 @@ export const useGetInfiniteBookmarkedGatherings = (currentTab: string) => {
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.hasNext ? allPages.length : undefined,
+      !lastPage.result.last ? allPages.length : undefined,
   });
 };

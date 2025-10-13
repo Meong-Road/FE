@@ -26,7 +26,7 @@ export default function FavoritesList({ currentTab }: { currentTab: string }) {
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>데이터를 불러오는 데 실패했습니다</div>;
 
-  const gatherings = data?.pages.flatMap((page) => page.data) || [];
+  const gatherings = data?.pages.flatMap((page) => page.result.content) || [];
 
   return (
     <ul className="mt-9 grid grid-cols-1 gap-8">

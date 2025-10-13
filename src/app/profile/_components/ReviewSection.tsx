@@ -1,28 +1,10 @@
 import { ReviewCard } from "@/components/ReviewCard";
+import { formatDays } from "@/lib/utils/dateTime";
+import { mockReviews } from "@/mocks/data/reviews";
 
 import EditBtn from "./EditBtn";
 
-// 실제 API 연동해야함
-const mockReviews = [
-  {
-    id: 1,
-    gatheringImage: null,
-    gatheringName: "강아지와 함께하는 한강 산책",
-    location: "마포구" as const,
-    days: "토, 일",
-    score: 5 as const,
-    comment: "정말 좋은 모임이었어요! 다음에 또 참여하고 싶습니다.",
-  },
-  {
-    id: 2,
-    gatheringImage: null,
-    gatheringName: "반려견 소셜 타임",
-    location: "강남구" as const,
-    days: "월, 수, 금",
-    score: 4 as const,
-    comment: "맘에 듭니다",
-  },
-];
+// TODO: 실제 API 연동해야함
 
 export default function ReviewSection() {
   // 빈 상태 처리
@@ -36,33 +18,36 @@ export default function ReviewSection() {
 
   return (
     <section>
-      <ul className="space-y-4">
-        {mockReviews.map((review) => (
+      <ul className="space-y-3 sm:space-y-4">
+        {mockReviews.slice(0, 3).map((review) => (
           <ReviewCard key={review.id}>
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:gap-8">
               {/* 모임 이미지 */}
-              <ReviewCard.GatheringImage image={review.gatheringImage} />
+              <ReviewCard.GatheringImage image={review.gathering.image} />
 
               {/* 리뷰 내용 */}
-              <div className="flex flex-1 flex-col gap-4">
-                {/* 헤더: 평점 */}
-                <div className="flex items-center justify-between">
-                  <ReviewCard.Rating score={review.score} />
-                  <EditBtn />
-                </div>
+              <div className="flex flex-1 flex-col justify-between">
+                {/* 헤더: 유저 정보 + 평점 + 작성날짜 */}
+                <ReviewCard.Header
+                  profileImage={review.user.image}
+                  score={review.score}
+                  nickName={review.user.nickName}
+                  createdAt={review.createdAt}
+                />
 
                 {/* 본문: 모임 정보 + 코멘트 */}
-                <div className="flex flex-col gap-2">
-                  <ReviewCard.GatheringTitle>
-                    {review.gatheringName}
-                  </ReviewCard.GatheringTitle>
-                  <ReviewCard.GatheringInfo
-                    location={review.location}
-                    days={review.days}
-                  />
-                  <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>
-                </div>
+                <ReviewCard.Body
+                  gatheringName={review.gathering.name}
+                  location={review.gathering.location}
+                  days={formatDays(review.gathering.days)}
+                  comment={review.comment}
+                />
               </div>
+            </div>
+
+            {/* 수정 버튼 - 우측 상단 */}
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+              <EditBtn />
             </div>
           </ReviewCard>
         ))}

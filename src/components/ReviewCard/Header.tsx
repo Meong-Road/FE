@@ -15,7 +15,7 @@ export function Header({
       <UserAvatar image={profileImage} />
 
       <div className="flex-1 flex-col items-center gap-2 overflow-hidden">
-        <UserName>{nickName}</UserName>
+        <UserName nickName={nickName} />
         <div className="flex items-center gap-2">
           <Rating score={score} />
           <CreatedAt date={createdAt} />

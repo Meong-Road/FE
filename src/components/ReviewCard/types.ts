@@ -13,7 +13,7 @@ export interface ReviewCardUserAvatarProps {
 }
 
 export interface ReviewCardUserNameProps {
-  children: React.ReactNode;
+  nickName: ReviewType["user"]["nickName"];
 }
 
 // Review 관련

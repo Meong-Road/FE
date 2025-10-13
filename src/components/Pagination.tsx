@@ -41,7 +41,7 @@ function PageButton({
         isActive={isActive}
         className={
           isActive
-            ? "text-primary h-9 w-9 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-10 sm:w-10"
+            ? "text-primary pointer-events-none h-9 w-9 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-10 sm:w-10"
             : "h-9 w-9 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-10 sm:w-10"
         }
       >

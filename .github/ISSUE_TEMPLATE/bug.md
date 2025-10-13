@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: 리팩토링 할 때 사용해주세요
+about: 버그를 신고할 때 사용해주세요
 title: "[BUG] "
 labels: bug
 assignees: ""

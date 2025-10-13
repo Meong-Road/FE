@@ -4,6 +4,7 @@ import {
   cancelLike,
   getGatheringDetail,
   getIsLiked,
+  getMyBookmarkedGatherings,
   getQuickGatherings,
   getRegularGatherings,
   like,
@@ -91,6 +92,32 @@ export const useCancelLike = ({
       return cancelLike(id);
     },
     onSuccess,
+  });
+};
+
+export const useGetInfiniteBookmarkedGatherings = (
+  currentTab: string,
+  size: number = 10,
+  sort: string = "createdAt",
+) => {
+  return useInfiniteQuery({
+    queryKey: ["bookmarkedGatherings", currentTab, size, sort],
+    queryFn: ({ pageParam }) => {
+      return getMyBookmarkedGatherings({
+        type:
+          currentTab === "regular"
+            ? EGatheringType.REGULAR
+            : EGatheringType.QUICK,
+        page: Number(pageParam),
+        size,
+        sort,
+      });
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) =>
+      !lastPage.result.last ? allPages.length : undefined,
+    select: (data) =>
+      data.pages.flatMap((page) => page.result.content || []) || [],
   });
 };
 

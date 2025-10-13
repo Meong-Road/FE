@@ -30,3 +30,10 @@ export interface RegularGatheringType extends CommonGatheringType {
 }
 
 export type GatheringType = QuickGatheringType | RegularGatheringType;
+
+export interface BookmarkType {
+  type: EGatheringType;
+  page: number;
+  size: number;
+  sort: string;
+}

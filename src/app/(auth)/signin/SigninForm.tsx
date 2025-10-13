@@ -3,14 +3,24 @@
 import { Form } from "@/components/Form";
 import { SigninFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
 import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
+import { useSignout } from "@/hooks/auth/useSignout";
 
 export default function SigninForm() {
   const form = useSigninForm();
-  const { signinMutate, isPending } = useSigninMutation();
+  const { mutate: signinMutate, isPending } = useSigninMutation();
 
   const handleSubmit = (data: SigninFormSchema) => {
-    signinMutate(data);
+    signinMutate(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
+
+  // 로그아웃 테스트용
+  const isLoggedIn =
+    typeof window !== "undefined" && !!localStorage.getItem("accessToken");
+  const signout = useSignout();
 
   return (
     <>
@@ -68,6 +78,13 @@ export default function SigninForm() {
 
         {/* 회원가입 링크 */}
         <Form.SignupLink />
+
+        {/* 로그아웃 테스트용 */}
+        {isLoggedIn && (
+          <div className="mt-4 flex justify-center">
+            <button onClick={signout}>로그아웃</button>
+          </div>
+        )}
       </Form>
     </>
   );

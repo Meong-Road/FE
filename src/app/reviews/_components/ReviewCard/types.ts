@@ -15,7 +15,7 @@ export interface ReviewCardUserNameProps {
   children: React.ReactNode;
 }
 
-// Review metadata
+// Review 관련
 export interface ReviewCardRatingProps {
   score: ReviewType["score"];
 }
@@ -28,7 +28,7 @@ export interface ReviewCardCommentProps {
   children: React.ReactNode;
 }
 
-// Gathering related
+// Gathering 관련
 export interface ReviewCardGatheringImageProps {
   image: string | null;
 }
@@ -42,7 +42,7 @@ export interface ReviewCardGatheringInfoProps {
   days: string;
 }
 
-// Header (composed)
+// Header
 export interface ReviewCardHeaderProps {
   profileImage: ReviewType["user"]["image"];
   nickName: ReviewType["user"]["nickName"];
@@ -50,7 +50,7 @@ export interface ReviewCardHeaderProps {
   createdAt: ReviewType["createdAt"];
 }
 
-// Body (composed)
+// Body
 export interface ReviewCardBodyProps {
   gatheringName: ReviewType["gathering"]["name"];
   location: ReviewType["gathering"]["location"];

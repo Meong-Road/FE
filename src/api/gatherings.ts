@@ -1,68 +1,64 @@
+import qs from "qs";
+
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { BookmarkType } from "@/lib/types/gatherings";
+
 import {
-  BookmarkType,
-  EGatheringType,
-  GatheringType,
-  QuickGatheringType,
-  RegularGatheringType,
-} from "@/lib/types/gathering";
-import {
-  PaginationRequest,
-  PaginationResponse,
-  Response,
-} from "@/mocks/data/common";
+  CancelLikeReq,
+  CancelLikeRes,
+  GetGatheringDetailReq,
+  GetGatheringDetailRes,
+  GetIsLikedReq,
+  GetIsLikedRes,
+  GetQuickGatheringsReq,
+  GetQuickGatheringsRes,
+  GetRegularGatheringsReq,
+  GetRegularGatheringsRes,
+  LikeReq,
+  LikeRes,
+} from "./types/gatherings";
 
 export const gatheringApi = {
   // 정기 모임 목록 조회
-  getRegularGatherings: async ({
-    page,
-    pageSize,
-    sortBy,
-    sortOrder,
-  }: PaginationRequest): Promise<PaginationResponse<RegularGatheringType>> => {
+  getRegularGatherings: async (
+    params: GetRegularGatheringsReq,
+  ): Promise<GetRegularGatheringsRes> => {
     const response = await fetch(
-      `${API_ENDPOINTS.GATHERING}?type=${EGatheringType.REGULAR}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(params)}`,
     );
     return response.json();
   },
   // 번개 모임 목록 조회
-  getQuickGatherings: async ({
-    page,
-    pageSize,
-    sortBy,
-    sortOrder,
-  }: PaginationRequest): Promise<PaginationResponse<QuickGatheringType>> => {
+  getQuickGatherings: async (
+    params: GetQuickGatheringsReq,
+  ): Promise<GetQuickGatheringsRes> => {
     const response = await fetch(
-      `${API_ENDPOINTS.GATHERING}?type=${EGatheringType.QUICK}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(params)}`,
     );
     return response.json();
   },
   // 모임 상세 조회
   getGatheringDetail: async ({
     id,
-  }: {
-    id: GatheringType["id"];
-  }): Promise<Response<GatheringType>> => {
+  }: GetGatheringDetailReq): Promise<GetGatheringDetailRes> => {
     const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}`);
     return response.json();
   },
   // 모임 찜 조회
-  getIsLiked: async (
-    id: GatheringType["id"],
-  ): Promise<Response<{ isLiked: boolean }>> => {
-    const response = await fetch(`/api/gatherings/${id}/bookmarks`);
+  getIsLiked: async ({ id }: GetIsLikedReq): Promise<GetIsLikedRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`);
     return response.json();
   },
   // 모임 찜하기
-  like: async (id: GatheringType["id"]): Promise<Response<void>> => {
-    const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
+  like: async ({ id }: LikeReq): Promise<LikeRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`, {
       method: "POST",
     });
     return response.json();
   },
   // 모임 찜 해제
-  cancelLike: async (id: GatheringType["id"]): Promise<Response<void>> => {
-    const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
+  cancelLike: async ({ id }: CancelLikeReq): Promise<CancelLikeRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`, {
       method: "DELETE",
     });
     return response.json();

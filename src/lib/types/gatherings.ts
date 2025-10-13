@@ -2,6 +2,11 @@ import { SEOUL_DISTRICTS } from "@/lib/constants/location";
 
 export type LocationType = (typeof SEOUL_DISTRICTS)[number];
 
+export enum EGatheringType {
+  QUICK = "QUICK",
+  REGULAR = "REGULAR",
+}
+
 export interface CommonGatheringType {
   id: number;
   name: string;
@@ -15,11 +20,6 @@ export interface CommonGatheringType {
   isParticipating: boolean;
   canceledAt: string | null; // date
   hostId?: number;
-}
-
-export enum EGatheringType {
-  QUICK = "QUICK",
-  REGULAR = "REGULAR",
 }
 
 export interface QuickGatheringType extends CommonGatheringType {

@@ -11,10 +11,12 @@ export const reviewsHandlers = [
     const page = Number(url.searchParams.get("page") ?? 0);
     const size = Number(url.searchParams.get("size") ?? 10);
 
-    const filtered = location
-      ? mockReviews.filter((r) => r.gathering.location === location)
-      : mockReviews;
-
+    const filtered = (() => {
+      if (!location || location === "서울 전체") {
+        return mockReviews;
+      }
+      return mockReviews.filter((r) => r.gathering.location === location);
+    })();
     const start = page * size;
     const end = start + size;
     const paginated = filtered.slice(start, end);

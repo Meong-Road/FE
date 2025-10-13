@@ -11,14 +11,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useGetReviewsByGathering } from "@/hooks/queries/review";
+import { useGetReviewsByGathering } from "@/hooks/queries/reviews";
 
 export default function GatheringReviewSection() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isPending, isError } = useGetReviewsByGathering({
     gatheringId: 1,
     page: currentPage,
-    size: 10,
   });
 
   // TODO 로딩, 에러 처리

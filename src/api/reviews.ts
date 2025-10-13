@@ -1,44 +1,42 @@
-// src/api/reviews/getReviews.ts
-import { API_ENDPOINTS } from "@/lib/constants/endpoints";
-import { GetReviewsReq, GetReviewsRes } from "@/lib/types/review";
+import qs from "qs";
+
 import {
   GetReviewsByGatheringReq,
   GetReviewsByGatheringRes,
-} from "@/lib/types/reviews";
-import { Response } from "@/mocks/data/common";
+  GetReviewsReq,
+  GetReviewsRes,
+} from "@/api/types/reviews";
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
-import { customFetch } from "./customFetch"; // 네가 만든 fetch 래퍼가 있다면 이걸 사용
-
-export async function getReviews({
-  location,
-  page = 0,
-  size = 10,
-  sort = "createdAt,desc",
-}: GetReviewsReq): Promise<Response<GetReviewsRes>> {
-  const params = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-    sort,
-  });
-
-  if (location) {
-    params.append("location", location);
-  }
-
-  return await customFetch.get(`${API_ENDPOINTS.REVIEW}?${params.toString()}`, {
-    isPublic: true, // 공개 API - 인증 불필요
-  });
-}
+import { customFetch } from "./customFetch";
 
 const REVIEW_API = {
+  getReviews: async ({
+    location = "서울 전체",
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: Partial<GetReviewsReq>): Promise<GetReviewsRes> => {
+    const params = new URLSearchParams({
+      location,
+      page: page.toString(),
+      size: size.toString(),
+      sort: sort.join(","),
+    });
+
+    return await customFetch.get(
+      `${API_ENDPOINTS.REVIEW}?${params.toString()}`,
+      {
+        isPublic: true, // 공개 API - 인증 불필요
+      },
+    );
+  },
   getReviewsByGathering: async ({
     gatheringId,
-    page,
-    size,
-    sort,
+    ...params
   }: GetReviewsByGatheringReq): Promise<GetReviewsByGatheringRes> => {
     const response = await fetch(
-      `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}`,
+      `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
     );
     return response.json();
   },

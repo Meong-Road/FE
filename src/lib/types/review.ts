@@ -1,4 +1,4 @@
-import { RegularGatheringType } from "./gathering";
+import { RegularGatheringType } from "./gatherings";
 import { UserType } from "./user";
 
 export type ReviewScore = 1 | 2 | 3 | 4 | 5;
@@ -12,20 +12,4 @@ export interface ReviewType {
   createdAt: string;
   gathering: RegularGatheringType;
   user: UserType;
-}
-
-export interface GetReviewsReq {
-  location?: string | null;
-  page: number;
-  size: number;
-  sort: string;
-}
-
-export interface GetReviewsRes {
-  content: ReviewType[];
-  page: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
 }

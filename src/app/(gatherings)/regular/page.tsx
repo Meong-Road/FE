@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
-import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gathering";
+import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gatherings";
 
 import RegularGatheringCard from "../../_components/RegularGatheringCard";
 import LocationSelect from "../_components/LocationSelect";
@@ -21,7 +21,7 @@ export default function RegularGatheringListPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetInfiniteRegularGatherings();
+  } = useGetInfiniteRegularGatherings({});
 
   useEffect(() => {
     if (inView) fetchNextPage();

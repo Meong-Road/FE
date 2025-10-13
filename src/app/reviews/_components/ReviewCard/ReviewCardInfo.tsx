@@ -19,7 +19,7 @@ function Divider({ size = "sm" }: { size?: "sm" | "md" }) {
 
 function InfoItem({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1.5">
       <span className="text-sm text-slate-400">{label}</span>
       <span className="text-sm font-medium text-slate-600">{value}</span>
     </div>

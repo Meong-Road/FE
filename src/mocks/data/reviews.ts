@@ -25,7 +25,6 @@ export const mockReviews: ReviewType[] = [
       description:
         "서울숲의 상쾌한 공기를 마시며 반려견과 함께 힐링하는 시간을 가져요. 사회성 기르기에도 최고!",
       days: '["SAT", "SUN"]',
-      time: 15,
       location: "성동구",
       participantCount: 8,
       capacity: 15,
@@ -64,7 +63,6 @@ export const mockReviews: ReviewType[] = [
       description:
         "아름다운 석촌호수 야경을 보며 반려견과 낭만적인 밤 산책을 즐겨보세요.",
       days: '["WED"]',
-      time: 18,
       location: "송파구",
       participantCount: 5,
       capacity: 10,
@@ -103,7 +101,6 @@ export const mockReviews: ReviewType[] = [
       description:
         "넓은 올림픽공원에서 마음껏 뛰어놀고 싶은 강아지들을 위한 정기 모임입니다. 스트레스 확 풀어요!",
       days: '["SAT"]',
-      time: 16,
       location: "송파구",
       participantCount: 12,
       capacity: 20,
@@ -142,7 +139,6 @@ export const mockReviews: ReviewType[] = [
       description:
         "돗자리 펴고 맛있는 간식도 나눠먹고, 이야기도 나누는 힐링 번개 모임입니다.",
       days: '["FRI"]',
-      time: 13,
       location: "서초구",
       participantCount: 6,
       capacity: 12,
@@ -181,7 +177,6 @@ export const mockReviews: ReviewType[] = [
       description:
         "5kg 미만 소형견 친구들 모여라! 연남동 카페거리에서 산책도 하고 펫프렌들리 카페에서 쉬어가요.",
       days: '["THU"]',
-      time: 19,
       location: "마포구",
       participantCount: 4,
       capacity: 6,
@@ -280,7 +275,6 @@ export const mockReviews: ReviewType[] = [
       name: `${locationNames[i % locationNames.length]} ${gatheringTypes[i % gatheringTypes.length]}`,
       description: "함께 산책하며 즐거운 추억을 만들어요.",
       days: '["SAT"]',
-      time: 14 + (i % 5),
       location: locationDistricts[i % locationDistricts.length],
       participantCount: (i % 7) + 3,
       capacity: 10 + (i % 5),

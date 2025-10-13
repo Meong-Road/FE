@@ -171,7 +171,6 @@ export const REGULAR_GATHERINGS = [
     canceledAt: null,
     hostId: 201,
     days: '["SAT"]',
-    time: 9,
   },
   {
     id: 12,
@@ -187,7 +186,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: null,
     days: '["TUE", "THU"]',
-    time: 19,
   },
   {
     id: 13,
@@ -204,7 +202,6 @@ export const REGULAR_GATHERINGS = [
     canceledAt: null,
     hostId: 202,
     days: '["SUN"]',
-    time: 16,
   },
   {
     id: 14,
@@ -220,7 +217,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: true,
     canceledAt: null,
     days: '["FRI", "SAT"]',
-    time: 18,
   },
   {
     id: 15,
@@ -236,7 +232,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: null,
     days: '["MON", "WED", "FRI"]',
-    time: 7,
   },
   {
     id: 16,
@@ -253,7 +248,6 @@ export const REGULAR_GATHERINGS = [
     canceledAt: null,
     hostId: 203,
     days: '["MON", "TUE", "WED", "THU", "FRI"]',
-    time: 20,
   },
   {
     id: 17,
@@ -269,7 +263,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: null,
     days: '["SUN"]',
-    time: 14,
   },
   {
     id: 18,
@@ -285,7 +278,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: true,
     canceledAt: null,
     days: '["MON"]',
-    time: 6,
   },
   {
     id: 19,
@@ -301,7 +293,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: null,
     days: '["SAT", "SUN"]',
-    time: 10,
   },
   {
     id: 20,
@@ -317,7 +308,6 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: new Date("2025-09-25T12:00:00"),
     days: '["WED"]',
-    time: 18,
   },
 ];
 

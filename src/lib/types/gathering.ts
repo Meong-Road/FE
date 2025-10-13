@@ -30,7 +30,6 @@ export interface QuickGatheringType extends CommonGatheringType {
 export interface RegularGatheringType extends CommonGatheringType {
   type: EGatheringType.REGULAR;
   days: string;
-  time: number;
 }
 
 export type GatheringType = QuickGatheringType | RegularGatheringType;

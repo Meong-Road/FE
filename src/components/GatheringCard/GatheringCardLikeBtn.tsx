@@ -12,12 +12,17 @@ import {
   useLike,
 } from "@/hooks/queries/gathering";
 import { GatheringType } from "@/lib/types/gathering";
+import { cn } from "@/lib/utils";
 
 export interface GatheringCardLikeBtnProps {
+  className?: string;
   id: GatheringType["id"];
 }
 
-export function GatheringCardLikeBtn({ id }: GatheringCardLikeBtnProps) {
+export function GatheringCardLikeBtn({
+  className,
+  id,
+}: GatheringCardLikeBtnProps) {
   const queryClient = useQueryClient();
   const { data, isPending, isError } = useGetIsLiked({
     id,
@@ -41,11 +46,11 @@ export function GatheringCardLikeBtn({ id }: GatheringCardLikeBtnProps) {
 
   if (isPending)
     return (
-      <div className="absolute top-8 right-6 h-8 w-8 rounded-full bg-slate-50"></div>
+      <div className={cn("h-8 w-8 rounded-full bg-slate-50", className)}></div>
     );
   if (isError)
     return (
-      <div className="absolute top-8 right-6 h-8 w-8 rounded-full bg-slate-50">
+      <div className={cn("h-8 w-8 rounded-full bg-slate-50", className)}>
         오류
       </div>
     );
@@ -61,7 +66,7 @@ export function GatheringCardLikeBtn({ id }: GatheringCardLikeBtnProps) {
   };
 
   return (
-    <button className="absolute top-8 right-6" onClick={handleLikeButtonClick}>
+    <button className={className} onClick={handleLikeButtonClick}>
       {isLiked ? (
         <LikeBtnFilled width={48} height={48} />
       ) : (

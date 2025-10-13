@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 
 import {
   cancelLike,
+  getGatheringDetail,
   getIsLiked,
   getMyBookmarkedGatherings,
   getQuickGatherings,
@@ -16,6 +17,7 @@ export const GATHERING_QUERY_KEY = {
     type,
   ],
   IS_LIKED: ({ id }: { id: GatheringType["id"] }) => ["isLiked", id],
+  GATHERING_DETAIL: ({ id }: { id: GatheringType["id"] }) => ["gatherings", id],
 };
 
 export const useGetInfiniteRegularGatherings = () => {
@@ -116,5 +118,12 @@ export const useGetInfiniteBookmarkedGatherings = (
       !lastPage.result.last ? allPages.length : undefined,
     select: (data) =>
       data.pages.flatMap((page) => page.result.content || []) || [],
+  });
+};
+
+export const useGetGatheringDetail = ({ id }: { id: GatheringType["id"] }) => {
+  return useQuery({
+    queryKey: GATHERING_QUERY_KEY.GATHERING_DETAIL({ id }),
+    queryFn: () => getGatheringDetail({ id }),
   });
 };

@@ -70,7 +70,15 @@ export async function getMyBookmarkedGatherings({
     size: size.toString(),
     sort,
   });
-
   const response = await fetch(`/api/gatherings/bookmarks?${queryParams}`);
+  return response.json();
+}
+
+export async function getGatheringDetail({
+  id,
+}: {
+  id: GatheringType["id"];
+}): Promise<Response<GatheringType>> {
+  const response = await fetch(`/api/gatherings/${id}`);
   return response.json();
 }

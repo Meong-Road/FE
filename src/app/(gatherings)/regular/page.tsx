@@ -31,8 +31,8 @@ export default function RegularGatheringListPage() {
   if (isError) return <div>에러</div>;
 
   return (
-    <div className="px-2">
-      <div className="mx-auto max-w-[1280px]">
+    <>
+      <div className="mx-auto max-w-[1280px] px-4">
         <div className="mb-6 flex items-center justify-between">
           {/* 필터 */}
           <div className="flex items-center gap-4">
@@ -60,6 +60,6 @@ export default function RegularGatheringListPage() {
       </div>
 
       {hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-4" />}
-    </div>
+    </>
   );
 }

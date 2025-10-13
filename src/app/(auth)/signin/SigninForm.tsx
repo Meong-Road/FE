@@ -1,8 +1,8 @@
 "use client";
 
-import { Form } from "../../../../components/Form";
-import { SigninFormSchema, useSigninForm } from "../_hooks/useSigninForm";
-import { useSigninMutation } from "../_hooks/useSigninMutation";
+import { Form } from "@/components/Form";
+import { SigninFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
+import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
 
 export default function SigninForm() {
   const form = useSigninForm();

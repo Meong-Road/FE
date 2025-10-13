@@ -1,50 +1,30 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
-import { getMyBookmarkedGatherings } from "@/api/gatherings";
 import QuickGatheringCard from "@/app/_components/QuickGatheringCard";
 import RegularGatheringCard from "@/app/_components/RegularGatheringCard";
-import { EGatheringType } from "@/lib/types/gathering";
+import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gathering";
 
 export default function FavoritesList({ currentTab }: { currentTab: string }) {
-  const observerRef = useRef<HTMLDivElement>(null);
+  const { ref, inView } = useInView();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["bookmarkedGatherings", currentTab],
-      queryFn: ({ pageParam }) =>
-        getMyBookmarkedGatherings({
-          type:
-            currentTab === "regular"
-              ? EGatheringType.REGULAR
-              : EGatheringType.QUICK,
-          page: Number(pageParam),
-          size: 10,
-          sort: "createdAt",
-        }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) =>
-        lastPage.hasNext ? allPages.length : undefined,
-    });
+  const {
+    data,
+    isPending,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetInfiniteBookmarkedGatherings(currentTab);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1 },
-    );
+    if (inView) fetchNextPage();
+  }, [inView, fetchNextPage]);
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasNextPage, fetchNextPage]);
+  if (isPending) return <div>Loading...</div>;
+  if (isError) return <div>데이터를 불러오는 데 실패했습니다</div>;
 
   const gatherings = data?.pages.flatMap((page) => page.data) || [];
 
@@ -57,14 +37,10 @@ export default function FavoritesList({ currentTab }: { currentTab: string }) {
           <QuickGatheringCard key={gathering.id} gathering={gathering} />
         ),
       )}
-
-      <div ref={observerRef} className="h-10">
-        {isFetchingNextPage && (
-          <div className="text-accent-foreground py-4 text-center">
-            로딩 중...
-          </div>
-        )}
-      </div>
+      {isFetchingNextPage && <div>Loading...</div>}
+      {hasNextPage && !isFetchingNextPage && (
+        <div ref={ref} className="h-4"></div>
+      )}
     </ul>
   );
 }

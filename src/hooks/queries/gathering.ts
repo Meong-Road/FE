@@ -3,6 +3,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {
   cancelLike,
   getIsLiked,
+  getMyBookmarkedGatherings,
   getQuickGatherings,
   getRegularGatherings,
   like,
@@ -89,5 +90,25 @@ export const useCancelLike = ({
       return cancelLike(id);
     },
     onSuccess,
+  });
+};
+
+export const useGetInfiniteBookmarkedGatherings = (currentTab: string) => {
+  return useInfiniteQuery({
+    queryKey: ["bookmarkedGatherings", currentTab],
+    queryFn: ({ pageParam }) => {
+      return getMyBookmarkedGatherings({
+        type:
+          currentTab === "regular"
+            ? EGatheringType.REGULAR
+            : EGatheringType.QUICK,
+        page: Number(pageParam),
+        size: 10,
+        sort: "createAt",
+      });
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.hasNext ? allPages.length : undefined,
   });
 };

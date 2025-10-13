@@ -1,5 +1,4 @@
 import Heart from "@/assets/icons/heart.svg";
-import HeartEmpty from "@/assets/icons/heart-empty.svg";
 
 import { ReviewCardRatingProps } from "../types";
 
@@ -13,7 +12,7 @@ export function Rating({ score }: ReviewCardRatingProps) {
           className="flex flex-shrink-0 items-center justify-center"
           key={index}
         >
-          <Heart />
+          <Heart className="fill-primary size-6" />
         </li>
       ))}
       {Array.from({ length: MAX_SCORE - score }, (_, index) => (
@@ -21,7 +20,7 @@ export function Rating({ score }: ReviewCardRatingProps) {
           className="flex flex-shrink-0 items-center justify-center"
           key={index}
         >
-          <HeartEmpty />
+          <Heart className="size-6 fill-slate-200" />
         </li>
       ))}
     </ol>

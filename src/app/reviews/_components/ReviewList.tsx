@@ -1,7 +1,6 @@
+import { ReviewCard } from "@/components/ReviewCard";
 import { ReviewType } from "@/lib/types/review";
 import { formatDays } from "@/lib/utils/dateTime";
-
-import { ReviewCard } from "./ReviewCard/ReviewCard";
 
 interface ReviewListProps {
   reviews: ReviewType[];

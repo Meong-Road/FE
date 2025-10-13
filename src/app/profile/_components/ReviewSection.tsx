@@ -8,7 +8,7 @@ export default function ReviewSection() {
       <ul>
         <ReviewCard>
           <div className="flex gap-8">
-            <ReviewCard.Image />
+            <ReviewCard.Image image={null} />
             <div className="flex flex-col justify-between">
               <ReviewCard.Profile score={5} />
               <div>

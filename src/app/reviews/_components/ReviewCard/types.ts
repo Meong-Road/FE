@@ -17,8 +17,7 @@ export interface ReviewCardTitleProps {
 
 export interface ReviewCardInfoProps {
   location: ReviewType["gathering"]["location"];
-  days?: string;
-  time: number;
+  days: string;
 }
 
 export interface ReviewCardCommentProps {

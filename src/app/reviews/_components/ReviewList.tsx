@@ -34,7 +34,6 @@ export function ReviewList({ reviews }: ReviewListProps) {
                 <ReviewCard.Info
                   location={review.gathering.location}
                   days={formatDays(review.gathering.days)}
-                  time={review.gathering.time}
                 />
                 <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>
               </div>

@@ -26,7 +26,7 @@ function InfoItem({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-export function ReviewCardInfo({ location, days, time }: ReviewCardInfoProps) {
+export function ReviewCardInfo({ location, days }: ReviewCardInfoProps) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm">
       {location && (
@@ -39,12 +39,6 @@ export function ReviewCardInfo({ location, days, time }: ReviewCardInfoProps) {
         <>
           <Divider size="sm" />
           <InfoItem label="요일" value={days} />
-        </>
-      )}
-      {time && (
-        <>
-          <Divider size="sm" />
-          <InfoItem label="시간" value={/*formatTime(time)*/ time + ":00"} />
         </>
       )}
     </div>

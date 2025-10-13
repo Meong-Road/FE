@@ -59,7 +59,7 @@ export function ReviewCardProfile({
               </li>
             ))}
           </ol>
-          <span className="flex-shrink-0 text-sm text-slate-400">
+          <span className="flex-shrink-0 text-xs text-slate-400 sm:text-sm">
             {formatDateShort(createdAt)}
           </span>
         </div>

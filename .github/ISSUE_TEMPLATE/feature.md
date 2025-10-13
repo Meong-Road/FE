@@ -1,7 +1,7 @@
 ---
 name: Feature Report
-about: 새로울 기능을 추가할 때 사용해주세요
-title: "[FEAT] "
+about: 새로운 기능을 추가할 때 사용해주세요
+title: "[FEATURE] "
 labels: feature
 assignees: ""
 ---

@@ -6,11 +6,11 @@ import Link from "next/link";
 
 import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gathering";
 
+import QuickGatheringCard from "../../_components/QuickGatheringCard";
 import LocationSelect from "../_components/LocationSelect";
 import SortBySelector from "../_components/SortBySelector";
 
 import FilterPopover from "./_components/FilterPopover";
-import QuickGatheringCard from "./_components/QuickGatheringCard";
 
 export default function QuickGatheringListPage() {
   const { ref, inView } = useInView();

@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -11,136 +10,124 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
+import { usePagenation } from "@/hooks";
+import { ELLIPSIS } from "@/hooks/pagenation/_utils";
 
 interface PaginationProps {
-  currentPage: number; // 0-index
+  currentPage: number;
   totalPages: number;
 }
 
+function PageButton({
+  page,
+  currentPage,
+  onClick,
+}: {
+  page: number;
+  currentPage: number;
+  onClick: (page: number) => void;
+}) {
+  const isActive = currentPage === page;
+
+  return (
+    <PaginationItem>
+      <PaginationLink
+        onClick={() => onClick(page - 1)}
+        isActive={isActive}
+        className={
+          isActive
+            ? "h-9 w-9 cursor-pointer rounded-lg bg-[#FEF0C7] font-semibold text-gray-900 hover:bg-[#FEE5A0] sm:h-10 sm:w-10"
+            : "h-9 w-9 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-10 sm:w-10"
+        }
+      >
+        {page}
+      </PaginationLink>
+    </PaginationItem>
+  );
+}
+
+function NavButton({
+  direction,
+  disabled,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const Icon = direction === "prev" ? ChevronLeft : ChevronRight;
+
+  return (
+    <PaginationItem>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onClick}
+        disabled={disabled}
+        className="h-9 w-9 rounded-lg hover:bg-gray-100 disabled:opacity-30 sm:h-10 sm:w-10"
+      >
+        <Icon className="h-4 w-4 text-gray-600 sm:h-5 sm:w-5" />
+      </Button>
+    </PaginationItem>
+  );
+}
+
 export function Pagination({ currentPage, totalPages }: PaginationProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+  const {
+    currentPageNumber,
+    mobilePageNumbers,
+    desktopPageNumbers,
+    canGoPrev,
+    canGoNext,
+    goToPage,
+    goToPrev,
+    goToNext,
+  } = usePagenation({ currentPage, totalPages });
 
   if (totalPages <= 1) {
     return null;
   }
 
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", newPage.toString());
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
   return (
     <UIPagination className="mt-8">
-      <PaginationContent className="gap-2">
-        {/* 이전 버튼 */}
-        <PaginationItem>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 0}
-            className="h-9 gap-1 px-3"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">이전</span>
-          </Button>
-        </PaginationItem>
+      <PaginationContent className="flex gap-1 sm:gap-2">
+        <NavButton direction="prev" disabled={!canGoPrev} onClick={goToPrev} />
 
-        {/* 페이지 번호 */}
-        {totalPages <= 10 ? (
-          // 10페이지 이하: i+1 (1부터 시작)전부 표시
-          Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => handlePageChange(page - 1)}
-                isActive={currentPage + 1 === page}
-                className={
-                  currentPage + 1 === page
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          ))
-        ) : (
-          // 11페이지 이상: 간단한 축약
-          <>
-            {/* 첫 페이지 */}
-            <PaginationItem>
-              <PaginationLink
-                onClick={() => handlePageChange(0)}
-                isActive={currentPage === 0}
-                className={
-                  currentPage === 0
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }
-              >
-                1
-              </PaginationLink>
-            </PaginationItem>
-
-            {/* 왼쪽 ellipsis */}
-            {currentPage > 2 && (
-              <PaginationItem>
-                <PaginationEllipsis />
+        <div className="flex gap-1 sm:hidden">
+          {mobilePageNumbers.map((page, idx) =>
+            page === ELLIPSIS ? (
+              <PaginationItem key={`ellipsis-${idx}`}>
+                <PaginationEllipsis className="h-9 w-9 text-gray-400" />
               </PaginationItem>
-            )}
+            ) : (
+              <PageButton
+                key={page}
+                page={page}
+                currentPage={currentPageNumber}
+                onClick={goToPage}
+              />
+            ),
+          )}
+        </div>
 
-            {/* 현재 페이지 (첫/마지막이 아닐 때만) */}
-            {currentPage > 0 && currentPage < totalPages - 1 && (
-              <PaginationItem>
-                <PaginationLink
-                  isActive
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                >
-                  {currentPage + 1}
-                </PaginationLink>
+        <div className="hidden gap-2 sm:flex">
+          {desktopPageNumbers.map((page, idx) =>
+            page === ELLIPSIS ? (
+              <PaginationItem key={`ellipsis-${idx}`}>
+                <PaginationEllipsis className="h-10 w-10 text-gray-400" />
               </PaginationItem>
-            )}
+            ) : (
+              <PageButton
+                key={page}
+                page={page}
+                currentPage={currentPageNumber}
+                onClick={goToPage}
+              />
+            ),
+          )}
+        </div>
 
-            {/* 오른쪽 ellipsis */}
-            {currentPage < totalPages - 3 && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-
-            {/* 마지막 페이지 */}
-            <PaginationItem>
-              <PaginationLink
-                onClick={() => handlePageChange(totalPages - 1)}
-                isActive={currentPage === totalPages - 1}
-                className={
-                  currentPage === totalPages - 1
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }
-              >
-                {totalPages}
-              </PaginationLink>
-            </PaginationItem>
-          </>
-        )}
-
-        {/* 다음 버튼 */}
-        <PaginationItem>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage >= totalPages - 1}
-            className="h-9 gap-1 px-3"
-          >
-            <span className="hidden sm:inline">다음</span>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </PaginationItem>
+        <NavButton direction="next" disabled={!canGoNext} onClick={goToNext} />
       </PaginationContent>
     </UIPagination>
   );

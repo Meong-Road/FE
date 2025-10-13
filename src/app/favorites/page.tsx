@@ -3,15 +3,12 @@ import { Tab } from "../profile/_components/Tab";
 import FavoritesList from "./_components/FavoritesList";
 
 interface FavoritesProps {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  searchParams?: Promise<Record<string, string | undefined>>;
 }
 
 export default async function Favorites({ searchParams }: FavoritesProps) {
   const resolvedSearchParams = await searchParams;
-  const currentTab =
-    typeof resolvedSearchParams?.tab === "string"
-      ? resolvedSearchParams.tab
-      : "regular";
+  const currentTab = resolvedSearchParams?.tab ?? "regular";
 
   return (
     <section className="mx-auto max-w-[1280px]">

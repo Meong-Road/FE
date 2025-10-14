@@ -1,5 +1,5 @@
 "use client";
-import { notFound, useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { useGetGatheringDetail } from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
@@ -16,7 +16,6 @@ export default function QuickGatheringDetailPage() {
     id: Number(id),
   });
 
-  if (!id) notFound();
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>에러</div>;
   if (!data.result) return <div>데이터가 없습니다.</div>;

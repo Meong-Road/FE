@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 
 import { postPetInfo, putPetInfo } from "@/api/pets";
-import { useModalStore } from "@/store/modalStore";
 
 import Dog from "../../assets/images/dog.svg";
 import Button from "../Button";
@@ -29,12 +28,12 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
 
 interface PetInfoModalProps {
   type: "first-login" | "add-pet" | "edit-pet";
+  onClose: () => void;
 }
 
-export default function PetInfoModal({ type }: PetInfoModalProps) {
+export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
   const form = usePetInfoForm();
   const [isLoading, setIsLoading] = useState(false);
-  const { closeModal } = useModalStore();
 
   const { id } = useParams();
 
@@ -45,16 +44,16 @@ export default function PetInfoModal({ type }: PetInfoModalProps) {
       if (type === "edit-pet") {
         // 해당 반려동물 수정 버튼을 누르면 petId가 path에 뜬다고 가정
         await putPetInfo(Number(id), data);
-        closeModal();
+        onClose();
       } else {
         await postPetInfo(data);
         // 성공 토스트가 있으면 좋을 듯
-        closeModal();
+        onClose();
       }
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 

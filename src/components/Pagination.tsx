@@ -41,8 +41,8 @@ function PageButton({
         isActive={isActive}
         className={
           isActive
-            ? "text-primary pointer-events-none h-10 w-10 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-12 sm:w-12"
-            : "h-10 w-10 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-12 sm:w-12"
+            ? "text-primary pointer-events-none h-9 w-9 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-12 sm:w-12"
+            : "h-9 w-9 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-12 sm:w-12"
         }
       >
         {page}
@@ -69,7 +69,7 @@ function NavButton({
         size="icon"
         onClick={onClick}
         disabled={disabled}
-        className="h-10 w-10 rounded-lg hover:bg-gray-100 disabled:opacity-30 sm:h-12 sm:w-12"
+        className="h-9 w-9 rounded-lg hover:bg-gray-100 disabled:opacity-30 sm:h-12 sm:w-12"
       >
         <Icon className="size-5 fill-gray-800 sm:size-6" />
       </Button>
@@ -98,7 +98,7 @@ export function Pagination({
   }
 
   return (
-    <UIPagination className="mt-8">
+    <UIPagination className="mt-12">
       <PaginationContent className="flex gap-2.5 sm:gap-2">
         <NavButton direction="prev" disabled={!canGoPrev} onClick={goToPrev} />
 
@@ -106,7 +106,7 @@ export function Pagination({
           {mobilePageNumbers.map((page, idx) =>
             page === ELLIPSIS ? (
               <PaginationItem key={`ellipsis-${idx}`}>
-                <PaginationEllipsis className="h-9 w-9 text-gray-400" />
+                <PaginationEllipsis className="h-9 w-5 text-gray-400" />
               </PaginationItem>
             ) : (
               <PageButton
@@ -123,7 +123,7 @@ export function Pagination({
           {desktopPageNumbers.map((page, idx) =>
             page === ELLIPSIS ? (
               <PaginationItem key={`ellipsis-${idx}`}>
-                <PaginationEllipsis className="h-10 w-10 text-gray-400" />
+                <PaginationEllipsis className="text-gray-400 sm:h-12 sm:w-12" />
               </PaginationItem>
             ) : (
               <PageButton

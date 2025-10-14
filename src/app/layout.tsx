@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+import Header from "@/components/Header";
 import { initMocks } from "@/mocks";
 import MSWProvider from "@/providers/MSWProvider";
 import QueryProvider from "@/providers/QueryProvider";
@@ -30,7 +31,8 @@ export default function RootLayout({
       >
         <QueryProvider>
           <MSWProvider>
-            {children}
+            <Header />
+            <div className="relative pt-26">{children}</div>
             <div id="modal-root"></div>
           </MSWProvider>
         </QueryProvider>

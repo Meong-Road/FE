@@ -34,7 +34,7 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-10 h-22 w-full py-4 backdrop-blur-2xl",
+        "fixed top-0 left-0 z-10 h-22 w-full bg-white/70 py-4 backdrop-blur-2xl",
         className,
       )}
     >
@@ -58,7 +58,7 @@ export default function Header({ className }: { className?: string }) {
               </li>
             ))}
           </ul>
-          <Link href="/profile/userId" className="shrink-0 p-1.5">
+          <Link href="/profile" className="shrink-0 p-1.5">
             <ProfileSvg
               width={42}
               className="rounded-full border border-[#DDDDDD]"

@@ -18,7 +18,7 @@ export default async function Profile({ searchParams }: ProfileProps) {
       : "joined";
 
   return (
-    <section className="mx-auto max-w-[1132px] pt-16">
+    <section className="mx-auto max-w-[1132px]">
       <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
       <ProfileCard>
         <div className="mb-3 flex items-center justify-between">
@@ -36,7 +36,7 @@ export default async function Profile({ searchParams }: ProfileProps) {
           </div>
         </ProfileCard.Content>
       </ProfileCard>
-      <Tab>
+      <Tab className="mt-16">
         <Tab.List>
           <Tab.Item href="/profile" isActive={currentTab === "joined"}>
             내 모임

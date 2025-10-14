@@ -87,7 +87,7 @@ describe("Header", () => {
     renderHeader();
 
     const profileLink = screen.getByTestId("profile-svg").closest("a");
-    expect(profileLink).toHaveAttribute("href", "/profile/userId");
+    expect(profileLink).toHaveAttribute("href", "/profile");
   });
 
   it("현재 경로에 해당하는 메뉴가 활성화되어야 한다", () => {

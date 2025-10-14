@@ -7,7 +7,7 @@ import { useModalStore } from "@/store/modalStore";
 export default function Home() {
   const { isOpen, openModal, closeModal } = useModalStore();
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="absolute top-0 left-0 flex h-screen w-full items-center justify-center">
       <h1 className="text-4xl font-bold text-green-700">멍로드</h1>
 
       <button onClick={() => openModal("add-pet")}>모달아 열려라</button>

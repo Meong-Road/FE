@@ -1,9 +1,13 @@
+import { SEOUL_DISTRICTS } from "@/lib/constants/location";
+
+export type LocationType = (typeof SEOUL_DISTRICTS)[number];
+
 export interface CommonGatheringType {
   id: number;
   name: string;
   description: string;
   registrationEnd: string; // date
-  location: string;
+  location: LocationType;
   participantCount: number;
   capacity: number;
   image: string | null;
@@ -25,8 +29,7 @@ export interface QuickGatheringType extends CommonGatheringType {
 
 export interface RegularGatheringType extends CommonGatheringType {
   type: EGatheringType.REGULAR;
-  day: string;
-  time: number;
+  days: string;
 }
 
 export type GatheringType = QuickGatheringType | RegularGatheringType;

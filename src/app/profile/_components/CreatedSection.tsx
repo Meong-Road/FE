@@ -21,11 +21,7 @@ export default function CreatedSection() {
                 </div>
                 <GatheringCard.Title>리트리버 모여라</GatheringCard.Title>
                 <GatheringCard.People people={20} limit={20} />
-                <GatheringCard.Info
-                  location="을지로 3가"
-                  date="11월 17일"
-                  time="17:30"
-                />
+                <GatheringCard.Info location="성북구" date="11월 17일" />
               </div>
             </div>
           </GatheringCard>

@@ -1,7 +1,10 @@
 import * as React from "react";
-import { MoreHorizontalIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MoreHorizontalIcon,
+} from "lucide-react";
 
-import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +14,11 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
-      className={cn("mx-auto flex w-full justify-center", className)}
+      className={cn(
+        "mx-auto flex w-full justify-center",
+        "select-none",
+        className,
+      )}
       {...props}
     />
   );
@@ -51,12 +58,11 @@ function PaginationLink({
       data-slot="pagination-link"
       data-active={isActive}
       className={cn(
+        "cursor-pointer",
         buttonVariants({
-          variant: isActive ? "outline" : "ghost",
+          variant: isActive ? "default" : "ghost",
           size,
         }),
-        "border-0 font-bold",
-        isActive ? "bg-secondary text-primary" : "text-slate-400",
         className,
       )}
       {...props}
@@ -75,7 +81,8 @@ function PaginationPrevious({
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
-      <ArrowLeftIcon className="size-6 fill-slate-300" />
+      <ChevronLeftIcon />
+      <span className="hidden sm:block">Previous</span>
     </PaginationLink>
   );
 }
@@ -91,7 +98,8 @@ function PaginationNext({
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <ArrowLeftIcon className="size-6 rotate-180 fill-gray-800" />
+      <span className="hidden sm:block">Next</span>
+      <ChevronRightIcon />
     </PaginationLink>
   );
 }
@@ -107,7 +115,7 @@ function PaginationEllipsis({
       className={cn("flex size-9 items-center justify-center", className)}
       {...props}
     >
-      <MoreHorizontalIcon className="size-4 fill-slate-400" />
+      <MoreHorizontalIcon className="size-4" />
       <span className="sr-only">More pages</span>
     </span>
   );

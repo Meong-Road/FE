@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 
-import { useGetGatheringDetail } from "@/hooks/queries/gathering";
+import { useGetGatheringDetail } from "@/hooks/queries/gatherings";
 import { isQuickGathering } from "@/lib/utils/gathering";
 
 import GatheringInfoSection from "./_components/GatheringInfo/GatheringInfoSection";

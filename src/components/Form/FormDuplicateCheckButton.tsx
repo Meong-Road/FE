@@ -22,7 +22,6 @@ export function DuplicateCheckButton<T extends FieldValues>({
   type,
   checkPassedField,
   errorMessage,
-  successMessage,
   className,
 }: DuplicateCheckButtonProps<T>) {
   const { checkDuplicate, isChecking, isButtonDisabled, isAvailable } =

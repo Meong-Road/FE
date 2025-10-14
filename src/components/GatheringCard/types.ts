@@ -1,4 +1,4 @@
-import { GatheringType } from "@/lib/types/gathering";
+import { GatheringType } from "@/lib/types/gatherings";
 
 export interface GatheringCardProps {
   className?: string;

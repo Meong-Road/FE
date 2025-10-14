@@ -170,8 +170,7 @@ export const REGULAR_GATHERINGS = [
     isParticipating: true,
     canceledAt: null,
     hostId: 201,
-    day: '["SAT"]',
-    time: 9,
+    days: '["SAT"]',
   },
   {
     id: 12,
@@ -186,8 +185,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: true,
     isParticipating: false,
     canceledAt: null,
-    day: '["TUE", "THU"]',
-    time: 19,
+    days: '["TUE", "THU"]',
   },
   {
     id: 13,
@@ -203,8 +201,7 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: null,
     hostId: 202,
-    day: '["SUN"]',
-    time: 16,
+    days: '["SUN"]',
   },
   {
     id: 14,
@@ -219,8 +216,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: true,
     isParticipating: true,
     canceledAt: null,
-    day: '["FRI", "SAT"]',
-    time: 18,
+    days: '["FRI", "SAT"]',
   },
   {
     id: 15,
@@ -235,8 +231,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,
-    day: '["MON", "WED", "FRI"]',
-    time: 7,
+    days: '["MON", "WED", "FRI"]',
   },
   {
     id: 16,
@@ -252,8 +247,7 @@ export const REGULAR_GATHERINGS = [
     isParticipating: true,
     canceledAt: null,
     hostId: 203,
-    day: '["MON", "TUE", "WED", "THU", "FRI"]',
-    time: 20,
+    days: '["MON", "TUE", "WED", "THU", "FRI"]',
   },
   {
     id: 17,
@@ -268,8 +262,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,
-    day: '["SUN"]',
-    time: 14,
+    days: '["SUN"]',
   },
   {
     id: 18,
@@ -280,12 +273,11 @@ export const REGULAR_GATHERINGS = [
     location: "잠실 체육공원",
     participantCount: 10,
     capacity: 15,
-    image: "/images/monday-fitness.jpg",
+    image: "/images/mondays-fitness.jpg",
     isPetRequired: false,
     isParticipating: true,
     canceledAt: null,
-    day: '["MON"]',
-    time: 6,
+    days: '["MON"]',
   },
   {
     id: 19,
@@ -300,8 +292,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: true,
     isParticipating: false,
     canceledAt: null,
-    day: '["SAT", "SUN"]',
-    time: 10,
+    days: '["SAT", "SUN"]',
   },
   {
     id: 20,
@@ -316,8 +307,7 @@ export const REGULAR_GATHERINGS = [
     isPetRequired: false,
     isParticipating: false,
     canceledAt: new Date("2025-09-25T12:00:00"),
-    day: '["WED"]',
-    time: 18,
+    days: '["WED"]',
   },
 ];
 

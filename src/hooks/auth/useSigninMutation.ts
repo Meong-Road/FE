@@ -2,25 +2,24 @@
 
 import { useMutation } from "@tanstack/react-query";
 
+import { authApi } from "@/api/auth";
+
 import { SigninFormSchema } from "./useSigninForm";
 
 export function useSigninMutation() {
-  const { mutate, isPending } = useMutation({
+  return useMutation({
     mutationFn: async (payload: SigninFormSchema) => {
-      console.log("payload:", payload);
-      return "temp";
+      return authApi.signin(payload);
     },
-    onSuccess: () => {
-      console.log("success");
+    onSuccess: (data) => {
+      console.log("로그인 성공");
+      const accessToken = data.result.accessToken;
+      const refreshToken = data.result.refreshToken;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
     },
     onError: (error: unknown) => {
-      console.log("error:", error);
+      console.log("로그인 실패: ", error);
     },
   });
-
-  const signinMutate = (payload: SigninFormSchema) => {
-    mutate(payload);
-  };
-
-  return { signinMutate, isPending };
 }

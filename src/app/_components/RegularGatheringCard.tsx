@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { GatheringCard } from "@/components/GatheringCard";
-import { RegularGatheringType } from "@/lib/types/gathering";
+import { RegularGatheringType } from "@/lib/types/gatherings";
 
 interface RegularGatheringCardProps {
   gathering: RegularGatheringType;
@@ -43,8 +43,7 @@ export default function RegularGatheringCard({
                 />
                 <GatheringCard.Info
                   location={gathering.location}
-                  time={`${gathering.time}:00`}
-                  days={gathering.day}
+                  days={gathering.days}
                 />
               </div>
               <GatheringCard.JoinBtn />

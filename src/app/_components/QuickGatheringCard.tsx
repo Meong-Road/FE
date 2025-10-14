@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { GatheringCard } from "@/components/GatheringCard";
-import { QuickGatheringType } from "@/lib/types/gathering";
+import { QuickGatheringType } from "@/lib/types/gatherings";
 import { formatDate } from "@/lib/utils/dateTime";
 
 interface QuickGatheringCardProps {

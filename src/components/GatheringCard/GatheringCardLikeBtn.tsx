@@ -10,8 +10,8 @@ import {
   useCancelLike,
   useGetIsLiked,
   useLike,
-} from "@/hooks/queries/gathering";
-import { GatheringType } from "@/lib/types/gathering";
+} from "@/hooks/queries/gatherings";
+import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 
 export interface GatheringCardLikeBtnProps {

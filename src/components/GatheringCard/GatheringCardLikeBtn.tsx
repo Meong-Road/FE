@@ -6,11 +6,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
 import {
-  GATHERING_QUERY_KEY,
   useCancelLike,
   useGetIsLiked,
   useLike,
 } from "@/hooks/queries/gatherings";
+import { GATHERING_QUERY_KEY } from "@/hooks/queries/gatherings/queryKey";
 import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 

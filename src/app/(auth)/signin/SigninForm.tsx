@@ -6,10 +6,14 @@ import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
 
 export default function SigninForm() {
   const form = useSigninForm();
-  const { signinMutate, isPending } = useSigninMutation();
+  const { mutate: signinMutate, isPending } = useSigninMutation();
 
   const handleSubmit = (data: SigninFormSchema) => {
-    signinMutate(data);
+    signinMutate(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   return (

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
-import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gathering";
+import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gatherings";
 
 import QuickGatheringCard from "../../_components/QuickGatheringCard";
 import LocationSelect from "../_components/LocationSelect";
@@ -21,7 +21,7 @@ export default function QuickGatheringListPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetInfiniteQuickGatherings();
+  } = useGetInfiniteQuickGatherings({});
 
   useEffect(() => {
     if (inView) fetchNextPage();

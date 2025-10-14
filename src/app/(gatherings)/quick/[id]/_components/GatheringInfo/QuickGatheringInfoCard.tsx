@@ -1,6 +1,6 @@
 import { GatheringCard } from "@/components/GatheringCard";
 import ProgressBar from "@/components/ProgressBar";
-import { QuickGatheringType } from "@/lib/types/gathering";
+import { QuickGatheringType } from "@/lib/types/gatherings";
 import { formatDate } from "@/lib/utils/dateTime";
 
 interface QuickGatheringInfoCardProps {

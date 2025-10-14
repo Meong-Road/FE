@@ -1,84 +1,82 @@
+import qs from "qs";
+
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { BookmarkType } from "@/lib/types/gatherings";
+
 import {
-  BookmarkType,
-  EGatheringType,
-  GatheringType,
-  QuickGatheringType,
-  RegularGatheringType,
-} from "@/lib/types/gathering";
-import {
-  PaginationRequest,
-  PaginationResponse,
-  Response,
-} from "@/mocks/data/common";
+  CancelLikeReq,
+  CancelLikeRes,
+  GetGatheringDetailReq,
+  GetGatheringDetailRes,
+  GetIsLikedReq,
+  GetIsLikedRes,
+  GetQuickGatheringsReq,
+  GetQuickGatheringsRes,
+  GetRegularGatheringsReq,
+  GetRegularGatheringsRes,
+  LikeReq,
+  LikeRes,
+} from "./types/gatherings";
 
-export async function getRegularGatherings({
-  page,
-  pageSize,
-  sortBy,
-  sortOrder,
-}: PaginationRequest): Promise<PaginationResponse<RegularGatheringType>> {
-  const response = await fetch(
-    `/api/gatherings?type=${EGatheringType.REGULAR}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
-  );
-  return response.json();
-}
-
-export async function getQuickGatherings({
-  page,
-  pageSize,
-  sortBy,
-  sortOrder,
-}: PaginationRequest): Promise<PaginationResponse<QuickGatheringType>> {
-  const response = await fetch(
-    `/api/gatherings?type=${EGatheringType.QUICK}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
-  );
-  return response.json();
-}
-
-export async function getIsLiked(
-  id: GatheringType["id"],
-): Promise<Response<{ isLiked: boolean }>> {
-  const response = await fetch(`/api/gatherings/${id}/bookmarks`);
-  return response.json();
-}
-
-export async function like(id: GatheringType["id"]): Promise<Response<void>> {
-  const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
-    method: "POST",
-  });
-  return response.json();
-}
-
-export async function cancelLike(
-  id: GatheringType["id"],
-): Promise<Response<void>> {
-  const response = await fetch(`/api/gatherings/${id}/bookmarks`, {
-    method: "DELETE",
-  });
-  return response.json();
-}
-
-export async function getMyBookmarkedGatherings({
-  type,
-  page,
-  size,
-  sort,
-}: BookmarkType) {
-  const queryParams = new URLSearchParams({
+export const gatheringApi = {
+  // 정기 모임 목록 조회
+  getRegularGatherings: async (
+    params: GetRegularGatheringsReq,
+  ): Promise<GetRegularGatheringsRes> => {
+    const response = await fetch(
+      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(params)}`,
+    );
+    return response.json();
+  },
+  // 번개 모임 목록 조회
+  getQuickGatherings: async (
+    params: GetQuickGatheringsReq,
+  ): Promise<GetQuickGatheringsRes> => {
+    const response = await fetch(
+      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(params)}`,
+    );
+    return response.json();
+  },
+  // 모임 상세 조회
+  getGatheringDetail: async ({
+    id,
+  }: GetGatheringDetailReq): Promise<GetGatheringDetailRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}`);
+    return response.json();
+  },
+  // 모임 찜 조회
+  getIsLiked: async ({ id }: GetIsLikedReq): Promise<GetIsLikedRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`);
+    return response.json();
+  },
+  // 모임 찜하기
+  like: async ({ id }: LikeReq): Promise<LikeRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`, {
+      method: "POST",
+    });
+    return response.json();
+  },
+  // 모임 찜 해제
+  cancelLike: async ({ id }: CancelLikeReq): Promise<CancelLikeRes> => {
+    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`, {
+      method: "DELETE",
+    });
+    return response.json();
+  },
+  // 내가 찜한 모임 목록 조회
+  getMyBookmarkedGatherings: async ({
     type,
-    page: page.toString(),
-    size: size.toString(),
+    page,
+    size,
     sort,
-  });
-  const response = await fetch(`/api/gatherings/bookmarks?${queryParams}`);
-  return response.json();
-}
-
-export async function getGatheringDetail({
-  id,
-}: {
-  id: GatheringType["id"];
-}): Promise<Response<GatheringType>> {
-  const response = await fetch(`/api/gatherings/${id}`);
-  return response.json();
-}
+  }: BookmarkType) => {
+    const queryParams = new URLSearchParams({
+      type,
+      page: page.toString(),
+      size: size.toString(),
+      sort,
+    });
+    const response = await fetch(`/api/gatherings/bookmarks?${queryParams}`);
+    return response.json();
+  },
+};

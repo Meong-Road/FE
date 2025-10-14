@@ -10,7 +10,6 @@ import {
   useGetIsLiked,
   useLike,
 } from "@/hooks/queries/gatherings";
-import { GATHERING_QUERY_KEY } from "@/hooks/queries/gatherings/queryKey";
 import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 
@@ -29,19 +28,9 @@ export function GatheringCardLikeBtn({
   });
   const { mutate: like } = useLike({
     id,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
-      });
-    },
   });
   const { mutate: cancelLike } = useCancelLike({
     id,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
-      });
-    },
   });
 
   if (isPending)

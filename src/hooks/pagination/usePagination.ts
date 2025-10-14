@@ -3,7 +3,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { getPageNumbers } from "./_utils";
 
-interface UsePagenationProps {
+interface UsePaginationProps {
   currentPage: number; // 0-based
   totalPages: number;
   /**
@@ -15,7 +15,7 @@ interface UsePagenationProps {
   scroll?: boolean;
 }
 
-interface UsePagenationReturn {
+interface UsePaginationReturn {
   currentPageNumber: number; // 1-based
   mobilePageNumbers: number[];
   desktopPageNumbers: number[];
@@ -26,11 +26,11 @@ interface UsePagenationReturn {
   goToNext: () => void;
 }
 
-export function usePagenation({
+export function usePagination({
   currentPage,
   totalPages,
   scroll = false,
-}: UsePagenationProps): UsePagenationReturn {
+}: UsePaginationProps): UsePaginationReturn {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

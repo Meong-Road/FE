@@ -10,8 +10,8 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { usePagination } from "@/hooks/pagination";
 import { ELLIPSIS } from "@/hooks/pagination/_utils";
+import { usePagination } from "@/hooks/pagination/usePagination";
 
 interface PaginationProps {
   currentPage: number;
@@ -91,7 +91,7 @@ export function Pagination({
     goToPage,
     goToPrev,
     goToNext,
-  } = usePagenation({ currentPage, totalPages, scroll });
+  } = usePagination({ currentPage, totalPages, scroll });
 
   if (totalPages <= 1) {
     return null;

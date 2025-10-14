@@ -1,4 +1,4 @@
-import { QuickGatheringType } from "@/lib/types/gathering";
+import { QuickGatheringType } from "@/lib/types/gatherings";
 
 import QuickGatheringInfoCard from "./QuickGatheringInfoCard";
 

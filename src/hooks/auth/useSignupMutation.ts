@@ -14,6 +14,7 @@ export function useSignupMutation() {
   return useMutation({
     mutationFn: (payload: SignupFormSchema) => {
       // 비밀번호 확인이랑 이메일 체크 필드 제외하고 전송
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmPassword, emailCheckPassed, ...signupData } = payload;
       return authApi.signup(signupData);
     },

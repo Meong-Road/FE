@@ -10,21 +10,18 @@ import { LocationSelect, ReviewDashboard, ReviewList } from "./_components";
 
 function ReviewsContent() {
   const searchParams = useSearchParams();
-  let location = searchParams.get("location") || "";
-  if (location === "서울 전체") {
-    location = "";
-  }
-  const page = Number(searchParams.get("page")) || 0;
+  const location = searchParams.get("location") ?? "서울 전체";
+  const page = Number(searchParams.get("page")) ?? 0;
 
   const {
     data: reviews,
     isPending,
     isError,
   } = useGetReviews({
-    location: location || null,
+    location,
     page,
     size: 10,
-    sort: "createdAt,desc",
+    sort: ["createdAt", "desc"],
   });
 
   return (

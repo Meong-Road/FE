@@ -1,7 +1,3 @@
-import React from "react";
-
-import Modal from "../Modal";
-
 interface RadioOption {
   id: string;
   label: string;

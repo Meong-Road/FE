@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { GatheringCard } from "@/components/GatheringCard";
-import { RegularGatheringType } from "@/lib/types/gathering";
+import { RegularGatheringType } from "@/lib/types/gatherings";
 
 interface RegularGatheringCardProps {
   gathering: RegularGatheringType;

@@ -41,8 +41,8 @@ function PageButton({
         isActive={isActive}
         className={
           isActive
-            ? "text-primary pointer-events-none h-9 w-9 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-10 sm:w-10"
-            : "h-9 w-9 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-10 sm:w-10"
+            ? "text-primary pointer-events-none h-10 w-10 cursor-pointer rounded-lg bg-[#FFE59E] font-semibold hover:bg-[#FEE5A0] sm:h-12 sm:w-12"
+            : "h-10 w-10 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-100 sm:h-12 sm:w-12"
         }
       >
         {page}
@@ -69,7 +69,7 @@ function NavButton({
         size="icon"
         onClick={onClick}
         disabled={disabled}
-        className="h-9 w-9 rounded-lg hover:bg-gray-100 disabled:opacity-30 sm:h-10 sm:w-10"
+        className="h-10 w-10 rounded-lg hover:bg-gray-100 disabled:opacity-30 sm:h-12 sm:w-12"
       >
         <Icon className="size-5 fill-gray-800 sm:size-6" />
       </Button>
@@ -99,10 +99,10 @@ export function Pagination({
 
   return (
     <UIPagination className="mt-8">
-      <PaginationContent className="flex gap-1 sm:gap-2">
+      <PaginationContent className="flex gap-2.5 sm:gap-2">
         <NavButton direction="prev" disabled={!canGoPrev} onClick={goToPrev} />
 
-        <div className="flex gap-1 sm:hidden">
+        <div className="flex sm:hidden">
           {mobilePageNumbers.map((page, idx) =>
             page === ELLIPSIS ? (
               <PaginationItem key={`ellipsis-${idx}`}>
@@ -119,7 +119,7 @@ export function Pagination({
           )}
         </div>
 
-        <div className="hidden gap-2 sm:flex">
+        <div className="hidden sm:flex">
           {desktopPageNumbers.map((page, idx) =>
             page === ELLIPSIS ? (
               <PaginationItem key={`ellipsis-${idx}`}>

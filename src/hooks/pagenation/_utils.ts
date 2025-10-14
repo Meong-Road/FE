@@ -17,8 +17,8 @@ export function getPageNumbers(
   }
 
   const pages: number[] = [1];
-  const start = Math.max(2, current - siblings + 1);
-  const end = Math.min(total - 1, current + siblings + 1);
+  const start = Math.max(2, current - siblings); // 현재 페이지 기준 좌측 2개 페이지 번호
+  const end = Math.min(total - 1, current + siblings); // 현재 페이지 기준 우측 2개 페이지 번호
 
   if (start > 2) {
     pages.push(ELLIPSIS);

@@ -49,6 +49,7 @@ function ReviewsContent() {
           <Pagination
             currentPage={reviews.result?.page || 0}
             totalPages={reviews.result?.totalPages || 0}
+            scroll={true}
           />
         </>
       )}

@@ -48,8 +48,7 @@ function ReviewsContent() {
           <ReviewList reviews={reviews.result?.content || []} />
           <Pagination
             currentPage={reviews.result?.page || 0}
-            // totalPages={reviews.result?.totalPages || 0}
-            totalPages={15}
+            totalPages={reviews.result?.totalPages || 0}
             scroll={true}
           />
         </>

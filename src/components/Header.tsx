@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import ProfileSvg from "@/assets/images/profile.svg";
+import { useMyInfo } from "@/hooks/auth/useMyInfo";
+import { useSignout } from "@/hooks/auth/useSignout";
 import { cn } from "@/lib/utils";
 
 import Logo from "./Logo";
@@ -30,6 +32,9 @@ const HEADER_ITEMS = [
 export default function Header({ className }: { className?: string }) {
   const pathname = usePathname();
   const isActive = (href: string) => pathname.startsWith(href);
+
+  const { data: user } = useMyInfo();
+  const handleSignout = useSignout();
 
   return (
     <div
@@ -58,6 +63,16 @@ export default function Header({ className }: { className?: string }) {
               </li>
             ))}
           </ul>
+
+          {user && (
+            <button
+              onClick={handleSignout}
+              className="font-medium text-[#8B8B8B]"
+            >
+              로그아웃
+            </button>
+          )}
+
           <Link href="/profile/userId" className="shrink-0 p-1.5">
             <ProfileSvg
               width={42}

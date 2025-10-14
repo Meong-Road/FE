@@ -32,3 +32,14 @@ export interface PostSigninRes {
     user: UserType;
   };
 }
+
+export interface GetUserRes {
+  success: boolean;
+  code: number;
+  message: string;
+  result: {
+    accessToken: string;
+    refreshToken: string;
+    user: UserType;
+  };
+}

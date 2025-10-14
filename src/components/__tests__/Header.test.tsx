@@ -1,4 +1,5 @@
 import { usePathname } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 
 import Header from "../Header";
@@ -32,9 +33,29 @@ jest.mock("@/assets/images/profile.svg", () => {
 
 const mockUsePathname = jest.mocked(usePathname);
 
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: Infinity,
+      },
+    },
+  });
+
+const renderWithQueryClient = (component: React.ReactElement) => {
+  const testQueryClient = createTestQueryClient();
+
+  return render(
+    <QueryClientProvider client={testQueryClient}>
+      {component}
+    </QueryClientProvider>,
+  );
+};
+
 const renderHeader = (pathname = "/") => {
   mockUsePathname.mockReturnValue(pathname);
-  return render(<Header />);
+  return renderWithQueryClient(<Header />);
 };
 
 describe("Header", () => {

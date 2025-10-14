@@ -38,4 +38,33 @@ export const usersHandlers = [
       });
     },
   ),
+
+  http.get(`${BASE_URL}/meong-road/user/my`, ({ request }) => {
+    const authHeader = request.headers.get("Authorization");
+
+    if (!authHeader) {
+      return HttpResponse.json(
+        {
+          success: false,
+          code: 401,
+          message: "땡",
+        },
+        { status: 401 },
+      );
+    }
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "내 정보 API 테스트",
+      result: {
+        id: 1,
+        email: "test@test.com",
+        name: "멍로드",
+        nickName: "멍로드",
+        image: "",
+        isPetInfoSubmitted: true,
+      },
+    });
+  }),
 ];

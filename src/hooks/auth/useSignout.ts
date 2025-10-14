@@ -1,13 +1,12 @@
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { authService } from "@/services/authService";
 
 export function useSignout() {
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   return () => {
     authService.signout();
-    // some kind of zustand thing
-    router.push("/signin");
+    queryClient.invalidateQueries({ queryKey: ["me"] });
   };
 }

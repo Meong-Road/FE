@@ -1,4 +1,5 @@
 import {
+  GetUserRes,
   PostSigninReq,
   PostSigninRes,
   PostSignupReq,
@@ -13,10 +14,15 @@ export const authApi = {
       body: JSON.stringify(payload),
     });
   },
+
   signin: async (payload: PostSigninReq): Promise<PostSigninRes> => {
     return await customFetch.post<PostSigninRes>("/meong-road/auth/login", {
       body: JSON.stringify(payload),
     });
   },
-  // signout: async (): Promise<PostSignoutRes> => {
+
+  getMyInfo: async (): Promise<GetUserRes> => {
+    console.log("getMyInfo api called");
+    return await customFetch.get("/meong-road/user/my");
+  },
 };

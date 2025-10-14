@@ -1,3 +1,5 @@
+import { PATH } from "@/lib/constants/path";
+
 import CreatedSection from "./_components/CreatedSection";
 import EditBtn from "./_components/EditBtn";
 import JoinedSection from "./_components/JoinedSection";
@@ -38,22 +40,25 @@ export default async function Profile({ searchParams }: ProfileProps) {
       </ProfileCard>
       <Tab className="mt-16">
         <Tab.List>
-          <Tab.Item href="/profile" isActive={currentTab === "joined"}>
+          <Tab.Item href={PATH.MY_PROFILE} isActive={currentTab === "joined"}>
             내 모임
           </Tab.Item>
           <Tab.Item
-            href="/profile?tab=reviews"
+            href={`${PATH.MY_PROFILE}?tab=reviews`}
             isActive={currentTab === "reviews"}
           >
             내 리뷰
           </Tab.Item>
           <Tab.Item
-            href="/profile?tab=created"
+            href={`${PATH.MY_PROFILE}?tab=created`}
             isActive={currentTab === "created"}
           >
             내가 만든 모임
           </Tab.Item>
-          <Tab.Item href="/profile?tab=pets" isActive={currentTab === "pets"}>
+          <Tab.Item
+            href={`${PATH.MY_PROFILE}?tab=pets`}
+            isActive={currentTab === "pets"}
+          >
             반려견 정보
           </Tab.Item>
         </Tab.List>

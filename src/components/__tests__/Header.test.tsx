@@ -1,6 +1,8 @@
 import { usePathname } from "next/navigation";
 import { render, screen } from "@testing-library/react";
 
+import { PATH } from "@/lib/constants/path";
+
 import Header from "../Header";
 
 // Next.js navigation 모킹
@@ -32,7 +34,7 @@ jest.mock("@/assets/images/profile.svg", () => {
 
 const mockUsePathname = jest.mocked(usePathname);
 
-const renderHeader = (pathname = "/") => {
+const renderHeader = (pathname = PATH.HOME) => {
   mockUsePathname.mockReturnValue(pathname);
   return render(<Header />);
 };
@@ -59,7 +61,7 @@ describe("Header", () => {
     renderHeader();
 
     const logoLink = screen.getByTestId("logo").closest("a");
-    expect(logoLink).toHaveAttribute("href", "/");
+    expect(logoLink).toHaveAttribute("href", PATH.HOME);
   });
 
   it("각 네비게이션 메뉴가 올바른 링크를 가져야 한다", () => {
@@ -67,19 +69,19 @@ describe("Header", () => {
 
     expect(screen.getByRole("link", { name: "정기 모임" })).toHaveAttribute(
       "href",
-      "/regular",
+      PATH.REGULAR,
     );
     expect(screen.getByRole("link", { name: "번개 모임" })).toHaveAttribute(
       "href",
-      "/quick",
+      PATH.QUICK,
     );
     expect(screen.getByRole("link", { name: "찜한 모임" })).toHaveAttribute(
       "href",
-      "/favorites",
+      PATH.FAVORITES,
     );
     expect(screen.getByRole("link", { name: "모든 리뷰" })).toHaveAttribute(
       "href",
-      "/reviews",
+      PATH.REVIEWS,
     );
   });
 
@@ -87,11 +89,11 @@ describe("Header", () => {
     renderHeader();
 
     const profileLink = screen.getByTestId("profile-svg").closest("a");
-    expect(profileLink).toHaveAttribute("href", "/profile");
+    expect(profileLink).toHaveAttribute("href", PATH.MY_PROFILE);
   });
 
   it("현재 경로에 해당하는 메뉴가 활성화되어야 한다", () => {
-    renderHeader("/regular/some-path");
+    renderHeader(PATH.REGULAR_DETAIL(1));
 
     const regularMenuItem = screen.getByText("정기 모임");
     expect(regularMenuItem).toHaveClass("text-primary", "font-bold");

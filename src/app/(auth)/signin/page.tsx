@@ -5,7 +5,7 @@ import walkImage from "@/assets/images/image.png";
 
 export default function SigninPage() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center px-4 py-8 xl:gap-10">
+    <div className="absolute top-0 left-0 flex min-h-svh w-full items-center justify-center px-4 py-8 xl:gap-10">
       <div className="flex flex-col items-center gap-6">
         <div className="flex shrink-0 flex-col items-center gap-2">
           <div className="text-2xl leading-8 font-semibold">

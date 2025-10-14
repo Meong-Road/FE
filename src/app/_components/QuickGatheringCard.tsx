@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { GatheringCard } from "@/components/GatheringCard";
+import { PATH } from "@/lib/constants/path";
 import { QuickGatheringType } from "@/lib/types/gatherings";
 import { formatDate } from "@/lib/utils/dateTime";
 
@@ -12,7 +13,7 @@ export default function QuickGatheringCard({
   gathering,
 }: QuickGatheringCardProps) {
   return (
-    <Link href={`/quick/${gathering.id}`}>
+    <Link href={PATH.QUICK_DETAIL(gathering.id)}>
       <GatheringCard bgColor="white">
         <div className="flex h-full flex-row items-center gap-6">
           {gathering.image && (

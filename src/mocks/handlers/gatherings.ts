@@ -4,7 +4,7 @@ import { http, HttpResponse } from "msw";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { EGatheringType } from "@/lib/types/gatherings";
 
-import { PAGINATION_DATA } from "../data/common";
+import { createPaginatedRes } from "../data/common";
 import {
   GATHERING_DETAILS,
   isLikedSet,
@@ -21,7 +21,7 @@ export const gatheringsHandlers = [
     // TODO const sort = url.searchParams.get("sort");
 
     return HttpResponse.json(
-      PAGINATION_DATA(REGULAR_GATHERINGS, {
+      createPaginatedRes(REGULAR_GATHERINGS, {
         page: Number(page),
         size: Number(size),
       }),
@@ -35,7 +35,7 @@ export const gatheringsHandlers = [
     // TODO const sort = url.searchParams.get("sort");
 
     return HttpResponse.json(
-      PAGINATION_DATA(QUICK_GATHERINGS, {
+      createPaginatedRes(QUICK_GATHERINGS, {
         page: Number(page),
         size: Number(size),
       }),
@@ -185,7 +185,8 @@ export const gatheringsHandlers = [
     isLikedSet.delete(id as string);
   }),
 
-  http.get("/api/gatherings/:id", (req) => {
+  //================= 모임 상세 조회 ================================
+  http.get(`${API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;
 
     if (!id)

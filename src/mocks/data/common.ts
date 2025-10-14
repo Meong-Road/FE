@@ -1,15 +1,25 @@
-import { PaginatedRes, PaginationReq } from "@/api/types/common";
+import { PaginatedRes, PaginationReq, Response } from "@/api/types/common";
 
-export const PAGINATION_DATA = <T>(
+export const createSuccessRes = <T>(data: T): Response<T> => {
+  return {
+    success: true,
+    code: 200,
+    errorCode: null,
+    message: "성공",
+    result: data,
+  };
+};
+
+export const createPaginatedRes = <T>(
   data: T[],
   { page, size }: Pick<PaginationReq, "page" | "size">,
-): PaginatedRes<T> => {
-  return {
+): Response<PaginatedRes<T>> => {
+  return createSuccessRes({
     content: data.slice(0, size),
     totalPages: Math.ceil(data.length / size),
     totalElements: data.length,
     last: false,
     page,
     size,
-  };
+  });
 };

@@ -22,7 +22,7 @@ export function useGetInfiniteRegularGatherings({
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, pageParam) =>
-      lastPage.last ? undefined : pageParam + 1,
-    select: (data) => data.pages.flatMap((page) => page.content),
+      lastPage.result?.last ? undefined : pageParam + 1,
+    select: (data) => data.pages.flatMap((page) => page.result?.content || []),
   });
 }

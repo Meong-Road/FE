@@ -76,7 +76,9 @@ export const gatheringApi = {
       size: size.toString(),
       sort,
     });
-    const response = await fetch(`/api/gatherings/bookmarks?${queryParams}`);
+    const response = await fetch(
+      `${API_ENDPOINTS.GATHERING}/bookmarks?${queryParams}`,
+    );
     return response.json();
   },
 };

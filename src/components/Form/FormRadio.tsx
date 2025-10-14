@@ -1,7 +1,5 @@
 import React from "react";
 
-import Modal from "../Modal";
-
 interface RadioOption {
   id: string;
   label: string;
@@ -31,7 +29,7 @@ export function Radio({ name, options, defaultChecked }: ModalRaidoInputProps) {
             />
             <label
               htmlFor={option.id}
-              className="bg-accent peer-checked:bg-primary inline-flex w-full cursor-pointer items-center justify-center rounded-xl py-2 peer-checked:font-medium peer-checked:text-white"
+              className="bg-accent peer-checked:bg-primary inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 peer-checked:font-medium peer-checked:text-white"
             >
               {option.label}
             </label>

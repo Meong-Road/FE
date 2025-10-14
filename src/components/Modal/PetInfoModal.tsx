@@ -94,6 +94,7 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
                 <Form.Label required>이름</Form.Label>
                 <Form.Control>
                   <Form.Input
+                    className="px-4 py-2.5"
                     type="text"
                     placeholder="반려견 이름을 알려주세요"
                     {...field}
@@ -176,7 +177,7 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
           <Form.SubmitButton
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
             isValid={form.formState.isValid}
-            disabled={isLoading}
+            disabled={isLoading || !form.formState.isValid}
           />
         </Form>
         {type === "first-login" && (

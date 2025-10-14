@@ -25,7 +25,7 @@ export function ModalBreedSelect({
         options={dogBreeds}
         value={value}
         onChange={onChange}
-        className="bg-accent flex-1 rounded-xl px-1 py-2"
+        className="bg-accent flex-1 rounded-lg px-4 py-2.5"
       />
     </div>
   );

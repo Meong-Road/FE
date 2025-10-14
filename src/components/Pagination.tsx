@@ -10,8 +10,8 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { usePagenation } from "@/hooks";
-import { ELLIPSIS } from "@/hooks/pagenation/_utils";
+import { usePagination } from "@/hooks/pagination";
+import { ELLIPSIS } from "@/hooks/pagination/_utils";
 
 interface PaginationProps {
   currentPage: number;

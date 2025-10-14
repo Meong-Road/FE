@@ -1,4 +1,5 @@
 export interface TabProps {
+  className?: string;
   children: React.ReactNode;
 }
 

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { PATH } from "@/lib/constants/path";
+
 export function LoginLink() {
   return (
     <div className="flex items-center justify-center gap-1 pt-2 select-none md:pt-4">
@@ -9,7 +11,7 @@ export function LoginLink() {
         이미 회원이신가요?
       </span>
       <Link
-        href="/signin"
+        href={PATH.SIGNIN}
         className="text-primary text-xs font-medium underline underline-offset-2 transition-colors hover:opacity-80 md:text-sm"
       >
         로그인

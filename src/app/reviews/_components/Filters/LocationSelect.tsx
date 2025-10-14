@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SEOUL_DISTRICTS } from "@/lib/constants/location";
+import { PATH } from "@/lib/constants/path";
 
 interface LocationSelectProps {
   selectedLocation: string;
@@ -26,7 +27,7 @@ export function LocationSelect({ selectedLocation }: LocationSelectProps) {
 
     params.set("page", "0"); // 지역 변경 시 첫 페이지로
 
-    router.push(`/reviews?${params.toString()}`);
+    router.push(`${PATH.REVIEWS}?${params.toString()}`);
   };
 
   return (

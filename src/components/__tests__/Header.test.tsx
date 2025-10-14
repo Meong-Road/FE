@@ -31,6 +31,17 @@ jest.mock("@/assets/images/profile.svg", () => {
   };
 });
 
+jest.mock("next/navigation", () => {
+  return {
+    useRouter: () => ({
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+    }),
+    usePathname: jest.fn(() => "/"),
+  };
+});
+
 const mockUsePathname = jest.mocked(usePathname);
 
 const createTestQueryClient = () =>

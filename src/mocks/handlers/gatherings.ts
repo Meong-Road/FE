@@ -42,6 +42,46 @@ export const gatheringsHandlers = [
     );
   }),
 
+  //================= 찜한 모임 목록 조회 ================================
+  http.get("/api/gatherings/bookmarks", (req) => {
+    const url = new URL(req.request.url);
+    const type = url.searchParams.get("type");
+    const page = Number(url.searchParams.get("page")) || 0;
+    const size = Number(url.searchParams.get("size")) || 10;
+    // const sort = url.searchParams.get("sort") || "createdAt";
+
+    let bookmarkedGatherings = [];
+
+    if (type === EGatheringType.REGULAR) {
+      bookmarkedGatherings = REGULAR_GATHERINGS.filter((gathering) =>
+        isLikedSet.has(gathering.id.toString()),
+      );
+    } else {
+      bookmarkedGatherings = QUICK_GATHERINGS.filter((gathering) =>
+        isLikedSet.has(gathering.id.toString()),
+      );
+    }
+
+    const endIndex = (page + 1) * size;
+    const currentPageData = bookmarkedGatherings.slice(0, endIndex);
+    const hasNext = endIndex < bookmarkedGatherings.length;
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "성공",
+      result: {
+        content: currentPageData,
+        page: page,
+        size: size,
+        totalElements: bookmarkedGatherings.length,
+        totalPages: Math.ceil(bookmarkedGatherings.length / size),
+        last: !hasNext,
+      },
+      errorCode: null,
+    });
+  }),
+
   //================= 모임 상세 조회 ================================
   http.get(`${API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;
@@ -162,46 +202,6 @@ export const gatheringsHandlers = [
       code: 200,
       message: "성공",
       result: GATHERING_DETAILS,
-      errorCode: null,
-    });
-  }),
-
-  //================= 찜한 모임 목록 조회 ================================
-  http.get("/api/gatherings/bookmarks", (req) => {
-    const url = new URL(req.request.url);
-    const type = url.searchParams.get("type");
-    const page = Number(url.searchParams.get("page")) || 0;
-    const size = Number(url.searchParams.get("size")) || 10;
-    // const sort = url.searchParams.get("sort") || "createdAt";
-
-    let bookmarkedGatherings = [];
-
-    if (type === EGatheringType.REGULAR) {
-      bookmarkedGatherings = REGULAR_GATHERINGS.filter((gathering) =>
-        isLikedSet.has(gathering.id.toString()),
-      );
-    } else {
-      bookmarkedGatherings = QUICK_GATHERINGS.filter((gathering) =>
-        isLikedSet.has(gathering.id.toString()),
-      );
-    }
-
-    const endIndex = (page + 1) * size;
-    const currentPageData = bookmarkedGatherings.slice(0, endIndex);
-    const hasNext = endIndex < bookmarkedGatherings.length;
-
-    return HttpResponse.json({
-      success: true,
-      code: 0,
-      message: "성공",
-      result: {
-        content: currentPageData,
-        page: page,
-        size: size,
-        totalElements: bookmarkedGatherings.length,
-        totalPages: Math.ceil(bookmarkedGatherings.length / size),
-        last: !hasNext,
-      },
       errorCode: null,
     });
   }),

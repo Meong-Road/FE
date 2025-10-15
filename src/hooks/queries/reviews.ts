@@ -5,14 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import REVIEW_API from "@/api/reviews";
 import { PaginationReq } from "@/api/types/common";
 import {
+  GetReviewDashboardReq,
   GetReviewsByGatheringReq,
   GetReviewsReq,
-  GetReviewsRes,
 } from "@/api/types/reviews";
-
-interface UseGetReviewsOptions extends Partial<GetReviewsReq> {
-  initialData?: GetReviewsRes;
-}
 
 export const REVIEW_QUERY_KEY = {
   REVIEWS: ({ location, page, size, sort }: GetReviewsReq) => [
@@ -26,6 +22,11 @@ export const REVIEW_QUERY_KEY = {
     gatheringId,
     ...params
   }: GetReviewsByGatheringReq) => ["reviews", gatheringId, params],
+  REVIEW_DASHBOARD: ({ location }: GetReviewDashboardReq) => [
+    "reviews",
+    "dashboard",
+    location,
+  ],
 };
 
 export const useGetReviews = ({
@@ -33,8 +34,7 @@ export const useGetReviews = ({
   page = 0,
   size = 10,
   sort = ["createdAt", "desc"],
-  initialData,
-}: UseGetReviewsOptions) => {
+}: GetReviewsReq) => {
   return useQuery({
     queryKey: REVIEW_QUERY_KEY.REVIEWS({ location, page, size, sort }),
     queryFn: () =>
@@ -44,7 +44,15 @@ export const useGetReviews = ({
         size,
         sort,
       }),
-    initialData,
+  });
+};
+
+export const useGetReviewDashboard = ({
+  location = "서울 전체",
+}: GetReviewDashboardReq) => {
+  return useQuery({
+    queryKey: REVIEW_QUERY_KEY.REVIEW_DASHBOARD({ location }),
+    queryFn: () => REVIEW_API.getReviewDashboard({ location }),
   });
 };
 

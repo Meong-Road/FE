@@ -74,7 +74,10 @@ export default function Header({ className }: { className?: string }) {
             </button>
           )}
 
-          <Link href="/profile/userId" className="shrink-0 p-1.5">
+          <Link
+            href={user ? `/profile/${user.id}` : "/signin"}
+            className="shrink-0 p-1.5"
+          >
             {user ? (
               <TempLoginProfileSvg
                 width={42}

@@ -26,9 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${pretendardVariable.className} bg-background antialiased`}
-      >
+      <body className={`${pretendardVariable.className}`}>
         <QueryProvider>
           <MSWProvider>
             <Header />

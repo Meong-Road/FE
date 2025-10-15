@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 
+import { PATH } from "@/lib/constants/path";
 import { authService } from "@/services/authService";
 
 export function useSignout() {
@@ -8,6 +9,6 @@ export function useSignout() {
   return () => {
     authService.signout();
     // some kind of zustand thing
-    router.push("/signin");
+    router.push(PATH.SIGNIN);
   };
 }

@@ -1,3 +1,5 @@
+import { PATH } from "@/lib/constants/path";
+
 import { Tab } from "../profile/_components/Tab";
 
 import FavoritesList from "./_components/FavoritesList";
@@ -15,13 +17,13 @@ export default async function Favorites({ searchParams }: FavoritesProps) {
       <Tab>
         <Tab.List>
           <Tab.Item
-            href="/favorites?tab=regular"
+            href={`${PATH.FAVORITES}?tab=regular`}
             isActive={currentTab === "regular"}
           >
             정기 모임
           </Tab.Item>
           <Tab.Item
-            href="/favorites?tab=quick"
+            href={`${PATH.FAVORITES}?tab=quick`}
             isActive={currentTab === "quick"}
           >
             번개 모임

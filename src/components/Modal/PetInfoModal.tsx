@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import { postPetInfo, putPetInfo } from "@/api/pets";
 
 import Dog from "../../assets/images/dog.svg";
-import Button from "../Button";
 import { Form } from "../Form";
 
 import { PetInfoFormSchema, usePetInfoForm } from "./_hooks/usePetInfoForm";
@@ -181,9 +180,9 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
           />
         </Form>
         {type === "first-login" && (
-          <Button className="mt-2 border-b-2" type="button">
+          <button className="mt-2 border-b-2" type="button">
             아직 반려견이 없어요
-          </Button>
+          </button>
         )}
       </Modal.ModalContent>
     </>

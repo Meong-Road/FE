@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import ProfileSvg from "@/assets/images/profile.svg";
-import { useMyInfo } from "@/hooks/auth/useMyInfo";
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import { useSignout } from "@/hooks/auth/useSignout";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +33,7 @@ export default function Header({ className }: { className?: string }) {
   const pathname = usePathname();
   const isActive = (href: string) => pathname.startsWith(href);
 
-  const { data: user } = useMyInfo();
+  const { data: user } = useAuthUser();
   const handleSignout = useSignout();
 
   return (

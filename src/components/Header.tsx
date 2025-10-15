@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import TempLoginProfileSvg from "@/assets/icons/naver-icon.svg";
 import ProfileSvg from "@/assets/images/profile.svg";
 import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import { useSignout } from "@/hooks/auth/useSignout";
@@ -74,10 +75,19 @@ export default function Header({ className }: { className?: string }) {
           )}
 
           <Link href="/profile/userId" className="shrink-0 p-1.5">
-            <ProfileSvg
-              width={42}
-              className="rounded-full border border-[#DDDDDD]"
-            />
+            {user ? (
+              <TempLoginProfileSvg
+                width={42}
+                height={42}
+                className="rounded-full border border-[#DDDDDD]"
+              />
+            ) : (
+              <ProfileSvg
+                width={42}
+                height={42}
+                className="rounded-full border border-[#DDDDDD]"
+              />
+            )}
           </Link>
         </div>
       </div>

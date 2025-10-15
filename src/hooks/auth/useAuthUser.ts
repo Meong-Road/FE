@@ -6,6 +6,7 @@ export function useAuthUser() {
   return useQuery({
     queryKey: ["me"],
     queryFn: authApi.getMyInfo,
+    select: (data) => data.result.user,
     retry: false,
   });
 }

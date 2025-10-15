@@ -23,9 +23,18 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
 ];
 
 export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
-  const form = usePetInfoForm();
+  const { isLoading, handleSubmit, initialData, hasChanges } = usePetInfoModal({
+    type,
+    onClose,
+  });
+  const form = usePetInfoForm(
+    type === "edit-pet" && initialData ? initialData : undefined,
+  );
 
-  const { isLoading, handleSubmit } = usePetInfoModal({ type, onClose });
+  const isSubmitDisabled =
+    isLoading ||
+    !form.formState.isValid ||
+    (type === "edit-pet" && hasChanges && !hasChanges(form.getValues()));
 
   return (
     <>
@@ -115,14 +124,14 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
           />
           {/* 생일 */}
           <Form.Field
-            name="birthday"
+            name="birthYear"
             render={({ field }) => (
               <Form.Item>
                 <Form.Label required>생일</Form.Label>
                 <Form.Control>
                   <Modal.DateSelect
-                    name="birthday"
-                    htmlFor="birthday"
+                    name="birthYear"
+                    htmlFor="birthYear"
                     value={field.value}
                     onChange={field.onChange}
                   />
@@ -152,7 +161,7 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
           <Form.SubmitButton
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
             isValid={form.formState.isValid}
-            disabled={isLoading || !form.formState.isValid}
+            disabled={isSubmitDisabled}
           />
         </Form>
         {type === "first-login" && (

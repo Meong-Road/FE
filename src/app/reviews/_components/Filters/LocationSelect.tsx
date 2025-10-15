@@ -35,7 +35,7 @@ export function LocationSelect({ selectedLocation }: LocationSelectProps) {
       value={selectedLocation || "서울 전체"}
       onValueChange={handleLocationChange}
     >
-      <SelectTrigger className="w-[200px] cursor-pointer">
+      <SelectTrigger className="w-30">
         <SelectValue placeholder={selectedLocation || "서울 전체"} />
       </SelectTrigger>
       <SelectContent className="max-h-[300px] overflow-y-auto">

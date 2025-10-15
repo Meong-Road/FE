@@ -19,6 +19,7 @@ export interface ReviewCardUserNameProps {
 // Review 관련
 export interface ReviewCardRatingProps {
   score: ReviewType["score"];
+  size?: "sm" | "lg";
 }
 
 export interface ReviewCardCreatedAtProps {

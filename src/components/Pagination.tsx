@@ -98,7 +98,7 @@ export function Pagination({
   }
 
   return (
-    <UIPagination className="mt-12">
+    <UIPagination className="my-12">
       <PaginationContent className="flex gap-2.5 sm:gap-2">
         <NavButton direction="prev" disabled={!canGoPrev} onClick={goToPrev} />
 

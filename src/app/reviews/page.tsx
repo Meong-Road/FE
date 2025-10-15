@@ -3,9 +3,9 @@
 import { useSearchParams } from "next/navigation";
 
 import { Pagination } from "@/components/Pagination";
-import { ReviewCardSkeletonList } from "@/components/ReviewCard";
-import { useGetReviews } from "@/hooks/queries/reviews";
+import { useGetReviewDashboard, useGetReviews } from "@/hooks/queries/reviews";
 
+import { ReviewsPageSkeleton } from "./_components/Skeleton/reviewsPageSkeleton";
 import { LocationSelect, ReviewDashboard, ReviewList } from "./_components";
 
 function ReviewsContent() {
@@ -15,8 +15,8 @@ function ReviewsContent() {
 
   const {
     data: reviews,
-    isPending,
-    isError,
+    isPending: isReviewsPending,
+    isError: isReviewsError,
   } = useGetReviews({
     location,
     page,
@@ -24,39 +24,46 @@ function ReviewsContent() {
     sort: ["createdAt", "desc"],
   });
 
+  const {
+    data: DashboardInfo,
+    isPending: isDashboardPending,
+    isError: isDashboardError,
+  } = useGetReviewDashboard({
+    location,
+  });
+
+  console.log(reviews);
+  console.log(DashboardInfo);
+
+  if (isReviewsPending || isDashboardPending) {
+    return <ReviewsPageSkeleton />;
+  }
+
+  if (isReviewsError || isDashboardError) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <p className="text-red-500">리뷰를 불러오는 중 오류가 발생했습니다.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <LocationSelect selectedLocation={location} />
-
-      <ReviewDashboard />
-
-      {isPending && <ReviewCardSkeletonList count={10} />}
-
-      {isError && (
-        <div className="flex items-center justify-center py-20">
-          <p className="text-red-500">
-            리뷰를 불러오는 중 오류가 발생했습니다.
-          </p>
-        </div>
-      )}
-
-      {!isPending && !isError && (
-        <>
-          <ReviewList reviews={reviews.result?.content || []} />
-          <Pagination
-            currentPage={reviews.result?.page || 0}
-            totalPages={reviews.result?.totalPages || 0}
-            scroll={true}
-          />
-        </>
-      )}
+      <ReviewDashboard DashboardInfo={DashboardInfo.result} />
+      <ReviewList reviews={reviews.result?.content || []} />
+      <Pagination
+        currentPage={reviews.result?.page || 0}
+        totalPages={reviews.result?.totalPages || 0}
+        scroll={true}
+      />
     </div>
   );
 }
 
 export default function ReviewsPage() {
   return (
-    <section className="mx-auto max-w-screen-lg px-4">
+    <section className="mx-auto w-full max-w-screen-lg px-4">
       <ReviewsContent />
     </section>
   );

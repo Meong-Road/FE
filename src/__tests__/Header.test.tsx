@@ -2,7 +2,7 @@ import { usePathname } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 
-import Header from "../Header";
+import Header from "../components/Header";
 
 // Next.js navigation 모킹
 jest.mock("next/navigation", () => {
@@ -17,7 +17,7 @@ jest.mock("next/navigation", () => {
 });
 
 // Logo 컴포넌트 모킹
-jest.mock("../Logo", () => {
+jest.mock("../components/Logo", () => {
   return function Logo({ width }: { width: number }) {
     return <div data-testid="logo" style={{ width }} />;
   };

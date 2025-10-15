@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { ZodError } from "zod";
 
 import { formSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
@@ -22,6 +22,10 @@ describe("SigninFormSchema 테스트", () => {
       password: "00000000",
     };
     expect(() => formSchema.parse(validFormData)).not.toThrow();
+
+    const result = formSchema.parse(validFormData);
+    expect(result.email).toEqual("test@example.com");
+    expect(result.password).toEqual("00000000");
   });
 
   it("유효하지 않은 이메일", () => {
@@ -90,5 +94,80 @@ describe("SigninFormSchema 테스트", () => {
         "비밀번호는 50자 이하여야 합니다",
       );
     }
+  });
+});
+
+describe("zodResolver 연동 테스트", () => {
+  it("유효한 로그인 폼 데이터로 로그인 가능", async () => {
+    const { result } = renderHook(() => useSigninForm());
+
+    await act(async () => {
+      result.current.setValue("email", "test@example.com", {
+        shouldValidate: true,
+      });
+      result.current.setValue("password", "00000000", {
+        shouldValidate: true,
+      });
+    });
+
+    let isValid = false;
+    await act(async () => {
+      isValid = await result.current.trigger("email");
+    });
+
+    expect(isValid).toBe(true);
+
+    await waitFor(() => {
+      const emailError = result.current.getFieldState("email").error;
+      const passwordError = result.current.getFieldState("password").error;
+
+      expect(emailError).toBeUndefined();
+      expect(passwordError).toBeUndefined();
+    });
+  });
+
+  it("유효하지 않은 이메일로 에러", async () => {
+    const { result } = renderHook(() => useSigninForm());
+
+    await act(async () => {
+      result.current.setValue("email", "test", {
+        shouldValidate: true,
+      });
+    });
+
+    let isValid = false;
+    await act(async () => {
+      isValid = await result.current.trigger("email");
+    });
+
+    expect(isValid).toBe(false);
+
+    await waitFor(() => {
+      const errorMessage = result.current.getFieldState("email").error?.message;
+      expect(errorMessage).toBe("유효한 이메일을 입력해주세요");
+    });
+  });
+
+  it("8자 미만 비밀번호로 에러", async () => {
+    const { result } = renderHook(() => useSigninForm());
+
+    await act(async () => {
+      result.current.setValue("password", "0000", {
+        shouldValidate: true,
+      });
+    });
+
+    let isValid = false;
+    await act(async () => {
+      isValid = await result.current.trigger("password");
+    });
+
+    expect(isValid).toBe(false);
+
+    await waitFor(() => {
+      const errorMessage =
+        result.current.getFieldState("password").error?.message;
+      expect(errorMessage).toBe("비밀번호는 8자 이상이어야 합니다");
+    });
   });
 });

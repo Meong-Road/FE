@@ -167,7 +167,15 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased overflow-y-scroll;
+    @apply bg-background text-foreground antialiased;
+    @apply overflow-y-scroll;
+  }
+  body {
+    @apply [&::-webkit-scrollbar]:w-2; 
+    @apply [&::-webkit-scrollbar-thumb]:rounded-full; 
+    @apply [&::-webkit-scrollbar-thumb]:bg-gray-300; 
+    @apply [&::-webkit-scrollbar-thumb:hover]:bg-gray-400; 
+    @apply [&::-webkit-scrollbar-thumb:active]:bg-gray-500; 
   }
   button {
     @apply cursor-pointer;

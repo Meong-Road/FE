@@ -12,13 +12,10 @@ import {
 import { SEOUL_DISTRICTS } from "@/lib/constants/location";
 import { PATH } from "@/lib/constants/path";
 
-interface LocationSelectProps {
-  selectedLocation: string;
-}
-
-export function LocationSelect({ selectedLocation }: LocationSelectProps) {
+export function LocationSelect() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedLocation = searchParams.get("location") || undefined;
 
   const handleLocationChange = (location: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -31,10 +28,7 @@ export function LocationSelect({ selectedLocation }: LocationSelectProps) {
   };
 
   return (
-    <Select
-      value={selectedLocation || "서울 전체"}
-      onValueChange={handleLocationChange}
-    >
+    <Select value={selectedLocation} onValueChange={handleLocationChange}>
       <SelectTrigger className="w-30">
         <SelectValue placeholder={selectedLocation || "서울 전체"} />
       </SelectTrigger>

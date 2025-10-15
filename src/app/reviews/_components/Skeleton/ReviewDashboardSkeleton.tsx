@@ -17,7 +17,7 @@ export function ReviewDashboardSkeleton() {
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="flex items-center gap-3">
             <Skeleton className="h-5 w-8 bg-orange-100" />
-            <Skeleton className="h-1 flex-1 rounded-full bg-orange-100" />
+            <Skeleton className="h-2 flex-1 rounded-full bg-orange-100" />
             <Skeleton className="h-5 w-6 bg-orange-100" />
           </div>
         ))}

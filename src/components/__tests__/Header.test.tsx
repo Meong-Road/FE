@@ -5,9 +5,16 @@ import { render, screen } from "@testing-library/react";
 import Header from "../Header";
 
 // Next.js navigation 모킹
-jest.mock("next/navigation", () => ({
-  usePathname: jest.fn(),
-}));
+jest.mock("next/navigation", () => {
+  return {
+    useRouter: () => ({
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+    }),
+    usePathname: jest.fn(() => "/"),
+  };
+});
 
 // Logo 컴포넌트 모킹
 jest.mock("../Logo", () => {
@@ -28,17 +35,6 @@ jest.mock("@/assets/images/profile.svg", () => {
     return (
       <div data-testid="profile-svg" style={{ width }} className={className} />
     );
-  };
-});
-
-jest.mock("next/navigation", () => {
-  return {
-    useRouter: () => ({
-      push: jest.fn(),
-      replace: jest.fn(),
-      prefetch: jest.fn(),
-    }),
-    usePathname: jest.fn(() => "/"),
   };
 });
 

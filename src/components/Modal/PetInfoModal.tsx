@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import { useParams } from "next/navigation";
-
-import { postPetInfo, putPetInfo } from "@/api/pets";
-
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";
 
-import { PetInfoFormSchema, usePetInfoForm } from "./_hooks/usePetInfoForm";
+import { usePetInfoForm } from "./_hooks/usePetInfoForm";
+import { usePetInfoModal } from "./_hooks/usePetInfoModal";
+import { PetInfoModalProps } from "./types/petInfoModal";
 import Modal from ".";
 
 interface RadioOptionType {
@@ -25,43 +22,22 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
   { id: "didnot", label: "중성화 안함", value: "didnot" },
 ];
 
-interface PetInfoModalProps {
-  type: "first-login" | "add-pet" | "edit-pet";
-  onClose: () => void;
-}
-
 export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
   const form = usePetInfoForm();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { id } = useParams();
-
-  const handleSubmit = async (data: PetInfoFormSchema) => {
-    setIsLoading(true);
-
-    try {
-      if (type === "edit-pet") {
-        // 해당 반려동물 수정 버튼을 누르면 petId가 path에 뜬다고 가정
-        await putPetInfo(Number(id), data);
-        onClose();
-      } else {
-        await postPetInfo(data);
-        // 성공 토스트가 있으면 좋을 듯
-        onClose();
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, handleSubmit } = usePetInfoModal({ type, onClose });
 
   return (
     <>
-      <Modal.Title
-        title="반려견 정보를 등록해주세요"
-        subtitle="마이페이지에서 언제든지 추가 등록이 가능해요 🐶"
-      />
+      {type === "first-login" ? (
+        <Modal.Title
+          title="반려견 정보를 등록해주세요"
+          subtitle="마이페이지에서 언제든지 추가 등록이 가능해요 🐶"
+        />
+      ) : (
+        <Modal.Title title="반려견 정보를 등록해주세요" />
+      )}
+
       <Modal.ModalContent>
         <Form form={form} onSubmit={handleSubmit}>
           {/* 이미지 업로드 */}

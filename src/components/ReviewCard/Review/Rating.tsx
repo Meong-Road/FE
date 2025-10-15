@@ -21,7 +21,7 @@ export function Rating({ score, size }: ReviewCardRatingProps) {
         >
           <Heart
             className={cn(
-              "fill-primary",
+              "text-primary",
               size === "lg" ? "size-9.5" : "size-6",
             )}
           />

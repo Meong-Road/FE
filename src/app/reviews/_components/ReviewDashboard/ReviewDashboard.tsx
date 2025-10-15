@@ -33,7 +33,7 @@ export default function ReviewDashboard({
   ];
 
   return (
-    <div className="flex w-full flex-col items-center gap-8 rounded-3xl bg-orange-50 px-12 py-10 sm:flex-row sm:gap-16">
+    <div className="flex w-full flex-col items-center gap-8 rounded-3xl bg-orange-50 px-6 py-8 sm:flex-row sm:gap-16 sm:px-12 sm:py-10">
       {/* 왼쪽: 평균 점수 */}
       <div className="flex flex-col items-center gap-3">
         <div className="flex items-end gap-1.5">
@@ -57,6 +57,7 @@ export default function ReviewDashboard({
             <div className="flex-1">
               <ProgressBar
                 percentage={totalReviews > 0 ? (count / totalReviews) * 100 : 0}
+                className="h-2"
               />
             </div>
             <span className="w-6 text-right text-sm font-medium text-gray-700">

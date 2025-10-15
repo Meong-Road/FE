@@ -22,7 +22,6 @@ export const authApi = {
   },
 
   getMyInfo: async (): Promise<GetUserRes> => {
-    console.log("getMyInfo api called");
     return await customFetch.get("/meong-road/user/my");
   },
 };

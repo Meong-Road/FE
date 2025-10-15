@@ -30,14 +30,32 @@ describe("SigninFormSchema 테스트", () => {
       password: "00000000",
     };
     expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+
+    try {
+      formSchema.parse(invalidFormData);
+    } catch (error) {
+      const zodError = error as ZodError;
+      expect(zodError.issues[0].message).toEqual(
+        "유효한 이메일을 입력해주세요",
+      );
+    }
   });
 
   it("50자 초과 이메일", () => {
     const invalidFormData = {
-      email: "test@test.comcomcomcomcomcomcomcomcomcomcomcomcomco",
+      email: "test@test.comcomcomcomcomcomcomcomcomcomcomcomcomco", // 51자 with email 형식
       password: "00000000",
     };
     expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+
+    try {
+      formSchema.parse(invalidFormData);
+    } catch (error) {
+      const zodError = error as ZodError;
+      expect(zodError.issues[0].message).toEqual(
+        "이메일은 50자 이하여야 합니다",
+      );
+    }
   });
 
   it("8자 미만 비밀번호", () => {
@@ -46,13 +64,31 @@ describe("SigninFormSchema 테스트", () => {
       password: "0000",
     };
     expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+
+    try {
+      formSchema.parse(invalidFormData);
+    } catch (error) {
+      const zodError = error as ZodError;
+      expect(zodError.issues[0].message).toEqual(
+        "비밀번호는 8자 이상이어야 합니다",
+      );
+    }
   });
 
   it("50자 초과 비밀번호", () => {
     const invalidFormData = {
       email: "test@example.com",
-      password: "000000000000000000000000000000000000000000000000000",
+      password: "000000000000000000000000000000000000000000000000000", // 51자
     };
     expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+
+    try {
+      formSchema.parse(invalidFormData);
+    } catch (error) {
+      const zodError = error as ZodError;
+      expect(zodError.issues[0].message).toEqual(
+        "비밀번호는 50자 이하여야 합니다",
+      );
+    }
   });
 });

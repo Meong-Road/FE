@@ -39,5 +39,4 @@ export const authApi = {
     );
     return Boolean(response?.result);
   },
-  // signout: async (): Promise<PostSignoutRes> => {
 };

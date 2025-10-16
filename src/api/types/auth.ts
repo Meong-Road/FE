@@ -31,7 +31,7 @@ export interface PostSigninRes {
   code: number;
   message: string;
   result: {
-    accessToken: string;
+    token: string;
     refreshToken: string;
     user: UserType;
   };
@@ -49,3 +49,6 @@ export interface PostNicknameDuplicateCheckReq {
 }
 
 export type PostNicknameDuplicateCheckRes = Response<boolean>;
+
+// Get User Info
+export type GetUserRes = Response<UserType>;

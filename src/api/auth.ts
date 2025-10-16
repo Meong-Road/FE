@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
   GetEmailDuplicateCheckRes,
-  PostNicknameDuplicateCheckReq,
+  GetUserRes,
   PostNicknameDuplicateCheckRes,
   PostSigninReq,
   PostSigninRes,
@@ -17,6 +17,7 @@ export const authApi = {
       body: JSON.stringify(payload),
     });
   },
+
   signin: async (payload: PostSigninReq): Promise<PostSigninRes> => {
     return await customFetch.post<PostSigninRes>(
       `${API_ENDPOINTS.AUTH}/login`,
@@ -25,6 +26,7 @@ export const authApi = {
       },
     );
   },
+
   checkEmailDuplicate: async (email: string): Promise<boolean> => {
     const response = await customFetch.get<GetEmailDuplicateCheckRes>(
       `${API_ENDPOINTS.USER}/exists?email=${encodeURIComponent(email)}`,
@@ -32,11 +34,16 @@ export const authApi = {
     );
     return Boolean(response?.result?.exists);
   },
+
   checkNicknameDuplicate: async (nickname: string): Promise<boolean> => {
     const response = await customFetch.post<PostNicknameDuplicateCheckRes>(
       `${API_ENDPOINTS.USER}/nickname/check`,
       { body: JSON.stringify({ nickName: nickname }) },
     );
     return Boolean(response?.result);
+  },
+
+  getMyInfo: async (): Promise<GetUserRes> => {
+    return await customFetch.get("/meong-road/user/my");
   },
 };

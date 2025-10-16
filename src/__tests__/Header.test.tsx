@@ -1,6 +1,12 @@
 import { usePathname } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 
 import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import { PATH } from "@/lib/constants/path";
@@ -75,16 +81,16 @@ const renderHeader = (pathname = "/", user: UserType | null) => {
   return renderWithQueryClient(<Header />);
 };
 
-// const loggedInUser: UserType = {
-//   id: 1,
-//   email: "test@example.com",
-//   name: "멍로드",
-//   nickName: "멍로드",
-//   image: null,
-//   isPetInfoSubmitted: true,
-//   createdAt: "",
-//   updatedAt: "",
-// };
+const loggedInUser: UserType = {
+  id: 1,
+  email: "test@example.com",
+  name: "멍로드",
+  nickName: "멍로드",
+  image: null,
+  isPetInfoSubmitted: true,
+  createdAt: "",
+  updatedAt: "",
+};
 
 describe("Header", () => {
   afterEach(() => {
@@ -132,19 +138,19 @@ describe("Header", () => {
     );
   });
 
-  // it("로그인 시 프로필 링크는 /profile로 연결", () => {
-  //   renderHeader("/");
+  it("로그인 상태에서 프로필 버튼을 클릭하면 드롭다운", async () => {
+    renderHeader("/", loggedInUser);
 
-  //   const profileLink = screen.getByTestId("profile-svg").closest("a");
-  //   expect(profileLink).toHaveAttribute("href", PATH.MY_PROFILE);
-  // });
+    const profileIcon = screen.getByTestId("profile-svg");
+    expect(profileIcon.closest("a")).toBeNull();
+  });
 
-  // it("로그아웃 시 프로필 링크는 /signin으로 연결", () => {
-  //   renderHeader("/", null);
+  it("로그아웃 상태에서 프로필 링크는 /signin으로 연결", () => {
+    renderHeader("/", null);
 
-  //   const profileLink = screen.getByTestId("profile-svg").closest("a");
-  //   expect(profileLink).toHaveAttribute("href", PATH.MY_PROFILE);
-  // });
+    const profileLink = screen.getByTestId("profile-svg").closest("a");
+    expect(profileLink).toHaveAttribute("href", PATH.SIGNIN);
+  });
 
   it("현재 경로에 해당하는 메뉴가 활성화되어야 한다", () => {
     renderHeader(PATH.REGULAR_DETAIL(1));

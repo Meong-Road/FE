@@ -43,7 +43,7 @@ export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
   }, [type, id]);
 
   const hasChanges = (currentData: PetInfoUpdateSchema) => {
-    if (!initialData) return true;
+    if (!initialData) return false;
 
     return Object.keys(currentData).some((key) => {
       const currentValue = currentData[key as keyof typeof currentData];

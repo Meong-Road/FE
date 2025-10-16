@@ -1,11 +1,20 @@
+import { cn } from "@/lib/utils";
+
 interface ProgressBarProps {
   percentage: number; // 50% 일 때, 50 입력
   max?: number | string;
+  className?: string;
 }
 
-export default function ProgressBar({ percentage, max }: ProgressBarProps) {
+export default function ProgressBar({
+  percentage,
+  max,
+  className,
+}: ProgressBarProps) {
   return (
-    <div className="relative h-1 w-full rounded-full bg-[#eaeaea]">
+    <div
+      className={cn("relative h-1 w-full rounded-full bg-[#eaeaea]", className)}
+    >
       <div
         className="from-secondary to-primary absolute h-full rounded-full bg-gradient-to-r"
         style={{ width: `${percentage}%` }}

@@ -6,7 +6,7 @@ interface ReviewListProps {
   reviews: ReviewType[];
 }
 
-export function ReviewList({ reviews }: ReviewListProps) {
+export default function ReviewList({ reviews }: ReviewListProps) {
   if (reviews.length === 0) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -16,12 +16,12 @@ export function ReviewList({ reviews }: ReviewListProps) {
   }
 
   return (
-    <ol className="space-y-3 sm:space-y-4">
+    <ol className="flex w-full flex-col gap-3 sm:gap-4">
       {reviews.map((review) => (
         <ReviewCard key={review.id}>
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:gap-8">
+          <div className="flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-8">
             <ReviewCard.GatheringImage image={review.gathering.image} />
-            <div className="flex flex-1 flex-col justify-between">
+            <div className="flex w-full flex-1 flex-col justify-between">
               <ReviewCard.Header
                 profileImage={review.user.image}
                 score={review.score}

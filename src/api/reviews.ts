@@ -1,6 +1,8 @@
 import qs from "qs";
 
 import {
+  GetReviewDashboardReq,
+  GetReviewDashboardRes,
   GetReviewsByGatheringReq,
   GetReviewsByGatheringRes,
   GetReviewsReq,
@@ -17,18 +19,18 @@ const REVIEW_API = {
     size = 10,
     sort = ["createdAt", "desc"],
   }: Partial<GetReviewsReq>): Promise<GetReviewsRes> => {
-    const params = new URLSearchParams({
-      location,
-      page: page.toString(),
-      size: size.toString(),
-      sort: sort.join(","),
-    });
-
     return await customFetch.get(
-      `${API_ENDPOINTS.REVIEW}?${params.toString()}`,
+      `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort })}`,
       {
         isPublic: true, // 공개 API - 인증 불필요
       },
+    );
+  },
+  getReviewDashboard: async ({
+    location = "서울 전체",
+  }: GetReviewDashboardReq): Promise<GetReviewDashboardRes> => {
+    return await customFetch.get(
+      `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location })}`,
     );
   },
   getReviewsByGathering: async ({

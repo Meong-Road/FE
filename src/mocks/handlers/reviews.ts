@@ -36,6 +36,22 @@ export const reviewsHandlers = [
       errorCode: null,
     });
   }),
+  http.get(`${API_ENDPOINTS.REVIEW}/scores`, () => {
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "조회 성공",
+      result: {
+        averageScore: 4.3,
+        OneStar: 3,
+        TwoStar: 4,
+        ThreeStar: 29,
+        FourStar: 40,
+        FiveStar: 89,
+      },
+      errorCode: null,
+    });
+  }),
   http.get(`${API_ENDPOINTS.REVIEW}/gatherings/:id`, () => {
     return HttpResponse.json({
       success: true,

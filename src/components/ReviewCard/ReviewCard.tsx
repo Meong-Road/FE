@@ -12,7 +12,7 @@ export function ReviewCard({ className, children }: ReviewCardProps) {
   return (
     <li
       className={cn(
-        "relative list-none rounded-3xl bg-white p-4 transition-shadow hover:shadow-sm sm:p-6",
+        "relative w-full list-none rounded-3xl bg-white p-4 transition-shadow hover:shadow-sm sm:p-6",
         className,
       )}
     >

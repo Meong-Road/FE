@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { ZodError } from "zod";
 
-import { formSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
+import { signinFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
 
 describe("useSigninForm 테스트", () => {
   it("훅 생성", () => {
@@ -21,9 +21,9 @@ describe("SigninFormSchema 테스트", () => {
       email: "test@example.com",
       password: "00000000",
     };
-    expect(() => formSchema.parse(validFormData)).not.toThrow();
+    expect(() => signinFormSchema.parse(validFormData)).not.toThrow();
 
-    const result = formSchema.parse(validFormData);
+    const result = signinFormSchema.parse(validFormData);
     expect(result.email).toEqual("test@example.com");
     expect(result.password).toEqual("00000000");
   });
@@ -33,10 +33,10 @@ describe("SigninFormSchema 테스트", () => {
       email: "test",
       password: "00000000",
     };
-    expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+    expect(() => signinFormSchema.parse(invalidFormData)).toThrow(ZodError);
 
     try {
-      formSchema.parse(invalidFormData);
+      signinFormSchema.parse(invalidFormData);
     } catch (error) {
       const zodError = error as ZodError;
       expect(zodError.issues[0].message).toEqual(
@@ -50,10 +50,10 @@ describe("SigninFormSchema 테스트", () => {
       email: "test@test.comcomcomcomcomcomcomcomcomcomcomcomcomco", // 51자 with email 형식
       password: "00000000",
     };
-    expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+    expect(() => signinFormSchema.parse(invalidFormData)).toThrow(ZodError);
 
     try {
-      formSchema.parse(invalidFormData);
+      signinFormSchema.parse(invalidFormData);
     } catch (error) {
       const zodError = error as ZodError;
       expect(zodError.issues[0].message).toEqual(
@@ -67,10 +67,10 @@ describe("SigninFormSchema 테스트", () => {
       email: "test@example.com",
       password: "0000",
     };
-    expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+    expect(() => signinFormSchema.parse(invalidFormData)).toThrow(ZodError);
 
     try {
-      formSchema.parse(invalidFormData);
+      signinFormSchema.parse(invalidFormData);
     } catch (error) {
       const zodError = error as ZodError;
       expect(zodError.issues[0].message).toEqual(
@@ -84,10 +84,10 @@ describe("SigninFormSchema 테스트", () => {
       email: "test@example.com",
       password: "000000000000000000000000000000000000000000000000000", // 51자
     };
-    expect(() => formSchema.parse(invalidFormData)).toThrow(ZodError);
+    expect(() => signinFormSchema.parse(invalidFormData)).toThrow(ZodError);
 
     try {
-      formSchema.parse(invalidFormData);
+      signinFormSchema.parse(invalidFormData);
     } catch (error) {
       const zodError = error as ZodError;
       expect(zodError.issues[0].message).toEqual(

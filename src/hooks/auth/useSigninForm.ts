@@ -15,9 +15,6 @@ export const signinFormSchema = z.object({
     .max(50, "비밀번호는 50자 이하여야 합니다"),
 });
 
-// 테스트 호환성을 위한 alias
-export const formSchema = signinFormSchema;
-
 export type SigninFormSchema = z.infer<typeof signinFormSchema>;
 
 export function useSigninForm() {

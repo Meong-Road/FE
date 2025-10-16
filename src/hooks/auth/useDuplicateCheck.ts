@@ -1,16 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { FieldValues, Path, PathValue } from "react-hook-form";
-
-import {
-  checkEmailDuplicate,
-  checkNicknameDuplicate,
-} from "@/api/duplicateCheck";
 import type {
-  DuplicateCheckType,
-  UseDuplicateCheckProps,
-} from "@/lib/types/duplicateCheck";
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormReturn,
+} from "react-hook-form";
+
+import { authApi } from "@/api/auth";
+
+interface UseDuplicateCheckProps<T extends FieldValues> {
+  form: UseFormReturn<T>;
+  field: Path<T>;
+  checkPassedField?: Path<T>;
+  errorMessage?: string;
+}
+
+type DuplicateCheckType = "email" | "nickname";
 
 export function useDuplicateCheck<T extends FieldValues>(
   type: DuplicateCheckType,
@@ -58,8 +65,8 @@ export function useDuplicateCheck<T extends FieldValues>(
     try {
       const isDuplicate =
         type === "email"
-          ? await checkEmailDuplicate(value)
-          : await checkNicknameDuplicate(value);
+          ? await authApi.checkEmailDuplicate(value)
+          : await authApi.checkNicknameDuplicate(value);
 
       setLastChecked(value);
 

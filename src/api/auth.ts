@@ -1,10 +1,12 @@
 import {
+  GetEmailDuplicateCheckRes,
+  PostNicknameDuplicateCheckReq,
+  PostNicknameDuplicateCheckRes,
   PostSigninReq,
   PostSigninRes,
   PostSignupReq,
   PostSignupRes,
-} from "@/lib/types/auth";
-
+} from "./types/auth";
 import { customFetch } from "./customFetch";
 
 export const authApi = {
@@ -17,6 +19,20 @@ export const authApi = {
     return await customFetch.post<PostSigninRes>("/meong-road/auth/login", {
       body: JSON.stringify(payload),
     });
+  },
+  checkEmailDuplicate: async (email: string): Promise<boolean> => {
+    const response = await customFetch.get<GetEmailDuplicateCheckRes>(
+      `/meong-road/user/exists?email=${encodeURIComponent(email)}`,
+      { isPublic: true }, //얘는 Authorization 헤더 붙이면 에러남(403)
+    );
+    return Boolean(response?.result?.exists);
+  },
+  checkNicknameDuplicate: async (nickname: string): Promise<boolean> => {
+    const response = await customFetch.post<PostNicknameDuplicateCheckRes>(
+      "/meong-road/user/nickname/check",
+      { body: JSON.stringify({ nickName: nickname }) },
+    );
+    return Boolean(response?.result);
   },
   // signout: async (): Promise<PostSignoutRes> => {
 };

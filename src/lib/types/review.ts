@@ -1,7 +1,7 @@
-import { RegularGatheringType } from "./gathering";
+import { RegularGatheringType } from "./gatherings";
 import { UserType } from "./user";
 
-export type ReviewScore = 1 | 2 | 3 | 4 | 5;
+export type ReviewScore = 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 
 export interface ReviewType {
   id: number;
@@ -13,19 +13,11 @@ export interface ReviewType {
   gathering: RegularGatheringType;
   user: UserType;
 }
-
-export interface GetReviewsReq {
-  location?: string | null;
-  page: number;
-  size: number;
-  sort: string;
-}
-
-export interface GetReviewsRes {
-  content: ReviewType[];
-  page: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
+export interface ReviewDashboardType {
+  averageScore: number;
+  OneStar: number;
+  TwoStar: number;
+  ThreeStar: number;
+  FourStar: number;
+  FiveStar: number;
 }

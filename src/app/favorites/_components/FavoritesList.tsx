@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 import QuickGatheringCard from "@/app/_components/QuickGatheringCard";
 import RegularGatheringCard from "@/app/_components/RegularGatheringCard";
-import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gathering";
+import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
 
 export default function FavoritesList({ currentTab }: { currentTab: string }) {
   const { ref, inView } = useInView();

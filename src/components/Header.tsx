@@ -7,6 +7,7 @@ import TempLoginProfileSvg from "@/assets/icons/naver-icon.svg";
 import ProfileSvg from "@/assets/images/profile.svg";
 import { useAuthUser } from "@/hooks/auth/useAuthUser";
 import { useSignout } from "@/hooks/auth/useSignout";
+import { PATH } from "@/lib/constants/path";
 import { cn } from "@/lib/utils";
 
 import Logo from "./Logo";
@@ -14,19 +15,19 @@ import Logo from "./Logo";
 const HEADER_ITEMS = [
   {
     name: "정기 모임",
-    href: "/regular",
+    href: PATH.REGULAR,
   },
   {
     name: "번개 모임",
-    href: "/quick",
+    href: PATH.QUICK,
   },
   {
     name: "찜한 모임",
-    href: "/favorites",
+    href: PATH.FAVORITES,
   },
   {
     name: "모든 리뷰",
-    href: "/reviews",
+    href: PATH.REVIEWS,
   },
 ];
 
@@ -40,12 +41,12 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-10 h-22 w-full py-4 backdrop-blur-2xl",
+        "fixed top-0 left-0 z-10 h-22 w-full bg-white/70 py-4 backdrop-blur-2xl",
         className,
       )}
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-2">
-        <Link href="/" className="shrink-0">
+        <Link href={PATH.HOME} className="shrink-0">
           <Logo width={92} />
         </Link>
         <div className="flex w-full items-center justify-between gap-4">
@@ -75,7 +76,7 @@ export default function Header({ className }: { className?: string }) {
           )}
 
           <Link
-            href={user ? `/profile/${user.id}` : "/signin"}
+            href={user ? `${PATH.MY_PROFILE}` : "/signin"}
             className="shrink-0 p-1.5"
           >
             {user ? (

@@ -2,7 +2,7 @@ import {
   GatheringType,
   QuickGatheringType,
   RegularGatheringType,
-} from "../types/gathering";
+} from "../types/gatherings";
 
 export const isQuickGathering = (
   gathering: GatheringType,

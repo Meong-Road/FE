@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+import Header from "@/components/Header";
 import { initMocks } from "@/mocks";
 import MSWProvider from "@/providers/MSWProvider";
 import QueryProvider from "@/providers/QueryProvider";
@@ -25,12 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${pretendardVariable.className} bg-background antialiased`}
-      >
+      <body className={`${pretendardVariable.className}`}>
         <QueryProvider>
           <MSWProvider>
-            {children}
+            <Header />
+            <div className="relative scroll-pt-32 pt-32">{children}</div>
             <div id="modal-root"></div>
           </MSWProvider>
         </QueryProvider>

@@ -1,66 +1,80 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 
+import { gatheringApi } from "@/api/gatherings";
+import { PaginationReq } from "@/api/types/common";
 import {
-  cancelLike,
-  getGatheringDetail,
-  getIsLiked,
-  getMyBookmarkedGatherings,
-  getQuickGatherings,
-  getRegularGatherings,
-  like,
-} from "@/api/gatherings";
-import { EGatheringType, GatheringType } from "@/lib/types/gathering";
+  CancelLikeReq,
+  GetGatheringDetailReq,
+  GetIsLikedReq,
+  GetQuickGatheringsReq,
+  GetRegularGatheringsReq,
+  LikeReq,
+} from "@/api/types/gatherings";
+import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 
 export const GATHERING_QUERY_KEY = {
-  GATHERINGS: ({ type }: { type: GatheringType["type"] }) => [
+  GATHERINGS: () => ["gatherings"],
+  GATHERINGS_REGULAR: (params: Omit<GetRegularGatheringsReq, "page">) => [
     "gatherings",
-    type,
+    "regular",
+    params,
+  ],
+  GATHERINGS_QUICK: (params: Omit<GetQuickGatheringsReq, "page">) => [
+    "gatherings",
+    "quick",
+    params,
   ],
   IS_LIKED: ({ id }: { id: GatheringType["id"] }) => ["isLiked", id],
   GATHERING_DETAIL: ({ id }: { id: GatheringType["id"] }) => ["gatherings", id],
 };
 
-export const useGetInfiniteRegularGatherings = () => {
+export const useGetInfiniteRegularGatherings = ({
+  size = 10,
+  sort = ["createdAt"],
+}: Omit<GetRegularGatheringsReq, keyof PaginationReq> &
+  Partial<PaginationReq>) => {
   return useInfiniteQuery({
-    queryKey: GATHERING_QUERY_KEY.GATHERINGS({ type: EGatheringType.REGULAR }),
+    queryKey: GATHERING_QUERY_KEY.GATHERINGS_REGULAR({ size, sort }),
     queryFn: ({ pageParam }) => {
-      return getRegularGatherings({
+      return gatheringApi.getRegularGatherings({
         page: pageParam,
-        pageSize: 10,
-        sortBy: "createdAt",
-        sortOrder: "desc",
+        size,
+        sort,
       });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, pageParam) =>
-      lastPage.hasNext ? pageParam + 1 : undefined,
-    select: (data) => data.pages.flatMap((page) => page.data),
+      lastPage.last ? undefined : pageParam + 1,
+    select: (data) => data.pages.flatMap((page) => page.content),
   });
 };
 
-export const useGetInfiniteQuickGatherings = () => {
+export const useGetInfiniteQuickGatherings = ({
+  size = 10,
+  sort = ["createdAt"],
+}: Omit<GetQuickGatheringsReq, keyof PaginationReq> &
+  Partial<PaginationReq>) => {
   return useInfiniteQuery({
-    queryKey: GATHERING_QUERY_KEY.GATHERINGS({ type: EGatheringType.QUICK }),
+    queryKey: GATHERING_QUERY_KEY.GATHERINGS_QUICK({ size, sort }),
     queryFn: ({ pageParam }) => {
-      return getQuickGatherings({
+      return gatheringApi.getQuickGatherings({
         page: pageParam,
-        pageSize: 10,
-        sortBy: "createdAt",
-        sortOrder: "desc",
+        size,
+        sort,
       });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, pageParam) =>
-      lastPage.hasNext ? pageParam + 1 : undefined,
-    select: (data) => data.pages.flatMap((page) => page.data),
+      lastPage.last ? undefined : pageParam + 1,
+    select: (data) => data.pages.flatMap((page) => page.content),
   });
 };
 
-export const useGetIsLiked = ({ id }: { id: GatheringType["id"] }) => {
+export const useGetIsLiked = ({ id }: GetIsLikedReq) => {
   return useQuery({
     queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
     queryFn: () => {
-      return getIsLiked(id);
+      return gatheringApi.getIsLiked({ id });
     },
   });
 };
@@ -68,13 +82,12 @@ export const useGetIsLiked = ({ id }: { id: GatheringType["id"] }) => {
 export const useLike = ({
   id,
   onSuccess,
-}: {
-  id: GatheringType["id"];
+}: LikeReq & {
   onSuccess: () => void;
 }) => {
   return useMutation({
     mutationFn: () => {
-      return like(id);
+      return gatheringApi.like({ id });
     },
     onSuccess,
   });
@@ -83,13 +96,12 @@ export const useLike = ({
 export const useCancelLike = ({
   id,
   onSuccess,
-}: {
-  id: GatheringType["id"];
+}: CancelLikeReq & {
   onSuccess: () => void;
 }) => {
   return useMutation({
     mutationFn: () => {
-      return cancelLike(id);
+      return gatheringApi.cancelLike({ id });
     },
     onSuccess,
   });
@@ -103,7 +115,7 @@ export const useGetInfiniteBookmarkedGatherings = (
   return useInfiniteQuery({
     queryKey: ["bookmarkedGatherings", currentTab, size, sort],
     queryFn: ({ pageParam }) => {
-      return getMyBookmarkedGatherings({
+      return gatheringApi.getMyBookmarkedGatherings({
         type:
           currentTab === "regular"
             ? EGatheringType.REGULAR
@@ -121,9 +133,9 @@ export const useGetInfiniteBookmarkedGatherings = (
   });
 };
 
-export const useGetGatheringDetail = ({ id }: { id: GatheringType["id"] }) => {
+export const useGetGatheringDetail = ({ id }: GetGatheringDetailReq) => {
   return useQuery({
     queryKey: GATHERING_QUERY_KEY.GATHERING_DETAIL({ id }),
-    queryFn: () => getGatheringDetail({ id }),
+    queryFn: () => gatheringApi.getGatheringDetail({ id }),
   });
 };

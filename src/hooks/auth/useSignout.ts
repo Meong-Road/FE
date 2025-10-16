@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { PATH } from "@/lib/constants/path";
 import { authService } from "@/services/authService";
 
 export function useSignout() {
@@ -12,6 +13,6 @@ export function useSignout() {
     queryClient.invalidateQueries({ queryKey: ["me"] });
     queryClient.setQueryData(["me"], null);
 
-    router.push("/signin");
+    router.push(PATH.SIGNIN);
   };
 }

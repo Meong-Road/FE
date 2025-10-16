@@ -1,39 +1,45 @@
-// src/api/reviews/getReviews.ts
-import { GetReviewsReq, GetReviewsRes } from "@/lib/types/review";
-import { GetReviewReq, GetReviewRes } from "@/lib/types/reviews";
-import { Response } from "@/mocks/data/common";
+import qs from "qs";
 
-import { customFetch } from "./customFetch"; // 네가 만든 fetch 래퍼가 있다면 이걸 사용
+import {
+  GetReviewDashboardReq,
+  GetReviewDashboardRes,
+  GetReviewsByGatheringReq,
+  GetReviewsByGatheringRes,
+  GetReviewsReq,
+  GetReviewsRes,
+} from "@/api/types/reviews";
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
-export async function getReviews({
-  location,
-  page = 0,
-  size = 10,
-  sort = "createdAt,desc",
-}: GetReviewsReq): Promise<Response<GetReviewsRes>> {
-  const params = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-    sort,
-  });
-
-  if (location) {
-    params.append("location", location);
-  }
-
-  return await customFetch.get(`/meong-road/reviews?${params.toString()}`, {
-    isPublic: true, // 공개 API - 인증 불필요
-  });
-}
+import { customFetch } from "./customFetch";
 
 const REVIEW_API = {
+  getReviews: async ({
+    location = "서울 전체",
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: Partial<GetReviewsReq>): Promise<GetReviewsRes> => {
+    return await customFetch.get(
+      `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort })}`,
+      {
+        isPublic: true, // 공개 API - 인증 불필요
+      },
+    );
+  },
+  getReviewDashboard: async ({
+    location = "서울 전체",
+  }: GetReviewDashboardReq): Promise<GetReviewDashboardRes> => {
+    return await customFetch.get(
+      `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location })}`,
+    );
+  },
   getReviewsByGathering: async ({
     gatheringId,
-    page,
-    size,
-    sort,
-  }: GetReviewReq): Promise<GetReviewRes> => {
-    const response = await fetch(`/api/reviews/gatherings/${gatheringId}`);
+    ...params
+  }: GetReviewsByGatheringReq): Promise<GetReviewsByGatheringRes> => {
+    const response = await fetch(
+      `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
+    );
     return response.json();
   },
 };

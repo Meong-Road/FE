@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { PATH } from "@/lib/constants/path";
+
 import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
 
 export default function JoinedSection() {
@@ -8,7 +10,7 @@ export default function JoinedSection() {
     <section>
       <ul>
         {/* Regular gathering 일 때 */}
-        <Link href={`/regular/${gathering.id}`}>
+        <Link href={PATH.REGULAR_DETAIL(gathering.id)}>
           <GatheringCard bgColor="white">
             <div className="flex items-center gap-6">
               <GatheringCard.Image />

@@ -1,7 +1,8 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 
-import { useGetGatheringDetail } from "@/hooks/queries/gathering";
+import { useGetGatheringDetail } from "@/hooks/queries/gatherings";
+import { PATH } from "@/lib/constants/path";
 import { isQuickGathering } from "@/lib/utils/gathering";
 
 import GatheringInfoSection from "./_components/GatheringInfo/GatheringInfoSection";
@@ -20,7 +21,7 @@ export default function QuickGatheringDetailPage() {
   if (!data.result) return <div>데이터가 없습니다.</div>;
 
   if (!isQuickGathering(data.result)) {
-    router.push(`/regular/${id}`);
+    router.push(PATH.REGULAR_DETAIL(id as string));
     return;
   }
 

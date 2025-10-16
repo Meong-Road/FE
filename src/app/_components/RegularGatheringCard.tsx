@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import { GatheringCard } from "@/components/GatheringCard";
-import { RegularGatheringType } from "@/lib/types/gathering";
+import { PATH } from "@/lib/constants/path";
+import { RegularGatheringType } from "@/lib/types/gatherings";
 
 interface RegularGatheringCardProps {
   gathering: RegularGatheringType;
@@ -11,7 +12,7 @@ export default function RegularGatheringCard({
   gathering,
 }: RegularGatheringCardProps) {
   return (
-    <Link href={`/regular/${gathering.id}`}>
+    <Link href={PATH.REGULAR_DETAIL(gathering.id)}>
       <GatheringCard bgColor="white">
         <div className="flex h-full flex-row items-center gap-6">
           {gathering.image && (

@@ -1,9 +1,13 @@
+import { cn } from "@/lib/utils";
+
 import { TabItem } from "./TabItem";
 import { TabList } from "./TabList";
 import { type TabProps } from "./types";
 
-export function Tab({ children }: TabProps) {
-  return <nav className="mt-16 border-b-1 border-[#ddd]">{children}</nav>;
+export function Tab({ className, children }: TabProps) {
+  return (
+    <nav className={cn("border-b-1 border-[#ddd]", className)}>{children}</nav>
+  );
 }
 
 Tab.List = TabList;

@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
-import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gathering";
+import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gatherings";
+import { PATH } from "@/lib/constants/path";
 
 import QuickGatheringCard from "../../_components/QuickGatheringCard";
 import LocationSelect from "../_components/LocationSelect";
@@ -21,7 +22,7 @@ export default function QuickGatheringListPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetInfiniteQuickGatherings();
+  } = useGetInfiniteQuickGatherings({});
 
   useEffect(() => {
     if (inView) fetchNextPage();
@@ -43,7 +44,7 @@ export default function QuickGatheringListPage() {
 
           {/* 모임 만들기 버튼 */}
           <Link
-            href="/gatherings/quick/create"
+            href={PATH.QUICK_CREATE}
             className="bg-primary rounded-md px-4 py-2 text-white"
           >
             + 모임 만들기

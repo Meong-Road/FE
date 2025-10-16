@@ -1,4 +1,5 @@
 import { PATH } from "@/lib/constants/path";
+import { mockUserProfile } from "@/mocks/data/profile";
 
 import CreatedSection from "./_components/CreatedSection";
 import EditBtn from "./_components/EditBtn";
@@ -19,6 +20,9 @@ export default async function Profile({ searchParams }: ProfileProps) {
       ? resolvedSearchParams.tab
       : "joined";
 
+  // Mock 데이터 사용
+  const userProfile = mockUserProfile;
+
   return (
     <section className="mx-auto max-w-[1132px]">
       <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
@@ -28,12 +32,12 @@ export default async function Profile({ searchParams }: ProfileProps) {
           <EditBtn />
         </div>
         <ProfileCard.Content>
-          <ProfileCard.Image></ProfileCard.Image>
+          <ProfileCard.Image src={userProfile.image}></ProfileCard.Image>
           <div className="pt-4">
-            <ProfileCard.Name>럽원즈올</ProfileCard.Name>
+            <ProfileCard.Name>{userProfile.name}</ProfileCard.Name>
             <dl>
-              <ProfileCard.Info label="ID" value="Example2" />
-              <ProfileCard.Info label="E-mail" value="Example@naver.com" />
+              <ProfileCard.Info label="ID" value={userProfile.nickName} />
+              <ProfileCard.Info label="E-mail" value={userProfile.email} />
             </dl>
           </div>
         </ProfileCard.Content>

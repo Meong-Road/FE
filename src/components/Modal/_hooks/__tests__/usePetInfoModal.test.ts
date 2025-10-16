@@ -5,6 +5,37 @@ import { getPetInfo, postPetInfo, putPetInfo } from "@/api/pets";
 
 import { usePetInfoModal } from "../usePetInfoModal";
 
+const createMockPetInfoResponse = (overrides = {}) => ({
+  id: 1,
+  name: "멍멍이",
+  birthYear: "2025",
+  image: "",
+  petType: "dog",
+  breed: "골든 리트리버",
+  gender: "MALE" as const,
+  neuter: null,
+  ...overrides,
+});
+
+const createMockFormData = (overrides = {}) => ({
+  name: "멍멍이",
+  gender: "male" as const,
+  birthYear: "2025",
+  breed: "골든 리트리버",
+  ...overrides,
+});
+
+interface PromiseType {
+  id: number;
+  name: string;
+  birthYear: string;
+  image: string;
+  petType: string;
+  breed: string;
+  gender: "MALE" | "FEMALE";
+  neuter: boolean | null;
+}
+
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
 }));
@@ -31,56 +62,36 @@ describe("usePetInfoModal Hook 테스트", () => {
     mockOnClose.mockClear();
   });
 
+  const renderHookWithType = (type: "first-login" | "add-pet" | "edit-pet") => {
+    return renderHook(() =>
+      usePetInfoModal({ type: type, onClose: mockOnClose }),
+    );
+  };
+
   describe("초기 로딩 상태 테스트", () => {
     it("first-login 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
-      const { result } = renderHook(() =>
-        usePetInfoModal({ type: "first-login", onClose: mockOnClose }),
-      );
-
+      const { result } = renderHookWithType("first-login");
       expect(result.current.isLoading).toBe(false);
     });
 
     it("add-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
-      const { result } = renderHook(() =>
-        usePetInfoModal({ type: "add-pet", onClose: mockOnClose }),
-      );
-
+      const { result } = renderHookWithType("add-pet");
       expect(result.current.isLoading).toBe(false);
     });
 
     it("edit-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
-      const { result } = renderHook(() =>
-        usePetInfoModal({ type: "edit-pet", onClose: mockOnClose }),
-      );
-
+      const { result } = renderHookWithType("edit-pet");
       expect(result.current.isLoading).toBe(false);
     });
   });
 
   describe("타입에 따라서 다른 API를 호출하는지 테스트", () => {
     it("first-login 타입일 때 postPetInfo API를 호출하는지 테스트", async () => {
-      mockPostPetInfo.mockResolvedValue({
-        id: 1,
-        name: "멍멍이",
-        birthYear: "2025",
-        image: "",
-        petType: "dog",
-        breed: "골든 리트리버",
-        gender: "MALE",
-        neuter: null,
-      });
+      mockPostPetInfo.mockResolvedValue(createMockPetInfoResponse());
 
-      const { result } = renderHook(() =>
-        usePetInfoModal({ type: "first-login", onClose: mockOnClose }),
-      );
+      const { result } = renderHookWithType("first-login");
 
-      const mockData = {
-        name: "멍멍이",
-        gender: "male" as const,
-        birthYear: "2025",
-        breed: "골든 리트리버",
-      };
-
+      const mockData = createMockFormData();
       await act(async () => {
         await result.current.handleSubmit(mockData);
       });
@@ -90,28 +101,11 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
 
     it("add-pet 타입일 때 postPetInfo API를 호출하는지 테스트", async () => {
-      mockPostPetInfo.mockResolvedValue({
-        id: 1,
-        name: "멍멍이",
-        birthYear: "2025",
-        image: "",
-        petType: "dog",
-        breed: "골든 리트리버",
-        gender: "MALE",
-        neuter: null,
-      });
+      mockPostPetInfo.mockResolvedValue(createMockPetInfoResponse());
 
-      const { result } = renderHook(() =>
-        usePetInfoModal({ type: "add-pet", onClose: mockOnClose }),
-      );
+      const { result } = renderHookWithType("add-pet");
 
-      const mockData = {
-        name: "멍멍이",
-        gender: "male" as const,
-        birthYear: "2025",
-        breed: "골든 리트리버",
-      };
-
+      const mockData = createMockFormData();
       await act(async () => {
         await result.current.handleSubmit(mockData);
       });
@@ -121,31 +115,13 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
 
     it("edit-pet 타입일 때 putPetInfo API를 호출하는지 테스트", async () => {
-      mockGetPetInfo.mockResolvedValue({
-        id: 1,
-        name: "멍멍이",
-        birthYear: "2025",
-        image: "",
-        petType: "dog",
-        breed: "골든 리트리버",
-        gender: "MALE",
-        neuter: null,
-      });
+      mockGetPetInfo.mockResolvedValue(createMockPetInfoResponse());
 
-      mockPutPetInfo.mockResolvedValue({
-        id: 1,
-        name: "마루",
-        birthYear: "2024",
-        image: "",
-        petType: "dog",
-        breed: "골든 리트리버",
-        gender: "MALE",
-        neuter: null,
-      });
-
-      const { result } = renderHook(() =>
-        usePetInfoModal({ type: "edit-pet", onClose: mockOnClose }),
+      mockPutPetInfo.mockResolvedValue(
+        createMockPetInfoResponse({ name: "마루", birthYear: "2024" }),
       );
+
+      const { result } = renderHookWithType("edit-pet");
 
       await act(async () => {
         await new Promise((resolve) => setTimeout(resolve, 0));
@@ -172,16 +148,9 @@ describe("usePetInfoModal Hook 테스트", () => {
       .mockImplementation(() => {});
     mockPostPetInfo.mockRejectedValue(new Error("API Error"));
 
-    const { result } = renderHook(() =>
-      usePetInfoModal({ type: "first-login", onClose: mockOnClose }),
-    );
+    const { result } = renderHookWithType("first-login");
 
-    const mockData = {
-      name: "멍멍이",
-      gender: "male" as const,
-      birthYear: "2025",
-      breed: "골든 리트리버",
-    };
+    const mockData = createMockFormData();
 
     await act(async () => {
       await result.current.handleSubmit(mockData);
@@ -192,62 +161,32 @@ describe("usePetInfoModal Hook 테스트", () => {
   });
 
   it("API 호출 중 로딩 상태가 true로 변경되는지 테스트", async () => {
-    let resolvePromise: (value: {
-      id: number;
-      name: string;
-      birthYear: string;
-      image: string;
-      petType: string;
-      breed: string;
-      gender: "MALE" | "FEMALE";
-      neuter: boolean | null;
-    }) => void;
-
-    const delayedPromise = new Promise<{
-      id: number;
-      name: string;
-      birthYear: string;
-      image: string;
-      petType: string;
-      breed: string;
-      gender: "MALE" | "FEMALE";
-      neuter: boolean | null;
-    }>((resolve) => {
+    // Promise를 수동으로 제어할 수 있도록 설정
+    let resolvePromise: (value: PromiseType) => void;
+    const delayedPromise = new Promise<PromiseType>((resolve) => {
       resolvePromise = resolve;
     });
 
+    // API 호출이 즉시 완료되지 않도록 설정
     mockPostPetInfo.mockReturnValue(delayedPromise);
 
-    const { result } = renderHook(() =>
-      usePetInfoModal({ type: "first-login", onClose: mockOnClose }),
-    );
+    const { result } = renderHookWithType("first-login");
+    const mockData = createMockFormData();
 
-    const mockData = {
-      name: "멍멍이",
-      gender: "male" as const,
-      birthYear: "2025",
-      breed: "골든 리트리버",
-    };
-
+    // API 호출 시작
     act(() => {
       result.current.handleSubmit(mockData);
     });
 
+    // 로딩 상태가 true인지 확인
     expect(result.current.isLoading).toBe(true);
 
+    // Promise를 수동으로 완료
     await act(async () => {
-      resolvePromise!({
-        id: 1,
-        name: "멍멍이",
-        birthYear: "2025",
-        image: "",
-        petType: "dog",
-        breed: "골든 리트리버",
-        gender: "MALE",
-        neuter: null,
-      });
+      resolvePromise!(createMockPetInfoResponse());
     });
 
+    // 로딩 상태가 false로 변경되었는지 확인
     expect(result.current.isLoading).toBe(false);
   });
 });

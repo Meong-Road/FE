@@ -7,7 +7,6 @@ import { z } from "zod";
 export const formSchema = z.object({
   email: z
     .email("유효한 이메일을 입력해주세요")
-    .min(1, "이메일을 입력해주세요")
     .max(50, "이메일은 50자 이하여야 합니다"),
   password: z
     .string()

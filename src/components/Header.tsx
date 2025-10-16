@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import ProfileSvg from "@/assets/images/profile.svg";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
+import { useSignout } from "@/hooks/auth/useSignout";
 import { PATH } from "@/lib/constants/path";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +37,12 @@ const HEADER_ITEMS = [
 ];
 
 export default function Header({ className }: { className?: string }) {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const { data: user } = useAuthUser();
+  const handleSignout = useSignout();
+
   const isActive = (href: string) => pathname.startsWith(href);
 
   return (
@@ -59,12 +72,36 @@ export default function Header({ className }: { className?: string }) {
               </li>
             ))}
           </ul>
-          <Link href={PATH.MY_PROFILE} className="shrink-0 p-1.5">
-            <ProfileSvg
-              width={42}
-              className="rounded-full border border-[#DDDDDD]"
-            />
-          </Link>
+
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button>
+                  <ProfileSvg
+                    width={42}
+                    height={42}
+                    className="rounded-full border border-[#DDDDDD]"
+                  />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => router.push(PATH.MY_PROFILE)}>
+                  마이페이지
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleSignout}>
+                  로그아웃
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link href="/signin" className="shrink-0 p-1.5">
+              <ProfileSvg
+                width={42}
+                height={42}
+                className="rounded-full border border-[#DDDDDD]"
+              />
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -27,8 +27,15 @@ export interface PostSigninRes {
   code: number;
   message: string;
   result: {
-    accessToken: string;
+    token: string;
     refreshToken: string;
     user: UserType;
   };
+}
+
+export interface GetUserRes {
+  success: boolean;
+  code: number;
+  message: string;
+  result: UserType;
 }

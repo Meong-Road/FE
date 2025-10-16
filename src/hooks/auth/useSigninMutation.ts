@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { authApi } from "@/api/auth";
+import { PostSigninRes } from "@/lib/types/auth";
 
 import { SigninFormSchema } from "./useSigninForm";
 
@@ -15,10 +16,10 @@ export function useSigninMutation() {
     mutationFn: async (payload: SigninFormSchema) => {
       return authApi.signin(payload);
     },
-    onSuccess: (data) => {
+    onSuccess: (data: PostSigninRes) => {
       console.log("로그인 성공");
 
-      const accessToken = data.result.accessToken;
+      const accessToken = data.result.token;
       const refreshToken = data.result.refreshToken;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);

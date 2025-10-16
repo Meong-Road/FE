@@ -18,6 +18,7 @@ export const authApi = {
   signin: async (payload: PostSigninReq): Promise<PostSigninRes> => {
     return await customFetch.post<PostSigninRes>("/meong-road/auth/login", {
       body: JSON.stringify(payload),
+      isPublic: true,
     });
   },
 

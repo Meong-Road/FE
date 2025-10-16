@@ -85,6 +85,80 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
   });
 
+  describe("useEffect 테스트", () => {
+    it("edit-pet 타입 모달일 때 기존 데이터를 불러오는지 테스트", async () => {
+      const mockInitialPetData = createMockPetInfoResponse({ neuter: true });
+      mockGetPetInfo.mockResolvedValue(mockInitialPetData);
+
+      const { result } = renderHookWithType("edit-pet");
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+      expect(mockGetPetInfo).toHaveBeenCalledWith(1);
+      expect(result.current.initialData).toEqual({
+        name: "멍멍이",
+        birthYear: "2025",
+        existingPhotoUrl: "",
+        breed: "골든 리트리버",
+        gender: "male",
+        neuter: "did",
+      });
+    });
+  });
+
+  describe("hasChanges 함수 테스트", () => {
+    it("edit-pet 타입 모달에서 변경사항이 있을 때 true를 반환하는지 테스트", async () => {
+      mockGetPetInfo.mockResolvedValue(createMockPetInfoResponse());
+      const { result } = renderHookWithType("edit-pet");
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+      const changedData = {
+        name: "마루",
+        birthYear: "2024",
+      };
+
+      const hasChanges = result.current.hasChanges;
+      expect(hasChanges?.(changedData)).toBe(true);
+    });
+
+    it("edit-pet 타입 모달에서 변경사항이 없을 때 false를 반환하는지 테스트", async () => {
+      mockGetPetInfo.mockResolvedValue(createMockPetInfoResponse());
+      const { result } = renderHookWithType("edit-pet");
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+      const unchangedData = {
+        name: "멍멍이",
+        birthYear: "2025",
+        breed: "골든 리트리버",
+        gender: "male" as const,
+        neuter: undefined,
+      };
+
+      const hasChanges = result.current.hasChanges;
+      expect(hasChanges?.(unchangedData)).toBe(false);
+    });
+
+    it("first-login 타입 모달에서 hasChanges가 undefined인지 테스트", () => {
+      const { result } = renderHookWithType("first-login");
+
+      expect(result.current.hasChanges).toBeUndefined();
+    });
+
+    it("add-pet 타입 모달에서 hasChanges가 undefined인지 테스트", () => {
+      const { result } = renderHookWithType("add-pet");
+
+      expect(result.current.hasChanges).toBeUndefined();
+    });
+  });
+
   describe("타입에 따라서 다른 API를 호출하는지 테스트", () => {
     it("first-login 타입일 때 postPetInfo API를 호출하는지 테스트", async () => {
       mockPostPetInfo.mockResolvedValue(createMockPetInfoResponse());
@@ -188,5 +262,51 @@ describe("usePetInfoModal Hook 테스트", () => {
 
     // 로딩 상태가 false로 변경되었는지 확인
     expect(result.current.isLoading).toBe(false);
+  });
+
+  describe("데이터 변환 테스트", () => {
+    it("API 응답 데이터가 올바르게 폼 데이터로 변환되는지 테스트", async () => {
+      const mockData = createMockPetInfoResponse({
+        image: "https://example.com/dog.jpg",
+        neuter: false,
+      });
+
+      mockGetPetInfo.mockResolvedValue(mockData);
+
+      const { result } = renderHookWithType("edit-pet");
+
+      await act(
+        async () => await new Promise((resolve) => setTimeout(resolve, 0)),
+      );
+
+      expect(result.current.initialData).toEqual({
+        name: "멍멍이",
+        birthYear: "2025",
+        existingPhotoUrl: "https://example.com/dog.jpg",
+        breed: "골든 리트리버",
+        gender: "male",
+        neuter: "didnot",
+      });
+    });
+
+    it("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
+      const mockData = createMockPetInfoResponse();
+      mockGetPetInfo.mockResolvedValue(mockData);
+
+      const { result } = renderHookWithType("edit-pet");
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1));
+      });
+
+      expect(result.current.initialData).toEqual({
+        name: "멍멍이",
+        birthYear: "2025",
+        existingPhotoUrl: "",
+        breed: "골든 리트리버",
+        gender: "male",
+        neuter: undefined,
+      });
+    });
   });
 });

@@ -4,7 +4,7 @@ import REVIEW_API from "@/api/reviews";
 import { PaginationReq } from "@/api/types/common";
 import { GetReviewsByGatheringReq } from "@/api/types/reviews";
 
-import { REVIEW_QUERY_KEY } from "./queryKey";
+import { queryKeys } from "../queryKey";
 
 export function useGetReviewsByGathering({
   size = 10,
@@ -14,12 +14,14 @@ export function useGetReviewsByGathering({
 }: Omit<GetReviewsByGatheringReq, keyof PaginationReq> &
   Partial<PaginationReq>) {
   return useQuery({
-    queryKey: REVIEW_QUERY_KEY.REVIEWS_BY_GATHERING({
-      size,
-      page,
-      sort,
-      ...params,
-    }),
+    queryKey: queryKeys.reviews.list(
+      {
+        size,
+        page,
+        sort,
+      },
+      { gatheringId: params.gatheringId },
+    ),
     queryFn: () =>
       REVIEW_API.getReviewsByGathering({ size, page, sort, ...params }),
   });

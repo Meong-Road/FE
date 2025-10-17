@@ -4,14 +4,14 @@ import { gatheringApi } from "@/api/gatherings";
 import { PaginationReq } from "@/api/types/common";
 import { GetQuickGatheringsReq } from "@/api/types/gatherings";
 
-import { GATHERING_QUERY_KEY } from "./queryKey";
+import { queryKeys } from "../queryKey";
 
 export function useGetInfiniteQuickGatherings({
   size = 10,
   sort = ["createdAt"],
 }: Omit<GetQuickGatheringsReq, keyof PaginationReq> & Partial<PaginationReq>) {
   return useInfiniteQuery({
-    queryKey: GATHERING_QUERY_KEY.GATHERINGS_QUICK({ size, sort }),
+    queryKey: queryKeys.gatherings.quickList({ size, sort }),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getQuickGatherings({
         page: pageParam,

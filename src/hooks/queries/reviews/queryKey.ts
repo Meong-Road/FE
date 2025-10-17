@@ -1,24 +1,14 @@
-import {
-  GetReviewDashboardReq,
-  GetReviewsByGatheringReq,
-  GetReviewsReq,
-} from "@/api/types/reviews";
+import { PaginationReq } from "@/api/types/common";
+import { GetReviewDashboardReq, ReviewFilters } from "@/api/types/reviews";
 
-export const REVIEW_QUERY_KEY = {
-  REVIEWS: ({ location, page, size, sort }: GetReviewsReq) => [
-    "reviews",
-    location,
-    page,
-    size,
-    sort,
-  ],
-  REVIEWS_BY_GATHERING: ({
-    gatheringId,
-    ...params
-  }: GetReviewsByGatheringReq) => ["reviews", gatheringId, params],
-  REVIEW_DASHBOARD: ({ location }: GetReviewDashboardReq) => [
-    "reviews",
-    "dashboard",
+export const reviewsQueryKeys = {
+  all: () => ["reviews"] as const,
+  lists: () => [...reviewsQueryKeys.all(), "list"] as const,
+  list: (pagination: Partial<PaginationReq>, filters: Partial<ReviewFilters>) =>
+    [...reviewsQueryKeys.lists(), pagination, filters] as const,
+  dashboards: () => [...reviewsQueryKeys.all(), "dashboard"] as const,
+  dashboard: ({ location }: GetReviewDashboardReq) => [
+    ...reviewsQueryKeys.dashboards(),
     location,
   ],
 };

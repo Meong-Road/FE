@@ -4,7 +4,7 @@ import { gatheringApi } from "@/api/gatherings";
 import { PaginationReq } from "@/api/types/common";
 import { GetRegularGatheringsReq } from "@/api/types/gatherings";
 
-import { GATHERING_QUERY_KEY } from "./queryKey";
+import { queryKeys } from "../queryKey";
 
 export function useGetInfiniteRegularGatherings({
   size = 10,
@@ -12,7 +12,7 @@ export function useGetInfiniteRegularGatherings({
 }: Omit<GetRegularGatheringsReq, keyof PaginationReq> &
   Partial<PaginationReq>) {
   return useInfiniteQuery({
-    queryKey: GATHERING_QUERY_KEY.GATHERINGS_REGULAR({ size, sort }),
+    queryKey: queryKeys.gatherings.regularList({ size, sort }),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getRegularGatherings({
         page: pageParam,

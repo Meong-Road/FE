@@ -1,21 +1,21 @@
-import {
-  GetQuickGatheringsReq,
-  GetRegularGatheringsReq,
-} from "@/api/types/gatherings";
+import { PaginationReq } from "@/api/types/common";
 import { GatheringType } from "@/lib/types/gatherings";
 
-export const GATHERING_QUERY_KEY = {
-  GATHERINGS: () => ["gatherings"],
-  GATHERINGS_REGULAR: (params: Omit<GetRegularGatheringsReq, "page">) => [
-    "gatherings",
-    "regular",
-    params,
+export const gatheringsQueryKeys = {
+  all: () => ["gatherings"] as const,
+  lists: () => [...gatheringsQueryKeys.all(), "list"] as const,
+  list: (pagination: Partial<PaginationReq>) =>
+    [...gatheringsQueryKeys.lists(), pagination] as const,
+  regularList: (pagination: Partial<PaginationReq>) =>
+    [...gatheringsQueryKeys.list(pagination), "regular"] as const,
+  quickList: (pagination: Partial<PaginationReq>) =>
+    [...gatheringsQueryKeys.list(pagination), "quick"] as const,
+  details: () => [...gatheringsQueryKeys.all(), "detail"] as const,
+  detail: (id: GatheringType["id"]) =>
+    [...gatheringsQueryKeys.details(), id] as const,
+  likes: () => [...gatheringsQueryKeys.all(), "like"] as const,
+  like: ({ id }: { id: GatheringType["id"] }) => [
+    ...gatheringsQueryKeys.likes(),
+    id,
   ],
-  GATHERINGS_QUICK: (params: Omit<GetQuickGatheringsReq, "page">) => [
-    "gatherings",
-    "quick",
-    params,
-  ],
-  IS_LIKED: ({ id }: { id: GatheringType["id"] }) => ["isLiked", id],
-  GATHERING_DETAIL: ({ id }: { id: GatheringType["id"] }) => ["gatherings", id],
 };

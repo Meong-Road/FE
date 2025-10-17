@@ -1,4 +1,4 @@
-import { ReviewType } from "@/lib/types/review";
+import { ReviewType } from "@/lib/types/reviews";
 
 // Main container
 export interface ReviewCardProps {

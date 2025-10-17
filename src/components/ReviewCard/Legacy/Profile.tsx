@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 import ProfileDefault from "@/assets/images/profile3.svg";
-import { ReviewScore } from "@/lib/types/review";
+import { ReviewScore } from "@/lib/types/reviews";
 import { formatDateShort } from "@/lib/utils/dateTime";
 
 import { Rating } from "../Review/Rating";

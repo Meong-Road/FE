@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gatheringApi } from "@/api/gatherings";
 import { CancelLikeReq } from "@/api/types/gatherings";
 
-import { GATHERING_QUERY_KEY } from "./queryKey";
+import { queryKeys } from "../queryKey";
 
 export function useCancelLike({ id }: CancelLikeReq) {
   const queryClient = useQueryClient();
@@ -14,7 +14,7 @@ export function useCancelLike({ id }: CancelLikeReq) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
+        queryKey: queryKeys.gatherings.like({ id }),
       });
     },
   });

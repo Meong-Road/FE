@@ -1,7 +1,10 @@
+import { SEOUL_DISTRICTS } from "../constants/location";
+
 import { RegularGatheringType } from "./gatherings";
 import { UserType } from "./user";
 
 export type ReviewScore = 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
+export type LocationType = (typeof SEOUL_DISTRICTS)[number];
 
 export interface ReviewType {
   id: number;
@@ -13,6 +16,7 @@ export interface ReviewType {
   gathering: RegularGatheringType;
   user: UserType;
 }
+
 export interface ReviewDashboardType {
   averageScore: number;
   OneStar: number;

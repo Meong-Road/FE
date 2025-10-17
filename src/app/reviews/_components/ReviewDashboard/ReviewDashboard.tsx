@@ -1,6 +1,6 @@
 import ProgressBar from "@/components/ProgressBar";
 import { Rating } from "@/components/ReviewCard";
-import { ReviewDashboardType, ReviewScore } from "@/lib/types/review";
+import { ReviewDashboardType, ReviewScore } from "@/lib/types/reviews";
 
 interface ReviewDashboardProps {
   DashboardInfo: ReviewDashboardType | null;

@@ -8,8 +8,11 @@ import { queryKeys } from "../queryKey";
 export function useGetReviewDashboard({
   location = "서울 전체",
 }: GetReviewDashboardReq) {
+  // 서울 전체는 undefined로 처리하여 API에서 전체 지역을 의미하는 것으로 처리
+  const locationParam = location === "서울 전체" ? undefined : location;
+
   return useQuery({
-    queryKey: queryKeys.reviews.dashboard({ location }),
-    queryFn: () => REVIEW_API.getReviewDashboard({ location }),
+    queryKey: queryKeys.reviews.dashboard({ location: locationParam }),
+    queryFn: () => REVIEW_API.getReviewDashboard({ location: locationParam }),
   });
 }

@@ -19,5 +19,5 @@ export const isRegularGathering = (
 };
 
 export const isLocationType = (location: string): location is LocationType => {
-  return SEOUL_DISTRICTS.includes(location as LocationType);
+  return SEOUL_DISTRICTS.includes(location as (typeof SEOUL_DISTRICTS)[number]);
 };

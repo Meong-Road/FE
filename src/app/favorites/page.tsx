@@ -13,7 +13,7 @@ export default async function Favorites({ searchParams }: FavoritesProps) {
   const currentTab = resolvedSearchParams?.tab ?? "regular";
 
   return (
-    <section className="mx-auto max-w-[1280px]">
+    <section>
       <Tab>
         <Tab.List>
           <Tab.Item

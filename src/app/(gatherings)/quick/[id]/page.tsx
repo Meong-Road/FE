@@ -26,10 +26,10 @@ export default function QuickGatheringDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1280px] px-4">
+    <>
       <GatheringInfoSection gathering={data.result} />
       <GatheringIntroductionSection description={data.result.description} />
       <GatheringReviewSection />
-    </div>
+    </>
   );
 }

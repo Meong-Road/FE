@@ -2,7 +2,6 @@
 "use client";
 
 import { Form } from "@/components/Form";
-import { Toaster } from "@/components/ui/sonner";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 
@@ -14,7 +13,6 @@ export default function SignupForm() {
 
   return (
     <>
-      <Toaster richColors closeButton position="top-center" />
       <Form form={form} onSubmit={handleSubmit}>
         <Form.Title>회원가입</Form.Title>
 

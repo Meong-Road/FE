@@ -13,11 +13,12 @@ interface GatheringCardJoinBtnProps {
 
 export function GatheringCardJoinBtn({ className }: GatheringCardJoinBtnProps) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
   const handleParticipateButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isLoading) return; // 로딩중이면 안먹힘 -> 비활성화 or 로딩 스피너 추가?
 
     if (!user) {
       router.push(PATH.SIGNIN);

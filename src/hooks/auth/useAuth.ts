@@ -1,22 +1,19 @@
 // src/hooks/auth/useAuth.ts
-
 import { useGetMyInfo } from "@/hooks/queries/user";
 import { tokenStorage } from "@/lib/utils/token";
 
 /**
- * 전역 인증 상태 관리 훅
- * React Query 기반으로 구현되어 중복 API 호출 방지
+ * 전역 인증 상태 훅
+ * - 사용자 정보 조회 및 로딩 상태 반환
  */
 export function useAuth() {
-  const { data: user, isLoading, error } = useGetMyInfo();
+  // 나중에 쿠키로 관리하면
+  // customFetch에 credentials: 'include' 추가하고, 토큰 체크 로직 삭제
   const hasToken = !!tokenStorage.getAccess();
-  const isAuthenticated = !!user && hasToken;
 
-  return {
-    user,
-    isLoading,
-    error,
-    isAuthenticated,
-    hasToken,
-  };
+  const { data: user, isLoading } = useGetMyInfo({
+    enabled: hasToken, // 토큰이 있을 때만 사용자 정보 조회 -> 쿠키 전환시 삭제
+  });
+
+  return { user, isLoading };
 }

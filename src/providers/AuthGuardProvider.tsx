@@ -29,7 +29,7 @@ export default function AuthGuardProvider({
 }: AuthGuardProviderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { isLoading, isAuthenticated } = useAuth();
+  const { user, isLoading } = useAuth();
 
   useEffect(() => {
     // 로딩 중이거나 인증이 필요하지 않은 경로면 무시
@@ -38,11 +38,11 @@ export default function AuthGuardProvider({
     }
 
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
-    if (!isAuthenticated) {
+    if (!user) {
       const redirectUrl = `${PATH.SIGNIN}?redirect=${encodeURIComponent(pathname)}`;
       router.replace(redirectUrl);
     }
-  }, [pathname, isLoading, isAuthenticated, router]);
+  }, [pathname, isLoading, user, router]);
 
   return <>{children}</>;
 }

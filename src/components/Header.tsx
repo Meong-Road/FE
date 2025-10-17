@@ -42,7 +42,7 @@ export default function Header({ className }: { className?: string }) {
   const pathname = usePathname();
   const signout = useSignout();
 
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const handleSignout = () => {
     signout();
     router.push(PATH.SIGNIN);
@@ -80,7 +80,9 @@ export default function Header({ className }: { className?: string }) {
             ))}
           </ul>
 
-          {user ? (
+          {isLoading ? (
+            <div className="h-[42px] w-[42px] animate-pulse rounded-full border border-[#DDDDDD]" />
+          ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <ProfileSvg

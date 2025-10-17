@@ -1,73 +1,66 @@
 "use client";
 
+import {
+  EmptyState,
+  ErrorState,
+  ListContainer,
+  LoadingState,
+} from "@/components/common";
 import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { useGetMyPetInfo } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
+import { processPetInfo } from "@/lib/utils/pet";
 import { useModalStore } from "@/store/modalStore";
 
 import { PetAdd } from "./PetAdd";
 import { PetCard } from "./PetCard";
 
+const PetItem = ({ pet }: { pet: ReturnType<typeof processPetInfo> }) => (
+  <PetCard>
+    <PetCard.Image image={pet.image} />
+    <PetCard.Info
+      name={pet.name}
+      age={pet.age}
+      gender={pet.genderText}
+      type={pet.breed}
+    />
+  </PetCard>
+);
+
+const PetList = ({ pets }: { pets: PetType[] }) => (
+  <ListContainer className="flex flex-wrap gap-6">
+    {pets.map((pet) => (
+      <PetItem key={pet.id} pet={processPetInfo(pet)} />
+    ))}
+    <PetAdd>
+      <PetAdd.Image />
+      <PetAdd.Btn />
+    </PetAdd>
+  </ListContainer>
+);
+
+const PetEmptyState = () => (
+  <>
+    <PetAdd>
+      <PetAdd.Image />
+      <PetAdd.Btn />
+    </PetAdd>
+    <EmptyState message="등록된 반려견 정보가 없습니다." minHeight="200px" />
+  </>
+);
+
 export default function PetCardSection() {
   const { isOpen, modalType, closeModal } = useModalStore();
   const { data: pets, isLoading, error } = useGetMyPetInfo();
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <p className="text-slate-400">로딩 중...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <p className="text-red-400">데이터를 불러오는데 실패했습니다.</p>
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingState message="로딩 중..." />;
+  if (error) return <ErrorState message="데이터를 불러오는데 실패했습니다." />;
 
   return (
     <>
-      <ul className="flex flex-wrap gap-6">
-        {pets && pets.length > 0
-          ? pets.map((pet: PetType) => {
-              // 나이 계산
-              const currentYear = new Date().getFullYear();
-              const age = currentYear - parseInt(pet.birthYear);
-              const ageText = `${age}살`;
+      {pets?.length ? <PetList pets={pets} /> : <PetEmptyState />}
 
-              // 성별 한글 변환
-              const genderText = pet.gender === "MALE" ? "남" : "여";
-
-              return (
-                <PetCard key={pet.id}>
-                  <PetCard.Image image={pet.image} />
-                  <PetCard.Info
-                    name={pet.name}
-                    age={ageText}
-                    gender={genderText}
-                    type={pet.breed}
-                  />
-                </PetCard>
-              );
-            })
-          : null}
-        <PetAdd>
-          <PetAdd.Image />
-          <PetAdd.Btn />
-        </PetAdd>
-      </ul>
-
-      {pets && pets.length === 0 && (
-        <div className="flex min-h-[200px] w-full items-center justify-center">
-          <p className="text-slate-400">등록된 반려견 정보가 없습니다.</p>
-        </div>
-      )}
-
-      {/* 추가 */}
       {isOpen && modalType && (
         <Modal hasCloseButton>
           <PetInfoModal type={modalType} onClose={closeModal} />

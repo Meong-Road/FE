@@ -8,11 +8,3 @@ export interface PetType {
   gender: "MALE" | "FEMALE";
   neuter: boolean | null;
 }
-
-export interface PetResponse<T = PetType | PetType[] | string> {
-  success: boolean;
-  code: number;
-  message: string;
-  result: T;
-  errorCode: string | null;
-}

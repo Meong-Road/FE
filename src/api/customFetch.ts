@@ -1,7 +1,6 @@
-﻿// ========================================================================================
-// Types
-// ========================================================================================
+﻿// Custom Fetch API - 통합 HTTP 클라이언트
 
+import { BASE_URL, PREFIX } from "@/lib/constants/endpoints";
 import { tokenStorage } from "@/lib/utils/token";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -23,16 +22,9 @@ interface CustomFetchWithMethods {
   delete<T>(endpoint: string, options?: CustomFetchMethodOptions): Promise<T>;
 }
 
-const DEFAULT_BASE_URL = "http://localhost:3000";
-
-//환경변수에서 API Base URL 가져오기
-const getBaseURL = (): string => {
-  return process.env.NEXT_PUBLIC_API_URL || DEFAULT_BASE_URL;
-};
-
 //요청 URL 생성
 const getRequestUrl = (endpoint: string): string => {
-  return `${getBaseURL()}${endpoint}`;
+  return `${BASE_URL}${PREFIX}${endpoint}`;
 };
 
 //기본 헤더 생성
@@ -105,17 +97,8 @@ const createMethodRequest =
   };
 
 /**
- * [임시] 공통 fetch wrapper
- *
- * @example
- * // 기본 사용
- * const data = await customFetch.get<User>('/api/user');
- *
- * // 인증이 필요 없는 공개 API
- * const data = await customFetch.post<Data>('/api/public', {
- *   body: JSON.stringify(payload),
- *   isPublic: true
- * });
+ * 커스텀 fetch 클라이언트 - 자동 인증 헤더 추가 및 RESTful 메서드 지원
+ * 사용법: customFetch.get<UserType>('/users/me'), customFetch.post('/users', { body: JSON.stringify(data) })
  */
 export const customFetch = Object.assign(request, {
   get: createMethodRequest("GET"),

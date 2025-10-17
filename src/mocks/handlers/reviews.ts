@@ -1,14 +1,12 @@
 import { http, HttpResponse } from "msw";
 
-import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import { mockReviews } from "../data/reviews";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-
 export const reviewsHandlers = [
   // GET /meong-road/reviews - 전체 리뷰 목록 조회
-  http.get(`${BASE_URL}${API_ENDPOINTS.REVIEW}`, ({ request }) => {
+  http.get(`${FULL_API_ENDPOINTS.REVIEW}`, ({ request }) => {
     const url = new URL(request.url);
     const location = url.searchParams.get("location");
     const page = Number(url.searchParams.get("page") ?? 0);
@@ -41,7 +39,7 @@ export const reviewsHandlers = [
   }),
 
   // GET /meong-road/reviews/my - 내가 작성한 리뷰 목록 조회
-  http.get(`${BASE_URL}${API_ENDPOINTS.REVIEW}/my`, ({ request }) => {
+  http.get(`${FULL_API_ENDPOINTS.REVIEW}/my`, ({ request }) => {
     const authHeader = request.headers.get("Authorization");
 
     if (!authHeader) {
@@ -83,7 +81,7 @@ export const reviewsHandlers = [
   }),
 
   // GET /meong-road/reviews/scores - 리뷰 점수 통계
-  http.get(`${BASE_URL}${API_ENDPOINTS.REVIEW}/scores`, () => {
+  http.get(`${FULL_API_ENDPOINTS.REVIEW}/scores`, () => {
     return HttpResponse.json({
       success: true,
       code: 0,
@@ -101,7 +99,7 @@ export const reviewsHandlers = [
   }),
 
   // GET /meong-road/reviews/gatherings/:id - 특정 모임의 리뷰 목록 조회
-  http.get(`${BASE_URL}${API_ENDPOINTS.REVIEW}/gatherings/:id`, () => {
+  http.get(`${FULL_API_ENDPOINTS.REVIEW}/gatherings/:id`, () => {
     return HttpResponse.json({
       success: true,
       code: 0,

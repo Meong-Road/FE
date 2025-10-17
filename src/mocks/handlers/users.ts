@@ -1,14 +1,12 @@
 import { http, HttpResponse } from "msw";
 
-import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import { mockCurrentUser } from "../data/users";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-
 export const usersHandlers = [
   // 이메일 중복 확인 API
-  http.get(`${BASE_URL}/meong-road/user/exists`, ({ request }) => {
+  http.get(`${FULL_API_ENDPOINTS.USER}/exists`, ({ request }) => {
     const url = new URL(request.url);
     const email = url.searchParams.get("email");
 
@@ -27,7 +25,7 @@ export const usersHandlers = [
 
   // 닉네임 중복 확인 API
   http.post(
-    `${BASE_URL}/meong-road/user/nickname/check`,
+    `${FULL_API_ENDPOINTS.USER}/nickname/check`,
     async ({ request }) => {
       const body = (await request.json()) as { nickName: string };
 
@@ -44,7 +42,7 @@ export const usersHandlers = [
   ),
 
   // GET /meong-road/user/my - 내 회원 정보 확인
-  http.get(`${BASE_URL}${API_ENDPOINTS.USER}/my`, ({ request }) => {
+  http.get(`${FULL_API_ENDPOINTS.USER}/my`, ({ request }) => {
     const authHeader = request.headers.get("Authorization");
 
     if (!authHeader) {
@@ -67,7 +65,7 @@ export const usersHandlers = [
   }),
 
   // PUT /meong-road/user/my - 내 회원 정보 수정
-  http.put(`${BASE_URL}${API_ENDPOINTS.USER}/my`, async ({ request }) => {
+  http.put(`${FULL_API_ENDPOINTS.USER}/my`, async ({ request }) => {
     const authHeader = request.headers.get("Authorization");
 
     if (!authHeader) {

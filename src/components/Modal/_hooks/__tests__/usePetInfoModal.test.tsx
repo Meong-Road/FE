@@ -1,11 +1,16 @@
 import { ReactNode } from "react";
 import { useParams } from "next/navigation";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  UseMutationResult,
+} from "@tanstack/react-query";
 import { act, renderHook } from "@testing-library/react";
 
 import { petsApi } from "@/api/pets";
 import { useGetPet, usePostPet, usePutPet } from "@/hooks/queries/pets";
 
+import { PetInfoFormSchema } from "../usePetInfoForm";
 import { usePetInfoModal } from "../usePetInfoModal";
 
 const createMockPetInfoResponse = (overrides = {}) => ({
@@ -78,15 +83,15 @@ describe("usePetInfoModal Hook 테스트", () => {
       data: undefined,
       isLoading: false,
       error: null,
-    });
+    } as unknown as ReturnType<typeof useGetPet>);
     mockPostPet.mockReturnValue({
       mutateAsync: jest.fn(),
       isPending: false,
-    });
+    } as unknown as ReturnType<typeof usePostPet>);
     mockPutPet.mockReturnValue({
       mutateAsync: jest.fn(),
       isPending: false,
-    });
+    } as unknown as ReturnType<typeof usePutPet>);
 
     mockGetPetInfo.mockClear();
     mockPostPetInfo.mockClear();
@@ -126,7 +131,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: undefined,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
       expect(result.current.isLoading).toBe(false);
@@ -141,7 +146,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: mockInitialPetData,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
 
@@ -165,7 +170,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: mockInitialPetData,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
 
@@ -185,7 +190,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: mockInitialPetData,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
 
@@ -223,7 +228,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       mockPostPet.mockReturnValue({
         mutateAsync: mockMutateAsync,
         isPending: false,
-      });
+      } as unknown as ReturnType<typeof usePostPet>);
 
       const { result } = renderHookWithType("first-login");
 
@@ -243,7 +248,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       mockPostPet.mockReturnValue({
         mutateAsync: mockMutateAsync,
         isPending: false,
-      });
+      } as unknown as ReturnType<typeof usePostPet>);
 
       const { result } = renderHookWithType("add-pet");
 
@@ -268,11 +273,11 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: mockInitialPetData,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
       mockPutPet.mockReturnValue({
         mutateAsync: mockMutateAsync,
         isPending: false,
-      });
+      } as unknown as ReturnType<typeof usePutPet>);
 
       const { result } = renderHookWithType("edit-pet");
 
@@ -300,7 +305,7 @@ describe("usePetInfoModal Hook 테스트", () => {
     mockPostPet.mockReturnValue({
       mutateAsync: mockMutateAsync,
       isPending: false,
-    });
+    } as unknown as ReturnType<typeof usePostPet>);
 
     const { result } = renderHookWithType("first-login");
 
@@ -328,7 +333,7 @@ describe("usePetInfoModal Hook 테스트", () => {
     mockPostPet.mockReturnValue({
       mutateAsync: mockMutateAsync,
       isPending: true,
-    });
+    } as unknown as ReturnType<typeof usePostPet>);
 
     const { result } = renderHookWithType("first-login");
     const mockData = createMockFormData();
@@ -359,7 +364,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: mockData,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
 
@@ -380,7 +385,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         data: mockData,
         isLoading: false,
         error: null,
-      });
+      } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
 

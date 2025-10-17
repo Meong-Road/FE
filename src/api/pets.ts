@@ -1,18 +1,23 @@
-import { PetInfoFormSchema } from "@/components/Modal/_hooks/usePetInfoForm";
+import {
+  PetInfoFormSchema,
+  PetInfoUpdateSchema,
+} from "@/components/Modal/_hooks/usePetInfoForm";
 import { PetResponse } from "@/lib/types/pets";
 
 const baseUrl = process.env.NEXT_PUBLIC_URL;
 
-function petFormData(data: PetInfoFormSchema): FormData {
+function petFormData(data: PetInfoFormSchema | PetInfoUpdateSchema): FormData {
   const formData = new FormData();
 
   if (data.photo) formData.append("image", data.photo);
-  if (data.neuter) formData.append("neuter", data.neuter);
+  if (data.neuter === "did") formData.append("neuter", "true");
+  else if (data.neuter === "didnot") formData.append("neuter", "false");
+  else formData.append("neuter", "null");
 
-  formData.append("name", data.name);
-  formData.append("gender", data.gender);
-  formData.append("birthYear", data.birthday);
-  formData.append("breed", data.breed);
+  if (data.name) formData.append("name", data.name);
+  if (data.gender) formData.append("gender", data.gender.toUpperCase());
+  if (data.birthYear) formData.append("birthYear", data.birthYear);
+  if (data.breed) formData.append("breed", data.breed);
 
   formData.append("petType", "dog");
 
@@ -45,23 +50,18 @@ async function callPetAPI(
 
 // 반려동물 상세 조회
 export async function getPetInfo(petId: number) {
-  return callPetAPI(`/pet/${petId}`);
+  return callPetAPI(`/pets/${petId}`);
 }
 
 // 반려동물 정보 수정
-export async function putPetInfo(petId: number, data: PetInfoFormSchema) {
+export async function putPetInfo(petId: number, data: PetInfoUpdateSchema) {
   const formData = petFormData(data);
-  return callPetAPI(`/pet/${petId}`, "PUT", formData);
+  return callPetAPI(`/pets/${petId}`, "PUT", formData);
 }
 
 // 반려동물 정보 삭제
 export async function deletePetInfo(petId: number) {
   return callPetAPI(`pets/${petId}`, "DELETE");
-}
-
-// 모든 반려동물 정보 조회
-export async function getAllPetInfo() {
-  return callPetAPI(`/pets`);
 }
 
 // 반려동물 등록

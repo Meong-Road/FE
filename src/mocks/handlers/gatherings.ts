@@ -183,6 +183,13 @@ export const gatheringsHandlers = [
       });
 
     isLikedSet.delete(id as string);
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: { isLiked: false },
+      errorCode: null,
+    });
   }),
 
   //================= 모임 상세 조회 ================================

@@ -1,7 +1,6 @@
 import qs from "qs";
 
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
-import { BookmarkType } from "@/lib/types/gatherings";
 
 import {
   CancelLikeReq,
@@ -10,6 +9,8 @@ import {
   GetGatheringDetailRes,
   GetIsLikedReq,
   GetIsLikedRes,
+  GetMyBookmarkedGatheringsReq,
+  GetMyBookmarkedGatheringsRes,
   GetQuickGatheringsReq,
   GetQuickGatheringsRes,
   GetRegularGatheringsReq,
@@ -17,51 +18,47 @@ import {
   LikeReq,
   LikeRes,
 } from "./types/gatherings";
+import { customFetch } from "./customFetch";
 
 export const gatheringApi = {
   // 정기 모임 목록 조회
-  getRegularGatherings: async (
-    params: GetRegularGatheringsReq,
-  ): Promise<GetRegularGatheringsRes> => {
-    const response = await fetch(
+  getRegularGatherings: async (params: GetRegularGatheringsReq) => {
+    return await customFetch.get<GetRegularGatheringsRes>(
       `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(params)}`,
+      { isPublic: true },
     );
-    return response.json();
   },
   // 번개 모임 목록 조회
-  getQuickGatherings: async (
-    params: GetQuickGatheringsReq,
-  ): Promise<GetQuickGatheringsRes> => {
-    const response = await fetch(
+  getQuickGatherings: async (params: GetQuickGatheringsReq) => {
+    return await customFetch.get<GetQuickGatheringsRes>(
       `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(params)}`,
+      { isPublic: true },
     );
-    return response.json();
   },
   // 모임 상세 조회
-  getGatheringDetail: async ({
-    id,
-  }: GetGatheringDetailReq): Promise<GetGatheringDetailRes> => {
-    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}`);
-    return response.json();
+  getGatheringDetail: async ({ id }: GetGatheringDetailReq) => {
+    return await customFetch.get<GetGatheringDetailRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}`,
+      { isPublic: true },
+    );
   },
   // 모임 찜 조회
-  getIsLiked: async ({ id }: GetIsLikedReq): Promise<GetIsLikedRes> => {
-    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`);
-    return response.json();
+  getIsLiked: async ({ id }: GetIsLikedReq) => {
+    return await customFetch.get<GetIsLikedRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
+    );
   },
   // 모임 찜하기
-  like: async ({ id }: LikeReq): Promise<LikeRes> => {
-    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`, {
-      method: "POST",
-    });
-    return response.json();
+  like: async ({ id }: LikeReq) => {
+    return await customFetch.post<LikeRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
+    );
   },
   // 모임 찜 해제
   cancelLike: async ({ id }: CancelLikeReq): Promise<CancelLikeRes> => {
-    const response = await fetch(`${API_ENDPOINTS.GATHERING}/${id}/bookmarks`, {
-      method: "DELETE",
-    });
-    return response.json();
+    return await customFetch.delete<CancelLikeRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
+    );
   },
   // 내가 찜한 모임 목록 조회
   getMyBookmarkedGatherings: async ({
@@ -69,16 +66,9 @@ export const gatheringApi = {
     page,
     size,
     sort,
-  }: BookmarkType) => {
-    const queryParams = new URLSearchParams({
-      type,
-      page: page.toString(),
-      size: size.toString(),
-      sort,
-    });
-    const response = await fetch(
-      `${API_ENDPOINTS.GATHERING}/bookmarks?${queryParams}`,
+  }: GetMyBookmarkedGatheringsReq) => {
+    return await customFetch.get<GetMyBookmarkedGatheringsRes>(
+      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort })}`,
     );
-    return response.json();
   },
 };

@@ -3,37 +3,47 @@ import {
   PetInfoUpdateSchema,
 } from "@/components/Modal/_hooks/usePetInfoForm";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
-import { PetResponse } from "@/lib/types/pets";
+import { PetResponse, PetType } from "@/lib/types/pets";
 
 const baseUrl = process.env.NEXT_PUBLIC_URL;
 
-function petFormData(data: PetInfoFormSchema | PetInfoUpdateSchema): FormData {
-  const formData = new FormData();
+type PetRequestData = Omit<PetType, "id">;
 
-  if (data.photo) formData.append("image", data.photo);
-  if (data.neuter === "did") formData.append("neuter", "true");
-  else if (data.neuter === "didnot") formData.append("neuter", "false");
-  else formData.append("neuter", "null");
-
-  if (data.name) formData.append("name", data.name);
-  if (data.gender) formData.append("gender", data.gender.toUpperCase());
-  if (data.birthYear) formData.append("birthYear", data.birthYear);
-  if (data.breed) formData.append("breed", data.breed);
-
-  formData.append("petType", "dog");
-
-  return formData;
+function petFormData(
+  data: PetInfoFormSchema | PetInfoUpdateSchema,
+): PetRequestData {
+  return {
+    name: data.name || "",
+    birthYear: data.birthYear || "",
+    image: "", // image upload api가 없어서 임시로 빈 문자열로 설정
+    // image: data.photo ? data.photo : "", // 파일 대신 URL 문자열
+    petType: "dog",
+    breed: data.breed || "",
+    gender: data.gender?.toUpperCase() as "MALE" | "FEMALE",
+    neuter:
+      data.neuter === "did" ? true : data.neuter === "didnot" ? false : null,
+  };
 }
 
 async function callPetAPI(
   endpoint: string,
   method: string = "GET",
-  formData?: FormData,
+  jsonData?: PetRequestData,
 ) {
   try {
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("accessToken")
+        : null;
+
+    const headers: HeadersInit = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+    headers["Content-Type"] = "application/json";
+
     const response = await fetch(`${baseUrl}${endpoint}`, {
       method,
-      body: formData,
+      headers,
+      body: jsonData ? JSON.stringify(jsonData) : undefined,
     });
 
     if (!response.ok) throw new Error(`HTTP ${response.status}: API 호출 실패`);

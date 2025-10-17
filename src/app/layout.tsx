@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 
 import Header from "@/components/Header";
 import { initMocks } from "@/mocks";
@@ -34,6 +35,7 @@ export default function RootLayout({
               {children}
             </div>
             <div id="modal-root"></div>
+            <Toaster />
           </MSWProvider>
         </QueryProvider>
       </body>

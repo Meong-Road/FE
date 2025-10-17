@@ -171,11 +171,11 @@
     @apply overflow-y-scroll;
   }
   body {
-    @apply [&::-webkit-scrollbar]:w-2; 
-    @apply [&::-webkit-scrollbar-thumb]:rounded-full; 
-    @apply [&::-webkit-scrollbar-thumb]:bg-gray-300; 
-    @apply [&::-webkit-scrollbar-thumb:hover]:bg-gray-400; 
-    @apply [&::-webkit-scrollbar-thumb:active]:bg-gray-500; 
+    @apply [&::-webkit-scrollbar]:w-2;
+    @apply [&::-webkit-scrollbar-thumb]:rounded-full;
+    @apply [&::-webkit-scrollbar-thumb]:bg-gray-300;
+    @apply [&::-webkit-scrollbar-thumb:hover]:bg-gray-400;
+    @apply [&::-webkit-scrollbar-thumb:active]:bg-gray-500;
   }
   button {
     @apply cursor-pointer;
@@ -192,8 +192,23 @@
   .border-gradient-primary {
     border-image: var(--gradient-primary) 1;
   }
-}
 
+  [data-sonner-toast][data-type="success"] [data-icon] svg,
+  [data-sonner-toast][data-type="success"] [data-icon] * {
+    color: #ff8400 !important;
+    fill: #ff8400 !important;
+  }
+
+  [data-sonner-toast][data-type="error"] [data-icon] svg,
+  [data-sonner-toast][data-type="error"] [data-icon] * {
+    color: #ff5757 !important;
+    fill: #ff5757 !important;
+  }
+
+  [data-sonner-toast][data-type="loading"] .sonner-loading-bar {
+    background-color: #737373 !important;
+  }
+}
 
 /* shadcn/ui scroll-lock 시 스크롤바만큼 밀리는 현상 방지 */
 body[data-scroll-locked][data-scroll-locked] {

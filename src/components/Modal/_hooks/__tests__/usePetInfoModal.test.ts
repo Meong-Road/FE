@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation";
 import { act, renderHook } from "@testing-library/react";
 
-import { getPetInfo, postPetInfo, putPetInfo } from "@/api/pets";
+import { petsApi } from "@/api/pets";
 
 import { usePetInfoModal } from "../usePetInfoModal";
 
@@ -41,15 +41,23 @@ jest.mock("next/navigation", () => ({
 }));
 
 jest.mock("../../../../api/pets", () => ({
-  getPetInfo: jest.fn(),
-  postPetInfo: jest.fn(),
-  putPetInfo: jest.fn(),
+  petsApi: {
+    getPetInfo: jest.fn(),
+    postPetInfo: jest.fn(),
+    putPetInfo: jest.fn(),
+  },
 }));
 
 const mockUseParams = useParams as jest.MockedFunction<typeof useParams>;
-const mockGetPetInfo = getPetInfo as jest.MockedFunction<typeof getPetInfo>;
-const mockPostPetInfo = postPetInfo as jest.MockedFunction<typeof postPetInfo>;
-const mockPutPetInfo = putPetInfo as jest.MockedFunction<typeof putPetInfo>;
+const mockGetPetInfo = petsApi.getPetInfo as jest.MockedFunction<
+  typeof petsApi.getPetInfo
+>;
+const mockPostPetInfo = petsApi.postPetInfo as jest.MockedFunction<
+  typeof petsApi.postPetInfo
+>;
+const mockPutPetInfo = petsApi.putPetInfo as jest.MockedFunction<
+  typeof petsApi.putPetInfo
+>;
 
 describe("usePetInfoModal Hook 테스트", () => {
   const mockOnClose = jest.fn();

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-import { getPetInfo, postPetInfo, putPetInfo } from "@/api/pets";
+import { petsApi } from "@/api/pets";
 
 import { PetInfoModalProps } from "../types/petInfoModal";
 
@@ -18,7 +18,7 @@ export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
     if (type === "edit-pet" && id) {
       const loadPetData = async () => {
         try {
-          const petData = await getPetInfo(Number(id));
+          const petData = await petsApi.getPetInfo(Number(id));
           if (!petData) return;
 
           setInitialData({
@@ -61,10 +61,10 @@ export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
     try {
       if (type === "edit-pet") {
         // 해당 반려동물 수정 버튼을 누르면 petId가 path에 뜬다고 가정
-        await putPetInfo(Number(id), data as PetInfoUpdateSchema);
+        await petsApi.putPetInfo(Number(id), data as PetInfoUpdateSchema);
         onClose();
       } else {
-        await postPetInfo(data as PetInfoFormSchema);
+        await petsApi.postPetInfo(data as PetInfoFormSchema);
         // 성공 토스트가 있으면 좋을 듯
         onClose();
       }

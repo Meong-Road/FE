@@ -52,15 +52,15 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-10 h-22 w-full bg-white/70 py-4 backdrop-blur-2xl select-none",
+        "fixed top-0 left-0 z-10 flex h-22 w-full items-center justify-center bg-white/70 px-4 backdrop-blur-2xl select-none md:px-8",
         className,
       )}
     >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-2">
+      <div className="flex w-full max-w-[1280px] items-center justify-between">
         <Link href={PATH.HOME} className="shrink-0">
           <Logo width={92} />
         </Link>
-        <div className="flex w-full items-center justify-between gap-4">
+        <div className="flex w-full items-center justify-between">
           <ul className="flex items-center gap-2">
             {HEADER_ITEMS.map((item) => (
               <li key={item.name}>

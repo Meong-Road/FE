@@ -2,85 +2,91 @@ import {
   PetInfoFormSchema,
   PetInfoUpdateSchema,
 } from "@/components/Modal/_hooks/usePetInfoForm";
-import { PetResponse } from "@/lib/types/pets";
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { PetResponse, PetType } from "@/lib/types/pets";
 
-const baseUrl = process.env.NEXT_PUBLIC_URL;
+import { customFetch } from "./customFetch";
 
-function petFormData(data: PetInfoFormSchema | PetInfoUpdateSchema): FormData {
-  const formData = new FormData();
+type PetRequestData = Omit<PetType, "id">;
 
-  if (data.photo) formData.append("image", data.photo);
-  if (data.neuter === "did") formData.append("neuter", "true");
-  else if (data.neuter === "didnot") formData.append("neuter", "false");
-  else formData.append("neuter", "null");
-
-  if (data.name) formData.append("name", data.name);
-  if (data.gender) formData.append("gender", data.gender.toUpperCase());
-  if (data.birthYear) formData.append("birthYear", data.birthYear);
-  if (data.breed) formData.append("breed", data.breed);
-
-  formData.append("petType", "dog");
-
-  return formData;
+function petFormData(
+  data: PetInfoFormSchema | PetInfoUpdateSchema,
+): PetRequestData {
+  return {
+    name: data.name || "",
+    birthYear: data.birthYear || "",
+    image: "", // image upload api가 없어서 임시로 빈 문자열로 설정
+    // image: data.photo ? data.photo : "", // 파일 대신 URL 문자열
+    petType: "dog",
+    breed: data.breed || "",
+    gender: data.gender?.toUpperCase() as "MALE" | "FEMALE",
+    neuter:
+      data.neuter === "did" ? true : data.neuter === "didnot" ? false : null,
+  };
 }
 
-async function callPetAPI(
-  endpoint: string,
-  method: string = "GET",
-  formData?: FormData,
-) {
-  try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
-      method,
-      body: formData,
-    });
+export const petsApi = {
+  // 반려동물 상세 조회
+  getPetInfo: async (petId: number) => {
+    const response = await customFetch.get<PetResponse<PetType>>(
+      `${API_ENDPOINTS.PET}/${petId}`,
+    );
+    return response.result;
+  },
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}: API 호출 실패`);
+  // 반려동물 정보 수정
+  putPetInfo: async (petId: number, data: PetInfoUpdateSchema) => {
+    const formData = petFormData(data);
+    const response = await customFetch.put<PetResponse<PetType>>(
+      `${API_ENDPOINTS.PET}/${petId}`,
+      {
+        body: JSON.stringify(formData),
+      },
+    );
+    return response.result;
+  },
 
-    const apiResponse: PetResponse = await response.json();
+  // 반려동물 정보 삭제
+  deletePetInfo: async (petId: number) => {
+    const response = await customFetch.delete<PetResponse<string>>(
+      `${API_ENDPOINTS.PET}/${petId}`,
+    );
+    return response.result;
+  },
 
-    if (!apiResponse.success)
-      throw new Error(apiResponse.message || `API 호출 실패`);
+  // 반려동물 등록
+  postPetInfo: async (data: PetInfoFormSchema) => {
+    const formData = petFormData(data);
+    const response = await customFetch.post<PetResponse<PetType>>(
+      `${API_ENDPOINTS.PET}`,
+      {
+        body: JSON.stringify(formData),
+      },
+    );
+    return response.result;
+  },
 
-    return apiResponse.result;
-  } catch (error) {
-    console.error(error);
-  }
-}
+  // 특정 유저의 반려동물 목록 조회
+  getPetInfoByUserId: async (userId: number) => {
+    const response = await customFetch.get<PetResponse<PetType[]>>(
+      `${API_ENDPOINTS.PET}/user/${userId}`,
+    );
+    return response.result;
+  },
 
-// 반려동물 상세 조회
-export async function getPetInfo(petId: number) {
-  return callPetAPI(`/pets/${petId}`);
-}
+  // 내 반려동물 목록 조회
+  getMyPetInfo: async () => {
+    const response = await customFetch.get<PetResponse<PetType[]>>(
+      `${API_ENDPOINTS.PET}/my`,
+    );
+    return response.result;
+  },
 
-// 반려동물 정보 수정
-export async function putPetInfo(petId: number, data: PetInfoUpdateSchema) {
-  const formData = petFormData(data);
-  return callPetAPI(`/pets/${petId}`, "PUT", formData);
-}
-
-// 반려동물 정보 삭제
-export async function deletePetInfo(petId: number) {
-  return callPetAPI(`pets/${petId}`, "DELETE");
-}
-
-// 반려동물 등록
-export async function postPetInfo(data: PetInfoFormSchema) {
-  const formData = petFormData(data);
-  return callPetAPI(`/pets`, "POST", formData);
-}
-
-// 특정 유저의 반려동물 목록 조회
-export async function getPetInfoByUserId(userId: number) {
-  return callPetAPI(`/pets/user/${userId}`);
-}
-
-// 타입 별 반려동물 조회
-export async function getPetInfoByPetType(petType: string = "DOG") {
-  return callPetAPI(`/pets/type/${petType}`);
-}
-
-// 내 반려동물 목록 조회
-export async function getMyPetInfo() {
-  return callPetAPI(`/pets/my`);
-}
+  // 타입 별 반려동물 조회(추후 확장성 고려, 현재는 "DOG"밖에 없음)
+  getPetInfoByPetType: async (petType: string = "DOG") => {
+    const response = await customFetch.get<PetResponse<PetType[]>>(
+      `${API_ENDPOINTS.PET}/type/${petType}`,
+    );
+    return response.result;
+  },
+};

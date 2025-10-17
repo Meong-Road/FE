@@ -23,7 +23,7 @@ export function usePetInfoForm(initialValues?: Partial<PetInfoFormSchema>) {
     existingPhotoUrl: undefined,
     name: "",
     gender: "male" as const,
-    neuter: "did" as const,
+    neuter: undefined,
     birthYear: "",
     breed: "",
   };

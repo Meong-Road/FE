@@ -89,7 +89,12 @@ export default function Header({ className }: { className?: string }) {
                   className="cursor-pointer rounded-full border border-[#DDDDDD]"
                 />
               </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="end" sideOffset={8}>
+              <DropdownMenuContent
+                side="bottom"
+                align="end"
+                sideOffset={8}
+                className="hidden w-36 md:block"
+              >
                 <DropdownMenuItem onSelect={() => router.push(PATH.MY_PROFILE)}>
                   마이페이지
                 </DropdownMenuItem>
@@ -110,10 +115,14 @@ export default function Header({ className }: { className?: string }) {
 
         {/* Mobile Menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="md:hidden">
-            <Menu className="text-primary h-7 w-7 cursor-pointer" />
+          <DropdownMenuTrigger asChild>
+            <Menu className="text-primary h-7 w-7 cursor-pointer md:hidden" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end" className="w-56">
+          <DropdownMenuContent
+            side="bottom"
+            align="end"
+            className="w-36 md:hidden"
+          >
             {HEADER_ITEMS.map((item) => (
               <DropdownMenuItem
                 key={item.name}

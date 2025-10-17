@@ -12,7 +12,7 @@ export interface GetReviewsReq extends PaginationReq {
 export type GetReviewsRes = Response<PaginatedRes<ReviewType>>;
 
 export interface GetReviewDashboardReq {
-  location: LocationType | undefined;
+  location: LocationType | null;
 }
 export type GetReviewDashboardRes = Response<ReviewDashboardType>;
 

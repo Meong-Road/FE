@@ -88,11 +88,11 @@ export const reviewsHandlers = [
       message: "조회 성공",
       result: {
         averageScore: 4.3,
-        OneStar: 3,
-        TwoStar: 4,
-        ThreeStar: 29,
-        FourStar: 40,
-        FiveStar: 89,
+        oneStar: 3,
+        twoStars: 4,
+        threeStars: 29,
+        fourStars: 40,
+        fiveStars: 89,
       },
       errorCode: null,
     });

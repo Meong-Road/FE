@@ -19,9 +19,9 @@ export interface ReviewType {
 
 export interface ReviewDashboardType {
   averageScore: number;
-  OneStar: number;
-  TwoStar: number;
-  ThreeStar: number;
-  FourStar: number;
-  FiveStar: number;
+  oneStar: number;
+  twoStars: number;
+  threeStars: number;
+  fourStars: number;
+  fiveStars: number;
 }

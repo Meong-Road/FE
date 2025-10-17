@@ -7,6 +7,6 @@ export function useSignout() {
 
   return () => {
     tokenStorage.clear();
-    queryClient.removeQueries({ queryKey: ["user", "me"] });
+    queryClient.removeQueries({ queryKey: ["user", "my"] });
   };
 }

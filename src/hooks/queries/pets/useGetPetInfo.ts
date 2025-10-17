@@ -7,8 +7,7 @@ import { PETS_QUERY_KEYS } from "./queryKey";
 export const useGetPetInfo = (id: number) => {
   return useQuery({
     queryKey: PETS_QUERY_KEYS.detail(id),
-    queryFn: () => petsApi.getPetInfo({ id }),
-    select: (data) => data.result,
+    queryFn: () => petsApi.getPetInfo(id),
     enabled: !!id && id > 0,
   });
 };

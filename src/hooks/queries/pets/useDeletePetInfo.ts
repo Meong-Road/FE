@@ -9,7 +9,7 @@ export const useDeletePetInfo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: DeletePetReq) => petsApi.deletePetInfo(data),
+    mutationFn: (data: DeletePetReq) => petsApi.deletePetInfo(data.id),
     onSuccess: () => {
       // 펫 목록을 다시 가져오기
       queryClient.invalidateQueries({ queryKey: PETS_QUERY_KEYS.myPets() });

@@ -3,6 +3,7 @@
 import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { useGetMyPetInfo } from "@/hooks/queries/pets";
+import { PetType } from "@/lib/types/pets";
 import { useModalStore } from "@/store/modalStore";
 
 import { PetAdd } from "./PetAdd";
@@ -32,7 +33,7 @@ export default function PetCardSection() {
     <>
       <ul className="flex flex-wrap gap-6">
         {pets && pets.length > 0
-          ? pets.map((pet) => {
+          ? pets.map((pet: PetType) => {
               // 나이 계산
               const currentYear = new Date().getFullYear();
               const age = currentYear - parseInt(pet.birthYear);

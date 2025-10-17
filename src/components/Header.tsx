@@ -11,8 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/auth";
 import { useSignout } from "@/hooks/auth/useSignout";
-import { useGetMyInfo } from "@/hooks/queries/user";
 import { PATH } from "@/lib/constants/path";
 import { cn } from "@/lib/utils";
 
@@ -42,7 +42,7 @@ export default function Header({ className }: { className?: string }) {
   const pathname = usePathname();
   const signout = useSignout();
 
-  const { data: user } = useGetMyInfo();
+  const { user } = useAuth();
   const handleSignout = () => {
     signout();
     router.push(PATH.SIGNIN);

@@ -9,6 +9,7 @@ export const useGetMyInfo = () => {
     queryKey: USER_QUERY_KEYS.my(),
     queryFn: () => userApi.getMyInfo(),
     select: (data) => data.result,
-    retry: false,
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 };

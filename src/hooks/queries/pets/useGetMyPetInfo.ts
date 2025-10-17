@@ -8,6 +8,5 @@ export const useGetMyPetInfo = () => {
   return useQuery({
     queryKey: PETS_QUERY_KEYS.myPets(),
     queryFn: () => petsApi.getMyPetInfo(),
-    select: (data) => data.result,
   });
 };

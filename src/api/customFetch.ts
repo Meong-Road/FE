@@ -2,6 +2,8 @@
 // Types
 // ========================================================================================
 
+import { tokenStorage } from "@/lib/utils/token";
+
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface CustomFetchOptions extends RequestInit {
@@ -48,8 +50,7 @@ const appendAuthorization = (
   headers: CustomFetchOptions["headers"],
 ): CustomFetchOptions["headers"] => {
   // 서버 사이드 렌더링 시 localStorage 접근 불가
-  const token =
-    typeof window === "undefined" ? null : localStorage.getItem("accessToken");
+  const token = typeof window === "undefined" ? null : tokenStorage.getAccess();
 
   if (!token) {
     return headers;

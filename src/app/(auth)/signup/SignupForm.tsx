@@ -1,6 +1,9 @@
 // SignupForm.tsx
 "use client";
 
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 import { Form } from "@/components/Form";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
@@ -8,8 +11,18 @@ import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 export default function SignupForm() {
   const form = useSignupForm();
   const { mutate: signupMutate, isPending } = useSignupMutation();
+  const router = useRouter();
 
-  const handleSubmit = (data: SignupFormSchema) => signupMutate(data);
+  const handleSubmit = (data: SignupFormSchema) =>
+    signupMutate(data, {
+      onSuccess: () => {
+        toast.success("회원가입에 성공했습니다.");
+        router.push("/regular");
+      },
+      onError: (error: Error) => {
+        toast.error(`회원가입에 실패했습니다. \n${error.message}`);
+      },
+    });
 
   return (
     <>

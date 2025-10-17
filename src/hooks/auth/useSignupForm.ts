@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 // 스키마 정의
-const formSchema = z
+export const signupFormSchema = z
   .object({
     name: z
       .string()
@@ -39,11 +39,11 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export type SignupFormSchema = z.infer<typeof formSchema>;
+export type SignupFormSchema = z.infer<typeof signupFormSchema>;
 
 export function useSignupForm() {
   return useForm<SignupFormSchema>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(signupFormSchema),
     defaultValues: {
       name: "",
       email: "",

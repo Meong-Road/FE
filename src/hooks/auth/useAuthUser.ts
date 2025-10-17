@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { authApi } from "@/api/auth";
-import { GetUserRes } from "@/lib/types/auth";
+import { GetUserRes } from "@/api/types/auth";
 
 export function useAuthUser() {
   return useQuery({

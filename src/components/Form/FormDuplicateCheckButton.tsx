@@ -3,7 +3,7 @@
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { Check, Loader2 } from "lucide-react";
 
-import { useDuplicateCheck } from "@/hooks/duplicateCheck/useDuplicateCheck";
+import { useDuplicateCheck } from "@/hooks/auth";
 import { cn } from "@/lib/utils";
 
 interface DuplicateCheckButtonProps<T extends FieldValues> {

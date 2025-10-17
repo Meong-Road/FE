@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { authApi } from "@/api/auth";
-import { PostSigninRes } from "@/lib/types/auth";
+import { PostSigninRes } from "@/api/types/auth";
 
 import { SigninFormSchema } from "./useSigninForm";
 

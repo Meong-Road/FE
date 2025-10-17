@@ -1,40 +1,52 @@
+"use client";
+
 import Link from "next/link";
 
+import { GatheringCard } from "@/components/GatheringCard/GatheringCard";
 import { PATH } from "@/lib/constants/path";
+import { mockJoinedGatherings } from "@/mocks/data/profile";
 
-import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
+import { formatDateTime } from "../util/date";
 
 export default function JoinedSection() {
-  const gathering = { id: 1 };
   return (
     <section>
-      <ul>
-        {/* Regular gathering 일 때 */}
-        <Link href={PATH.REGULAR_DETAIL(gathering.id)}>
-          <GatheringCard bgColor="white">
-            <div className="flex items-center gap-6">
-              <GatheringCard.Image />
-              <div>
-                <div className="mb-4 flex gap-2">
-                  <GatheringCard.AttendanceBadge />
-                  <GatheringCard.ConfirmedBadge />
+      <ul className="flex flex-col gap-6">
+        {mockJoinedGatherings.map((gathering) => {
+          const { date, time } = formatDateTime(gathering.meetingAt);
+          const isConfirmed = gathering.participantCount >= gathering.capacity;
+
+          return (
+            <Link key={gathering.id} href={PATH.REGULAR_DETAIL(gathering.id)}>
+              <GatheringCard bgColor="white">
+                <div className="flex items-center gap-6">
+                  <GatheringCard.Image />
+                  <div>
+                    <div className="mb-4 flex gap-2">
+                      <GatheringCard.AttendanceBadge />
+                      {isConfirmed && <GatheringCard.ConfirmedBadge />}
+                    </div>
+                    <GatheringCard.Title>{gathering.name}</GatheringCard.Title>
+                    <GatheringCard.People
+                      people={gathering.participantCount}
+                      limit={gathering.capacity}
+                    />
+                    <GatheringCard.Info
+                      location={gathering.location}
+                      date={date}
+                      time={time}
+                    />
+                  </div>
                 </div>
-                <GatheringCard.Title>리트리버 모여라</GatheringCard.Title>
-                <GatheringCard.People people={20} limit={20} />
-                <GatheringCard.Info
-                  location="성북구"
-                  date="11월 17일"
-                  time="17:30"
+                <GatheringCard.LikeBtn
+                  id={gathering.id}
+                  className="absolute top-8 right-6"
                 />
-              </div>
-            </div>
-            <GatheringCard.LikeBtn
-              id={gathering.id}
-              className="absolute top-8 right-6"
-            />
-            <GatheringCard.JoinBtn className="absolute right-6 bottom-6" />
-          </GatheringCard>
-        </Link>
+                <GatheringCard.JoinBtn className="absolute right-6 bottom-6" />
+              </GatheringCard>
+            </Link>
+          );
+        })}
       </ul>
     </section>
   );

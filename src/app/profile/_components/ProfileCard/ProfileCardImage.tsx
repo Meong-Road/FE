@@ -1,9 +1,23 @@
+import Image from "next/image";
+
 import ProfileSvg from "@/assets/images/profile2.svg";
 
-export function ProfileCardImage() {
+import { ProfileCardImageProps } from "./types";
+
+export function ProfileCardImage({ src }: ProfileCardImageProps) {
   return (
     <div className="h-14 w-14 rounded-full">
-      <ProfileSvg width={56} height={56} />
+      {src ? (
+        <Image
+          src={src}
+          alt="프로필 이미지"
+          width={56}
+          height={56}
+          className="h-full w-full rounded-full object-cover"
+        />
+      ) : (
+        <ProfileSvg width={56} height={56} />
+      )}
     </div>
   );
 }

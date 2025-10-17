@@ -10,6 +10,10 @@ export interface ProfileCardContentProps {
   children: React.ReactNode;
 }
 
+export interface ProfileCardImageProps {
+  src?: string | null;
+}
+
 export interface ProfileCardNameProps {
   children: React.ReactNode;
 }

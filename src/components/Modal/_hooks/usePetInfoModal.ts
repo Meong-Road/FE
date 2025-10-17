@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 import { petsApi } from "@/api/pets";
 
@@ -63,13 +64,16 @@ export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
         // 해당 반려동물 수정 버튼을 누르면 petId가 path에 뜬다고 가정
         await petsApi.putPetInfo(Number(id), data as PetInfoUpdateSchema);
         onClose();
+        toast.success("반려견 정보 수정에 성공했습니다!");
       } else {
         await petsApi.postPetInfo(data as PetInfoFormSchema);
-        // 성공 토스트가 있으면 좋을 듯
         onClose();
+        toast.success("반려견 정보 등록에 성공했습니다!");
       }
     } catch (error) {
       console.error(error);
+      if (type === "edit-pet") toast.error("반려견 정보 수정에 실패했습니다.");
+      else toast.error("반려견 정보 등록에 실패했습니다.");
     } finally {
       setIsLoading(false);
     }

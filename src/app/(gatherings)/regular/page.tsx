@@ -33,7 +33,7 @@ export default function RegularGatheringListPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-[1280px] px-4">
+      <div>
         <div className="mb-6 flex items-center justify-between">
           {/* 필터 */}
           <div className="flex items-center gap-4">

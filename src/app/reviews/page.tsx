@@ -6,7 +6,7 @@ import {
 
 export default function ReviewsPage() {
   return (
-    <section className="mx-auto w-full max-w-screen-lg px-4">
+    <section>
       <div className="flex flex-col gap-6">
         <LocationSelect />
         <ReviewDashboardContainer />

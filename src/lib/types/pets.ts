@@ -9,14 +9,10 @@ export interface PetType {
   neuter: boolean | null;
 }
 
-export interface PetResultType {
-  result: string;
-}
-
-export interface PetResponse {
+export interface PetResponse<T = PetType | PetType[] | string> {
   success: boolean;
   code: number;
   message: string;
-  result: PetType | PetType[] | PetResultType;
+  result: T;
   errorCode: string | null;
 }

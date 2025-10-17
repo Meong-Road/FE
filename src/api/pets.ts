@@ -2,85 +2,80 @@ import {
   PetInfoFormSchema,
   PetInfoUpdateSchema,
 } from "@/components/Modal/_hooks/usePetInfoForm";
-import { PetResponse } from "@/lib/types/pets";
+import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
-const baseUrl = process.env.NEXT_PUBLIC_URL;
+import {
+  CreatePetRes,
+  DeletePetReq,
+  DeletePetRes,
+  GetMyPetsRes,
+  GetPetReq,
+  GetPetRes,
+  UpdatePetRes,
+} from "./types/pets";
+import { customFetch } from "./customFetch";
 
-function petFormData(data: PetInfoFormSchema | PetInfoUpdateSchema): FormData {
+// FormData 생성 헬퍼 함수 - 폼 스키마에서 FormData로 변환
+function createPetFormData(
+  data: PetInfoFormSchema | PetInfoUpdateSchema,
+): FormData {
   const formData = new FormData();
 
   if (data.photo) formData.append("image", data.photo);
-  if (data.neuter === "did") formData.append("neuter", "true");
-  else if (data.neuter === "didnot") formData.append("neuter", "false");
-  else formData.append("neuter", "null");
-
   if (data.name) formData.append("name", data.name);
   if (data.gender) formData.append("gender", data.gender.toUpperCase());
   if (data.birthYear) formData.append("birthYear", data.birthYear);
   if (data.breed) formData.append("breed", data.breed);
+
+  if (data.neuter) {
+    if (data.neuter === "did") {
+      formData.append("neuter", "true");
+    } else if (data.neuter === "didnot") {
+      formData.append("neuter", "false");
+    } else {
+      formData.append("neuter", "null");
+    }
+  }
 
   formData.append("petType", "dog");
 
   return formData;
 }
 
-async function callPetAPI(
-  endpoint: string,
-  method: string = "GET",
-  formData?: FormData,
-) {
-  try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
-      method,
+export const petsApi = {
+  // GET /meong-road/pets/{id} - 반려동물 상세 조회
+  getPetInfo: async ({ id }: GetPetReq): Promise<GetPetRes> => {
+    return await customFetch.get(`${API_ENDPOINTS.PET}/${id}`);
+  },
+
+  // POST /meong-road/pets - 반려동물 등록
+  postPetInfo: async (data: PetInfoFormSchema): Promise<CreatePetRes> => {
+    const formData = createPetFormData(data);
+    return await customFetch.post(`${API_ENDPOINTS.PET}`, {
       body: formData,
+      headers: {},
     });
+  },
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}: API 호출 실패`);
+  // PUT /meong-road/pets/{id} - 반려동물 정보 수정
+  putPetInfo: async (
+    id: number,
+    data: PetInfoUpdateSchema,
+  ): Promise<UpdatePetRes> => {
+    const formData = createPetFormData(data);
+    return await customFetch.put(`${API_ENDPOINTS.PET}/${id}`, {
+      body: formData,
+      headers: {},
+    });
+  },
 
-    const apiResponse: PetResponse = await response.json();
+  // DELETE /meong-road/pets/{id} - 반려동물 삭제
+  deletePetInfo: async ({ id }: DeletePetReq): Promise<DeletePetRes> => {
+    return await customFetch.delete(`${API_ENDPOINTS.PET}/${id}`);
+  },
 
-    if (!apiResponse.success)
-      throw new Error(apiResponse.message || `API 호출 실패`);
-
-    return apiResponse.result;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// 반려동물 상세 조회
-export async function getPetInfo(petId: number) {
-  return callPetAPI(`/pets/${petId}`);
-}
-
-// 반려동물 정보 수정
-export async function putPetInfo(petId: number, data: PetInfoUpdateSchema) {
-  const formData = petFormData(data);
-  return callPetAPI(`/pets/${petId}`, "PUT", formData);
-}
-
-// 반려동물 정보 삭제
-export async function deletePetInfo(petId: number) {
-  return callPetAPI(`pets/${petId}`, "DELETE");
-}
-
-// 반려동물 등록
-export async function postPetInfo(data: PetInfoFormSchema) {
-  const formData = petFormData(data);
-  return callPetAPI(`/pets`, "POST", formData);
-}
-
-// 특정 유저의 반려동물 목록 조회
-export async function getPetInfoByUserId(userId: number) {
-  return callPetAPI(`/pets/user/${userId}`);
-}
-
-// 타입 별 반려동물 조회
-export async function getPetInfoByPetType(petType: string = "DOG") {
-  return callPetAPI(`/pets/type/${petType}`);
-}
-
-// 내 반려동물 목록 조회
-export async function getMyPetInfo() {
-  return callPetAPI(`/pets/my`);
-}
+  // GET /meong-road/pets/my - 내 반려동물 목록 조회
+  getMyPetInfo: async (): Promise<GetMyPetsRes> => {
+    return await customFetch.get(`${API_ENDPOINTS.PET}/my`);
+  },
+};

@@ -2,7 +2,7 @@ import { usePathname } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { useAuthUser } from "@/hooks/auth/useAuthUser";
+import { useGetMyInfo } from "@/hooks/queries/user";
 import { PATH } from "@/lib/constants/path";
 import { UserType } from "@/lib/types/user";
 
@@ -49,8 +49,8 @@ jest.mock("@/assets/images/profile.svg", () => {
   };
 });
 
-jest.mock("@/hooks/auth/useAuthUser", () => ({
-  useAuthUser: jest.fn(),
+jest.mock("@/hooks/queries/user", () => ({
+  useGetMyInfo: jest.fn(),
 }));
 
 jest.mock("@/hooks/auth/useSignout", () => ({
@@ -82,7 +82,7 @@ jest.mock("@/components/ui/dropdown-menu", () => ({
 }));
 
 const mockUsePathname = jest.mocked(usePathname);
-const mockUseAuthUser = useAuthUser as jest.Mock;
+const mockUseGetMyInfo = useGetMyInfo as jest.Mock;
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -106,7 +106,7 @@ const renderWithQueryClient = (component: React.ReactElement) => {
 
 const renderHeader = (pathname = "/", user: UserType | null = null) => {
   mockUsePathname.mockReturnValue(pathname);
-  mockUseAuthUser.mockReturnValue({ data: user });
+  mockUseGetMyInfo.mockReturnValue({ data: user });
   return renderWithQueryClient(<Header />);
 };
 

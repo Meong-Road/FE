@@ -11,4 +11,6 @@ export const reviewsQueryKeys = {
     ...reviewsQueryKeys.dashboards(),
     location,
   ],
+  myReviews: (pagination: Partial<PaginationReq>) =>
+    [...reviewsQueryKeys.all(), "my", pagination] as const,
 };

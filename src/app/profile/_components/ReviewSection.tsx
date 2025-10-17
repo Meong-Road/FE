@@ -1,14 +1,25 @@
+"use client";
+
 import { ReviewCard } from "@/components/ReviewCard";
+import { useGetMyReviews } from "@/hooks/queries/reviews";
+import { ReviewType } from "@/lib/types/reviews";
 import { formatDays } from "@/lib/utils/dateTime";
-import { mockReviews } from "@/mocks/data/reviews";
 
 import EditBtn from "./EditBtn";
 
-// TODO: 실제 API 연동해야함
-
 export default function ReviewSection() {
+  const { data: reviews, isLoading } = useGetMyReviews({ page: 0, size: 10 });
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <p className="text-slate-400">로딩 중...</p>
+      </div>
+    );
+  }
+
   // 빈 상태 처리
-  if (mockReviews.length === 0) {
+  if (!reviews || reviews.content.length === 0) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
         <p className="text-slate-400">작성한 리뷰가 없습니다.</p>
@@ -19,7 +30,7 @@ export default function ReviewSection() {
   return (
     <section>
       <ul className="space-y-3 sm:space-y-4">
-        {mockReviews.slice(0, 3).map((review) => (
+        {reviews.content.map((review: ReviewType) => (
           <ReviewCard key={review.id}>
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:gap-8">
               {/* 모임 이미지 */}

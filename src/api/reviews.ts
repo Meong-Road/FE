@@ -1,6 +1,8 @@
 import qs from "qs";
 
 import {
+  GetMyReviewsReq,
+  GetMyReviewsRes,
   GetReviewDashboardReq,
   GetReviewDashboardRes,
   GetReviewsByGatheringReq,
@@ -37,10 +39,19 @@ const REVIEW_API = {
     gatheringId,
     ...params
   }: GetReviewsByGatheringReq): Promise<GetReviewsByGatheringRes> => {
-    const response = await fetch(
+    return await customFetch.get(
       `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
     );
-    return response.json();
+  },
+  // GET /meong-road/reviews/my - 내 리뷰 목록 조회
+  getMyReviews: async ({
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: Partial<GetMyReviewsReq>): Promise<GetMyReviewsRes> => {
+    return await customFetch.get(
+      `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort })}`,
+    );
   },
 };
 

@@ -1,46 +1,45 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-import { getPetInfo, postPetInfo, putPetInfo } from "@/api/pets";
+import {
+  useGetPetInfo,
+  usePostPetInfo,
+  usePutPetInfo,
+} from "@/hooks/queries/pets";
 
 import { PetInfoModalProps } from "../types/petInfoModal";
 
 import { PetInfoFormSchema, PetInfoUpdateSchema } from "./usePetInfoForm";
 
 export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const [initialData, setInitialData] = useState<PetInfoFormSchema | null>(
     null,
   );
   const { id } = useParams();
+  const petId = id ? Number(id) : 0;
+  const shouldFetchPet = type === "edit-pet" && !!petId;
+
+  const postPetInfo = usePostPetInfo();
+  const putPetInfo = usePutPetInfo();
+  const { data: petData } = useGetPetInfo(shouldFetchPet ? petId : 0);
 
   useEffect(() => {
-    if (type === "edit-pet" && id) {
-      const loadPetData = async () => {
-        try {
-          const petData = await getPetInfo(Number(id));
-          if (!petData) return;
-
-          setInitialData({
-            name: petData.name,
-            gender: petData.gender.toLowerCase() as "male" | "female",
-            birthYear: petData.birthYear,
-            breed: petData.breed,
-            neuter:
-              petData.neuter === true
-                ? "did"
-                : petData.neuter === false
-                  ? "didnot"
-                  : undefined,
-            existingPhotoUrl: petData.image,
-          });
-        } catch (error) {
-          console.error("반려견 정보 로딩 실패 : ", error);
-        }
-      };
-      loadPetData();
+    if (type === "edit-pet" && petData) {
+      setInitialData({
+        name: petData.name,
+        gender: petData.gender.toLowerCase() as "male" | "female",
+        birthYear: petData.birthYear,
+        breed: petData.breed,
+        neuter:
+          petData.neuter === true
+            ? "did"
+            : petData.neuter === false
+              ? "didnot"
+              : undefined,
+        existingPhotoUrl: petData.image,
+      });
     }
-  }, [type, id]);
+  }, [type, petData]);
 
   const hasChanges = (currentData: PetInfoUpdateSchema) => {
     if (!initialData) return false;
@@ -56,27 +55,25 @@ export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
     data: PetInfoFormSchema | PetInfoUpdateSchema,
   ) => {
     if (type === "edit-pet" && !hasChanges(data as PetInfoUpdateSchema)) return;
-    setIsLoading(true);
 
     try {
       if (type === "edit-pet") {
-        // 해당 반려동물 수정 버튼을 누르면 petId가 path에 뜬다고 가정
-        await putPetInfo(Number(id), data as PetInfoUpdateSchema);
-        onClose();
+        await putPetInfo.mutateAsync({
+          id: petId,
+          data: data as PetInfoUpdateSchema,
+        });
       } else {
-        await postPetInfo(data as PetInfoFormSchema);
-        // 성공 토스트가 있으면 좋을 듯
-        onClose();
+        await postPetInfo.mutateAsync(data as PetInfoFormSchema);
       }
+      onClose();
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return {
-    isLoading,
+    isLoading:
+      type === "edit-pet" ? putPetInfo.isPending : postPetInfo.isPending,
     handleSubmit,
     initialData,
     hasChanges: type === "edit-pet" ? hasChanges : undefined,

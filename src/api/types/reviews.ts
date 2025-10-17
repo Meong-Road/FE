@@ -25,3 +25,7 @@ export interface ReviewFilters {
   location: LocationType;
   gatheringId: ReviewType["gatheringId"];
 }
+
+// GET /meong-road/reviews/my - 내 리뷰 목록 조회
+export type GetMyReviewsReq = PaginationReq;
+export type GetMyReviewsRes = Response<PaginatedRes<ReviewType>>;

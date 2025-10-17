@@ -1,3 +1,8 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+
+import { useGetMyInfo } from "@/hooks/queries/user";
 import { PATH } from "@/lib/constants/path";
 
 import CreatedSection from "./_components/CreatedSection";
@@ -8,16 +13,37 @@ import { ProfileCard } from "./_components/ProfileCard";
 import ReviewSection from "./_components/ReviewSection";
 import { Tab } from "./_components/Tab";
 
-interface ProfileProps {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}
+export default function Profile() {
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "joined";
 
-export default async function Profile({ searchParams }: ProfileProps) {
-  const resolvedSearchParams = await searchParams;
-  const currentTab =
-    typeof resolvedSearchParams?.tab === "string"
-      ? resolvedSearchParams.tab
-      : "joined";
+  const { data: myInfo, isLoading } = useGetMyInfo();
+
+  if (isLoading) {
+    return (
+      <section>
+        <h2 className="mb-4 text-center text-[32px] font-semibold">
+          마이페이지
+        </h2>
+        <div className="flex min-h-[400px] items-center justify-center">
+          <p className="text-slate-400">로딩 중...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (!myInfo) {
+    return (
+      <section>
+        <h2 className="mb-4 text-center text-[32px] font-semibold">
+          마이페이지
+        </h2>
+        <div className="flex min-h-[400px] items-center justify-center">
+          <p className="text-slate-400">사용자 정보를 불러올 수 없습니다.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section>
@@ -28,12 +54,14 @@ export default async function Profile({ searchParams }: ProfileProps) {
           <EditBtn />
         </div>
         <ProfileCard.Content>
-          <ProfileCard.Image></ProfileCard.Image>
+          <ProfileCard.Image />
           <div className="pt-4">
-            <ProfileCard.Name>럽원즈올</ProfileCard.Name>
+            <ProfileCard.Name>
+              {myInfo.nickName || myInfo.name}
+            </ProfileCard.Name>
             <dl>
-              <ProfileCard.Info label="ID" value="Example2" />
-              <ProfileCard.Info label="E-mail" value="Example@naver.com" />
+              <ProfileCard.Info label="ID" value={myInfo.name} />
+              <ProfileCard.Info label="E-mail" value={myInfo.email} />
             </dl>
           </div>
         </ProfileCard.Content>

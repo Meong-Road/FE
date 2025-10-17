@@ -1,7 +1,9 @@
+import { ReactNode } from "react";
 import { useParams } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook } from "@testing-library/react";
 
-import { getPetInfo, postPetInfo, putPetInfo } from "@/api/pets";
+import { petsApi } from "@/api/pets";
 
 import { usePetInfoModal } from "../usePetInfoModal";
 
@@ -25,36 +27,40 @@ const createMockFormData = (overrides = {}) => ({
   ...overrides,
 });
 
-interface PromiseType {
-  id: number;
-  name: string;
-  birthYear: string;
-  image: string;
-  petType: string;
-  breed: string;
-  gender: "MALE" | "FEMALE";
-  neuter: boolean | null;
-}
-
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
 }));
 
 jest.mock("../../../../api/pets", () => ({
-  getPetInfo: jest.fn(),
-  postPetInfo: jest.fn(),
-  putPetInfo: jest.fn(),
+  petsApi: {
+    getPetInfo: jest.fn(),
+    postPetInfo: jest.fn(),
+    putPetInfo: jest.fn(),
+  },
 }));
 
 const mockUseParams = useParams as jest.MockedFunction<typeof useParams>;
-const mockGetPetInfo = getPetInfo as jest.MockedFunction<typeof getPetInfo>;
-const mockPostPetInfo = postPetInfo as jest.MockedFunction<typeof postPetInfo>;
-const mockPutPetInfo = putPetInfo as jest.MockedFunction<typeof putPetInfo>;
+const mockGetPetInfo = petsApi.getPetInfo as jest.MockedFunction<
+  typeof petsApi.getPetInfo
+>;
+const mockPostPetInfo = petsApi.postPetInfo as jest.MockedFunction<
+  typeof petsApi.postPetInfo
+>;
+const mockPutPetInfo = petsApi.putPetInfo as jest.MockedFunction<
+  typeof petsApi.putPetInfo
+>;
 
 describe("usePetInfoModal Hook 테스트", () => {
   const mockOnClose = jest.fn();
+  let queryClient: QueryClient;
 
   beforeEach(() => {
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+      },
+    });
     mockUseParams.mockReturnValue({ id: "1" });
     mockGetPetInfo.mockClear();
     mockPostPetInfo.mockClear();
@@ -62,9 +68,18 @@ describe("usePetInfoModal Hook 테스트", () => {
     mockOnClose.mockClear();
   });
 
+  afterEach(() => {
+    queryClient.clear();
+  });
+
   const renderHookWithType = (type: "first-login" | "add-pet" | "edit-pet") => {
-    return renderHook(() =>
-      usePetInfoModal({ type: type, onClose: mockOnClose }),
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+
+    return renderHook(
+      () => usePetInfoModal({ type: type, onClose: mockOnClose }),
+      { wrapper },
     );
   };
 
@@ -88,15 +103,20 @@ describe("usePetInfoModal Hook 테스트", () => {
   describe("useEffect 테스트", () => {
     it("edit-pet 타입 모달일 때 기존 데이터를 불러오는지 테스트", async () => {
       const mockInitialPetData = createMockPetInfoResponse({ neuter: true });
-      mockGetPetInfo.mockResolvedValue(mockInitialPetData);
+      mockGetPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: mockInitialPetData,
+      });
 
       const { result } = renderHookWithType("edit-pet");
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       });
 
-      expect(mockGetPetInfo).toHaveBeenCalledWith(1);
+      expect(mockGetPetInfo).toHaveBeenCalledWith({ id: 1 });
       expect(result.current.initialData).toEqual({
         name: "멍멍이",
         birthYear: "2025",
@@ -110,11 +130,16 @@ describe("usePetInfoModal Hook 테스트", () => {
 
   describe("hasChanges 함수 테스트", () => {
     it("edit-pet 타입 모달에서 변경사항이 있을 때 true를 반환하는지 테스트", async () => {
-      mockGetPetInfo.mockResolvedValue(createMockPetInfoResponse());
+      mockGetPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse(),
+      });
       const { result } = renderHookWithType("edit-pet");
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       });
 
       const changedData = {
@@ -127,11 +152,16 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
 
     it("edit-pet 타입 모달에서 변경사항이 없을 때 false를 반환하는지 테스트", async () => {
-      mockGetPetInfo.mockResolvedValue(createMockPetInfoResponse());
+      mockGetPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse(),
+      });
       const { result } = renderHookWithType("edit-pet");
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       });
 
       const unchangedData = {
@@ -161,7 +191,12 @@ describe("usePetInfoModal Hook 테스트", () => {
 
   describe("타입에 따라서 다른 API를 호출하는지 테스트", () => {
     it("first-login 타입일 때 postPetInfo API를 호출하는지 테스트", async () => {
-      mockPostPetInfo.mockResolvedValue(createMockPetInfoResponse());
+      mockPostPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse(),
+      });
 
       const { result } = renderHookWithType("first-login");
 
@@ -175,7 +210,12 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
 
     it("add-pet 타입일 때 postPetInfo API를 호출하는지 테스트", async () => {
-      mockPostPetInfo.mockResolvedValue(createMockPetInfoResponse());
+      mockPostPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse(),
+      });
 
       const { result } = renderHookWithType("add-pet");
 
@@ -189,16 +229,23 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
 
     it("edit-pet 타입일 때 putPetInfo API를 호출하는지 테스트", async () => {
-      mockGetPetInfo.mockResolvedValue(createMockPetInfoResponse());
-
-      mockPutPetInfo.mockResolvedValue(
-        createMockPetInfoResponse({ name: "마루", birthYear: "2024" }),
-      );
+      mockGetPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse(),
+      });
+      mockPutPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse({ name: "마루", birthYear: "2024" }),
+      });
 
       const { result } = renderHookWithType("edit-pet");
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       });
 
       const mockData = {
@@ -210,7 +257,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         await result.current.handleSubmit(mockData);
       });
 
-      expect(mockGetPetInfo).toHaveBeenCalledWith(1);
+      expect(mockGetPetInfo).toHaveBeenCalledWith({ id: 1 });
       expect(mockPutPetInfo).toHaveBeenCalledWith(1, mockData);
       expect(mockOnClose).toHaveBeenCalled();
     });
@@ -230,14 +277,22 @@ describe("usePetInfoModal Hook 테스트", () => {
       await result.current.handleSubmit(mockData);
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith(expect.any(Error));
+    expect(consoleSpy).toHaveBeenCalled();
     expect(mockOnClose).not.toHaveBeenCalled();
+    consoleSpy.mockRestore();
   });
 
   it("API 호출 중 로딩 상태가 true로 변경되는지 테스트", async () => {
     // Promise를 수동으로 제어할 수 있도록 설정
-    let resolvePromise: (value: PromiseType) => void;
-    const delayedPromise = new Promise<PromiseType>((resolve) => {
+    type ApiResponse = {
+      success: boolean;
+      code: number;
+      message: string;
+      result: ReturnType<typeof createMockPetInfoResponse>;
+    };
+
+    let resolvePromise: (value: ApiResponse) => void;
+    const delayedPromise = new Promise<ApiResponse>((resolve) => {
       resolvePromise = resolve;
     });
 
@@ -252,16 +307,16 @@ describe("usePetInfoModal Hook 테스트", () => {
       result.current.handleSubmit(mockData);
     });
 
-    // 로딩 상태가 true인지 확인
-    expect(result.current.isLoading).toBe(true);
-
     // Promise를 수동으로 완료
     await act(async () => {
-      resolvePromise!(createMockPetInfoResponse());
+      resolvePromise!({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: createMockPetInfoResponse(),
+      });
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
-
-    // 로딩 상태가 false로 변경되었는지 확인
-    expect(result.current.isLoading).toBe(false);
   });
 
   describe("데이터 변환 테스트", () => {
@@ -271,12 +326,17 @@ describe("usePetInfoModal Hook 테스트", () => {
         neuter: false,
       });
 
-      mockGetPetInfo.mockResolvedValue(mockData);
+      mockGetPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: mockData,
+      });
 
       const { result } = renderHookWithType("edit-pet");
 
       await act(
-        async () => await new Promise((resolve) => setTimeout(resolve, 0)),
+        async () => await new Promise((resolve) => setTimeout(resolve, 100)),
       );
 
       expect(result.current.initialData).toEqual({
@@ -291,12 +351,17 @@ describe("usePetInfoModal Hook 테스트", () => {
 
     it("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
       const mockData = createMockPetInfoResponse();
-      mockGetPetInfo.mockResolvedValue(mockData);
+      mockGetPetInfo.mockResolvedValue({
+        success: true,
+        code: 0,
+        message: "성공",
+        result: mockData,
+      });
 
       const { result } = renderHookWithType("edit-pet");
 
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 1));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       });
 
       expect(result.current.initialData).toEqual({

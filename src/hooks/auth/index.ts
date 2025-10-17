@@ -1,4 +1,5 @@
-export { useAuthUser } from "./useAuthUser";
+// useAuthUser는 useGetMyInfo로 통일되어 제거되었습니다.
+// import { useGetMyInfo } from "@/hooks/queries/user" 를 사용하세요.
 export { useDuplicateCheck } from "./useDuplicateCheck";
 export { useSigninForm } from "./useSigninForm";
 export { useSigninMutation } from "./useSigninMutation";

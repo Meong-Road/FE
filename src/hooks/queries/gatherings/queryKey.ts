@@ -18,4 +18,8 @@ export const gatheringsQueryKeys = {
     ...gatheringsQueryKeys.likes(),
     id,
   ],
+  myGatherings: (pagination: Partial<PaginationReq>) =>
+    [...gatheringsQueryKeys.all(), "my", pagination] as const,
+  joinedGatherings: (pagination: Partial<PaginationReq>) =>
+    [...gatheringsQueryKeys.all(), "joined", pagination] as const,
 };

@@ -25,3 +25,13 @@ export type LikeRes = Response<string>;
 
 export type CancelLikeReq = Pick<GatheringType, "id">;
 export type CancelLikeRes = Response<string>;
+
+// GET /meong-road/gatherings/my - 내가 만든 모임 목록 조회
+export type GetMyGatheringsReq = PaginationReq;
+export type GetMyGatheringsRes = Response<PaginatedRes<GatheringType>>;
+
+// GET /meong-road/gatherings/joined - 참석한 모임 목록 조회
+export type GetJoinedGatheringsReq = PaginationReq;
+export type GetJoinedGatheringsRes = Response<
+  PaginatedRes<GatheringType & { joinedAt: string }>
+>;

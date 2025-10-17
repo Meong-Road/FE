@@ -3,7 +3,7 @@ export interface PetType {
   name: string;
   birthYear: string;
   image: string;
-  petType: string;
+  petType: "dog";
   breed: string;
   gender: "MALE" | "FEMALE";
   neuter: boolean | null;

@@ -63,7 +63,7 @@ export default function Header({ className }: { className?: string }) {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden w-full items-center justify-between md:flex">
+        <div className="ml-4 hidden w-full items-center justify-between md:flex">
           <ul className="flex items-center gap-2">
             {HEADER_ITEMS.map((item) => (
               <li key={item.name}>

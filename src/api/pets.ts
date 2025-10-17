@@ -50,13 +50,13 @@ async function callPetAPI(
 
 // 반려동물 상세 조회
 export async function getPetInfo(petId: number) {
-  return callPetAPI(`/pet/${petId}`);
+  return callPetAPI(`/pets/${petId}`);
 }
 
 // 반려동물 정보 수정
 export async function putPetInfo(petId: number, data: PetInfoUpdateSchema) {
   const formData = petFormData(data);
-  return callPetAPI(`/pet/${petId}`, "PUT", formData);
+  return callPetAPI(`/pets/${petId}`, "PUT", formData);
 }
 
 // 반려동물 정보 삭제

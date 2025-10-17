@@ -17,18 +17,16 @@ export function ModalDateSelect({
   onChange,
 }: ModalDateSelectProps) {
   return (
-    <div className="w-full">
-      <div className="flex w-full flex-col">
-        <Form.Select
-          id={htmlFor}
-          name={name}
-          placeholder="연도"
-          options={years}
-          value={value}
-          onChange={onChange}
-          className="bg-accent flex-1 rounded-lg px-4 py-2.5"
-        />
-      </div>
+    <div className="flex w-full flex-col">
+      <Form.Select
+        id={htmlFor}
+        name={name}
+        placeholder="연도"
+        options={years}
+        value={value}
+        onChange={onChange}
+        className="bg-accent flex-1 rounded-lg px-4 py-2.5"
+      />
     </div>
   );
 }

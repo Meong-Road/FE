@@ -6,10 +6,17 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useAuth } from "@/hooks/auth";
-import { AUTH_REDIRECT_PATH, isProtectedRoute } from "@/lib/auth/authGuard";
+import { PATH, PROTECTED_ROUTES } from "@/lib/constants/path";
 
 interface AuthGuardProviderProps {
   children: React.ReactNode;
+}
+
+/**
+ * 특정 경로가 인증이 필요한지 확인
+ */
+function isProtectedRoute(pathname: string): boolean {
+  return PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
 }
 
 /**
@@ -32,7 +39,7 @@ export default function AuthGuardProvider({
 
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
     if (!isAuthenticated) {
-      const redirectUrl = `${AUTH_REDIRECT_PATH}?redirect=${encodeURIComponent(pathname)}`;
+      const redirectUrl = `${PATH.SIGNIN}?redirect=${encodeURIComponent(pathname)}`;
       router.replace(redirectUrl);
     }
   }, [pathname, isLoading, isAuthenticated, router]);

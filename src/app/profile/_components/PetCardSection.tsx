@@ -8,7 +8,7 @@ import {
 } from "@/components/common";
 import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
-import { useGetMyPetInfo } from "@/hooks/queries/pets";
+import { useGetMyPets } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
 import { processPetInfo } from "@/lib/utils/pet";
 import { useModalStore } from "@/store/modalStore";
@@ -52,7 +52,7 @@ const PetEmptyState = () => (
 
 export default function PetCardSection() {
   const { isOpen, modalType, closeModal } = useModalStore();
-  const { data: pets, isLoading, error } = useGetMyPetInfo();
+  const { data: pets, isLoading, error } = useGetMyPets();
 
   if (isLoading) return <LoadingState message="로딩 중..." />;
   if (error) return <ErrorState message="데이터를 불러오는데 실패했습니다." />;

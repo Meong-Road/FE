@@ -5,7 +5,7 @@ import { DeletePetReq } from "@/api/types/pets";
 
 import { PETS_QUERY_KEYS } from "./queryKey";
 
-export const useDeletePetInfo = () => {
+export const useDeletePet = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

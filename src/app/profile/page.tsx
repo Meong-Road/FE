@@ -2,8 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { useGetMyInfo } from "@/hooks/queries/user";
+import { useAuth } from "@/hooks/auth";
 import { PROFILE_TABS } from "@/lib/constants/profile";
+import { UserType } from "@/lib/types/user";
 
 import CreatedSection from "./_components/CreatedSection";
 import EditBtn from "./_components/EditBtn";
@@ -17,11 +18,7 @@ const ProfileHeader = () => (
   <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
 );
 
-const ProfileInfo = ({
-  myInfo,
-}: {
-  myInfo: NonNullable<ReturnType<typeof useGetMyInfo>["data"]>;
-}) => (
+const ProfileInfo = ({ user }: { user: UserType }) => (
   <ProfileCard>
     <div className="mb-3 flex items-center justify-between">
       <ProfileCard.Header>내 프로필</ProfileCard.Header>
@@ -30,10 +27,10 @@ const ProfileInfo = ({
     <ProfileCard.Content>
       <ProfileCard.Image />
       <div className="pt-4">
-        <ProfileCard.Name>{myInfo.nickName || myInfo.name}</ProfileCard.Name>
+        <ProfileCard.Name>{user.nickName || user.name}</ProfileCard.Name>
         <dl>
-          <ProfileCard.Info label="ID" value={myInfo.name} />
-          <ProfileCard.Info label="E-mail" value={myInfo.email} />
+          <ProfileCard.Info label="ID" value={user.name} />
+          <ProfileCard.Info label="E-mail" value={user.email} />
         </dl>
       </div>
     </ProfileCard.Content>
@@ -74,15 +71,15 @@ const TabContent = ({ currentTab }: { currentTab: string }) => {
 export default function Profile() {
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab") || PROFILE_TABS.JOINED.key;
-  const { data: myInfo, isPending } = useGetMyInfo({ enabled: true });
+  const { user, isLoading } = useAuth();
 
-  if (isPending) return <div>Loading...</div>;
-  if (!myInfo) return <div>데이터가 없습니다.</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (!user) return <div>데이터가 없습니다.</div>;
 
   return (
     <section>
       <ProfileHeader />
-      <ProfileInfo myInfo={myInfo} />
+      <ProfileInfo user={user} />
       <TabNavigation currentTab={currentTab} />
       <section className="mt-6">
         <TabContent currentTab={currentTab} />

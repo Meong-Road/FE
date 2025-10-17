@@ -3,10 +3,10 @@ import qs from "qs";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
-  CancelLikeReq,
-  CancelLikeRes,
-  GetGatheringDetailReq,
-  GetGatheringDetailRes,
+  DeleteLikeReq,
+  DeleteLikeRes,
+  GetGatheringReq,
+  GetGatheringRes,
   GetIsLikedReq,
   GetIsLikedRes,
   GetJoinedGatheringsReq,
@@ -19,8 +19,8 @@ import {
   GetQuickGatheringsRes,
   GetRegularGatheringsReq,
   GetRegularGatheringsRes,
-  LikeReq,
-  LikeRes,
+  PostLikeReq,
+  PostLikeRes,
 } from "./types/gatherings";
 import { customFetch } from "./customFetch";
 
@@ -40,8 +40,8 @@ export const gatheringApi = {
     );
   },
   // 모임 상세 조회
-  getGatheringDetail: async ({ id }: GetGatheringDetailReq) => {
-    return await customFetch.get<GetGatheringDetailRes>(
+  getGathering: async ({ id }: GetGatheringReq) => {
+    return await customFetch.get<GetGatheringRes>(
       `${API_ENDPOINTS.GATHERING}/${id}`,
       { isPublic: true },
     );
@@ -53,14 +53,14 @@ export const gatheringApi = {
     );
   },
   // 모임 찜하기
-  like: async ({ id }: LikeReq) => {
-    return await customFetch.post<LikeRes>(
+  like: async ({ id }: PostLikeReq) => {
+    return await customFetch.post<PostLikeRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
     );
   },
   // 모임 찜 해제
-  cancelLike: async ({ id }: CancelLikeReq): Promise<CancelLikeRes> => {
-    return await customFetch.delete<CancelLikeRes>(
+  cancelLike: async ({ id }: DeleteLikeReq): Promise<DeleteLikeRes> => {
+    return await customFetch.delete<DeleteLikeRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
     );
   },

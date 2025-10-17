@@ -7,7 +7,7 @@ export type GetPetReq = Pick<PetType, "id">;
 export type GetPetRes = Response<PetType>;
 
 // POST /meong-road/pets
-export interface CreatePetReq {
+export interface PostPetReq {
   image?: File | null;
   name: PetType["name"];
   gender: PetType["gender"];
@@ -16,10 +16,10 @@ export interface CreatePetReq {
   neuter: PetType["neuter"];
   petType: PetType["petType"];
 }
-export type CreatePetRes = Response<PetType>;
+export type PostPetRes = Response<PetType>;
 
 // PUT /meong-road/pets/{id}
-export interface UpdatePetReq {
+export interface PutPetReq {
   id: PetType["id"];
   image?: File | null;
   name?: PetType["name"];
@@ -28,11 +28,12 @@ export interface UpdatePetReq {
   breed?: PetType["breed"];
   neuter?: PetType["neuter"];
 }
-export type UpdatePetRes = Response<PetType>;
+export type PutPetRes = Response<PetType>;
 
 // DELETE /meong-road/pets/{id}
 export type DeletePetReq = Pick<PetType, "id">;
 export type DeletePetRes = Response<void>;
 
 // GET /meong-road/pets/my
+export type GetMyPetsReq = void;
 export type GetMyPetsRes = Response<PetType[]>;

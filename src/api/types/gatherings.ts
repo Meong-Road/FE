@@ -15,17 +15,17 @@ export type GetRegularGatheringsRes = Response<
 export type GetQuickGatheringsReq = PaginationReq;
 export type GetQuickGatheringsRes = Response<PaginatedRes<QuickGatheringType>>;
 
-export type GetGatheringDetailReq = Pick<GatheringType, "id">;
-export type GetGatheringDetailRes = Response<GatheringType>;
+export type GetGatheringReq = Pick<GatheringType, "id">;
+export type GetGatheringRes = Response<GatheringType>;
 
 export type GetIsLikedReq = Pick<GatheringType, "id">;
 export type GetIsLikedRes = Response<{ isLiked: boolean }>;
 
-export type LikeReq = Pick<GatheringType, "id">;
-export type LikeRes = Response<string>;
+export type PostLikeReq = Pick<GatheringType, "id">;
+export type PostLikeRes = Response<string>;
 
-export type CancelLikeReq = Pick<GatheringType, "id">;
-export type CancelLikeRes = Response<string>;
+export type DeleteLikeReq = Pick<GatheringType, "id">;
+export type DeleteLikeRes = Response<string>;
 
 // GET /meong-road/gatherings/my - 내가 만든 모임 목록 조회
 export type GetMyGatheringsReq = PaginationReq;

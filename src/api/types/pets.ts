@@ -1,50 +1,37 @@
+import { PetType } from "@/lib/types/pets";
+
 import { Response } from "./common";
 
-export interface PetType {
-  id: number;
-  name: string;
-  birthYear: string;
-  image: string;
-  petType: "dog";
-  breed: string;
-  gender: "MALE" | "FEMALE";
-  neuter: boolean | null;
-}
-
 // GET /meong-road/pets/{id}
-export interface GetPetReq {
-  id: number;
-}
+export type GetPetReq = Pick<PetType, "id">;
 export type GetPetRes = Response<PetType>;
 
 // POST /meong-road/pets
 export interface CreatePetReq {
   image?: File | null;
-  name: string;
-  gender: "MALE" | "FEMALE";
-  birthYear: string;
-  breed: string;
-  neuter: boolean | null;
-  petType: "dog";
+  name: PetType["name"];
+  gender: PetType["gender"];
+  birthYear: PetType["birthYear"];
+  breed: PetType["breed"];
+  neuter: PetType["neuter"];
+  petType: PetType["petType"];
 }
 export type CreatePetRes = Response<PetType>;
 
 // PUT /meong-road/pets/{id}
 export interface UpdatePetReq {
-  id: number;
+  id: PetType["id"];
   image?: File | null;
-  name?: string;
-  gender?: "MALE" | "FEMALE";
-  birthYear?: string;
-  breed?: string;
-  neuter?: boolean | null;
+  name?: PetType["name"];
+  gender?: PetType["gender"];
+  birthYear?: PetType["birthYear"];
+  breed?: PetType["breed"];
+  neuter?: PetType["neuter"];
 }
 export type UpdatePetRes = Response<PetType>;
 
 // DELETE /meong-road/pets/{id}
-export interface DeletePetReq {
-  id: number;
-}
+export type DeletePetReq = Pick<PetType, "id">;
 export type DeletePetRes = Response<void>;
 
 // GET /meong-road/pets/my

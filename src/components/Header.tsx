@@ -39,16 +39,20 @@ const HEADER_ITEMS = [
 export default function Header({ className }: { className?: string }) {
   const router = useRouter();
   const pathname = usePathname();
+  const signout = useSignout();
 
   const { data: user } = useAuthUser();
-  const handleSignout = useSignout();
+  const handleSignout = () => {
+    signout();
+    router.push(PATH.SIGNIN);
+  };
 
   const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-10 h-22 w-full bg-white/70 py-4 backdrop-blur-2xl",
+        "fixed top-0 left-0 z-10 h-22 w-full bg-white/70 py-4 backdrop-blur-2xl select-none",
         className,
       )}
     >
@@ -76,15 +80,13 @@ export default function Header({ className }: { className?: string }) {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button>
-                  <ProfileSvg
-                    width={42}
-                    height={42}
-                    className="rounded-full border border-[#DDDDDD]"
-                  />
-                </button>
+                <ProfileSvg
+                  width={42}
+                  height={42}
+                  className="cursor-pointer rounded-full border border-[#DDDDDD]"
+                />
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent side="bottom" align="end" sideOffset={8}>
                 <DropdownMenuItem onSelect={() => router.push(PATH.MY_PROFILE)}>
                   마이페이지
                 </DropdownMenuItem>
@@ -94,13 +96,12 @@ export default function Header({ className }: { className?: string }) {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/signin" className="shrink-0 p-1.5">
-              <ProfileSvg
-                width={42}
-                height={42}
-                className="rounded-full border border-[#DDDDDD]"
-              />
-            </Link>
+            <ProfileSvg
+              width={42}
+              height={42}
+              className="cursor-pointer rounded-full border border-[#DDDDDD]"
+              onClick={() => router.push(PATH.SIGNIN)}
+            />
           )}
         </div>
       </div>

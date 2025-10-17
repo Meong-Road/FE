@@ -87,7 +87,7 @@ export const authHandlers = [
       code: 0,
       message: "로그인 성공",
       result: {
-        accessToken:
+        token:
           "eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbklkIjoic3RyaW5nIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTczMjgwMzI0OSwiZXhwIjoxNzMyODAzODQ5fQ.F3hjvzGHgoahAAUUe3M44UfU8eceSHHdl4LFkH8GBjQ",
         refreshToken:
           "eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbklkIjoic3RyaW5nIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3MzI4MDMyNDksImV4cCI6MTczMzQwODA0OX0.xyz123",
@@ -130,7 +130,7 @@ export const authHandlers = [
       code: 0,
       message: "토큰 갱신 성공",
       result: {
-        accessToken:
+        token:
           "eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbklkIjoic3RyaW5nIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTczMjgwMzI0OSwiZXhwIjoxNzMyODAzODQ5fQ.F3hjvzGHgoahAAUUe3M44UfU8eceSHHdl4LFkH8GBjQ",
         refreshToken:
           "eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbklkIjoic3RyaW5nIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3MzI4MDMyNDksImV4cCI6MTczMzQwODA0OX0.xyz123",

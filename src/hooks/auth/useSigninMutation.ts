@@ -17,7 +17,7 @@ export function useSigninMutation() {
     },
     onSuccess: (data: PostSigninRes) => {
       tokenStorage.set(data.result.token, data.result.refreshToken);
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
     },
   });
 }

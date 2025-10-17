@@ -18,7 +18,7 @@ export function useSignupMutation() {
     },
     onSuccess: (data: PostSignupRes) => {
       tokenStorage.set(data.result.token, null); // signup은 아직 리프레시 없음
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
     },
   });
 }

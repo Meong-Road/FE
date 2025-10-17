@@ -5,7 +5,7 @@ import { GetUserRes } from "@/api/types/auth";
 
 export function useAuthUser() {
   return useQuery({
-    queryKey: ["me"],
+    queryKey: ["user", "me"],
     queryFn: authApi.getMyInfo,
     select: (data: GetUserRes) => data.result,
     retry: false,

@@ -44,6 +44,6 @@ export const authApi = {
   },
 
   getMyInfo: async (): Promise<GetUserRes> => {
-    return await customFetch.get("/meong-road/user/my");
+    return await customFetch.get(`${API_ENDPOINTS.USER}/my`);
   },
 };

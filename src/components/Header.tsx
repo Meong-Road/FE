@@ -39,9 +39,13 @@ const HEADER_ITEMS = [
 export default function Header({ className }: { className?: string }) {
   const router = useRouter();
   const pathname = usePathname();
+  const signout = useSignout();
 
   const { data: user } = useAuthUser();
-  const handleSignout = useSignout();
+  const handleSignout = () => {
+    signout();
+    router.push(PATH.SIGNIN);
+  };
 
   const isActive = (href: string) => pathname.startsWith(href);
 

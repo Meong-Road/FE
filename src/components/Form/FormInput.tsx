@@ -34,7 +34,7 @@ function ShowPasswordButton({
   );
 }
 
-export function Input({ className, type, ...props }: Props) {
+export function Input({ className, type, onChange, ...props }: Props) {
   const [isShowPassword, setIsShowPassword] = React.useState(false);
 
   return (
@@ -43,6 +43,7 @@ export function Input({ className, type, ...props }: Props) {
         className={cn(type === "password" && "pr-10", className)}
         {...props}
         type={type !== "password" ? type : isShowPassword ? "text" : "password"}
+        onInput={onChange}
       />
       {type === "password" && (
         <ShowPasswordButton

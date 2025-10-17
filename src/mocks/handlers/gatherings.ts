@@ -163,6 +163,8 @@ export const gatheringsHandlers = [
   http.delete(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
+    console.log({ id }, { notId: !id });
+
     if (!id)
       return HttpResponse.json({
         success: false,
@@ -183,6 +185,13 @@ export const gatheringsHandlers = [
       });
 
     isLikedSet.delete(id as string);
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: { isLiked: false },
+      errorCode: null,
+    });
   }),
 
   //================= 모임 상세 조회 ================================

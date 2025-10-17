@@ -1,4 +1,5 @@
 import {
+  BookmarkType,
   GatheringType,
   QuickGatheringType,
   RegularGatheringType,
@@ -25,3 +26,8 @@ export type LikeRes = Response<string>;
 
 export type CancelLikeReq = Pick<GatheringType, "id">;
 export type CancelLikeRes = Response<string>;
+
+export type GetMyBookmarkedGatheringsReq = BookmarkType;
+export type GetMyBookmarkedGatheringsRes = Response<
+  PaginatedRes<GatheringType>
+>;

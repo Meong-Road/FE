@@ -22,7 +22,7 @@ const REVIEW_API = {
     return await customFetch.get(
       `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort })}`,
       {
-        isPublic: true, // 공개 API - 인증 불필요
+        isPublic: true,
       },
     );
   },
@@ -36,11 +36,13 @@ const REVIEW_API = {
   getReviewsByGathering: async ({
     gatheringId,
     ...params
-  }: GetReviewsByGatheringReq): Promise<GetReviewsByGatheringRes> => {
-    const response = await fetch(
+  }: GetReviewsByGatheringReq) => {
+    return await customFetch.get<GetReviewsByGatheringRes>(
       `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
+      {
+        isPublic: true,
+      },
     );
-    return response.json();
   },
 };
 

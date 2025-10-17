@@ -31,7 +31,7 @@ export default function RootLayout({
         <QueryProvider>
           <MSWProvider>
             <Header />
-            <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-24 pb-8 md:px-8 md:pt-32">
+            <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 md:px-8 md:pt-32">
               {children}
             </div>
             <div id="modal-root"></div>

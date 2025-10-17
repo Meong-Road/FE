@@ -163,8 +163,6 @@ export const gatheringsHandlers = [
   http.delete(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
-    console.log({ id }, { notId: !id });
-
     if (!id)
       return HttpResponse.json({
         success: false,

@@ -247,11 +247,10 @@ export const gatheringsHandlers = [
       });
 
     isLikedSet.delete(id as string);
-
     return HttpResponse.json({
       success: true,
       code: 200,
-      message: "찜 해제 성공",
+      message: "성공",
       result: { isLiked: false },
       errorCode: null,
     });

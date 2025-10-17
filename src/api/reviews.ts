@@ -20,36 +20,38 @@ const REVIEW_API = {
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
-  }: Partial<GetReviewsReq>): Promise<GetReviewsRes> => {
-    return await customFetch.get(
+  }: Partial<GetReviewsReq>) => {
+    return await customFetch.get<GetReviewsRes>(
       `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort })}`,
       {
-        isPublic: true, // 공개 API - 인증 불필요
+        isPublic: true,
       },
     );
   },
   getReviewDashboard: async ({
     location = "서울 전체",
-  }: GetReviewDashboardReq): Promise<GetReviewDashboardRes> => {
-    return await customFetch.get(
+  }: GetReviewDashboardReq) => {
+    return await customFetch.get<GetReviewDashboardRes>(
       `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location })}`,
     );
   },
   getReviewsByGathering: async ({
     gatheringId,
     ...params
-  }: GetReviewsByGatheringReq): Promise<GetReviewsByGatheringRes> => {
-    return await customFetch.get(
+  }: GetReviewsByGatheringReq) => {
+    return await customFetch.get<GetReviewsByGatheringRes>(
       `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
+      {
+        isPublic: true,
+      },
     );
   },
-  // GET /meong-road/reviews/my - 내 리뷰 목록 조회
   getMyReviews: async ({
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
-  }: Partial<GetMyReviewsReq>): Promise<GetMyReviewsRes> => {
-    return await customFetch.get(
+  }: Partial<GetMyReviewsReq>) => {
+    return await customFetch.get<GetMyReviewsRes>(
       `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort })}`,
     );
   },

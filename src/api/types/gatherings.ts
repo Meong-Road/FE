@@ -1,4 +1,5 @@
 import {
+  BookmarkType,
   GatheringType,
   QuickGatheringType,
   RegularGatheringType,
@@ -34,4 +35,9 @@ export type GetMyGatheringsRes = Response<PaginatedRes<GatheringType>>;
 export type GetJoinedGatheringsReq = PaginationReq;
 export type GetJoinedGatheringsRes = Response<
   PaginatedRes<GatheringType & { joinedAt: string }>
+>;
+
+export type GetMyBookmarkedGatheringsReq = BookmarkType;
+export type GetMyBookmarkedGatheringsRes = Response<
+  PaginatedRes<GatheringType>
 >;

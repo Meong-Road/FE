@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import QuickGatheringCard from "@/app/_components/QuickGatheringCard";
 import RegularGatheringCard from "@/app/_components/RegularGatheringCard";
 import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 export default function FavoritesList({ currentTab }: { currentTab: string }) {
   const { ref, inView } = useInView();
@@ -29,7 +30,7 @@ export default function FavoritesList({ currentTab }: { currentTab: string }) {
   return (
     <ul className="mt-9 grid grid-cols-1 gap-8">
       {gatherings.map((gathering) =>
-        currentTab === "regular" ? (
+        gathering.type === EGatheringType.REGULAR ? (
           <RegularGatheringCard key={gathering.id} gathering={gathering} />
         ) : (
           <QuickGatheringCard key={gathering.id} gathering={gathering} />

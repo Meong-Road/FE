@@ -23,8 +23,8 @@ export function useGetInfiniteBookmarkedGatherings(
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
-      !lastPage.result.last ? allPages.length : undefined,
+      !lastPage.result?.last ? allPages.length : undefined,
     select: (data) =>
-      data.pages.flatMap((page) => page.result.content || []) || [],
+      data.pages.flatMap((page) => page.result?.content || []) || [],
   });
 }

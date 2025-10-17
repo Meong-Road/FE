@@ -1,7 +1,10 @@
 "use client";
 
 import { MouseEvent } from "react";
+import { useRouter } from "next/navigation";
 
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
+import { PATH } from "@/lib/constants/path";
 import { cn } from "@/lib/utils";
 
 interface GatheringCardJoinBtnProps {
@@ -9,9 +12,18 @@ interface GatheringCardJoinBtnProps {
 }
 
 export function GatheringCardJoinBtn({ className }: GatheringCardJoinBtnProps) {
+  const router = useRouter();
+  const { data: user } = useAuthUser();
+
   const handleParticipateButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      router.push(PATH.SIGNIN);
+      return;
+    }
+
     // TODO
     console.log("참여하기");
   };

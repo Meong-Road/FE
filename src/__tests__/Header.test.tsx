@@ -131,10 +131,10 @@ describe("Header", () => {
 
     expect(screen.getByTestId("logo")).toBeInTheDocument();
 
-    expect(screen.getByText("정기 모임")).toBeInTheDocument();
-    expect(screen.getByText("번개 모임")).toBeInTheDocument();
-    expect(screen.getByText("찜한 모임")).toBeInTheDocument();
-    expect(screen.getByText("모든 리뷰")).toBeInTheDocument();
+    expect(screen.getAllByText("정기 모임").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("번개 모임").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("찜한 모임").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("모든 리뷰").length).toBeGreaterThan(0);
 
     expect(screen.getByTestId("profile-svg")).toBeInTheDocument();
   });
@@ -174,8 +174,8 @@ describe("Header", () => {
     fireEvent.click(profileIcon);
 
     await waitFor(() => {
-      expect(screen.getByText("마이페이지")).toBeInTheDocument();
-      expect(screen.getByText("로그아웃")).toBeInTheDocument();
+      expect(screen.getAllByText("마이페이지").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("로그아웃").length).toBeGreaterThan(0);
     });
   });
 
@@ -192,22 +192,24 @@ describe("Header", () => {
   it("현재 경로에 해당하는 메뉴가 활성화되어야 한다", () => {
     renderHeader(PATH.REGULAR_DETAIL(1));
 
-    const regularMenuItem = screen.getByText("정기 모임");
-    expect(regularMenuItem).toHaveClass("text-primary", "font-bold");
+    const regularMenuItems = screen.getAllByText("정기 모임");
+    // 데스크톱 메뉴 (첫 번째) 확인
+    expect(regularMenuItems[0]).toHaveClass("text-primary", "font-bold");
 
-    const quickMenuItem = screen.getByText("번개 모임");
-    expect(quickMenuItem).toHaveClass("text-[#8B8B8B]");
-    expect(quickMenuItem).not.toHaveClass("text-primary", "font-bold");
+    const quickMenuItems = screen.getAllByText("번개 모임");
+    expect(quickMenuItems[0]).toHaveClass("text-[#8B8B8B]");
+    expect(quickMenuItems[0]).not.toHaveClass("text-primary", "font-bold");
   });
 
   it("활성화되지 않은 메뉴들은 기본 스타일을 가져야 한다", () => {
     renderHeader("/some-other-path");
 
+    // 데스크톱 메뉴만 확인 (각각의 첫 번째 요소)
     const menuItems = [
-      screen.getByText("정기 모임"),
-      screen.getByText("번개 모임"),
-      screen.getByText("찜한 모임"),
-      screen.getByText("모든 리뷰"),
+      screen.getAllByText("정기 모임")[0],
+      screen.getAllByText("번개 모임")[0],
+      screen.getAllByText("찜한 모임")[0],
+      screen.getAllByText("모든 리뷰")[0],
     ];
 
     menuItems.forEach((item) => {

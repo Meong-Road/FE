@@ -10,6 +10,8 @@ import {
   GetReviewsReq,
 } from "@/api/types/reviews";
 
+import { queryKeys } from "./queryKey";
+
 export const REVIEW_QUERY_KEY = {
   REVIEWS: ({ location, page, size, sort }: GetReviewsReq) => [
     "reviews",
@@ -22,11 +24,6 @@ export const REVIEW_QUERY_KEY = {
     gatheringId,
     ...params
   }: GetReviewsByGatheringReq) => ["reviews", gatheringId, params],
-  REVIEW_DASHBOARD: ({ location }: GetReviewDashboardReq) => [
-    "reviews",
-    "dashboard",
-    location,
-  ],
 };
 
 export const useGetReviews = ({
@@ -36,7 +33,7 @@ export const useGetReviews = ({
   sort = ["createdAt", "desc"],
 }: GetReviewsReq) => {
   return useQuery({
-    queryKey: REVIEW_QUERY_KEY.REVIEWS({ location, page, size, sort }),
+    queryKey: queryKeys.reviews.list({ page, size, sort }, { location }),
     queryFn: () =>
       REVIEW_API.getReviews({
         location,
@@ -51,7 +48,7 @@ export const useGetReviewDashboard = ({
   location = "서울 전체",
 }: GetReviewDashboardReq) => {
   return useQuery({
-    queryKey: REVIEW_QUERY_KEY.REVIEW_DASHBOARD({ location }),
+    queryKey: queryKeys.reviews.dashboard({ location }),
     queryFn: () => REVIEW_API.getReviewDashboard({ location }),
   });
 };
@@ -64,12 +61,10 @@ export const useGetReviewsByGathering = ({
 }: Omit<GetReviewsByGatheringReq, keyof PaginationReq> &
   Partial<PaginationReq>) => {
   return useQuery({
-    queryKey: REVIEW_QUERY_KEY.REVIEWS_BY_GATHERING({
-      size,
-      page,
-      sort,
-      ...params,
-    }),
+    queryKey: queryKeys.reviews.list(
+      { page, size, sort },
+      { gatheringId: params.gatheringId },
+    ),
     queryFn: () =>
       REVIEW_API.getReviewsByGathering({ size, page, sort, ...params }),
   });

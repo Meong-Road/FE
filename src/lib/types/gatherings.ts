@@ -1,6 +1,4 @@
-import { SEOUL_DISTRICTS } from "@/lib/constants/location";
-
-export type LocationType = (typeof SEOUL_DISTRICTS)[number];
+import { LocationType } from "./reviews";
 
 export enum EGatheringType {
   QUICK = "QUICK",

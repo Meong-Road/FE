@@ -7,10 +7,12 @@ import {
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
 export type GetRegularGatheringsReq = PaginationReq;
-export type GetRegularGatheringsRes = PaginatedRes<RegularGatheringType>;
+export type GetRegularGatheringsRes = Response<
+  PaginatedRes<RegularGatheringType>
+>;
 
 export type GetQuickGatheringsReq = PaginationReq;
-export type GetQuickGatheringsRes = PaginatedRes<QuickGatheringType>;
+export type GetQuickGatheringsRes = Response<PaginatedRes<QuickGatheringType>>;
 
 export type GetGatheringDetailReq = Pick<GatheringType, "id">;
 export type GetGatheringDetailRes = Response<GatheringType>;

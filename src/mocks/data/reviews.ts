@@ -1,9 +1,5 @@
-import {
-  EGatheringType,
-  LocationType,
-  RegularGatheringType,
-} from "@/lib/types/gatherings";
-import { ReviewScore, ReviewType } from "@/lib/types/review";
+import { EGatheringType, RegularGatheringType } from "@/lib/types/gatherings";
+import { LocationType, ReviewScore, ReviewType } from "@/lib/types/reviews";
 
 /**
  * @description

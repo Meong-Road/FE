@@ -6,7 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
 import {
-  GATHERING_QUERY_KEY,
   useCancelLike,
   useGetIsLiked,
   useLike,
@@ -29,19 +28,9 @@ export function GatheringCardLikeBtn({
   });
   const { mutate: like } = useLike({
     id,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
-      });
-    },
   });
   const { mutate: cancelLike } = useCancelLike({
     id,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: GATHERING_QUERY_KEY.IS_LIKED({ id }),
-      });
-    },
   });
 
   if (isPending)

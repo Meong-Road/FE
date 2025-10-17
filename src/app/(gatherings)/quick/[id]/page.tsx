@@ -3,7 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { useGetGatheringDetail } from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
-import { isQuickGathering } from "@/lib/utils/gathering";
+import { isQuickGathering } from "@/lib/utils/typeGuard";
 
 import GatheringInfoSection from "./_components/GatheringInfo/GatheringInfoSection";
 import GatheringIntroductionSection from "./_components/GatheringIntroductionSection";

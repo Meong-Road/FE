@@ -9,7 +9,7 @@ export interface CustomFetchOptions extends RequestInit {
   skipAuth?: boolean;
 }
 
-// 커스텀 에러 클래스
+// API 전용 에러 클래스
 export class ApiError extends Error {
   constructor(
     public statusCode: number,
@@ -48,7 +48,7 @@ async function request<T>(
     headers: finalHeaders,
   });
 
-  // 4. 응답 처리
+  // 4. 응답 처리 or 에러 Throw
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     throw new ApiError(

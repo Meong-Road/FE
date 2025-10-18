@@ -29,22 +29,17 @@ export const gatheringApi = {
   getRegularGatherings: (params: GetRegularGatheringsReq) => {
     return customFetch.get<GetRegularGatheringsRes>(
       `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
-      { isPublic: true },
     );
   },
   // 번개 모임 목록 조회
   getQuickGatherings: (params: GetQuickGatheringsReq) => {
     return customFetch.get<GetQuickGatheringsRes>(
       `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
-      { isPublic: true },
     );
   },
   // 모임 상세 조회
   getGathering: ({ id }: GetGatheringReq) => {
-    return customFetch.get<GetGatheringRes>(
-      `${API_ENDPOINTS.GATHERING}/${id}`,
-      { isPublic: true },
-    );
+    return customFetch.get<GetGatheringRes>(`${API_ENDPOINTS.GATHERING}/${id}`);
   },
   // 모임 찜 조회
   getIsLiked: ({ id }: GetIsLikedReq) => {

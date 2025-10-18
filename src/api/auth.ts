@@ -30,7 +30,6 @@ export const authApi = {
   checkEmailDuplicate: async (email: string): Promise<boolean> => {
     const response = await customFetch.get<GetEmailDuplicateCheckRes>(
       `${API_ENDPOINTS.USER}/exists?email=${encodeURIComponent(email)}`,
-      { isPublic: true }, //얘는 Authorization 헤더 붙이면 에러남(403) -> 이메일 중복체크는 비로그인 상태에서 체크해야함.
     );
     return Boolean(response?.result?.exists);
   },

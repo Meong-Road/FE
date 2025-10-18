@@ -6,104 +6,77 @@ import { tokenStorage } from "@/lib/utils/token";
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface CustomFetchOptions extends RequestInit {
-  headers?: HeadersInit & { Authorization?: string };
-  /** 로그인 필요 없는 공개 API면 true로 설정 */
-  isPublic?: boolean;
+  skipAuth?: boolean;
 }
 
-type CustomFetchMethodOptions = Omit<CustomFetchOptions, "method">;
-
-interface CustomFetchWithMethods {
-  <T>(endpoint: string, options?: CustomFetchOptions): Promise<T>;
-  get<T>(endpoint: string, options?: CustomFetchMethodOptions): Promise<T>;
-  post<T>(endpoint: string, options?: CustomFetchMethodOptions): Promise<T>;
-  put<T>(endpoint: string, options?: CustomFetchMethodOptions): Promise<T>;
-  patch<T>(endpoint: string, options?: CustomFetchMethodOptions): Promise<T>;
-  delete<T>(endpoint: string, options?: CustomFetchMethodOptions): Promise<T>;
+// 커스텀 에러 클래스
+export class ApiError extends Error {
+  constructor(
+    public statusCode: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
 }
 
-//요청 URL 생성
-const getRequestUrl = (endpoint: string): string => {
-  return `${BASE_URL}${PREFIX}${endpoint}`;
-};
-
-//기본 헤더 생성
-const buildHeaders = (
-  headers: CustomFetchOptions["headers"] = {},
-): CustomFetchOptions["headers"] => {
-  return {
-    "Content-Type": "application/json",
-    ...headers,
-  };
-};
-
-//localStorage에서 토큰을 가져와 Authorization 헤더에 추가
-const appendAuthorization = (
-  headers: CustomFetchOptions["headers"],
-): CustomFetchOptions["headers"] => {
-  // 서버 사이드 렌더링 시 localStorage 접근 불가
-  const token = typeof window === "undefined" ? null : tokenStorage.getAccess();
-
-  if (!token) {
-    return headers;
-  }
-
-  return {
-    ...headers,
-    Authorization: `Bearer ${token}`,
-  };
-};
-
-//응답 파싱 및 에러 처리
-const parseResponse = async <T>(response: Response): Promise<T> => {
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => ({}));
-    throw new Error(errorBody.message || `HTTP Error ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-};
-
-//공통 fetch 요청 함수
-const request = async <T>(
+// 공통 fetch 요청 함수
+async function request<T>(
   endpoint: string,
   options: CustomFetchOptions = {},
-): Promise<T> => {
-  // 1. 기본 헤더 설정
-  const headersWithDefaults = buildHeaders(options.headers);
+): Promise<T> {
+  const { skipAuth, headers, ...rest } = options;
 
-  // 2. 인증이 필요한 경우 Authorization 헤더 추가
-  const headersFinal = options.isPublic
-    ? headersWithDefaults
-    : appendAuthorization(headersWithDefaults);
+  // 1. URL 생성
+  const url = `${BASE_URL}${PREFIX}${endpoint}`;
 
-  // 3. fetch 요청 실행
-  const requestConfig: CustomFetchOptions = {
-    ...options,
-    headers: headersFinal,
+  // 2. 헤더 설정
+  const token =
+    !skipAuth && typeof window !== "undefined"
+      ? tokenStorage.getAccess()
+      : null;
+
+  const finalHeaders: HeadersInit = {
+    "Content-Type": "application/json",
+    ...headers,
+    ...(token && { Authorization: `Bearer ${token}` }),
   };
 
-  const response = await fetch(getRequestUrl(endpoint), requestConfig);
+  // 3. 요청 실행
+  const response = await fetch(url, {
+    ...rest,
+    headers: finalHeaders,
+  });
 
-  // 4. 응답 파싱
-  return parseResponse<T>(response);
-};
+  // 4. 응답 처리
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new ApiError(
+      response.status,
+      error.message || `HTTP Error ${response.status}`,
+    );
+  }
 
-//HTTP 메서드별 요청 함수 생성
-const createMethodRequest =
+  return response.json();
+}
+
+// HTTP 메서드별 헬퍼
+const createMethod =
   (method: HttpMethod) =>
-  <T>(endpoint: string, options: CustomFetchMethodOptions = {}): Promise<T> => {
-    return request<T>(endpoint, { ...options, method });
-  };
+  <T>(endpoint: string, options?: Omit<CustomFetchOptions, "method">) =>
+    request<T>(endpoint, { ...options, method });
 
 /**
- * 커스텀 fetch 클라이언트 - 자동 인증 헤더 추가 및 RESTful 메서드 지원
- * 사용법: customFetch.get<UserType>('/users/me'), customFetch.post('/users', { body: JSON.stringify(data) })
+ * 커스텀 fetch 클라이언트
+ *
+ * @example
+ * await customFetch.get<User>('/user/my');
+ * await customFetch.post('/login', { body: JSON.stringify(data), skipAuth: true });
  */
 export const customFetch = Object.assign(request, {
-  get: createMethodRequest("GET"),
-  post: createMethodRequest("POST"),
-  put: createMethodRequest("PUT"),
-  patch: createMethodRequest("PATCH"),
-  delete: createMethodRequest("DELETE"),
-}) as CustomFetchWithMethods;
+  get: createMethod("GET"),
+  post: createMethod("POST"),
+  put: createMethod("PUT"),
+  patch: createMethod("PATCH"),
+  delete: createMethod("DELETE"),
+});

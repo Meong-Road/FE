@@ -2,12 +2,12 @@ import {
   PetInfoFormSchema,
   PetInfoUpdateSchema,
 } from "@/components/Modal/_hooks/usePetInfoForm";
+import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { PetType } from "@/lib/types/pets";
 
 import { Response } from "./types/common";
 import { GetMyPetsRes } from "./types/pets";
-import { customFetch } from "./customFetch";
 
 type PetRequestData = Omit<PetType, "id">;
 

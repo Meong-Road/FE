@@ -1,3 +1,4 @@
+import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
@@ -9,7 +10,6 @@ import {
   PostSignupReq,
   PostSignupRes,
 } from "./types/auth";
-import { customFetch } from "./customFetch";
 
 export const authApi = {
   signup: async (payload: PostSignupReq): Promise<PostSignupRes> => {

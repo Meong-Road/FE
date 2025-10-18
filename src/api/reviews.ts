@@ -10,9 +10,8 @@ import {
   GetReviewsReq,
   GetReviewsRes,
 } from "@/api/types/reviews";
+import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
-
-import { customFetch } from "./customFetch";
 
 const REVIEW_API = {
   getReviews: ({

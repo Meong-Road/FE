@@ -1,5 +1,6 @@
 import qs from "qs";
 
+import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
@@ -22,7 +23,6 @@ import {
   PostLikeReq,
   PostLikeRes,
 } from "./types/gatherings";
-import { customFetch } from "./customFetch";
 
 export const gatheringApi = {
   // 정기 모임 목록 조회

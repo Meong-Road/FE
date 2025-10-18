@@ -1,4 +1,4 @@
-export { PETS_QUERY_KEYS } from "./queryKey";
+export { petsQueryKeys } from "./queryKey";
 export { useDeletePet } from "./useDeletePet";
 export { useGetMyPets } from "./useGetMyPets";
 export { useGetPet } from "./useGetPet";

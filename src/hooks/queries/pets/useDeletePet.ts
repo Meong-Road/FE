@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { petsApi } from "@/api/pets";
 import { DeletePetReq } from "@/api/types/pets";
 
-import { PETS_QUERY_KEYS } from "./queryKey";
+import { queryKeys } from "../queryKey";
 
 export const useDeletePet = () => {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export const useDeletePet = () => {
     mutationFn: (data: DeletePetReq) => petsApi.deletePetInfo(data.id),
     onSuccess: () => {
       // 펫 목록을 다시 가져오기
-      queryClient.invalidateQueries({ queryKey: PETS_QUERY_KEYS.myPets() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pets.myPets() });
     },
   });
 };

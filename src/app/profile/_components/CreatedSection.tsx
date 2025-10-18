@@ -8,7 +8,7 @@ import {
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
-import { useGetMyGatherings } from "@/hooks/queries/gatherings";
+import { useGetInfiniteMyGatherings } from "@/hooks/queries/gatherings";
 import { GatheringType } from "@/lib/types/gatherings";
 import { processGatheringInfo } from "@/lib/utils/gathering";
 
@@ -58,18 +58,17 @@ const CreatedGatheringList = ({
 );
 
 export default function CreatedSection() {
-  const { data: gatherings, isPending } = useGetMyGatherings({
-    page: 0,
+  const { data: gatherings, isPending } = useGetInfiniteMyGatherings({
     size: 10,
   });
 
   if (isPending) return <LoadingState message="로딩 중..." />;
-  if (!gatherings?.content?.length)
+  if (!gatherings?.length)
     return <EmptyState message="만든 모임이 없습니다." />;
 
   return (
     <SectionWrapper>
-      <CreatedGatheringList gatherings={gatherings.content} />
+      <CreatedGatheringList gatherings={gatherings} />
     </SectionWrapper>
   );
 }

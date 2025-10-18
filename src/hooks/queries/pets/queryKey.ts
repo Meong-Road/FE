@@ -1,5 +1,13 @@
-export const PETS_QUERY_KEYS = {
-  all: ["pets"] as const,
-  myPets: () => [...PETS_QUERY_KEYS.all, "my"] as const,
-  detail: (id: number) => [...PETS_QUERY_KEYS.all, "detail", id] as const,
+import { PetType } from "@/lib/types/pets";
+
+export const petsQueryKeys = {
+  all: () => ["pets"] as const,
+
+  myPets: () => [...petsQueryKeys.all(), "my"] as const,
+
+  petInfoByUserId: (userId: number) =>
+    [...petsQueryKeys.all(), "user", userId] as const,
+
+  detail: (id: PetType["id"]) =>
+    [...petsQueryKeys.all(), "detail", id] as const,
 };

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { petsApi } from "@/api/pets";
 
-import { PETS_QUERY_KEYS } from "./queryKey";
+import { queryKeys } from "../queryKey";
 
 export const useGetPet = (
   id: number,
@@ -11,7 +11,7 @@ export const useGetPet = (
   },
 ) => {
   return useQuery({
-    queryKey: PETS_QUERY_KEYS.detail(id),
+    queryKey: queryKeys.pets.detail(id),
     queryFn: () => petsApi.getPetInfo(id),
     enabled: !!id && id > 0 && (options?.enabled ?? true),
     select: (data) => data.result,

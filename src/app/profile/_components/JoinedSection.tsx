@@ -8,7 +8,7 @@ import {
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
-import { useGetJoinedGatherings } from "@/hooks/queries/gatherings";
+import { useGetInfiniteJoinedGatherings } from "@/hooks/queries/gatherings";
 import { GatheringType } from "@/lib/types/gatherings";
 import { processGatheringInfo } from "@/lib/utils/gathering";
 
@@ -64,18 +64,17 @@ const JoinedGatheringList = ({
 );
 
 export default function JoinedSection() {
-  const { data: gatherings, isLoading } = useGetJoinedGatherings({
-    page: 0,
+  const { data: gatherings, isLoading } = useGetInfiniteJoinedGatherings({
     size: 10,
   });
 
   if (isLoading) return <LoadingState message="로딩 중..." />;
-  if (!gatherings?.content?.length)
+  if (!gatherings?.length)
     return <EmptyState message="참석한 모임이 없습니다." />;
 
   return (
     <SectionWrapper>
-      <JoinedGatheringList gatherings={gatherings.content} />
+      <JoinedGatheringList gatherings={gatherings} />
     </SectionWrapper>
   );
 }

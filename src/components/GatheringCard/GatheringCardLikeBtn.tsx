@@ -1,7 +1,6 @@
 "use client";
 
 import { MouseEvent } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
@@ -22,7 +21,6 @@ export function GatheringCardLikeBtn({
   className,
   id,
 }: GatheringCardLikeBtnProps) {
-  const queryClient = useQueryClient();
   const { data, isPending, isError } = useGetIsLiked({
     id,
   });

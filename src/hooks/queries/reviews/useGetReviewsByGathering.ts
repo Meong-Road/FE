@@ -8,8 +8,8 @@ import { queryKeys } from "../queryKey";
 
 export function useGetReviewsByGathering({
   size = 10,
-  page = 1,
-  sort = ["createdAt"],
+  page = 0,
+  sort = ["createdAt", "desc"],
   ...params
 }: Omit<GetReviewsByGatheringReq, keyof PaginationReq> &
   Partial<PaginationReq>) {

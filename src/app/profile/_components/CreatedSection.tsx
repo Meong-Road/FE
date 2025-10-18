@@ -1,34 +1,74 @@
+"use client";
+
 import Link from "next/link";
 
-import { PATH } from "@/lib/constants/path";
+import {
+  EmptyState,
+  ListContainer,
+  LoadingState,
+  SectionWrapper,
+} from "@/components/common";
+import { useGetInfiniteMyGatherings } from "@/hooks/queries/gatherings";
+import { GatheringType } from "@/lib/types/gatherings";
+import { processGatheringInfo } from "@/lib/utils/gathering";
 
 import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
 
+const CreatedGatheringItem = ({
+  gathering,
+}: {
+  gathering: ReturnType<typeof processGatheringInfo>;
+}) => (
+  <Link href={gathering.detailPath}>
+    <GatheringCard bgColor="gradient">
+      <div className="flex items-center gap-6">
+        <GatheringCard.Image />
+        <div>
+          <div className="mb-4 flex gap-2">
+            <GatheringCard.AttendanceBadge />
+          </div>
+          <GatheringCard.Title>{gathering.name}</GatheringCard.Title>
+          <GatheringCard.People
+            people={gathering.participantCount}
+            limit={gathering.capacity}
+          />
+          <GatheringCard.Info
+            location={gathering.location}
+            date={gathering.dateInfo}
+          />
+        </div>
+      </div>
+    </GatheringCard>
+  </Link>
+);
+
+const CreatedGatheringList = ({
+  gatherings,
+}: {
+  gatherings: GatheringType[];
+}) => (
+  <ListContainer>
+    {gatherings.map((gathering) => (
+      <CreatedGatheringItem
+        key={gathering.id}
+        gathering={processGatheringInfo(gathering)}
+      />
+    ))}
+  </ListContainer>
+);
+
 export default function CreatedSection() {
-  const gathering = {
-    id: 1,
-  };
+  const { data: gatherings, isPending } = useGetInfiniteMyGatherings({
+    size: 10,
+  });
+
+  if (isPending) return <LoadingState message="로딩 중..." />;
+  if (!gatherings?.length)
+    return <EmptyState message="만든 모임이 없습니다." />;
 
   return (
-    <section>
-      <ul>
-        {/* Regular gathering 일 때 */}
-        <Link href={PATH.REGULAR_DETAIL(gathering.id)}>
-          <GatheringCard bgColor="gradient">
-            <div className="flex items-center gap-6">
-              <GatheringCard.Image />
-              <div>
-                <div className="mb-4 flex gap-2">
-                  <GatheringCard.AttendanceBadge />
-                </div>
-                <GatheringCard.Title>리트리버 모여라</GatheringCard.Title>
-                <GatheringCard.People people={20} limit={20} />
-                <GatheringCard.Info location="성북구" date="11월 17일" />
-              </div>
-            </div>
-          </GatheringCard>
-        </Link>
-      </ul>
-    </section>
+    <SectionWrapper>
+      <CreatedGatheringList gatherings={gatherings} />
+    </SectionWrapper>
   );
 }

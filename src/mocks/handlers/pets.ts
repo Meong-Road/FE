@@ -1,14 +1,59 @@
 // src/mocks/handlers/pets.ts
 import { http, HttpResponse } from "msw";
 
-import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { PetType } from "@/lib/types/pets";
 
 import { mockMyPets, mockPets, mockPetsByUserId } from "../data/pets";
 
 export const petsHandlers = [
+  // ========== 구체적인 경로들 (먼저 배치) ==========
+
+  // 내 반려동물 목록 조회
+  http.get(`${FULL_API_ENDPOINTS.PET}/my`, () => {
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "내 반려동물 목록 조회 성공",
+      result: mockMyPets,
+      errorCode: null,
+    });
+  }),
+
+  // 특정 유저의 반려동물 목록 조회
+  http.get(`${FULL_API_ENDPOINTS.PET}/user/:userId`, ({ params }) => {
+    const userId = Number(params.userId);
+    const userPets = mockPetsByUserId[userId] || [];
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "유저 반려동물 목록 조회 성공",
+      result: userPets,
+      errorCode: null,
+    });
+  }),
+
+  // 타입별 반려동물 조회
+  http.get(`${FULL_API_ENDPOINTS.PET}/type/:petType`, ({ params }) => {
+    const petType = params.petType as string;
+    const filteredPets = mockPets.filter(
+      (pet) => pet.petType.toLowerCase() === petType.toLowerCase(),
+    );
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: `${petType} 타입 반려동물 조회 성공`,
+      result: filteredPets,
+      errorCode: null,
+    });
+  }),
+
+  // ========== 일반적인 경로들 (나중에 배치) ==========
+
   // 반려동물 등록
-  http.post(`${API_ENDPOINTS.PET}`, async ({ request }) => {
+  http.post(`${FULL_API_ENDPOINTS.PET}`, async ({ request }) => {
     const body = (await request.json()) as Omit<PetType, "id">;
 
     // 새로운 반려동물 생성
@@ -29,7 +74,7 @@ export const petsHandlers = [
   }),
 
   // 반려동물 상세 조회
-  http.get(`${API_ENDPOINTS.PET}/:petId`, ({ params }) => {
+  http.get(`${FULL_API_ENDPOINTS.PET}/:petId`, ({ params }) => {
     const petId = Number(params.petId);
     const pet = mockPets.find((p) => p.id === petId);
 
@@ -55,7 +100,7 @@ export const petsHandlers = [
   }),
 
   // 반려동물 정보 수정
-  http.put(`${API_ENDPOINTS.PET}/:petId`, async ({ params, request }) => {
+  http.put(`${FULL_API_ENDPOINTS.PET}/:petId`, async ({ params, request }) => {
     const petId = Number(params.petId);
     const body = (await request.json()) as Omit<PetType, "id">;
 
@@ -104,7 +149,7 @@ export const petsHandlers = [
   }),
 
   // 반려동물 정보 삭제
-  http.delete(`${API_ENDPOINTS.PET}/:petId`, ({ params }) => {
+  http.delete(`${FULL_API_ENDPOINTS.PET}/:petId`, ({ params }) => {
     const petId = Number(params.petId);
     const petIndex = mockPets.findIndex((p) => p.id === petId);
 
@@ -128,47 +173,6 @@ export const petsHandlers = [
       code: 0,
       message: "반려동물 삭제 성공",
       result: "삭제되었습니다.",
-      errorCode: null,
-    });
-  }),
-
-  // 특정 유저의 반려동물 목록 조회
-  http.get(`${API_ENDPOINTS.PET}/user/:userId`, ({ params }) => {
-    const userId = Number(params.userId);
-    const userPets = mockPetsByUserId[userId] || [];
-
-    return HttpResponse.json({
-      success: true,
-      code: 0,
-      message: "유저 반려동물 목록 조회 성공",
-      result: userPets,
-      errorCode: null,
-    });
-  }),
-
-  // 내 반려동물 목록 조회
-  http.get(`${API_ENDPOINTS.PET}/my`, () => {
-    return HttpResponse.json({
-      success: true,
-      code: 0,
-      message: "내 반려동물 목록 조회 성공",
-      result: mockMyPets,
-      errorCode: null,
-    });
-  }),
-
-  // 타입별 반려동물 조회
-  http.get(`${API_ENDPOINTS.PET}/type/:petType`, ({ params }) => {
-    const petType = params.petType as string;
-    const filteredPets = mockPets.filter(
-      (pet) => pet.petType.toLowerCase() === petType.toLowerCase(),
-    );
-
-    return HttpResponse.json({
-      success: true,
-      code: 0,
-      message: `${petType} 타입 반려동물 조회 성공`,
-      result: filteredPets,
       errorCode: null,
     });
   }),

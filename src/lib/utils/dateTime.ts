@@ -116,14 +116,24 @@ export function formatDateShort(dateString: string): string {
 
 /**
  * 요일 배열을 한글 요일 문자열로 포맷팅합니다.
- * @param daysString - JSON 형식의 요일 배열 문자열 (예: '["MON", "WED", "FRI"]')
+ * @param daysString - JSON 형식의 요일 배열 문자열 (예: '["MON", "WED", "FRI"]') 또는 "[MON, WED, FRI]" 형태
  * @returns "월, 수, 금" 형태의 문자열
  */
 export function formatDays(daysString: string): string {
   try {
+    // 먼저 정상적인 JSON 파싱 시도
     const daysArray = JSON.parse(daysString) as string[];
     return daysArray.map((day) => DAY_MAP_KR[day]).join(", ");
   } catch {
-    return "";
+    try {
+      // "[MON, WED, FRI]" 형태의 문자열 처리
+      const cleanString = daysString.replace(/\[|\]/g, ""); // 대괄호 제거
+      const daysArray = cleanString
+        .split(",")
+        .map((day) => day.trim().replace(/"/g, "")); // 쉼표로 분리하고 따옴표 제거
+      return daysArray.map((day) => DAY_MAP_KR[day]).join(", ");
+    } catch {
+      return "";
+    }
   }
 }

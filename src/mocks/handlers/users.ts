@@ -1,10 +1,12 @@
 import { http, HttpResponse } from "msw";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
+
+import { mockCurrentUser } from "../data/users";
 
 export const usersHandlers = [
   // 이메일 중복 확인 API
-  http.get(`${BASE_URL}/meong-road/user/exists`, ({ request }) => {
+  http.get(`${FULL_API_ENDPOINTS.USER}/exists`, ({ request }) => {
     const url = new URL(request.url);
     const email = url.searchParams.get("email");
 
@@ -23,7 +25,7 @@ export const usersHandlers = [
 
   // 닉네임 중복 확인 API
   http.post(
-    `${BASE_URL}/meong-road/user/nickname/check`,
+    `${FULL_API_ENDPOINTS.USER}/nickname/check`,
     async ({ request }) => {
       const body = (await request.json()) as { nickName: string };
 
@@ -39,7 +41,8 @@ export const usersHandlers = [
     },
   ),
 
-  http.get(`${BASE_URL}/meong-road/user/my`, ({ request }) => {
+  // GET /meong-road/user/my - 내 회원 정보 확인
+  http.get(`${FULL_API_ENDPOINTS.USER}/my`, ({ request }) => {
     const authHeader = request.headers.get("Authorization");
 
     if (!authHeader) {
@@ -47,7 +50,7 @@ export const usersHandlers = [
         {
           success: false,
           code: 401,
-          message: "땡",
+          message: "인증이 필요합니다.",
         },
         { status: 401 },
       );
@@ -56,19 +59,43 @@ export const usersHandlers = [
     return HttpResponse.json({
       success: true,
       code: 0,
-      message: "내 정보 API 테스트",
-      result: {
-        accessToken: "mock-access-token",
-        refreshToken: "mock-refresh-token",
-        user: {
-          id: 1,
-          email: "test@test.com",
-          name: "멍로드",
-          nickName: "멍로드",
-          image: "",
-          isPetInfoSubmitted: true,
+      message: "내 정보 조회 성공",
+      result: mockCurrentUser,
+    });
+  }),
+
+  // PUT /meong-road/user/my - 내 회원 정보 수정
+  http.put(`${FULL_API_ENDPOINTS.USER}/my`, async ({ request }) => {
+    const authHeader = request.headers.get("Authorization");
+
+    if (!authHeader) {
+      return HttpResponse.json(
+        {
+          success: false,
+          code: 401,
+          message: "인증이 필요합니다.",
         },
-      },
+        { status: 401 },
+      );
+    }
+
+    const body = (await request.json()) as {
+      name?: string;
+      nickName?: string;
+    };
+
+    // Mock 업데이트된 사용자 정보 반환
+    const updatedUser = {
+      ...mockCurrentUser,
+      ...body,
+      updatedAt: new Date().toISOString(),
+    };
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "내 정보 수정 성공",
+      result: updatedUser,
     });
   }),
 ];

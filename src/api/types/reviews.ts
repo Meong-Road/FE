@@ -7,12 +7,12 @@ import {
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
 export interface GetReviewsReq extends PaginationReq {
-  location: ReviewFilters["location"];
+  location: LocationType;
 }
 export type GetReviewsRes = Response<PaginatedRes<ReviewType>>;
 
 export interface GetReviewDashboardReq {
-  location: string;
+  location: LocationType;
 }
 export type GetReviewDashboardRes = Response<ReviewDashboardType>;
 
@@ -25,3 +25,7 @@ export interface ReviewFilters {
   location: LocationType;
   gatheringId: ReviewType["gatheringId"];
 }
+
+// GET /meong-road/reviews/my - 내 리뷰 목록 조회
+export type GetMyReviewsReq = PaginationReq;
+export type GetMyReviewsRes = Response<PaginatedRes<ReviewType>>;

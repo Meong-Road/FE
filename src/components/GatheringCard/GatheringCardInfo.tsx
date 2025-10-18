@@ -1,5 +1,5 @@
-import { EDayOfWeek } from "@/lib/types/date";
 import { cn } from "@/lib/utils";
+import { formatDays } from "@/lib/utils/dateTime";
 
 import { GatheringCardInfoProps } from "./types";
 
@@ -48,11 +48,7 @@ export function GatheringCardInfo({
           <Bar />
           <TextWrapper>
             <Title>요일</Title>
-            <Content>
-              {(JSON.parse(days) as (keyof typeof EDayOfWeek)[])
-                .map((d) => EDayOfWeek[d])
-                .join(", ")}
-            </Content>
+            <Content>{formatDays(days)}</Content>
           </TextWrapper>
         </>
       )}

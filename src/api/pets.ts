@@ -2,10 +2,12 @@ import {
   PetInfoFormSchema,
   PetInfoUpdateSchema,
 } from "@/components/Modal/_hooks/usePetInfoForm";
+import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
-import { PetResponse, PetType } from "@/lib/types/pets";
+import { PetType } from "@/lib/types/pets";
 
-import { customFetch } from "./customFetch";
+import { Response } from "./types/common";
+import { GetMyPetsRes } from "./types/pets";
 
 type PetRequestData = Omit<PetType, "id">;
 
@@ -28,65 +30,53 @@ function petFormData(
 export const petsApi = {
   // 반려동물 상세 조회
   getPetInfo: async (petId: number) => {
-    const response = await customFetch.get<PetResponse<PetType>>(
+    return await customFetch.get<Response<PetType>>(
       `${API_ENDPOINTS.PET}/${petId}`,
     );
-    return response.result;
   },
 
   // 반려동물 정보 수정
   putPetInfo: async (petId: number, data: PetInfoUpdateSchema) => {
     const formData = petFormData(data);
-    const response = await customFetch.put<PetResponse<PetType>>(
+    return await customFetch.put<Response<PetType>>(
       `${API_ENDPOINTS.PET}/${petId}`,
       {
         body: JSON.stringify(formData),
       },
     );
-    return response.result;
   },
 
   // 반려동물 정보 삭제
   deletePetInfo: async (petId: number) => {
-    const response = await customFetch.delete<PetResponse<string>>(
+    return await customFetch.delete<Response<string>>(
       `${API_ENDPOINTS.PET}/${petId}`,
     );
-    return response.result;
   },
 
   // 반려동물 등록
-  postPetInfo: async (data: PetInfoFormSchema) => {
+  postPetInfo: (data: PetInfoFormSchema) => {
     const formData = petFormData(data);
-    const response = await customFetch.post<PetResponse<PetType>>(
-      `${API_ENDPOINTS.PET}`,
-      {
-        body: JSON.stringify(formData),
-      },
-    );
-    return response.result;
+    return customFetch.post<Response<PetType>>(`${API_ENDPOINTS.PET}`, {
+      body: JSON.stringify(formData),
+    });
   },
 
   // 특정 유저의 반려동물 목록 조회
-  getPetInfoByUserId: async (userId: number) => {
-    const response = await customFetch.get<PetResponse<PetType[]>>(
+  getPetInfoByUserId: (userId: number) => {
+    return customFetch.get<Response<PetType[]>>(
       `${API_ENDPOINTS.PET}/user/${userId}`,
     );
-    return response.result;
   },
 
   // 내 반려동물 목록 조회
-  getMyPetInfo: async () => {
-    const response = await customFetch.get<PetResponse<PetType[]>>(
-      `${API_ENDPOINTS.PET}/my`,
-    );
-    return response.result;
+  getMyPetInfo: () => {
+    return customFetch.get<GetMyPetsRes>(`${API_ENDPOINTS.PET}/my`);
   },
 
   // 타입 별 반려동물 조회(추후 확장성 고려, 현재는 "DOG"밖에 없음)
-  getPetInfoByPetType: async (petType: string = "DOG") => {
-    const response = await customFetch.get<PetResponse<PetType[]>>(
+  getPetInfoByPetType: (petType: string = "DOG") => {
+    return customFetch.get<Response<PetType[]>>(
       `${API_ENDPOINTS.PET}/type/${petType}`,
     );
-    return response.result;
   },
 };

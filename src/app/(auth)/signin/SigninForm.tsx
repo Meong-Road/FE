@@ -1,22 +1,28 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
 import { SigninFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
 import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
+import { PATH } from "@/lib/constants/path";
 
 export default function SigninForm() {
   const form = useSigninForm();
   const { mutate: signinMutate, isPending } = useSigninMutation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirectUrl = searchParams.get("redirect");
 
   const handleSubmit = (data: SigninFormSchema) => {
     signinMutate(data, {
       onSuccess: () => {
         toast.success("로그인에 성공했습니다.");
-        router.push("/regular");
+
+        // 리다이렉트 URL이 있으면 해당 페이지로, 없으면 기본 페이지로
+        router.push(redirectUrl || PATH.REGULAR);
       },
       onError: (error: Error) => {
         toast.error(`로그인에 실패했습니다. \n${error.message}`);

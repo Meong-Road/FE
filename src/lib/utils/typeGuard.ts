@@ -18,6 +18,24 @@ export const isRegularGathering = (
   return gathering.type === "REGULAR";
 };
 
-export const isLocationType = (location: string): location is LocationType => {
-  return SEOUL_DISTRICTS.includes(location as LocationType);
+export const isLocationType = (
+  location: string | null,
+): location is LocationType => {
+  if (!location) return true;
+  return SEOUL_DISTRICTS.includes(location as (typeof SEOUL_DISTRICTS)[number]);
+};
+
+/**
+ * URL 파라미터에서 location 값을 안전하게 LocationType으로 변환합니다
+ * @param locationParam URL에서 가져온 location 파라미터 (string | null)
+ * @returns LocationType
+ */
+export const parseLocationParam = (
+  locationParam: string | null,
+): LocationType => {
+  if (!locationParam || locationParam === "서울 전체") {
+    return null;
+  }
+
+  return isLocationType(locationParam) ? locationParam : null;
 };

@@ -1,4 +1,4 @@
-export { useAuthUser } from "./useAuthUser";
+export { useAuth } from "./useAuth";
 export { useDuplicateCheck } from "./useDuplicateCheck";
 export { useSigninForm } from "./useSigninForm";
 export { useSigninMutation } from "./useSigninMutation";

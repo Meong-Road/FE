@@ -3,27 +3,29 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { gatheringApi } from "@/api/gatherings";
 import { EGatheringType } from "@/lib/types/gatherings";
 
+import { queryKeys } from "../queryKey";
+
 export function useGetInfiniteBookmarkedGatherings(
-  currentTab: string,
-  size: number = 10,
-  sort: string = "createdAt",
+  currentTab: EGatheringType,
+  size = 10,
+  sort = ["createdAt"],
 ) {
   return useInfiniteQuery({
-    queryKey: ["bookmarkedGatherings", currentTab, size, sort],
+    queryKey: queryKeys.gatherings.bookmarkedGatherings(currentTab, {
+      size,
+      sort,
+    }),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getMyBookmarkedGatherings({
-        type:
-          currentTab === "regular"
-            ? EGatheringType.REGULAR
-            : EGatheringType.QUICK,
-        page: Number(pageParam),
+        type: currentTab,
+        page: pageParam,
         size,
         sort,
       });
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages) =>
-      !lastPage.result?.last ? allPages.length : undefined,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.result?.last ? undefined : pageParam + 1,
     select: (data) =>
       data.pages.flatMap((page) => page.result?.content || []) || [],
   });

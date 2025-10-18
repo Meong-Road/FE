@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { gatheringApi } from "@/api/gatherings";
-import { GetGatheringDetailReq } from "@/api/types/gatherings";
+import { GetGatheringReq } from "@/api/types/gatherings";
 
 import { queryKeys } from "../queryKey";
 
-export function useGetGatheringDetail({ id }: GetGatheringDetailReq) {
+export function useGetGatheringDetail({ id }: GetGatheringReq) {
   return useQuery({
     queryKey: queryKeys.gatherings.detail(id),
-    queryFn: () => gatheringApi.getGatheringDetail({ id }),
+    queryFn: () => gatheringApi.getGathering({ id }),
   });
 }

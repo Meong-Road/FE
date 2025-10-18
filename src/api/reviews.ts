@@ -23,22 +23,21 @@ const REVIEW_API = {
   }: GetReviewsReq) => {
     return customFetch.get<GetReviewsRes>(
       `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort }, { arrayFormat: "comma" })}`,
-      { isPublic: true },
     );
   },
   getReviewDashboard: ({ location = null }: GetReviewDashboardReq) => {
     return customFetch.get<GetReviewDashboardRes>(
       `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location }, { arrayFormat: "comma" })}`,
-      { isPublic: true },
     );
   },
   getReviewsByGathering: ({
     gatheringId,
-    ...params
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
   }: GetReviewsByGatheringReq) => {
     return customFetch.get<GetReviewsByGatheringRes>(
-      `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
-      { isPublic: true },
+      `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
   getMyReviews: ({
@@ -48,7 +47,6 @@ const REVIEW_API = {
   }: GetMyReviewsReq) => {
     return customFetch.get<GetMyReviewsRes>(
       `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
-      { isPublic: true },
     );
   },
 };

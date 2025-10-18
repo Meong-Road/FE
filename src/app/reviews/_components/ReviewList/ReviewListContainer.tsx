@@ -5,17 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { useGetReviews } from "@/hooks/queries/reviews";
-import { isLocationType } from "@/lib/utils/typeGuard";
+import { parseLocationParam } from "@/lib/utils/typeGuard";
 
 import ReviewList from "./ReviewList";
 
 export default function ReviewListContainer() {
   const searchParams = useSearchParams();
-  const location = (() => {
-    const locationParam = searchParams.get("location");
-    if (!locationParam || !isLocationType(locationParam)) return "서울 전체";
-    return locationParam;
-  })();
+  const location = parseLocationParam(searchParams.get("location"));
   const page = Number(searchParams.get("page")) ?? 0;
 
   const {
@@ -23,7 +19,7 @@ export default function ReviewListContainer() {
     isPending,
     isError,
   } = useGetReviews({
-    location: isLocationType(location) ? location : "서울 전체",
+    location,
     page,
     size: 10,
     sort: ["createdAt", "desc"],

@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { useGetReviewDashboard } from "@/hooks/queries/reviews";
-import { isLocationType } from "@/lib/utils/typeGuard";
+import { parseLocationParam } from "@/lib/utils/typeGuard";
 
 import { ReviewDashboardSkeleton } from "../Skeleton/ReviewDashboardSkeleton";
 
@@ -11,8 +11,7 @@ import ReviewDashboard from "./ReviewDashboard";
 
 export default function ReviewDashboardContainer() {
   const searchParams = useSearchParams();
-  const locationParam = searchParams.get("location") ?? "서울 전체";
-  const location = isLocationType(locationParam) ? locationParam : "서울 전체";
+  const location = parseLocationParam(searchParams.get("location"));
 
   const {
     data: DashboardInfo,

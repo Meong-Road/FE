@@ -7,12 +7,12 @@ import {
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
 export interface GetReviewsReq extends PaginationReq {
-  location?: LocationType;
+  location: LocationType;
 }
 export type GetReviewsRes = Response<PaginatedRes<ReviewType>>;
 
 export interface GetReviewDashboardReq {
-  location: LocationType | null;
+  location: LocationType;
 }
 export type GetReviewDashboardRes = Response<ReviewDashboardType>;
 

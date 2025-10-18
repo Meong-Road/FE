@@ -4,7 +4,7 @@ import { RegularGatheringType } from "./gatherings";
 import { UserType } from "./user";
 
 export type ReviewScore = 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
-export type LocationType = (typeof SEOUL_DISTRICTS)[number];
+export type LocationType = (typeof SEOUL_DISTRICTS)[number] | null;
 
 export interface ReviewType {
   id: number;

@@ -19,7 +19,7 @@ export function useGetInfiniteQuickGatherings({
         sort,
       });
     },
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.result?.last ? undefined : pageParam + 1,
     select: (data) => data.pages.flatMap((page) => page.result?.content || []),

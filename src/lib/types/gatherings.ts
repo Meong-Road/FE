@@ -36,5 +36,5 @@ export interface BookmarkType {
   type: EGatheringType;
   page: number;
   size: number;
-  sort: string;
+  sort: string[];
 }

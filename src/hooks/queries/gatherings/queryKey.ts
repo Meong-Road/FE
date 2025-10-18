@@ -1,5 +1,5 @@
 import { PaginationReq } from "@/api/types/common";
-import { GatheringType } from "@/lib/types/gatherings";
+import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 
 export const gatheringsQueryKeys = {
   all: () => ["gatherings"] as const,
@@ -11,6 +11,10 @@ export const gatheringsQueryKeys = {
   quickList: (pagination: Partial<PaginationReq>) =>
     [...gatheringsQueryKeys.list(pagination), "quick"] as const,
   details: () => [...gatheringsQueryKeys.all(), "detail"] as const,
+  bookmarkedGatherings: (
+    type: EGatheringType,
+    pagination: Partial<PaginationReq>,
+  ) => [...gatheringsQueryKeys.all(), "bookmarked", type, pagination] as const,
   detail: (id: GatheringType["id"]) =>
     [...gatheringsQueryKeys.details(), id] as const,
   likes: () => [...gatheringsQueryKeys.all(), "like"] as const,

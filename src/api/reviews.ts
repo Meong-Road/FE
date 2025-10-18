@@ -15,44 +15,40 @@ import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { customFetch } from "./customFetch";
 
 const REVIEW_API = {
-  getReviews: async ({
-    location = "서울 전체",
+  getReviews: ({
+    location = null,
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
-  }: Partial<GetReviewsReq>) => {
-    return await customFetch.get<GetReviewsRes>(
-      `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort })}`,
-      {
-        isPublic: true,
-      },
+  }: GetReviewsReq) => {
+    return customFetch.get<GetReviewsRes>(
+      `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort }, { arrayFormat: "comma" })}`,
+      { isPublic: true },
     );
   },
-  getReviewDashboard: async ({
-    location = "서울 전체",
-  }: GetReviewDashboardReq) => {
-    return await customFetch.get<GetReviewDashboardRes>(
-      `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location })}`,
+  getReviewDashboard: ({ location = null }: GetReviewDashboardReq) => {
+    return customFetch.get<GetReviewDashboardRes>(
+      `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location }, { arrayFormat: "comma" })}`,
+      { isPublic: true },
     );
   },
-  getReviewsByGathering: async ({
+  getReviewsByGathering: ({
     gatheringId,
     ...params
   }: GetReviewsByGatheringReq) => {
-    return await customFetch.get<GetReviewsByGatheringRes>(
+    return customFetch.get<GetReviewsByGatheringRes>(
       `${API_ENDPOINTS.REVIEW}/gatherings/${gatheringId}?${qs.stringify(params)}`,
-      {
-        isPublic: true,
-      },
+      { isPublic: true },
     );
   },
-  getMyReviews: async ({
+  getMyReviews: ({
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
-  }: Partial<GetMyReviewsReq>) => {
-    return await customFetch.get<GetMyReviewsRes>(
-      `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort })}`,
+  }: GetMyReviewsReq) => {
+    return customFetch.get<GetMyReviewsRes>(
+      `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+      { isPublic: true },
     );
   },
 };

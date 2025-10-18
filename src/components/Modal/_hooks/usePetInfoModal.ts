@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 import { useGetPet, usePostPet, usePutPet } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
@@ -89,8 +90,10 @@ export function usePetInfoModal({ type, onClose }: PetInfoModalProps) {
           id: petId,
           data: data as PetInfoUpdateSchema,
         });
+        toast.success("반려동물 정보가 수정되었습니다.");
       } else {
         await createPetMutation.mutateAsync(data as PetInfoFormSchema);
+        toast.success("반려동물 정보가 등록되었습니다.");
       }
       onClose();
     } catch (error) {

@@ -25,7 +25,7 @@ export default function SigninForm() {
         router.push(redirectUrl || PATH.REGULAR);
       },
       onError: (error: Error) => {
-        toast.error(`로그인에 실패했습니다. \n${error.message}`);
+        toast.error(`로그인 실패: ${error.message}`);
       },
     });
   };

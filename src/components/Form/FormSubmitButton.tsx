@@ -15,7 +15,7 @@ type Props = React.ComponentProps<typeof BaseButton> & {
 export function SubmitButton({
   className,
   isPending,
-  isValid,
+  disabled,
   label,
   ...props
 }: Props) {
@@ -32,7 +32,7 @@ export function SubmitButton({
         className,
       )}
       type="submit"
-      disabled={isPending || !isValid}
+      disabled={disabled}
       {...props}
     >
       {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : label}

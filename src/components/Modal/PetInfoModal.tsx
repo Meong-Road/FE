@@ -1,3 +1,5 @@
+import { hasPetFormChanges } from "@/lib/utils/pet";
+
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";
 
@@ -23,18 +25,13 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
 ];
 
 export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
-  const { isLoading, handleSubmit, initialData, hasChanges } = usePetInfoModal({
+  const { isLoading, handleSubmit, initialData } = usePetInfoModal({
     type,
     onClose,
   });
   const form = usePetInfoForm(
     type === "edit-pet" && initialData ? initialData : undefined,
   );
-
-  const isSubmitDisabled =
-    isLoading ||
-    !form.formState.isValid ||
-    (type === "edit-pet" && hasChanges && !hasChanges(form.getValues()));
 
   return (
     <>
@@ -161,7 +158,13 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
           <Form.SubmitButton
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
             isValid={form.formState.isValid}
-            disabled={isSubmitDisabled}
+            disabled={
+              isLoading ||
+              !form.formState.isValid ||
+              (type === "edit-pet" &&
+                !!initialData &&
+                !hasPetFormChanges(form.getValues(), initialData))
+            }
           />
         </Form>
         {type === "first-login" && (

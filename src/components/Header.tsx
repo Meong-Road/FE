@@ -145,9 +145,14 @@ export default function Header({ className }: { className?: string }) {
                 </DropdownMenuItem>
               </>
             ) : (
-              <DropdownMenuItem onSelect={() => router.push(PATH.SIGNIN)}>
-                로그인
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem onSelect={() => router.push(PATH.SIGNIN)}>
+                  로그인
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => router.push(PATH.SIGNUP)}>
+                  회원가입
+                </DropdownMenuItem>
+              </>
             )}
           </DropdownMenuContent>
         </DropdownMenu>

@@ -21,7 +21,7 @@ export default function SignupForm() {
         router.push(PATH.REGULAR);
       },
       onError: (error: Error) => {
-        toast.error(`회원가입에 실패했습니다. \n${error.message}`);
+        toast.error(`회원가입 실패: ${error.message}`);
       },
     });
 
@@ -119,7 +119,7 @@ export default function SignupForm() {
         {/* 회원가입 버튼 */}
         <Form.SubmitButton
           isPending={isPending}
-          isValid={form.formState.isValid}
+          disabled={isPending || !form.formState.isValid}
           label="회원가입"
         />
 

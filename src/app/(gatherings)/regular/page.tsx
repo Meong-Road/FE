@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
 
-import RegularGatheringCard from "../../_components/RegularGatheringCard";
+import RegularGatheringCard from "../../../components/widget/RegularGatheringCard/RegularGatheringCard";
 import LocationSelect from "../_components/LocationSelect";
 import SortBySelector from "../_components/SortBySelector";
 

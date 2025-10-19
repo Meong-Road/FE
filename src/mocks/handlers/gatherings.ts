@@ -1,5 +1,5 @@
 // src/mocks/handlers/gatherings.ts
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 
 import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { EGatheringType } from "@/lib/types/gatherings";
@@ -28,11 +28,13 @@ export const gatheringsHandlers = [
     );
   }),
 
-  http.get(`${FULL_API_ENDPOINTS.GATHERING}/quick`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/quick`, async (req) => {
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
     // TODO const sort = url.searchParams.get("sort");
+
+    await delay(1000);
 
     return HttpResponse.json(
       createPaginatedRes(QUICK_GATHERINGS, {

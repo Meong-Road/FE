@@ -92,7 +92,7 @@ importers:
       "@tailwindcss/postcss":
         specifier: ^4.1.13
         version: 4.1.14
-      "@testing-library/dom":
+      '@testing-library/dom':
         specifier: ^10.4.1
         version: 10.4.1
       "@testing-library/jest-dom":
@@ -2743,17 +2743,11 @@ packages:
         integrity: sha512-BdMjIxy7HUNThK87C7BC8I1rE8BVUsfNQSI5siQ4JK3iIa3w0XyVvVL9SXLWO//CtYTcp1v7zci0fYwJOjB+Zg==,
       }
 
-  "@tanstack/query-core@5.90.5":
-    resolution:
-      {
-        integrity: sha512-wLamYp7FaDq6ZnNehypKI5fNvxHPfTYylE0m/ZpuuzJfJqhR5Pxg9gvGBHZx4n7J+V5Rg5mZxHHTlv25Zt5u+w==,
-      }
+  '@tanstack/query-core@5.90.3':
+    resolution: {integrity: sha512-HtPOnCwmx4dd35PfXU8jjkhwYrsHfuqgC8RCJIwWglmhIUIlzPP0ZcEkDAc+UtAWCiLm7T8rxeEfHZlz3hYMCA==}
 
-  "@tanstack/react-query@5.90.5":
-    resolution:
-      {
-        integrity: sha512-pN+8UWpxZkEJ/Rnnj2v2Sxpx1WFlaa9L6a4UO89p6tTQbeo+m0MS8oYDjbggrR8QcTyjKoYWKS3xJQGr3ExT8Q==,
-      }
+  '@tanstack/react-query@5.90.3':
+    resolution: {integrity: sha512-i/LRL6DtuhG6bjGzavIMIVuKKPWx2AnEBIsBfuMm3YoHne0a20nWmsatOCBcVSaT0/8/5YFjNkebHAPLVUSi0Q==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -9503,7 +9497,7 @@ snapshots:
 
   "@tanstack/query-core@5.90.5": {}
 
-  "@tanstack/react-query@5.90.5(react@19.1.0)":
+  '@tanstack/react-query@5.90.3(react@19.1.0)':
     dependencies:
       "@tanstack/query-core": 5.90.5
       react: 19.1.0

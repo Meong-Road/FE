@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { useGetReviewDashboard } from "@/hooks/queries/reviews";
-import { parseLocationParam } from "@/lib/utils/typeGuard";
+import { parseLocationParam } from "@/lib/utils/param";
 
 import { ReviewDashboardSkeleton } from "../Skeleton/ReviewDashboardSkeleton";
 

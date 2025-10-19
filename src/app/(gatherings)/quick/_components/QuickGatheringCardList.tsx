@@ -4,7 +4,7 @@ import InfiniteScroll from "@/components/InfiniteScroll";
 import {
   QuickGatheringCard,
   QuickGatheringCardSkeleton,
-} from "@/components/widget/QuickGatheringCard";
+} from "@/components/widget/gatherings/QuickGatheringCard";
 import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gatherings/useGetInfiniteQuickGatherings";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 

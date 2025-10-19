@@ -4,14 +4,13 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
+import FilterPopover from "@/components/widget/filters/FilterPopover";
+import { LocationSelect } from "@/components/widget/filters/LocationSelect";
+import SortBySelector from "@/components/widget/filters/SortBySelector";
+import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
 import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
-
-import RegularGatheringCard from "../../../components/widget/RegularGatheringCard/RegularGatheringCard";
-import LocationSelect from "../_components/LocationSelect";
-import SortBySelector from "../_components/SortBySelector";
-
-import FilterPopover from "./_components/FilterPopover";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 export default function RegularGatheringListPage() {
   const { ref, inView } = useInView();
@@ -39,7 +38,7 @@ export default function RegularGatheringListPage() {
           <div className="flex items-center gap-4">
             <LocationSelect />
             <SortBySelector />
-            <FilterPopover />
+            <FilterPopover type={EGatheringType.REGULAR} />
           </div>
 
           {/* 모임 만들기 버튼 */}

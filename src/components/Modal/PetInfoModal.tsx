@@ -96,7 +96,7 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
                 <Form.Label required>성별</Form.Label>
                 <Form.Control>
                   <Form.Radio
-                    label="gender"
+                    // label="gender"
                     options={GENDER_OPTIONS}
                     defaultChecked="male"
                     {...field}
@@ -113,7 +113,7 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
                 <Form.Label>중성화</Form.Label>
                 <Form.Control>
                   <Form.Radio
-                    label="gender"
+                    // label="gender"
                     options={NEUTER_OPTIONS}
                     // defaultChecked="did"
                     {...field}

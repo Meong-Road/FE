@@ -1,11 +1,11 @@
 import Link from "next/link";
 
+import FilterPopover from "@/components/widget/filters/FilterPopover";
+import { LocationSelect } from "@/components/widget/filters/LocationSelect";
+import SortBySelector from "@/components/widget/filters/SortBySelector";
 import { PATH } from "@/lib/constants/path";
+import { EGatheringType } from "@/lib/types/gatherings";
 
-import LocationSelect from "../_components/LocationSelect";
-import SortBySelector from "../_components/SortBySelector";
-
-import FilterPopover from "./_components/FilterPopover";
 import QuickGatheringCardList from "./_components/QuickGatheringCardList";
 
 export default function QuickGatheringListPage() {
@@ -17,7 +17,7 @@ export default function QuickGatheringListPage() {
           <div className="flex items-center gap-4">
             <LocationSelect />
             <SortBySelector />
-            <FilterPopover />
+            <FilterPopover type={EGatheringType.QUICK} />
           </div>
 
           {/* 모임 만들기 버튼 */}

@@ -36,10 +36,10 @@ export function GatheringCardLikeBtn({
   const { mutate: like } = useLike({ id });
   const { mutate: cancelLike } = useCancelLike({ id });
 
-  // 🔹 1️⃣ 로딩 중
+  // 인증 확인중에는 빈 버튼
   if (isLoading) return <LikeBtn width={48} height={48} />;
 
-  // 🔹 2️⃣ 비회원 (로그인 필요)
+  // 비회원이면 로그인 페이지로 리다이렉트
   if (!user)
     return (
       <button
@@ -54,13 +54,13 @@ export function GatheringCardLikeBtn({
       </button>
     );
 
-  // 🔹 3️⃣ 쿼리 로딩 중
+  // 쿼리 로딩 중
   if (isPending)
     return (
       <div className={cn("h-12 w-12 rounded-full bg-slate-50", className)} />
     );
 
-  // 🔹 4️⃣ 쿼리 에러
+  // 쿼리 에러
   if (isError)
     return (
       <div className={cn("h-12 w-12 rounded-full bg-slate-50", className)}>
@@ -68,7 +68,7 @@ export function GatheringCardLikeBtn({
       </div>
     );
 
-  // 🔹 5️⃣ 정상 상태
+  // 정상 상태
   const isLiked = data?.isLiked;
 
   const handleLikeButtonClick = (e: MouseEvent<HTMLButtonElement>) => {

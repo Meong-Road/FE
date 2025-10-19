@@ -1,9 +1,15 @@
+import { toast } from "sonner";
+
+import { usePostPet, usePutPet } from "@/hooks/queries/pets";
 import { hasPetFormChanges } from "@/lib/utils/pet";
 
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";
 
-import { usePetInfoForm } from "./_hooks/usePetInfoForm";
+import {
+  PetInfoFormSchema,
+  PetInfoUpdateSchema,
+} from "./_hooks/usePetInfoForm";
 import { usePetInfoModal } from "./_hooks/usePetInfoModal";
 import { PetInfoModalProps } from "./types/petInfoModal";
 import Modal from ".";
@@ -24,14 +30,49 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
   { id: "didnot", label: "중성화 안함", value: "didnot" },
 ];
 
-export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
-  const { isLoading, handleSubmit, initialData } = usePetInfoModal({
-    type,
-    onClose,
-  });
-  const form = usePetInfoForm(
-    type === "edit-pet" && initialData ? initialData : undefined,
-  );
+export default function PetInfoModal({
+  type,
+  onClose,
+  petId,
+}: PetInfoModalProps) {
+  const {
+    form,
+    isLoading: isPetLoading,
+    hasChanges,
+  } = usePetInfoModal({ type, petId });
+
+  // mutation
+  const createPetMutation = usePostPet();
+  const updatePetMutation = usePutPet();
+
+  // handleSubmit을 컴포넌트에서 처리
+  const handleSubmit = (data: PetInfoFormSchema | PetInfoUpdateSchema) => {
+    // API 호출
+    if (type === "edit-pet" && petId) {
+      updatePetMutation.mutate(
+        { id: petId, data: data as PetInfoUpdateSchema },
+        {
+          onSuccess: () => {
+            toast.success("반려동물 정보가 수정되었습니다.");
+            onClose();
+          },
+          onError: (error: Error) => {
+            toast.error(`반려동물 정보 수정 실패: ${error.message}`);
+          },
+        },
+      );
+    } else {
+      createPetMutation.mutate(data as PetInfoFormSchema, {
+        onSuccess: () => {
+          toast.success("반려동물 정보가 등록되었습니다.");
+          onClose();
+        },
+        onError: (error: Error) => {
+          toast.error(`반려동물 정보 등록 실패: ${error.message}`);
+        },
+      });
+    }
+  };
 
   return (
     <>
@@ -156,15 +197,17 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
             )}
           />
           <Form.SubmitButton
-            label={type === "edit-pet" ? "수정하기" : "등록하기"}
-            isValid={form.formState.isValid}
-            disabled={
-              isLoading ||
-              !form.formState.isValid ||
-              (type === "edit-pet" &&
-                !!initialData &&
-                !hasPetFormChanges(form.getValues(), initialData))
+            isPending={
+              createPetMutation.isPending || updatePetMutation.isPending
             }
+            disabled={
+              isPetLoading || // 펫 조회 로딩
+              createPetMutation.isPending || // 펫 생성 로딩
+              updatePetMutation.isPending || // 펫 수정 로딩
+              !form.formState.isValid || // 폼 유효성 검사 실패
+              (type === "edit-pet" && !hasChanges) // 편집 모드에서 변경사항 없음
+            }
+            label={type === "edit-pet" ? "수정하기" : "등록하기"}
           />
         </Form>
         {type === "first-login" && (

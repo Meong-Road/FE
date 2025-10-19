@@ -8,14 +8,14 @@ import { cn } from "@/lib/utils";
 
 type Props = React.ComponentProps<typeof BaseButton> & {
   isPending?: boolean;
-  isValid?: boolean;
+  disabled?: boolean;
   label: string;
 };
 
 export function SubmitButton({
   className,
   isPending,
-  disabled,
+  disabled = false,
   label,
   ...props
 }: Props) {

@@ -77,7 +77,7 @@ export default function SigninForm() {
         {/* 로그인 버튼 */}
         <Form.SubmitButton
           isPending={isPending}
-          isValid={form.formState.isValid}
+          disabled={!form.formState.isValid || isPending}
           label="로그인"
         />
 

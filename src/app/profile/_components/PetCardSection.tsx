@@ -1,5 +1,6 @@
 "use client";
 
+import BtnEdit from "@/assets/images/btn-edit.svg";
 import {
   EmptyState,
   ErrorState,
@@ -16,17 +17,39 @@ import { useModalStore } from "@/store/modalStore";
 import { PetAdd } from "./PetAdd";
 import { PetCard } from "./PetCard";
 
-const PetItem = ({ pet }: { pet: ReturnType<typeof processPetInfo> }) => (
-  <PetCard>
-    <PetCard.Image image={pet.image} />
-    <PetCard.Info
-      name={pet.name}
-      age={pet.age}
-      gender={pet.genderText}
-      type={pet.breed}
-    />
-  </PetCard>
-);
+interface EditBtnProps {
+  onClick?: () => void;
+  width?: number;
+}
+
+const EditBtn = ({ onClick, width = 32 }: EditBtnProps) => {
+  return (
+    <div
+      onClick={onClick}
+      className="absolute top-2 right-2 cursor-pointer transition-opacity"
+    >
+      <BtnEdit width={width} height={width} />
+    </div>
+  );
+};
+
+const PetItem = ({ pet }: { pet: ReturnType<typeof processPetInfo> }) => {
+  const { openModal } = useModalStore();
+  return (
+    <div className="relative">
+      <PetCard>
+        <PetCard.Image image={pet.image} />
+        <PetCard.Info
+          name={pet.name}
+          age={pet.age}
+          gender={pet.genderText}
+          type={pet.breed}
+        />
+      </PetCard>
+      <EditBtn onClick={() => openModal("edit-pet", pet.id)} />
+    </div>
+  );
+};
 
 const PetList = ({ pets }: { pets: PetType[] }) => (
   <ListContainer className="flex flex-wrap gap-6">
@@ -51,7 +74,7 @@ const PetEmptyState = () => (
 );
 
 export default function PetCardSection() {
-  const { isOpen, modalType, closeModal } = useModalStore();
+  const { isOpen, modalType, petId, closeModal } = useModalStore();
   const { data: pets, isLoading, error } = useGetMyPets();
 
   if (isLoading) return <LoadingState message="로딩 중..." />;
@@ -63,7 +86,7 @@ export default function PetCardSection() {
 
       {isOpen && modalType && (
         <Modal hasCloseButton>
-          <PetInfoModal type={modalType} onClose={closeModal} />
+          <PetInfoModal type={modalType} onClose={closeModal} petId={petId} />
         </Modal>
       )}
     </>

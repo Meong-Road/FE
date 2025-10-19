@@ -165,17 +165,17 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground antialiased;
-    @apply overflow-y-scroll;
-  }
-  body {
-    @apply [&::-webkit-scrollbar]:w-2;
+    @apply [&::-webkit-scrollbar]:w-1.5;
+    @apply [&::-webkit-scrollbar-track]:rounded-full;
+    @apply [&::-webkit-scrollbar-track]:bg-transparent;
     @apply [&::-webkit-scrollbar-thumb]:rounded-full;
     @apply [&::-webkit-scrollbar-thumb]:bg-gray-300;
     @apply [&::-webkit-scrollbar-thumb:hover]:bg-gray-400;
     @apply [&::-webkit-scrollbar-thumb:active]:bg-gray-500;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    @apply overflow-y-scroll;
   }
   button {
     @apply cursor-pointer;
@@ -212,6 +212,6 @@
 
 /* shadcn/ui scroll-lock 시 스크롤바만큼 밀리는 현상 방지 */
 body[data-scroll-locked][data-scroll-locked] {
-  overflow: scroll !important;
+  overflow: auto !important;
   margin-right: 0 !important;
 }

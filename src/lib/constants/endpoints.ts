@@ -3,16 +3,15 @@
 // 환경별 API 설정
 const getApiConfig = () => {
   // Vercel 배포 환경에서는 프록시 사용
-  if (process.env.VERCEL_ENV) {
-    console.log(`🚀 Vercel 환경: ${process.env.VERCEL_ENV} - 프록시 사용`);
-    return {
-      BASE_URL: "",
-      PREFIX: "/api",
-    };
+  if (process.env.NODE_ENV === "production") {
+    console.log("🚀 프로덕션 환경: ", process.env.NODE_ENV);
+    return { BASE_URL: "", PREFIX: "/api" };
   }
 
-  // 로컬 개발 환경에서는 직접 연결
-  console.log("🛠️ 로컬 개발 환경 - 직접 백엔드 연결");
+  console.log(
+    "🛠️ 로컬 개발 환경: ",
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  );
   return {
     BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
     PREFIX: "/meong-road",

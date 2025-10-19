@@ -1,6 +1,7 @@
 "use client";
 
 import { MouseEvent } from "react";
+import { useRouter } from "next/navigation";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
@@ -10,6 +11,7 @@ import {
   useGetIsLiked,
   useLike,
 } from "@/hooks/queries/gatherings";
+import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +24,7 @@ export function GatheringCardLikeBtn({
   className,
   id,
 }: GatheringCardLikeBtnProps) {
+  const router = useRouter();
   const { user, isLoading } = useAuth();
 
   const { data, isPending, isError } = useGetIsLiked({
@@ -35,7 +38,16 @@ export function GatheringCardLikeBtn({
     id,
   });
 
-  if (isLoading || !user) return null;
+  // 인증상태 확인중이면 빈 좋아요 버튼
+  if (isLoading) return <LikeBtn width={48} height={48} />;
+
+  // 인증되지 않은 경우에는 로그인 페이지로 리다이렉트하는 좋아요 버튼
+  if (!user && !isLoading)
+    return (
+      <button onClick={() => router.push(PATH.SIGNIN)} className={className}>
+        <LikeBtn width={48} height={48} />
+      </button>
+    );
 
   if (isPending)
     return (

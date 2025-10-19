@@ -4,22 +4,31 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
+import Modal from "@/components/Modal/Modal";
+import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { SigninFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
 import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
 import { PATH } from "@/lib/constants/path";
+import { useModalStore } from "@/store/modalStore";
 
 export default function SigninForm() {
   const form = useSigninForm();
   const { mutate: signinMutate, isPending } = useSigninMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const redirectUrl = searchParams.get("redirect");
+
+  const { isOpen, openModal, closeModal } = useModalStore();
 
   const handleSubmit = (data: SigninFormSchema) => {
     signinMutate(data, {
-      onSuccess: () => {
+      onSuccess: (res) => {
         toast.success("로그인에 성공했습니다.");
+
+        if (!res.result.user.isPetInfoSubmitted) {
+          openModal("first-login");
+          return;
+        }
 
         // 리다이렉트 URL이 있으면 해당 페이지로, 없으면 기본 페이지로
         router.push(redirectUrl || PATH.REGULAR);
@@ -87,6 +96,12 @@ export default function SigninForm() {
         {/* 회원가입 링크 */}
         <Form.SignupLink />
       </Form>
+
+      {isOpen && (
+        <Modal hasCloseButton>
+          <PetInfoModal type="first-login" onClose={closeModal} />
+        </Modal>
+      )}
     </>
   );
 }

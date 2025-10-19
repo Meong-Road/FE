@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // API 프록시 설정 - Mixed Content 문제 해결
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://52.79.131.132:8050/meong-road/:path*",
+      },
+    ];
+  },
+
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

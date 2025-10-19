@@ -53,7 +53,7 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-10 flex h-16 w-full items-center justify-center bg-white/70 backdrop-blur-2xl select-none md:h-22",
+        "bg-background/70 fixed top-0 left-0 z-10 flex h-16 w-full items-center justify-center backdrop-blur-lg select-none md:h-22",
         className,
       )}
     >

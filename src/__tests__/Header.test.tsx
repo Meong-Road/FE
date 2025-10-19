@@ -2,7 +2,7 @@ import { usePathname } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { useAuthUser } from "@/hooks/auth/useAuthUser";
+import { useAuth } from "@/hooks/auth";
 import { PATH } from "@/lib/constants/path";
 import { UserType } from "@/lib/types/user";
 
@@ -31,17 +31,19 @@ jest.mock("../components/Logo", () => {
 jest.mock("@/assets/images/profile.svg", () => {
   return function ProfileSvg({
     width,
+    height,
     className,
     onClick,
   }: {
     width: number;
+    height?: number;
     className?: string;
     onClick?: () => void;
   }) {
     return (
       <div
         data-testid="profile-svg"
-        style={{ width }}
+        style={{ width, height }}
         className={className}
         onClick={onClick}
       />
@@ -49,8 +51,19 @@ jest.mock("@/assets/images/profile.svg", () => {
   };
 });
 
-jest.mock("@/hooks/auth/useAuthUser", () => ({
-  useAuthUser: jest.fn(),
+// Menu 아이콘 모킹
+jest.mock("lucide-react", () => ({
+  Menu: ({
+    className,
+    onClick,
+  }: {
+    className?: string;
+    onClick?: () => void;
+  }) => <div data-testid="menu-icon" className={className} onClick={onClick} />,
+}));
+
+jest.mock("@/hooks/auth", () => ({
+  useAuth: jest.fn(),
 }));
 
 jest.mock("@/hooks/auth/useSignout", () => ({
@@ -82,7 +95,7 @@ jest.mock("@/components/ui/dropdown-menu", () => ({
 }));
 
 const mockUsePathname = jest.mocked(usePathname);
-const mockUseAuthUser = useAuthUser as jest.Mock;
+const mockUseAuth = useAuth as jest.Mock;
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -104,9 +117,13 @@ const renderWithQueryClient = (component: React.ReactElement) => {
   );
 };
 
-const renderHeader = (pathname = "/", user: UserType | null = null) => {
+const renderHeader = (
+  pathname = "/",
+  user: UserType | null = null,
+  isLoading = false,
+) => {
   mockUsePathname.mockReturnValue(pathname);
-  mockUseAuthUser.mockReturnValue({ data: user });
+  mockUseAuth.mockReturnValue({ user, isLoading });
   return renderWithQueryClient(<Header />);
 };
 
@@ -131,6 +148,7 @@ describe("Header", () => {
 
     expect(screen.getByTestId("logo")).toBeInTheDocument();
 
+    // 데스크톱 메뉴 확인
     expect(screen.getAllByText("정기 모임").length).toBeGreaterThan(0);
     expect(screen.getAllByText("번개 모임").length).toBeGreaterThan(0);
     expect(screen.getAllByText("찜한 모임").length).toBeGreaterThan(0);
@@ -215,6 +233,54 @@ describe("Header", () => {
     menuItems.forEach((item) => {
       expect(item).toHaveClass("text-[#8B8B8B]");
       expect(item).not.toHaveClass("text-primary", "font-bold");
+    });
+  });
+
+  it("로딩 상태일 때 스켈레톤 UI가 표시되어야 한다", () => {
+    renderHeader("/", null, true);
+
+    // 로딩 스켈레톤 확인
+    const skeleton = document.querySelector(".animate-pulse");
+    expect(skeleton).toBeInTheDocument();
+  });
+
+  it("모바일 메뉴 버튼이 렌더링되어야 한다", () => {
+    renderHeader();
+
+    // 모바일 메뉴 버튼 (Menu 아이콘) 확인
+    expect(screen.getByTestId("menu-icon")).toBeInTheDocument();
+  });
+
+  it("로그인 상태에서 모바일 메뉴를 클릭하면 메뉴와 사용자 옵션이 나타남", async () => {
+    renderHeader("/", loggedInUser);
+
+    const mobileMenuButton = screen.getByTestId("menu-icon");
+    expect(mobileMenuButton).toBeInTheDocument();
+
+    // 모바일 메뉴 클릭 시도
+    fireEvent.click(mobileMenuButton);
+
+    await waitFor(() => {
+      // 모바일 메뉴에서도 네비게이션 메뉴들이 나타나는지 확인
+      expect(screen.getAllByText("정기 모임").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("번개 모임").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("찜한 모임").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("모든 리뷰").length).toBeGreaterThan(0);
+    });
+  });
+
+  it("로그아웃 상태에서 모바일 메뉴를 클릭하면 로그인 옵션이 나타남", async () => {
+    renderHeader("/", null);
+
+    const mobileMenuButton = screen.getByTestId("menu-icon");
+    expect(mobileMenuButton).toBeInTheDocument();
+
+    // 모바일 메뉴 클릭 시도
+    fireEvent.click(mobileMenuButton);
+
+    await waitFor(() => {
+      // 로그인 옵션이 나타나는지 확인
+      expect(screen.getAllByText("로그인").length).toBeGreaterThan(0);
     });
   });
 });

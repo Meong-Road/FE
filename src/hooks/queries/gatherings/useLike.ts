@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { gatheringApi } from "@/api/gatherings";
-import { LikeReq } from "@/api/types/gatherings";
+import { PostLikeReq } from "@/api/types/gatherings";
 
 import { queryKeys } from "../queryKey";
 
-export function useLike({ id }: LikeReq) {
+export function useLike({ id }: PostLikeReq) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => {

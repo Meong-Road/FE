@@ -6,7 +6,7 @@ import { GetReviewDashboardReq } from "@/api/types/reviews";
 import { queryKeys } from "../queryKey";
 
 export function useGetReviewDashboard({
-  location = "서울 전체",
+  location = null,
 }: GetReviewDashboardReq) {
   return useQuery({
     queryKey: queryKeys.reviews.dashboard({ location }),

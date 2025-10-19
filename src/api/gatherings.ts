@@ -1,74 +1,93 @@
 import qs from "qs";
 
+import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
-  CancelLikeReq,
-  CancelLikeRes,
-  GetGatheringDetailReq,
-  GetGatheringDetailRes,
+  DeleteLikeReq,
+  DeleteLikeRes,
+  GetGatheringReq,
+  GetGatheringRes,
   GetIsLikedReq,
   GetIsLikedRes,
+  GetJoinedGatheringsReq,
+  GetJoinedGatheringsRes,
   GetMyBookmarkedGatheringsReq,
   GetMyBookmarkedGatheringsRes,
+  GetMyGatheringsReq,
+  GetMyGatheringsRes,
   GetQuickGatheringsReq,
   GetQuickGatheringsRes,
   GetRegularGatheringsReq,
   GetRegularGatheringsRes,
-  LikeReq,
-  LikeRes,
+  PostLikeReq,
+  PostLikeRes,
 } from "./types/gatherings";
-import { customFetch } from "./customFetch";
 
 export const gatheringApi = {
   // 정기 모임 목록 조회
-  getRegularGatherings: async (params: GetRegularGatheringsReq) => {
-    return await customFetch.get<GetRegularGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(params)}`,
-      { isPublic: true },
+  getRegularGatherings: (params: GetRegularGatheringsReq) => {
+    return customFetch.get<GetRegularGatheringsRes>(
+      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
     );
   },
   // 번개 모임 목록 조회
-  getQuickGatherings: async (params: GetQuickGatheringsReq) => {
-    return await customFetch.get<GetQuickGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(params)}`,
-      { isPublic: true },
+  getQuickGatherings: (params: GetQuickGatheringsReq) => {
+    return customFetch.get<GetQuickGatheringsRes>(
+      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
     );
   },
   // 모임 상세 조회
-  getGatheringDetail: async ({ id }: GetGatheringDetailReq) => {
-    return await customFetch.get<GetGatheringDetailRes>(
-      `${API_ENDPOINTS.GATHERING}/${id}`,
-      { isPublic: true },
-    );
+  getGathering: ({ id }: GetGatheringReq) => {
+    return customFetch.get<GetGatheringRes>(`${API_ENDPOINTS.GATHERING}/${id}`);
   },
   // 모임 찜 조회
-  getIsLiked: async ({ id }: GetIsLikedReq) => {
-    return await customFetch.get<GetIsLikedRes>(
+  getIsLiked: ({ id }: GetIsLikedReq) => {
+    return customFetch.get<GetIsLikedRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
     );
   },
   // 모임 찜하기
-  like: async ({ id }: LikeReq) => {
-    return await customFetch.post<LikeRes>(
+  like: ({ id }: PostLikeReq) => {
+    return customFetch.post<PostLikeRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
     );
   },
   // 모임 찜 해제
-  cancelLike: async ({ id }: CancelLikeReq): Promise<CancelLikeRes> => {
-    return await customFetch.delete<CancelLikeRes>(
+  cancelLike: ({ id }: DeleteLikeReq) => {
+    return customFetch.delete<DeleteLikeRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/bookmarks`,
     );
   },
+  // GET /meong-road/gatherings/my - 내가 만든 모임 목록 조회
+  getMyGatherings: ({
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: GetMyGatheringsReq) => {
+    return customFetch.get<GetMyGatheringsRes>(
+      `${API_ENDPOINTS.GATHERING}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+    );
+  },
+  // GET /meong-road/gatherings/joined - 참석한 모임 목록 조회
+  getJoinedGatherings: ({
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: GetJoinedGatheringsReq) => {
+    return customFetch.get<GetJoinedGatheringsRes>(
+      `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+    );
+  },
   // 내가 찜한 모임 목록 조회
-  getMyBookmarkedGatherings: async ({
+  getMyBookmarkedGatherings: ({
     type,
-    page,
-    size,
-    sort,
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
   }: GetMyBookmarkedGatheringsReq) => {
-    return await customFetch.get<GetMyBookmarkedGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort })}`,
+    return customFetch.get<GetMyBookmarkedGatheringsRes>(
+      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
 };

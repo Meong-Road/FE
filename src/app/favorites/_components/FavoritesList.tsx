@@ -8,7 +8,11 @@ import RegularGatheringCard from "@/app/_components/RegularGatheringCard";
 import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
 import { EGatheringType } from "@/lib/types/gatherings";
 
-export default function FavoritesList({ currentTab }: { currentTab: string }) {
+export default function FavoritesList({
+  currentTab,
+}: {
+  currentTab: EGatheringType;
+}) {
   const { ref, inView } = useInView();
 
   const {

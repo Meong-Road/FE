@@ -1,7 +1,7 @@
 // src/mocks/handlers/gatherings.ts
 import { http, HttpResponse } from "msw";
 
-import { API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { EGatheringType } from "@/lib/types/gatherings";
 
 import { createPaginatedRes } from "../data/common";
@@ -14,7 +14,7 @@ import {
 
 export const gatheringsHandlers = [
   //================= 모임 목록 조회 ================================
-  http.get(`${API_ENDPOINTS.GATHERING}/regular`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/regular`, (req) => {
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
@@ -28,7 +28,7 @@ export const gatheringsHandlers = [
     );
   }),
 
-  http.get(`${API_ENDPOINTS.GATHERING}/quick`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/quick`, (req) => {
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
@@ -42,8 +42,72 @@ export const gatheringsHandlers = [
     );
   }),
 
+  //================= 내가 만든 모임 목록 조회 ================================
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/my`, (req) => {
+    const url = new URL(req.request.url);
+    const page = Number(url.searchParams.get("page")) || 0;
+    const size = Number(url.searchParams.get("size")) || 10;
+
+    // 현재 사용자(id: 1)가 만든 모임 (hostId가 1인 모임)
+    const myGatherings = [
+      ...REGULAR_GATHERINGS.filter((g) => g.hostId === 1),
+      ...QUICK_GATHERINGS.filter((g) => g.hostId === 1),
+    ];
+
+    const start = page * size;
+    const end = start + size;
+    const paginated = myGatherings.slice(start, end);
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "내가 만든 모임 조회 성공",
+      result: {
+        content: paginated,
+        page,
+        size,
+        totalElements: myGatherings.length,
+        totalPages: Math.ceil(myGatherings.length / size),
+        last: end >= myGatherings.length,
+      },
+      errorCode: null,
+    });
+  }),
+
+  //================= 참여한 모임 목록 조회 ================================
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/joined`, (req) => {
+    const url = new URL(req.request.url);
+    const page = Number(url.searchParams.get("page")) || 0;
+    const size = Number(url.searchParams.get("size")) || 10;
+
+    // isParticipating이 true인 모임
+    const joinedGatherings = [
+      ...REGULAR_GATHERINGS.filter((g) => g.isParticipating),
+      ...QUICK_GATHERINGS.filter((g) => g.isParticipating),
+    ];
+
+    const start = page * size;
+    const end = start + size;
+    const paginated = joinedGatherings.slice(start, end);
+
+    return HttpResponse.json({
+      success: true,
+      code: 0,
+      message: "참여한 모임 조회 성공",
+      result: {
+        content: paginated,
+        page,
+        size,
+        totalElements: joinedGatherings.length,
+        totalPages: Math.ceil(joinedGatherings.length / size),
+        last: end >= joinedGatherings.length,
+      },
+      errorCode: null,
+    });
+  }),
+
   //================= 찜한 모임 목록 조회 ================================
-  http.get("/api/gatherings/bookmarks", (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/bookmarks`, (req) => {
     const url = new URL(req.request.url);
     const type = url.searchParams.get("type");
     const page = Number(url.searchParams.get("page")) || 0;
@@ -83,7 +147,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 상세 조회 ================================
-  http.get(`${API_ENDPOINTS.GATHERING}/:id`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -105,7 +169,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 찜하기 상태 조회 ================================
-  http.get(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -118,16 +182,16 @@ export const gatheringsHandlers = [
       });
 
     return HttpResponse.json({
-      success: false,
-      code: 404,
+      success: true,
+      code: 200,
       message: "성공",
       result: { isLiked: isLikedSet.has(id as string) },
-      errorCode: "NOT_FOUND",
+      errorCode: null,
     });
   }),
 
   //================= 모임 찜하기 ================================
-  http.post(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
+  http.post(`${FULL_API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -140,7 +204,6 @@ export const gatheringsHandlers = [
       });
 
     if (isLikedSet.has(id as string))
-      // ! 임시
       return HttpResponse.json({
         success: false,
         code: 400,
@@ -160,7 +223,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 찜 해제 ================================
-  http.delete(`${API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
+  http.delete(`${FULL_API_ENDPOINTS.GATHERING}/:id/bookmarks`, (req) => {
     const id = req.params.id;
 
     if (!id)
@@ -173,7 +236,6 @@ export const gatheringsHandlers = [
       });
 
     if (!isLikedSet.has(id as string))
-      // ! 임시
       return HttpResponse.json({
         success: false,
         code: 400,
@@ -188,28 +250,6 @@ export const gatheringsHandlers = [
       code: 200,
       message: "성공",
       result: { isLiked: false },
-      errorCode: null,
-    });
-  }),
-
-  //================= 모임 상세 조회 ================================
-  http.get(`${API_ENDPOINTS.GATHERING}/:id`, (req) => {
-    const id = req.params.id;
-
-    if (!id)
-      return HttpResponse.json({
-        success: false,
-        code: 404,
-        message: "모임을 찾을 수 없습니다",
-        result: null,
-        errorCode: "NOT_FOUND",
-      });
-
-    return HttpResponse.json({
-      success: true,
-      code: 200,
-      message: "성공",
-      result: GATHERING_DETAILS,
       errorCode: null,
     });
   }),

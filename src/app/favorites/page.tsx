@@ -1,4 +1,5 @@
 import { PATH } from "@/lib/constants/path";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 import { Tab } from "../profile/_components/Tab";
 
@@ -10,7 +11,9 @@ interface FavoritesProps {
 
 export default async function Favorites({ searchParams }: FavoritesProps) {
   const resolvedSearchParams = await searchParams;
-  const currentTab = resolvedSearchParams?.tab ?? "regular";
+  const tabParam = resolvedSearchParams?.tab ?? "regular";
+  const currentTab =
+    tabParam === "quick" ? EGatheringType.QUICK : EGatheringType.REGULAR;
 
   return (
     <section>
@@ -18,13 +21,13 @@ export default async function Favorites({ searchParams }: FavoritesProps) {
         <Tab.List>
           <Tab.Item
             href={`${PATH.FAVORITES}?tab=regular`}
-            isActive={currentTab === "regular"}
+            isActive={currentTab === EGatheringType.REGULAR}
           >
             정기 모임
           </Tab.Item>
           <Tab.Item
             href={`${PATH.FAVORITES}?tab=quick`}
-            isActive={currentTab === "quick"}
+            isActive={currentTab === EGatheringType.QUICK}
           >
             번개 모임
           </Tab.Item>

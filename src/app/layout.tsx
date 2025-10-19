@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 
 import Header from "@/components/Header";
 import { initMocks } from "@/mocks";
+import AuthGuardProvider from "@/providers/AuthGuardProvider";
 import MSWProvider from "@/providers/MSWProvider";
 import QueryProvider from "@/providers/QueryProvider";
 
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body className={`${pretendardVariable.className}`}>
         <QueryProvider>
           <MSWProvider>
-            <Header />
-            <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 md:px-8 md:pt-32">
-              {children}
-            </div>
+            <AuthGuardProvider>
+              <Header />
+              <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 md:px-8 md:pt-32">
+                {children}
+              </div>
+            </AuthGuardProvider>
             <div id="modal-root"></div>
             <Toaster />
           </MSWProvider>

@@ -8,7 +8,7 @@ import { queryKeys } from "../queryKey";
 
 export function useGetInfiniteRegularGatherings({
   size = 10,
-  sort = ["createdAt"],
+  sort = ["createdAt", "desc"],
 }: Omit<GetRegularGatheringsReq, keyof PaginationReq> &
   Partial<PaginationReq>) {
   return useInfiniteQuery({
@@ -20,7 +20,7 @@ export function useGetInfiniteRegularGatherings({
         sort,
       });
     },
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.result?.last ? undefined : pageParam + 1,
     select: (data) => data.pages.flatMap((page) => page.result?.content || []),

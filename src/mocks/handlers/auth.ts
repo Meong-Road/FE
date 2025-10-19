@@ -1,10 +1,10 @@
 import { http, HttpResponse } from "msw";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 export const authHandlers = [
   // 회원가입 API
-  http.post(`${BASE_URL}/meong-road/user`, async ({ request }) => {
+  http.post(`${FULL_API_ENDPOINTS.USER}`, async ({ request }) => {
     const body = (await request.json()) as {
       email: string;
       password: string;
@@ -62,7 +62,7 @@ export const authHandlers = [
   }),
 
   // 로그인 API
-  http.post(`${BASE_URL}/meong-road/auth/login`, async ({ request }) => {
+  http.post(`${FULL_API_ENDPOINTS.AUTH}/login`, async ({ request }) => {
     const body = (await request.json()) as {
       email: string;
       password: string;
@@ -106,7 +106,7 @@ export const authHandlers = [
   }),
 
   // 토큰 갱신 API
-  http.post(`${BASE_URL}/meong-road/auth/refresh`, async ({ request }) => {
+  http.post(`${FULL_API_ENDPOINTS.AUTH}/refresh`, async ({ request }) => {
     const body = (await request.json()) as {
       refreshToken: string;
     };

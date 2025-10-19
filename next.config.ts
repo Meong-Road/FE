@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // API 프록시 설정 - Mixed Content 문제 해결
+  // API 프록시 설정
   async rewrites() {
     return [
       {

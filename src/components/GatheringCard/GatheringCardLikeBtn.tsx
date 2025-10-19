@@ -4,6 +4,7 @@ import { MouseEvent } from "react";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
+import { useAuth } from "@/hooks/auth";
 import {
   useCancelLike,
   useGetIsLiked,
@@ -21,8 +22,11 @@ export function GatheringCardLikeBtn({
   className,
   id,
 }: GatheringCardLikeBtnProps) {
+  const { user, isLoading } = useAuth();
+
   const { data, isPending, isError } = useGetIsLiked({
     id,
+    enabled: !!user,
   });
   const { mutate: like } = useLike({
     id,
@@ -31,18 +35,22 @@ export function GatheringCardLikeBtn({
     id,
   });
 
+  if (isLoading || !user) return null;
+
   if (isPending)
     return (
-      <div className={cn("h-8 w-8 rounded-full bg-slate-50", className)}></div>
+      <div
+        className={cn("h-12 w-12 rounded-full bg-slate-50", className)}
+      ></div>
     );
   if (isError)
     return (
-      <div className={cn("h-8 w-8 rounded-full bg-slate-50", className)}>
+      <div className={cn("h-12 w-12 rounded-full bg-slate-50", className)}>
         오류
       </div>
     );
 
-  const isLiked = data.result?.isLiked;
+  const isLiked = data?.isLiked;
 
   const handleLikeButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

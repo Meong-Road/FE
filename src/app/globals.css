@@ -165,7 +165,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    @apply [&::-webkit-scrollbar]:w-[0.5vw];
+    @apply [&::-webkit-scrollbar]:w-1.5;
     @apply [&::-webkit-scrollbar-track]:rounded-full;
     @apply [&::-webkit-scrollbar-track]:bg-transparent;
     @apply [&::-webkit-scrollbar-thumb]:rounded-full;
@@ -175,11 +175,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    overflow: scroll !important;
-    scrollbar-gutter: stable both-edges !important;
-  }
-  button {
-    @apply cursor-pointer;
+    @apply overflow-y-scroll overflow-x-hidden;
   }
 }
 
@@ -213,6 +209,6 @@
 
 /* shadcn/ui scroll-lock 시 스크롤바만큼 밀리는 현상 방지 */
 body[data-scroll-locked][data-scroll-locked] {
-  overflow: overlay !important;
+  overflow-y: scroll !important;
   margin-right: 0 !important;
 }

@@ -38,9 +38,6 @@ export function GatheringCardLikeBtn({
     id,
   });
 
-  // 인증상태 확인중이면 빈 좋아요 버튼
-  if (isLoading) return <LikeBtn width={48} height={48} />;
-
   if (isPending)
     return (
       <div

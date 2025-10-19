@@ -9,7 +9,6 @@ export function useSignout() {
 
   return () => {
     tokenStorage.clear();
-    queryClient.setQueryData(USER_QUERY_KEYS.all(), null);
-    queryClient.removeQueries({ queryKey: USER_QUERY_KEYS.my() });
+    queryClient.clear();
   };
 }

@@ -9,8 +9,8 @@ function TitleSkeleton() {
   return <Skeleton fontSize="sm" className="w-10" />;
 }
 
-function ContentSkeleton() {
-  return <Skeleton fontSize="sm" className="w-14" />;
+function ContentSkeleton({ className }: { className?: string }) {
+  return <Skeleton fontSize="sm" className={className} />;
 }
 
 function BarSkeleton() {
@@ -26,25 +26,28 @@ export function GatheringCardInfoSkeleton({
 }: GatheringCardInfoSkeletonProps) {
   return (
     <div className="flex items-center gap-2.5">
+      {/* 위치 */}
+      <TextWrapperSkeleton>
+        <TitleSkeleton />
+        <ContentSkeleton className="w-16" />
+      </TextWrapperSkeleton>
       {type === EGatheringType.QUICK && (
         <>
-          <TextWrapperSkeleton>
-            <TitleSkeleton />
-            <ContentSkeleton />
-          </TextWrapperSkeleton>
           <BarSkeleton />
+          {/* 날짜 */}
           <TextWrapperSkeleton>
             <TitleSkeleton />
-            <ContentSkeleton />
+            <ContentSkeleton className="w-24" />
           </TextWrapperSkeleton>
         </>
       )}
       {type === EGatheringType.REGULAR && (
         <>
           <BarSkeleton />
+          {/* 요일 */}
           <TextWrapperSkeleton>
             <TitleSkeleton />
-            <ContentSkeleton />
+            <ContentSkeleton className="w-12" />
           </TextWrapperSkeleton>
         </>
       )}

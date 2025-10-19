@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useParams } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, renderHook } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 
 import { petsApi } from "@/api/pets";
 import { useGetPet, usePostPet, usePutPet } from "@/hooks/queries/pets";
@@ -17,14 +17,6 @@ const createMockPetInfoResponse = (overrides = {}) => ({
   breed: "골든 리트리버",
   gender: "MALE" as const,
   neuter: null,
-  ...overrides,
-});
-
-const createMockFormData = (overrides = {}) => ({
-  name: "멍멍이",
-  gender: "male" as const,
-  birthYear: "2025",
-  breed: "골든 리트리버",
   ...overrides,
 });
 
@@ -168,11 +160,6 @@ describe("usePetInfoModal Hook 테스트", () => {
       } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet", 1);
-
-      const changedData = {
-        name: "마루",
-        birthYear: "2024",
-      };
 
       const hasChanges = result.current.hasChanges;
       expect(hasChanges).toBe(false);

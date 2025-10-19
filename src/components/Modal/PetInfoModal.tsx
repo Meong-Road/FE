@@ -1,7 +1,6 @@
 import { toast } from "sonner";
 
 import { usePostPet, usePutPet } from "@/hooks/queries/pets";
-import { hasPetFormChanges } from "@/lib/utils/pet";
 
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";

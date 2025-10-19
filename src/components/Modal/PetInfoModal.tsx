@@ -3,6 +3,7 @@ import { Form } from "../Form";
 
 import { usePetInfoForm } from "./_hooks/usePetInfoForm";
 import { usePetInfoModal } from "./_hooks/usePetInfoModal";
+import { useSkipPetInfo } from "./_hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
 import Modal from ".";
 
@@ -35,6 +36,16 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
     isLoading ||
     !form.formState.isValid ||
     (type === "edit-pet" && hasChanges && !hasChanges(form.getValues()));
+
+  const { mutate: skipPetInfo } = useSkipPetInfo();
+
+  const handleSkip = () => {
+    skipPetInfo(undefined, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
+  };
 
   return (
     <>
@@ -164,8 +175,13 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
             disabled={isSubmitDisabled}
           />
         </Form>
+
         {type === "first-login" && (
-          <button className="mt-2 border-b-2" type="button">
+          <button
+            className="mt-2 border-b-2"
+            type="button"
+            onClick={handleSkip}
+          >
             아직 반려견이 없어요
           </button>
         )}

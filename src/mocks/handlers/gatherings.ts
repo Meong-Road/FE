@@ -8,6 +8,7 @@ import { createPaginatedRes } from "../data/common";
 import {
   GATHERING_DETAILS,
   isLikedSet,
+  PARTICIPANTS,
   QUICK_GATHERINGS,
   REGULAR_GATHERINGS,
 } from "../data/gatherings";
@@ -227,7 +228,33 @@ export const gatheringsHandlers = [
       errorCode: null,
     });
   }),
+  //================= 모임 참가자 목록 조회 ================================
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id/participants`, (req) => {
+    const id = req.params.id;
 
+    const gathering = GATHERING_DETAILS(Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    const url = new URL(req.request.url);
+    const page = url.searchParams.get("page");
+    const size = url.searchParams.get("size");
+    // TODO const sort = url.searchParams.get("sort");
+
+    return HttpResponse.json(
+      createPaginatedRes(PARTICIPANTS(gathering.id), {
+        page: Number(page),
+        size: Number(size),
+      }),
+    );
+  }),
   //================= 모임 상세 조회 ================================
   http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;

@@ -18,6 +18,8 @@ import {
   GetMyBookmarkedGatheringsRes,
   GetMyGatheringsReq,
   GetMyGatheringsRes,
+  GetParticipantsReq,
+  GetParticipantsRes,
   GetQuickGatheringsReq,
   GetQuickGatheringsRes,
   GetRegularGatheringsReq,
@@ -104,6 +106,11 @@ export const gatheringApi = {
   }: GetMyBookmarkedGatheringsReq) => {
     return customFetch.get<GetMyBookmarkedGatheringsRes>(
       `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort }, { arrayFormat: "comma" })}`,
+    );
+  },
+  getParticipants: ({ id, page, size, sort }: GetParticipantsReq) => {
+    return customFetch.get<GetParticipantsRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
 };

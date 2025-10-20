@@ -1,3 +1,7 @@
+import { GatheringType } from "@/lib/types/gatherings";
+
+import { USERS } from "./users";
+
 export const QUICK_GATHERINGS = [
   {
     id: 1,
@@ -308,6 +312,33 @@ export const REGULAR_GATHERINGS = [
     isParticipating: false,
     canceledAt: new Date("2025-09-25T12:00:00"),
     days: '["WED"]',
+  },
+];
+
+export const PARTICIPANTS = (gatheringId: GatheringType["id"]) => [
+  {
+    userId: USERS[0].id,
+    gatheringId: gatheringId,
+    joinedAt: "2025-09-22T01:22:25.918Z",
+    user: USERS[0],
+  },
+  {
+    userId: USERS[1].id,
+    gatheringId: gatheringId,
+    joinedAt: "2025-09-22T01:22:25.918Z",
+    user: USERS[1],
+  },
+  {
+    userId: USERS[2].id,
+    gatheringId: gatheringId,
+    joinedAt: "2025-09-22T01:22:25.918Z",
+    user: USERS[2],
+  },
+  {
+    userId: USERS[3].id,
+    gatheringId: gatheringId,
+    joinedAt: "2025-09-22T01:22:25.918Z",
+    user: USERS[3],
   },
 ];
 

@@ -8,6 +8,7 @@ export interface ReviewCardProps {
 
 // User related
 export interface ReviewCardUserAvatarProps {
+  className?: string;
   image: ReviewType["user"]["image"];
   size?: number;
 }

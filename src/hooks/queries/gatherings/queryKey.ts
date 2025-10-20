@@ -22,12 +22,19 @@ export const GATHERINGS_QUERY_KEYS = {
     id,
   ],
 
-  bookmarkedGatherings: (type: EGatheringType, pagination: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.all(), "bookmarked", type, pagination] as const,
+  bookmarkedGatherings: (type: EGatheringType, options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "bookmarked", type, options] as const,
 
-  myGatherings: (pagination: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.all(), "my", pagination] as const,
+  myGatherings: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "my", options] as const,
 
-  joinedGatherings: (pagination: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.all(), "joined", pagination] as const,
+  joinedGatherings: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "joined", options] as const,
+
+  participants: (
+    { id }: { id: GatheringType["id"] },
+    options: PaginationOptions,
+  ) => [...GATHERINGS_QUERY_KEYS.all(), "participants", id, options] as const,
+  participants4: ({ id }: { id: GatheringType["id"] }) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "participants", id, "last4"] as const,
 };

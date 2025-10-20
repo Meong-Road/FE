@@ -1,5 +1,6 @@
 "use client";
 
+import { Tab } from "@/components/Tab";
 import { useAuth } from "@/hooks/auth";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
@@ -10,7 +11,6 @@ import JoinedSection from "./_components/JoinedSection";
 import PetCardSection from "./_components/PetCardSection";
 import { ProfileCard } from "./_components/ProfileCard";
 import ReviewSection from "./_components/ReviewSection";
-import { Tab } from "./_components/Tab";
 
 const ProfileHeader = () => (
   <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>

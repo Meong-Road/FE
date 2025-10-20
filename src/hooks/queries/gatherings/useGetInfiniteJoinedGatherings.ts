@@ -1,20 +1,18 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { gatheringApi } from "@/api/gatherings";
-import { PaginationReq } from "@/api/types/common";
-import { GetJoinedGatheringsReq } from "@/api/types/gatherings";
+import { PaginationOptions } from "@/api/types/common";
+import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
 import { QUERY_KEYS } from "../queryKey";
 
-export const useGetInfiniteJoinedGatherings = ({
-  size = 10,
-  sort = ["createdAt", "desc"],
-}: Omit<GetJoinedGatheringsReq, keyof PaginationReq> &
-  Partial<PaginationReq>) => {
+export const useGetInfiniteJoinedGatherings = (
+  options: PaginationOptions = DEFAULT_LIST_OPTIONS,
+) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.gatherings.joinedGatherings({ size, sort }),
+    queryKey: QUERY_KEYS.gatherings.joinedGatherings(options),
     queryFn: ({ pageParam }) => {
-      return gatheringApi.getJoinedGatherings({ page: pageParam, size, sort });
+      return gatheringApi.getJoinedGatherings({ page: pageParam, ...options });
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>

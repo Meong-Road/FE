@@ -5,13 +5,12 @@ export const GATHERINGS_QUERY_KEYS = {
   all: () => ["gatherings"] as const,
 
   lists: () => [...GATHERINGS_QUERY_KEYS.all(), "list"] as const,
-  // TODO: options로 바꾸기
-  list: (pagination: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.lists(), pagination] as const,
-  regularList: (pagination: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.list(pagination), "regular"] as const,
-  quickList: (pagination: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.list(pagination), "quick"] as const,
+  list: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.lists(), options] as const,
+  regularList: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.list(options), "regular"] as const,
+  quickList: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.list(options), "quick"] as const,
 
   details: () => [...GATHERINGS_QUERY_KEYS.all(), "detail"] as const,
   detail: (id: GatheringType["id"]) =>

@@ -16,9 +16,9 @@ export function useJoinGathering() {
         queryClient.invalidateQueries({
           queryKey: QUERY_KEYS.gatherings.lists(),
         }),
-        // queryClient.invalidateQueries({
-        //   queryKey: QUERY_KEYS.gatherings.detail(id),
-        // }),
+        queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.gatherings.detail(id),
+        }),
       ]);
     },
   });

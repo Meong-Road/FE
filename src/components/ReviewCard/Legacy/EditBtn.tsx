@@ -11,11 +11,11 @@ interface EditBtnProps {
 export function EditBtn({ reviewId, width = 32 }: EditBtnProps) {
   const { openModal } = useReviewInfoModalStore();
   return (
-    <div
+    <button
       onClick={() => openModal("edit-review", reviewId)}
       className="absolute top-2 right-2 cursor-pointer"
     >
       <BtnEdit width={width} height={width} />
-    </div>
+    </button>
   );
 }

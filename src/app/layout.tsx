@@ -38,12 +38,12 @@ export default function RootLayout({
                   {children}
                 </div>
               </AuthGuardProvider>
+              <div id="modal-root"></div>
               <Toaster />
             </MSWProvider>
           </QueryProvider>
         </body>
       </html>
-      <div id="modal-root" className="modal-background-area"></div>
     </>
   );
 }

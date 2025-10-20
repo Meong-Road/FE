@@ -11,11 +11,11 @@ interface PetCardEditBtnProps {
 export function PetCardEditBtn({ petId, width = 32 }: PetCardEditBtnProps) {
   const { openModal } = usePetInfoModalStore();
   return (
-    <div
+    <button
       onClick={() => openModal("edit-pet", petId)}
       className="absolute top-2 right-2 cursor-pointer"
     >
       <BtnEdit width={width} height={width} />
-    </div>
+    </button>
   );
 }

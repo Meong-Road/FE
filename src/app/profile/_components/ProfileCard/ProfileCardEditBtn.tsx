@@ -14,11 +14,11 @@ export function ProfileCardEditBtn({
 }: ProfileCardEditBtnProps) {
   const { openModal } = useUserInfoModalStore();
   return (
-    <div
+    <button
       onClick={() => openModal("edit-user", userId)}
       className="absolute top-2 right-2 cursor-pointer"
     >
       <BtnEdit width={width} height={width} />
-    </div>
+    </button>
   );
 }

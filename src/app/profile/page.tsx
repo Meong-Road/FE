@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/auth";
-import { useSearchParamsState } from "@/hooks/useSearchParmasState";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
 import { UserType } from "@/lib/types/user";
 

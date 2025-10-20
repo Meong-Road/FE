@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParamsState } from "@/hooks/useSearchParmasState";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { FAVORITES_TAB_LIST } from "@/lib/constants/favorites";
 import { PATH } from "@/lib/constants/path";
 

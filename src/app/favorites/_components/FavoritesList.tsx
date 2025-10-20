@@ -8,7 +8,7 @@ import {
 import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
 import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
 import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
-import { useSearchParamsState } from "@/hooks/useSearchParmasState";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 
 export default function FavoritesList() {

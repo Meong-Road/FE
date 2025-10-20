@@ -11,7 +11,7 @@ import {
 } from "./_hooks/usePetInfoForm";
 import { usePetInfoModal } from "./_hooks/usePetInfoModal";
 import { PetInfoModalProps } from "./types/petInfoModal";
-import Modal from ".";
+import { Modal } from ".";
 
 interface RadioOptionType {
   id: string;
@@ -74,17 +74,19 @@ export default function PetInfoModal({
   };
 
   return (
-    <>
+    <Modal>
+      <Modal.CloseBtn />
+
       {type === "first-login" ? (
         <Modal.Title
           title="반려견 정보를 등록해주세요"
           subtitle="마이페이지에서 언제든지 추가 등록이 가능해요 🐶"
         />
       ) : (
-        <Modal.Title title="반려견 정보를 등록해주세요" />
+        <Modal.Title title="반려견 정보를 수정해주세요" />
       )}
 
-      <Modal.ModalContent>
+      <Modal.Content>
         <Form form={form} onSubmit={handleSubmit}>
           {/* 이미지 업로드 */}
           <Form.Field
@@ -214,7 +216,7 @@ export default function PetInfoModal({
             아직 반려견이 없어요
           </button>
         )}
-      </Modal.ModalContent>
-    </>
+      </Modal.Content>
+    </Modal>
   );
 }

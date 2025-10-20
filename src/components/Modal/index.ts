@@ -1,13 +1,14 @@
+import { Modal as BaseModal } from "./Modal";
 import { ModalBreedSelect } from "./ModalBreedSelect";
+import { ModalCloseBtn } from "./ModalCloseBtn";
 import { ModalContent } from "./ModalContent";
 import { ModalDateSelect } from "./ModalDateSelect";
 import { ModalTitle } from "./ModalTitle";
 
-const Modal = {
+export const Modal = Object.assign(BaseModal, {
   Title: ModalTitle,
   BreedSelect: ModalBreedSelect,
-  ModalContent: ModalContent,
+  Content: ModalContent,
   DateSelect: ModalDateSelect,
-};
-
-export default Modal;
+  CloseBtn: ModalCloseBtn,
+});

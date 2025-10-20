@@ -6,12 +6,12 @@ import {
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
+import ReviewInfoModal from "@/components/Modal/ReviewInfoModal";
 import { ReviewCard } from "@/components/ReviewCard";
 import { useGetMyReviews } from "@/hooks/queries/reviews";
 import { ReviewType } from "@/lib/types/reviews";
 import { processReviewInfo } from "@/lib/utils/review";
-
-import EditBtn from "./EditBtn";
+import { useReviewInfoModalStore } from "@/store/modalStore";
 
 const ReviewItem = ({
   review,
@@ -28,6 +28,7 @@ const ReviewItem = ({
         {/* 헤더: 유저 정보 + 평점 + 작성날짜 */}
         <ReviewCard.Header
           profileImage={review.user.image}
+          reviewId={review.id}
           score={review.score}
           nickName={review.user.nickName}
           createdAt={review.createdAt}
@@ -42,11 +43,6 @@ const ReviewItem = ({
         />
       </div>
     </div>
-
-    {/* 수정 버튼 - 우측 상단 */}
-    <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
-      <EditBtn />
-    </div>
   </ReviewCard>
 );
 
@@ -59,6 +55,7 @@ const ReviewList = ({ reviews }: { reviews: ReviewType[] }) => (
 );
 
 export default function ReviewSection() {
+  const { isOpen, modalType, reviewId, closeModal } = useReviewInfoModalStore();
   const { data: reviews, isLoading } = useGetMyReviews({ page: 0, size: 10 });
 
   if (isLoading) return <LoadingState message="로딩 중..." />;
@@ -66,8 +63,18 @@ export default function ReviewSection() {
     return <EmptyState message="작성한 리뷰가 없습니다." />;
 
   return (
-    <SectionWrapper>
-      <ReviewList reviews={reviews.content} />
-    </SectionWrapper>
+    <>
+      <SectionWrapper>
+        <ReviewList reviews={reviews.content} />
+      </SectionWrapper>
+
+      {isOpen && modalType && (
+        <ReviewInfoModal
+          type={modalType}
+          onClose={closeModal}
+          reviewId={reviewId}
+        />
+      )}
+    </>
   );
 }

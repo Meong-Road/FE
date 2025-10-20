@@ -176,15 +176,6 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       const { result } = renderHookWithType("edit-pet", 1);
 
-      const unchangedData = {
-        name: "멍멍이",
-        birthYear: "2025",
-        breed: "골든 리트리버",
-        gender: "male" as const,
-        neuter: undefined,
-        existingPhotoUrl: "",
-      };
-
       const hasChanges = result.current.hasChanges;
       expect(hasChanges).toBe(false);
     });

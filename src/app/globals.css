@@ -190,6 +190,14 @@
     border-image: var(--gradient-primary) 1;
   }
 
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   [data-sonner-toast][data-type="success"] [data-icon] svg,
   [data-sonner-toast][data-type="success"] [data-icon] * {
     color: #ff8400 !important;

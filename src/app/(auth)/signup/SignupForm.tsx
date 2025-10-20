@@ -27,7 +27,11 @@ export default function SignupForm() {
 
   return (
     <>
-      <Form form={form} onSubmit={handleSubmit}>
+      <Form
+        form={form}
+        onSubmit={handleSubmit}
+        className="max-w-lg rounded-4xl"
+      >
         <Form.Title>회원가입</Form.Title>
 
         {/* 이름 */}

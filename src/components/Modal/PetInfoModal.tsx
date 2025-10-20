@@ -59,6 +59,7 @@ export default function PetInfoModal({
           onSuccess: () => {
             toast.success("반려동물 정보가 수정되었습니다.");
             onClose();
+            router.push(PATH.REGULAR);
           },
           onError: (error: Error) => {
             toast.error(`반려동물 정보 수정 실패: ${error.message}`);
@@ -70,6 +71,7 @@ export default function PetInfoModal({
         onSuccess: () => {
           toast.success("반려동물 정보가 등록되었습니다.");
           onClose();
+          router.push(PATH.REGULAR);
         },
         onError: (error: Error) => {
           toast.error(`반려동물 정보 등록 실패: ${error.message}`);
@@ -83,7 +85,7 @@ export default function PetInfoModal({
   const handleSkip = () => {
     skipPetInfo(undefined, {
       onSuccess: () => {
-        toast.success("반려견 정보 건너뛰기 성공");
+        toast.success("반려견 정보 입력을 건너뛰었습니다.");
         onClose();
         router.push(PATH.REGULAR);
       },

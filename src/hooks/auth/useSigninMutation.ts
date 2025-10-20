@@ -6,6 +6,8 @@ import { authApi } from "@/api/auth";
 import { PostSigninRes } from "@/api/types/auth";
 import { tokenStorage } from "@/lib/utils/token";
 
+import { QUERY_KEYS } from "../queries/queryKey";
+
 import { SigninFormSchema } from "./useSigninForm";
 
 export function useSigninMutation() {
@@ -17,7 +19,7 @@ export function useSigninMutation() {
     },
     onSuccess: (data: PostSigninRes) => {
       tokenStorage.set(data.result.token, data.result.refreshToken);
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
     },
   });
 }

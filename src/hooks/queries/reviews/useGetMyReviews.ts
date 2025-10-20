@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import REVIEW_API from "@/api/reviews";
 import { GetMyReviewsReq } from "@/api/types/reviews";
 
-import { reviewsQueryKeys } from "./queryKey";
+import { QUERY_KEYS } from "../queryKey";
 
 export const useGetMyReviews = ({
   page = 0,
@@ -11,7 +11,7 @@ export const useGetMyReviews = ({
   sort = ["createdAt", "desc"],
 }: Partial<GetMyReviewsReq> = {}) => {
   return useQuery({
-    queryKey: reviewsQueryKeys.myReviews({ page, size, sort }),
+    queryKey: QUERY_KEYS.reviews.myReviews({ page, size, sort }),
     queryFn: () => REVIEW_API.getMyReviews({ page, size, sort }),
     select: (data) => data.result,
   });

@@ -33,7 +33,7 @@ export default function RootLayout({
           <QueryProvider>
             <AuthGuardProvider>
               <Header />
-              <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 md:px-8 md:pt-32">
+              <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 sm:px-8 sm:pt-32">
                 {children}
               </div>
             </AuthGuardProvider>

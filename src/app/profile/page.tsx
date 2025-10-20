@@ -7,7 +7,6 @@ import { PROFILE_TABS } from "@/lib/constants/profile";
 import { UserType } from "@/lib/types/user";
 
 import CreatedSection from "./_components/CreatedSection";
-import EditBtn from "./_components/EditBtn";
 import JoinedSection from "./_components/JoinedSection";
 import PetCardSection from "./_components/PetCardSection";
 import { ProfileCard } from "./_components/ProfileCard";
@@ -22,7 +21,7 @@ const ProfileInfo = ({ user }: { user: UserType }) => (
   <ProfileCard>
     <div className="mb-3 flex items-center justify-between">
       <ProfileCard.Header>내 프로필</ProfileCard.Header>
-      <EditBtn />
+      <ProfileCard.EditBtn userId={user.id} />
     </div>
     <ProfileCard.Content>
       <ProfileCard.Image />

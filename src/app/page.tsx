@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 
-import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { PATH } from "@/lib/constants/path";
-import { useModalStore } from "@/store/modalStore";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 const BUTTON_CN =
   "block w-full rounded bg-gray-400 font-bold px-4 py-2 text-center text-white hover:brightness-90";
 
 export default function Home() {
-  const { isOpen, openModal, closeModal } = useModalStore();
+  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
 
   return (
     <div className="p-8">
@@ -90,11 +89,7 @@ export default function Home() {
         </div>
       </div>
 
-      {isOpen && (
-        <Modal hasCloseButton>
-          <PetInfoModal type="add-pet" onClose={closeModal} />
-        </Modal>
-      )}
+      {isOpen && <PetInfoModal type="add-pet" onClose={closeModal} />}
     </div>
   );
 }

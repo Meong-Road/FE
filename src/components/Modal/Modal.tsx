@@ -1,33 +1,40 @@
-import React from "react";
-
-import { useModalStore } from "@/store/modalStore";
-
-import CloseButton from "../../assets/icons/delete-icon.svg";
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface ModalProps {
-  hasCloseButton?: boolean;
   children: React.ReactNode;
 }
 
-export default function Modal({ hasCloseButton, children }: ModalProps) {
-  const { closeModal } = useModalStore();
+export function Modal({ children }: ModalProps) {
+  useEffect(() => {
+    // 현재 스크롤 위치 저장
+    const scrollY = window.scrollY;
 
-  // 필요시 배경 클릭시 모달 닫기 혹은 esc 버튼 입력 시 모달 닫기 기능 추가
+    // body에 스크롤 방지 스타일 적용 (스크롤바는 유지)
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-card flex max-h-[80vh] min-w-150 flex-col items-center justify-center gap-3 overflow-hidden rounded-xl px-12 py-12">
-        {hasCloseButton && (
-          <button
-            className="ml-auto cursor-pointer"
-            type="button"
-            onClick={closeModal}
-          >
-            <CloseButton />
-          </button>
-        )}
+    // 컴포넌트 언마운트 시 스타일 복원
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
+  if (typeof window === "undefined") return null;
+
+  const modalRoot = document.getElementById("modal-root");
+  if (!modalRoot) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-[2px]">
+      <div className="bg-card animate-scaleIn relative flex h-[85vh] w-full max-w-screen-sm flex-col gap-2 rounded-3xl py-12 shadow-xl sm:rounded-4xl">
         {children}
       </div>
-    </div>
+    </div>,
+    modalRoot,
   );
 }

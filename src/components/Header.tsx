@@ -53,17 +53,17 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-10 flex h-16 w-full items-center justify-center bg-white/70 backdrop-blur-2xl select-none md:h-22",
+        "bg-background/70 fixed top-0 left-0 z-10 flex h-16 w-full items-center justify-center backdrop-blur-lg select-none sm:h-22",
         className,
       )}
     >
-      <div className="flex w-full max-w-[1280px] items-center justify-between px-4 md:px-8">
+      <div className="flex w-full max-w-[1280px] items-center justify-between px-4 sm:px-8">
         <Link href={PATH.HOME} className="shrink-0">
           <Logo width={92} />
         </Link>
 
         {/* Desktop Menu */}
-        <div className="ml-4 hidden w-full items-center justify-between md:flex">
+        <div className="ml-4 hidden w-full items-center justify-between sm:flex">
           <ul className="flex items-center gap-2">
             {HEADER_ITEMS.map((item) => (
               <li key={item.name}>
@@ -95,7 +95,7 @@ export default function Header({ className }: { className?: string }) {
                 side="bottom"
                 align="end"
                 sideOffset={8}
-                className="hidden w-36 md:block"
+                className="hidden w-36 sm:block"
               >
                 <DropdownMenuItem onSelect={() => router.push(PATH.MY_PROFILE)}>
                   마이페이지
@@ -118,12 +118,12 @@ export default function Header({ className }: { className?: string }) {
         {/* Mobile Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Menu className="text-primary h-7 w-7 cursor-pointer md:hidden" />
+            <Menu className="text-primary h-7 w-7 cursor-pointer sm:hidden" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side="bottom"
             align="end"
-            className="w-36 md:hidden"
+            className="w-36 sm:hidden"
           >
             {HEADER_ITEMS.map((item) => (
               <DropdownMenuItem
@@ -145,9 +145,14 @@ export default function Header({ className }: { className?: string }) {
                 </DropdownMenuItem>
               </>
             ) : (
-              <DropdownMenuItem onSelect={() => router.push(PATH.SIGNIN)}>
-                로그인
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem onSelect={() => router.push(PATH.SIGNIN)}>
+                  로그인
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => router.push(PATH.SIGNUP)}>
+                  회원가입
+                </DropdownMenuItem>
+              </>
             )}
           </DropdownMenuContent>
         </DropdownMenu>

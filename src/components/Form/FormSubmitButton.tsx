@@ -8,14 +8,14 @@ import { cn } from "@/lib/utils";
 
 type Props = React.ComponentProps<typeof BaseButton> & {
   isPending?: boolean;
-  isValid?: boolean;
+  disabled?: boolean;
   label: string;
 };
 
 export function SubmitButton({
   className,
   isPending,
-  isValid,
+  disabled = false,
   label,
   ...props
 }: Props) {
@@ -32,7 +32,7 @@ export function SubmitButton({
         className,
       )}
       type="submit"
-      disabled={isPending || !isValid}
+      disabled={disabled}
       {...props}
     >
       {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : label}

@@ -1,11 +1,20 @@
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import { usePostPet, usePutPet } from "@/hooks/queries/pets";
+import { PATH } from "@/lib/constants/path";
+
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";
 
-import { usePetInfoForm } from "./_hooks/usePetInfoForm";
+import {
+  PetInfoFormSchema,
+  PetInfoUpdateSchema,
+} from "./_hooks/usePetInfoForm";
 import { usePetInfoModal } from "./_hooks/usePetInfoModal";
 import { useSkipPetInfo } from "./_hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
-import Modal from ".";
+import { Modal } from ".";
 
 interface RadioOptionType {
   id: string;
@@ -23,42 +32,83 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
   { id: "didnot", label: "중성화 안함", value: "didnot" },
 ];
 
-export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
-  const { isLoading, handleSubmit, initialData, hasChanges } = usePetInfoModal({
-    type,
-    onClose,
-  });
-  const form = usePetInfoForm(
-    type === "edit-pet" && initialData ? initialData : undefined,
-  );
+export default function PetInfoModal({
+  type,
+  hasCloseBtn = true, // 기본값은 true
+  onClose,
+  petId,
+}: PetInfoModalProps) {
+  const router = useRouter();
+  const {
+    form,
+    isLoading: isPetLoading,
+    hasChanges,
+  } = usePetInfoModal({ type, petId });
 
-  const isSubmitDisabled =
-    isLoading ||
-    !form.formState.isValid ||
-    (type === "edit-pet" && hasChanges && !hasChanges(form.getValues()));
+  // mutation
+  const createPetMutation = usePostPet();
+  const updatePetMutation = usePutPet();
+
+  // handleSubmit을 컴포넌트에서 처리
+  const handleSubmit = (data: PetInfoFormSchema | PetInfoUpdateSchema) => {
+    // API 호출
+    if (type === "edit-pet" && petId) {
+      updatePetMutation.mutate(
+        { id: petId, data: data as PetInfoUpdateSchema },
+        {
+          onSuccess: () => {
+            toast.success("반려동물 정보가 수정되었습니다.");
+            onClose();
+            router.push(PATH.REGULAR);
+          },
+          onError: (error: Error) => {
+            toast.error(`반려동물 정보 수정 실패: ${error.message}`);
+          },
+        },
+      );
+    } else {
+      createPetMutation.mutate(data as PetInfoFormSchema, {
+        onSuccess: () => {
+          toast.success("반려동물 정보가 등록되었습니다.");
+          onClose();
+          router.push(PATH.REGULAR);
+        },
+        onError: (error: Error) => {
+          toast.error(`반려동물 정보 등록 실패: ${error.message}`);
+        },
+      });
+    }
+  };
 
   const { mutate: skipPetInfo } = useSkipPetInfo();
 
   const handleSkip = () => {
     skipPetInfo(undefined, {
       onSuccess: () => {
+        toast.success("반려견 정보 입력을 건너뛰었습니다.");
         onClose();
+        router.push(PATH.REGULAR);
+      },
+      onError: (error: Error) => {
+        toast.error(`건너뛰기에 실패했습니다: ${error.message}`);
       },
     });
   };
 
   return (
-    <>
+    <Modal>
+      {hasCloseBtn && <Modal.CloseBtn />}
+
       {type === "first-login" ? (
         <Modal.Title
           title="반려견 정보를 등록해주세요"
           subtitle="마이페이지에서 언제든지 추가 등록이 가능해요 🐶"
         />
       ) : (
-        <Modal.Title title="반려견 정보를 등록해주세요" />
+        <Modal.Title title="반려견 정보를 수정해주세요" />
       )}
 
-      <Modal.ModalContent>
+      <Modal.Content>
         <Form form={form} onSubmit={handleSubmit}>
           {/* 이미지 업로드 */}
           <Form.Field
@@ -170,9 +220,17 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
             )}
           />
           <Form.SubmitButton
+            isPending={
+              createPetMutation.isPending || updatePetMutation.isPending
+            }
+            disabled={
+              isPetLoading || // 펫 조회 로딩
+              createPetMutation.isPending || // 펫 생성 로딩
+              updatePetMutation.isPending || // 펫 수정 로딩
+              !form.formState.isValid || // 폼 유효성 검사 실패
+              (type === "edit-pet" && !hasChanges) // 편집 모드에서 변경사항 없음
+            }
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
-            isValid={form.formState.isValid}
-            disabled={isSubmitDisabled}
           />
         </Form>
 
@@ -185,7 +243,7 @@ export default function PetInfoModal({ type, onClose }: PetInfoModalProps) {
             아직 반려견이 없어요
           </button>
         )}
-      </Modal.ModalContent>
-    </>
+      </Modal.Content>
+    </Modal>
   );
 }

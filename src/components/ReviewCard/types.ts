@@ -50,6 +50,8 @@ export interface ReviewCardHeaderProps {
   nickName: ReviewType["user"]["nickName"];
   score: ReviewType["score"];
   createdAt: ReviewType["createdAt"];
+  reviewId: ReviewType["id"];
+  reviewAuthorId: ReviewType["userId"];
 }
 
 // Body

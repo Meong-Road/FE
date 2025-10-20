@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { gatheringApi } from "@/api/gatherings";
 import { EGatheringType } from "@/lib/types/gatherings";
 
-import { queryKeys } from "../queryKey";
+import { QUERY_KEYS } from "../queryKey";
 
 export function useGetInfiniteBookmarkedGatherings(
   currentTab: EGatheringType,
@@ -11,7 +11,7 @@ export function useGetInfiniteBookmarkedGatherings(
   sort = ["createdAt"],
 ) {
   return useInfiniteQuery({
-    queryKey: queryKeys.gatherings.bookmarkedGatherings(currentTab, {
+    queryKey: QUERY_KEYS.gatherings.bookmarkedGatherings(currentTab, {
       size,
       sort,
     }),

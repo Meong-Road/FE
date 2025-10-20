@@ -24,9 +24,11 @@ export default function ReviewList({ reviews }: ReviewListProps) {
             <div className="flex w-full flex-1 flex-col justify-between">
               <ReviewCard.Header
                 profileImage={review.user.image}
+                reviewId={review.id}
                 score={review.score}
                 nickName={review.user.nickName}
                 createdAt={review.createdAt}
+                reviewAuthorId={review.userId}
               />
               <ReviewCard.Body
                 gatheringName={review.gathering.name}

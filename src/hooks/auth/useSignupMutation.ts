@@ -7,6 +7,8 @@ import { authApi } from "@/api/auth";
 import { PostSignupRes } from "@/api/types/auth";
 import { tokenStorage } from "@/lib/utils/token";
 
+import { QUERY_KEYS } from "../queries/queryKey";
+
 import { SignupFormSchema } from "./useSignupForm";
 
 export function useSignupMutation() {
@@ -18,7 +20,7 @@ export function useSignupMutation() {
     },
     onSuccess: (data: PostSignupRes) => {
       tokenStorage.set(data.result.token, null); // signup은 아직 리프레시 없음
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
     },
   });
 }

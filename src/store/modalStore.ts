@@ -1,21 +1,56 @@
 import { create } from "zustand";
 
-type ModalType = "first-login" | "add-pet" | "edit-pet" | null;
+type PetInfoModalType = "first-login" | "add-pet" | "edit-pet" | null;
+type UserInfoModalType = "edit-user" | null;
+type ReviewInfoModalType = "edit-review" | "add-review" | null;
 
-interface ModalStore {
+interface PetInfoModalStoreProps {
   isOpen: boolean;
-  // 추가
-  modalType: ModalType;
-  // 파라미터 추가
-  openModal: (type: ModalType) => void;
+  modalType: PetInfoModalType;
+  petId?: number; // 편집 모드일 때 사용할 펫 ID
+  openModal: (type: PetInfoModalType, petId?: number) => void;
   closeModal: () => void;
 }
 
-export const useModalStore = create<ModalStore>((set) => ({
+export const usePetInfoModalStore = create<PetInfoModalStoreProps>((set) => ({
   isOpen: false,
-  // 추가
-  modalType: null,
-  // 파라미터 추가
-  openModal: (type) => set({ isOpen: true, modalType: type }),
-  closeModal: () => set({ isOpen: false }),
+  modalType: null as PetInfoModalType,
+  petId: undefined,
+  openModal: (type, petId?: number) =>
+    set({ isOpen: true, modalType: type, petId }),
+  closeModal: () => set({ isOpen: false, modalType: null, petId: undefined }),
 }));
+
+interface UserInfoModalStoreProps {
+  isOpen: boolean;
+  modalType: UserInfoModalType;
+  userId?: number; // 편집 모드일 때 사용할 유저 ID
+  openModal: (type: UserInfoModalType, userId?: number) => void;
+  closeModal: () => void;
+}
+export const useUserInfoModalStore = create<UserInfoModalStoreProps>((set) => ({
+  isOpen: false,
+  modalType: null as UserInfoModalType,
+  userId: undefined,
+  openModal: (type, userId) => set({ isOpen: true, modalType: type, userId }),
+  closeModal: () => set({ isOpen: false, modalType: null, userId: undefined }),
+}));
+
+interface ReviewInfoModalStoreProps {
+  isOpen: boolean;
+  modalType: ReviewInfoModalType;
+  reviewId?: number; // 편집 모드일 때 사용할 리뷰 ID
+  openModal: (type: ReviewInfoModalType, reviewId?: number) => void;
+  closeModal: () => void;
+}
+export const useReviewInfoModalStore = create<ReviewInfoModalStoreProps>(
+  (set) => ({
+    isOpen: false,
+    modalType: null as ReviewInfoModalType,
+    reviewId: undefined,
+    openModal: (type, reviewId?) =>
+      set({ isOpen: true, modalType: type, reviewId }),
+    closeModal: () =>
+      set({ isOpen: false, modalType: null, reviewId: undefined }),
+  }),
+);

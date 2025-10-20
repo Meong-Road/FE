@@ -4,12 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
-import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { SigninFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
 import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
 import { PATH } from "@/lib/constants/path";
-import { useModalStore } from "@/store/modalStore";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 export default function SigninForm() {
   const form = useSigninForm();
@@ -18,7 +17,7 @@ export default function SigninForm() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
 
-  const { isOpen, openModal, closeModal } = useModalStore();
+  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
 
   const handleSubmit = (data: SigninFormSchema) => {
     signinMutate(data, {
@@ -34,14 +33,18 @@ export default function SigninForm() {
         router.push(redirectUrl || PATH.REGULAR);
       },
       onError: (error: Error) => {
-        toast.error(`로그인에 실패했습니다. \n${error.message}`);
+        toast.error(`로그인 실패: ${error.message}`);
       },
     });
   };
 
   return (
     <>
-      <Form form={form} onSubmit={handleSubmit}>
+      <Form
+        form={form}
+        onSubmit={handleSubmit}
+        className="max-w-lg rounded-4xl"
+      >
         <Form.Title>로그인</Form.Title>
 
         {/* 이메일 */}
@@ -86,7 +89,7 @@ export default function SigninForm() {
         {/* 로그인 버튼 */}
         <Form.SubmitButton
           isPending={isPending}
-          isValid={form.formState.isValid}
+          disabled={!form.formState.isValid || isPending}
           label="로그인"
         />
 
@@ -98,9 +101,11 @@ export default function SigninForm() {
       </Form>
 
       {isOpen && (
-        <Modal>
-          <PetInfoModal type="first-login" onClose={closeModal} />
-        </Modal>
+        <PetInfoModal
+          type="first-login"
+          onClose={closeModal}
+          hasCloseBtn={false}
+        />
       )}
     </>
   );

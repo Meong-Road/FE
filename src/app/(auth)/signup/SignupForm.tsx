@@ -5,19 +5,18 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
-import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 import { PATH } from "@/lib/constants/path";
-import { useModalStore } from "@/store/modalStore";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 export default function SignupForm() {
   const form = useSignupForm();
   const { mutate: signupMutate, isPending } = useSignupMutation();
   const router = useRouter();
 
-  const { isOpen, openModal, closeModal } = useModalStore();
+  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
 
   const handleSubmit = (data: SignupFormSchema) =>
     signupMutate(data, {
@@ -32,13 +31,17 @@ export default function SignupForm() {
         router.push(PATH.REGULAR);
       },
       onError: (error: Error) => {
-        toast.error(`회원가입에 실패했습니다. \n${error.message}`);
+        toast.error(`회원가입 실패: ${error.message}`);
       },
     });
 
   return (
     <>
-      <Form form={form} onSubmit={handleSubmit}>
+      <Form
+        form={form}
+        onSubmit={handleSubmit}
+        className="max-w-lg rounded-4xl"
+      >
         <Form.Title>회원가입</Form.Title>
 
         {/* 이름 */}
@@ -130,7 +133,7 @@ export default function SignupForm() {
         {/* 회원가입 버튼 */}
         <Form.SubmitButton
           isPending={isPending}
-          isValid={form.formState.isValid}
+          disabled={isPending || !form.formState.isValid}
           label="회원가입"
         />
 
@@ -142,9 +145,11 @@ export default function SignupForm() {
       </Form>
 
       {isOpen && (
-        <Modal>
-          <PetInfoModal type="first-login" onClose={closeModal} />
-        </Modal>
+        <PetInfoModal
+          type="first-login"
+          onClose={closeModal}
+          hasCloseBtn={false}
+        />
       )}
     </>
   );

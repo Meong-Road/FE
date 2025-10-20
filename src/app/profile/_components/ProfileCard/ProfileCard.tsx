@@ -1,4 +1,5 @@
 import { ProfileCardContent } from "./ProfileCardContent";
+import { ProfileCardEditBtn } from "./ProfileCardEditBtn";
 import { ProfileCardHeader } from "./ProfileCardHeader";
 import { ProfileCardImage } from "./ProfileCardImage";
 import { ProfileCardInfo } from "./ProfileCardInfo";
@@ -18,3 +19,4 @@ ProfileCard.Content = ProfileCardContent;
 ProfileCard.Image = ProfileCardImage;
 ProfileCard.Name = ProfileCardName;
 ProfileCard.Info = ProfileCardInfo;
+ProfileCard.EditBtn = ProfileCardEditBtn;

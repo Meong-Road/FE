@@ -5,33 +5,36 @@ import {
   ErrorState,
   ListContainer,
   LoadingState,
+  SectionWrapper,
 } from "@/components/common";
-import Modal from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { useGetMyPets } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
 import { processPetInfo } from "@/lib/utils/pet";
-import { useModalStore } from "@/store/modalStore";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 import { PetAdd } from "./PetAdd";
 import { PetCard } from "./PetCard";
 
-const PetItem = ({ pet }: { pet: ReturnType<typeof processPetInfo> }) => (
-  <PetCard>
-    <PetCard.Image image={pet.image} />
-    <PetCard.Info
-      name={pet.name}
-      age={pet.age}
-      gender={pet.genderText}
-      type={pet.breed}
-    />
-  </PetCard>
-);
+const PetCardItem = ({ pet }: { pet: ReturnType<typeof processPetInfo> }) => {
+  return (
+    <PetCard>
+      <PetCard.Image image={pet.image} />
+      <PetCard.Info
+        name={pet.name}
+        age={pet.age}
+        gender={pet.genderText}
+        type={pet.breed}
+      />
+      <PetCard.EditBtn petId={pet.id} />
+    </PetCard>
+  );
+};
 
 const PetList = ({ pets }: { pets: PetType[] }) => (
   <ListContainer className="flex flex-wrap gap-6">
     {pets.map((pet) => (
-      <PetItem key={pet.id} pet={processPetInfo(pet)} />
+      <PetCardItem key={pet.id} pet={processPetInfo(pet)} />
     ))}
     <PetAdd>
       <PetAdd.Image />
@@ -51,7 +54,7 @@ const PetEmptyState = () => (
 );
 
 export default function PetCardSection() {
-  const { isOpen, modalType, closeModal } = useModalStore();
+  const { isOpen, modalType, petId, closeModal } = usePetInfoModalStore();
   const { data: pets, isLoading, error } = useGetMyPets();
 
   if (isLoading) return <LoadingState message="로딩 중..." />;
@@ -59,12 +62,16 @@ export default function PetCardSection() {
 
   return (
     <>
-      {pets?.length ? <PetList pets={pets} /> : <PetEmptyState />}
+      {pets?.length ? (
+        <SectionWrapper>
+          <PetList pets={pets} />
+        </SectionWrapper>
+      ) : (
+        <PetEmptyState />
+      )}
 
       {isOpen && modalType && (
-        <Modal hasCloseButton>
-          <PetInfoModal type={modalType} onClose={closeModal} />
-        </Modal>
+        <PetInfoModal type={modalType} onClose={closeModal} petId={petId} />
       )}
     </>
   );

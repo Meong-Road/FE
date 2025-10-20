@@ -13,7 +13,7 @@ export default function RegularGatheringCard({
 }: RegularGatheringCardProps) {
   return (
     <Link href={PATH.REGULAR_DETAIL(gathering.id)}>
-      <GatheringCard bgColor="white">
+      <GatheringCard>
         <div className="flex h-full flex-row items-center gap-6">
           {gathering.image && (
             <GatheringCard.Image

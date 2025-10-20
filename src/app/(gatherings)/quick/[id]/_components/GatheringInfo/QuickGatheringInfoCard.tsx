@@ -11,10 +11,7 @@ export default function QuickGatheringInfoCard({
   gathering,
 }: QuickGatheringInfoCardProps) {
   return (
-    <GatheringCard
-      bgColor="white"
-      className="flex-grow border border-[#ddd] px-10"
-    >
+    <GatheringCard className="flex-grow border border-[#ddd] px-10">
       <div className="flex items-start justify-between">
         <div>
           <div className="mb-6 flex items-center gap-2">

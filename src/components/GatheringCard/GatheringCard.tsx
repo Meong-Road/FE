@@ -12,23 +12,14 @@ import { GatheringCardLikeBtn } from "./GatheringCardLikeBtn";
 import { GatheringCardPeople } from "./GatheringCardPeople";
 import { GatheringCardTitle } from "./GatheringCardTitle";
 
-interface GatheringCardProps extends PropsWithChildren {
+export interface GatheringCardProps extends PropsWithChildren {
   className?: string;
-  bgColor: "white" | "gradient";
 }
 
-export function GatheringCard({
-  className,
-  children,
-  bgColor,
-}: GatheringCardProps) {
+export function GatheringCard({ className, children }: GatheringCardProps) {
   return (
     <li
-      className={cn(
-        "relative list-none rounded-4xl p-6",
-        bgColor === "white" ? "bg-white" : "bg-gradient-opacity",
-        className,
-      )}
+      className={cn("relative list-none rounded-4xl bg-white p-6", className)}
     >
       {children}
     </li>

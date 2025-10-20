@@ -2,73 +2,51 @@
 
 import Link from "next/link";
 
-import {
-  EmptyState,
-  ListContainer,
-  LoadingState,
-  SectionWrapper,
-} from "@/components/common";
+import { EmptyState, ListContainer, SectionWrapper } from "@/components/common";
+import InfiniteScroll from "@/components/InfiniteScroll";
+import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
+import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
+import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
 import { useGetInfiniteMyGatherings } from "@/hooks/queries/gatherings";
-import { GatheringType } from "@/lib/types/gatherings";
-import { processGatheringInfo } from "@/lib/utils/gathering";
-
-import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
-
-const CreatedGatheringItem = ({
-  gathering,
-}: {
-  gathering: ReturnType<typeof processGatheringInfo>;
-}) => (
-  <Link href={gathering.detailPath}>
-    <GatheringCard bgColor="gradient">
-      <div className="flex items-center gap-6">
-        <GatheringCard.Image />
-        <div>
-          <div className="mb-4 flex gap-2">
-            <GatheringCard.AttendanceBadge />
-          </div>
-          <GatheringCard.Title>{gathering.name}</GatheringCard.Title>
-          <GatheringCard.People
-            people={gathering.participantCount}
-            limit={gathering.capacity}
-          />
-          <GatheringCard.Info
-            location={gathering.location}
-            date={gathering.dateInfo}
-          />
-        </div>
-      </div>
-    </GatheringCard>
-  </Link>
-);
-
-const CreatedGatheringList = ({
-  gatherings,
-}: {
-  gatherings: GatheringType[];
-}) => (
-  <ListContainer>
-    {gatherings.map((gathering) => (
-      <CreatedGatheringItem
-        key={gathering.id}
-        gathering={processGatheringInfo(gathering)}
-      />
-    ))}
-  </ListContainer>
-);
+import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
+import { EGatheringType } from "@/lib/types/gatherings";
+import { getGatheringDetailPath } from "@/lib/utils/gathering";
 
 export default function CreatedSection() {
-  const { data: gatherings, isPending } = useGetInfiniteMyGatherings({
-    size: 10,
-  });
+  const {
+    data: gatherings,
+    isPending,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetInfiniteMyGatherings(DEFAULT_LIST_OPTIONS);
 
-  if (isPending) return <LoadingState message="로딩 중..." />;
-  if (!gatherings?.length)
+  if (gatherings?.length === 0)
     return <EmptyState message="만든 모임이 없습니다." />;
 
   return (
     <SectionWrapper>
-      <CreatedGatheringList gatherings={gatherings} />
+      <ListContainer>
+        <InfiniteScroll
+          data={gatherings}
+          render={(gathering) => (
+            <Link key={gathering.id} href={getGatheringDetailPath(gathering)}>
+              {gathering.type === EGatheringType.REGULAR ? (
+                <RegularGatheringCard gathering={gathering} />
+              ) : (
+                <QuickGatheringCard gathering={gathering} />
+              )}
+            </Link>
+          )}
+          renderSkeleton={() => <RegularGatheringCardSkeleton />}
+          isPending={isPending}
+          isError={isError}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
+      </ListContainer>
     </SectionWrapper>
   );
 }

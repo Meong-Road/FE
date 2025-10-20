@@ -47,7 +47,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 내가 만든 모임 목록 조회 ================================
-  http.get(`${FULL_API_ENDPOINTS.GATHERING}/my`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/my`, async (req) => {
     const url = new URL(req.request.url);
     const page = Number(url.searchParams.get("page")) || 0;
     const size = Number(url.searchParams.get("size")) || 10;
@@ -61,6 +61,8 @@ export const gatheringsHandlers = [
     const start = page * size;
     const end = start + size;
     const paginated = myGatherings.slice(start, end);
+
+    await delay(1000);
 
     return HttpResponse.json({
       success: true,
@@ -79,7 +81,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 참여한 모임 목록 조회 ================================
-  http.get(`${FULL_API_ENDPOINTS.GATHERING}/joined`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/joined`, async (req) => {
     const url = new URL(req.request.url);
     const page = Number(url.searchParams.get("page")) || 0;
     const size = Number(url.searchParams.get("size")) || 10;
@@ -93,6 +95,8 @@ export const gatheringsHandlers = [
     const start = page * size;
     const end = start + size;
     const paginated = joinedGatherings.slice(start, end);
+
+    await delay(1000);
 
     return HttpResponse.json({
       success: true,

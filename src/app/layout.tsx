@@ -27,23 +27,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <html lang="ko">
-        <body className={`${pretendardVariable.className}`}>
-          <QueryProvider>
-            <MSWProvider>
-              <AuthGuardProvider>
-                <Header />
-                <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 sm:px-8 sm:pt-32">
-                  {children}
-                </div>
-              </AuthGuardProvider>
-              <div id="modal-root"></div>
-              <Toaster />
-            </MSWProvider>
-          </QueryProvider>
-        </body>
-      </html>
-    </>
+    <html lang="ko">
+      <body className={`${pretendardVariable.className}`}>
+        <QueryProvider>
+          <MSWProvider>
+            <AuthGuardProvider>
+              <Header />
+              <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 sm:px-8 sm:pt-32">
+                {children}
+              </div>
+            </AuthGuardProvider>
+            <div id="modal-root"></div>
+            <Toaster />
+          </MSWProvider>
+        </QueryProvider>
+      </body>
+    </html>
   );
 }

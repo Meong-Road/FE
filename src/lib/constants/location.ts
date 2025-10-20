@@ -1,5 +1,4 @@
 export const SEOUL_DISTRICTS = [
-  "서울 전체",
   "강남구",
   "강동구",
   "강북구",
@@ -24,4 +23,11 @@ export const SEOUL_DISTRICTS = [
   "종로구",
   "중구",
   "중랑구",
+] as const;
+
+export const SEOUL_ALL = "서울 전체";
+
+export const SEOUL_DISTRICTS_WITH_ALL = [
+  SEOUL_ALL,
+  ...SEOUL_DISTRICTS,
 ] as const;

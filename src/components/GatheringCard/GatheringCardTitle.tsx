@@ -1,6 +1,10 @@
+import { PropsWithChildren } from "react";
+
 import { cn } from "@/lib/utils";
 
-import { GatheringCardTitleProps } from "./types";
+interface GatheringCardTitleProps extends PropsWithChildren {
+  className?: string;
+}
 
 export function GatheringCardTitle({
   className,

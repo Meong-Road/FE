@@ -15,7 +15,7 @@ import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 const REVIEW_API = {
   getReviews: ({
-    location = null,
+    location,
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
@@ -24,7 +24,7 @@ const REVIEW_API = {
       `${API_ENDPOINTS.REVIEW}?${qs.stringify({ location, page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
-  getReviewDashboard: ({ location = null }: GetReviewDashboardReq) => {
+  getReviewDashboard: ({ location }: GetReviewDashboardReq) => {
     return customFetch.get<GetReviewDashboardRes>(
       `${API_ENDPOINTS.REVIEW}/scores?${qs.stringify({ location }, { arrayFormat: "comma" })}`,
     );

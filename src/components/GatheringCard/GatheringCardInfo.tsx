@@ -1,7 +1,6 @@
+import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 import { formatDays } from "@/lib/utils/dateTime";
-
-import { GatheringCardInfoProps } from "./types";
 
 function TextWrapper({ children }: { children: React.ReactNode }) {
   return <div className="flex items-center gap-1.5">{children}</div>;
@@ -19,6 +18,14 @@ function Content({ children }: { children: React.ReactNode }) {
 
 function Bar() {
   return <div className="h-2 w-0.5 bg-slate-200"></div>;
+}
+
+interface GatheringCardInfoProps {
+  className?: string;
+  location: GatheringType["location"];
+  date?: string;
+  time?: string;
+  days?: string;
 }
 
 export function GatheringCardInfo({

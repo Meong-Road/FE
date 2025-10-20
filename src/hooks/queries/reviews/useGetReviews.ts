@@ -6,7 +6,7 @@ import { GetReviewsReq } from "@/api/types/reviews";
 import { queryKeys } from "../queryKey";
 
 export function useGetReviews({
-  location = null,
+  location,
   page = 0,
   size = 10,
   sort = ["createdAt", "desc"],

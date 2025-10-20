@@ -1,5 +1,5 @@
 import {
-  LocationType,
+  LocationParamType,
   ReviewDashboardType,
   ReviewType,
 } from "@/lib/types/reviews";
@@ -7,12 +7,12 @@ import {
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
 export interface GetReviewsReq extends PaginationReq {
-  location: LocationType;
+  location: LocationParamType;
 }
 export type GetReviewsRes = Response<PaginatedRes<ReviewType>>;
 
 export interface GetReviewDashboardReq {
-  location: LocationType;
+  location: LocationParamType;
 }
 export type GetReviewDashboardRes = Response<ReviewDashboardType>;
 
@@ -22,7 +22,7 @@ export interface GetReviewsByGatheringReq extends PaginationReq {
 export type GetReviewsByGatheringRes = Response<PaginatedRes<ReviewType>>;
 
 export interface ReviewFilters {
-  location: LocationType;
+  location: LocationParamType;
   gatheringId: ReviewType["gatheringId"];
 }
 

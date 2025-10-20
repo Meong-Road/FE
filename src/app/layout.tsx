@@ -29,8 +29,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendardVariable.className}`}>
-        <QueryProvider>
-          <MSWProvider>
+        <MSWProvider>
+          <QueryProvider>
             <AuthGuardProvider>
               <Header />
               <div className="relative mx-auto max-w-[1280px] min-w-0 scroll-pt-32 px-4 pt-26 pb-8 md:px-8 md:pt-32">
@@ -39,8 +39,8 @@ export default function RootLayout({
             </AuthGuardProvider>
             <div id="modal-root"></div>
             <Toaster />
-          </MSWProvider>
-        </QueryProvider>
+          </QueryProvider>
+        </MSWProvider>
       </body>
     </html>
   );

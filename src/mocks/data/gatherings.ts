@@ -12,7 +12,8 @@ export const QUICK_GATHERINGS = [
     location: "여의도 한강공원",
     participantCount: 5,
     capacity: 10,
-    image: "/images/hanriver-walk.jpg",
+    image:
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=600&fit=crop",
     isPetRequired: true,
     isParticipating: true,
     canceledAt: null,
@@ -28,7 +29,8 @@ export const QUICK_GATHERINGS = [
     location: "홍대 카페거리",
     participantCount: 3,
     capacity: 3,
-    image: "/images/coffee.jpg",
+    image:
+      "https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=800&h=600&fit=crop",
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,
@@ -43,7 +45,8 @@ export const QUICK_GATHERINGS = [
     location: "서울숲 반려견 놀이터",
     participantCount: 0,
     capacity: 15,
-    image: "/images/park.jpg",
+    image:
+      "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?w=800&h=600&fit=crop",
     isPetRequired: true,
     isParticipating: false,
     canceledAt: new Date("2025-09-27T08:00:00"),
@@ -59,7 +62,8 @@ export const QUICK_GATHERINGS = [
     location: "잠실 석촌호수",
     participantCount: 10,
     capacity: 10,
-    image: "/images/night-walk.jpg",
+    image:
+      "https://images.unsplash.com/photo-1568393691622-c7ba131d63b4?w=800&h=600&fit=crop",
     isPetRequired: true,
     isParticipating: true,
     canceledAt: null,
@@ -74,7 +78,8 @@ export const QUICK_GATHERINGS = [
     location: "뚝섬유원지",
     participantCount: 2,
     capacity: 5,
-    image: "/images/morning-jog.jpg",
+    image:
+      "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=800&h=600&fit=crop",
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,
@@ -90,7 +95,7 @@ export const QUICK_GATHERINGS = [
     location: "합정 애견카페",
     participantCount: 8,
     capacity: 12,
-    image: "/images/indoor-cafe.jpg",
+    image: null,
     isPetRequired: true,
     isParticipating: true,
     canceledAt: null,
@@ -105,7 +110,8 @@ export const QUICK_GATHERINGS = [
     location: "망원 한강공원",
     participantCount: 1,
     capacity: 5,
-    image: "/images/random.jpg",
+    image:
+      "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&h=600&fit=crop",
     isPetRequired: false,
     isParticipating: false,
     canceledAt: null,

@@ -16,12 +16,7 @@ export default function QuickGatheringCard({
     <Link href={PATH.QUICK_DETAIL(gathering.id)}>
       <GatheringCard>
         <div className="flex h-full flex-row items-center gap-6">
-          {gathering.image && (
-            <GatheringCard.Image
-            // src={gathering.image}
-            // alt={gathering.name}
-            />
-          )}
+          <GatheringCard.Image src={gathering.image} alt={gathering.name} />
           <div className="flex h-full flex-grow flex-col justify-between gap-y-11 py-2">
             <div className="flex items-start justify-between gap-x-2">
               <div className="flex flex-col gap-y-4">

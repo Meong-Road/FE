@@ -1,11 +1,10 @@
-import Image from "next/image";
-
-import ProfileSvg from "@/assets/images/profile.svg";
 import { GatheringCard } from "@/components/GatheringCard";
 import ProgressBar from "@/components/ProgressBar";
 import { useGet4Participants } from "@/hooks/queries/gatherings/useGet4Participants";
 import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 import { formatDate } from "@/lib/utils/dateTime";
+
+import ParticipantImage from "./ParticipantImage";
 
 interface GatheringInfoCardProps {
   gathering: GatheringType;
@@ -56,28 +55,11 @@ export default function GatheringInfoCard({
           <div className="flex space-x-[-10px]">
             {/* // TODO 참여자들의 이미지 최대 4개를 보여준다 */}
             {participants?.map((participant) => (
-              <div
+              <ParticipantImage
                 key={participant.id}
-                className="relative size-7 overflow-hidden rounded-full"
-              >
-                {participant.image ? (
-                  <Image
-                    src={participant.image ?? ""}
-                    alt={participant.name}
-                    fill
-                    sizes="28px"
-                    className="object-cover"
-                  />
-                ) : (
-                  <ProfileSvg
-                    width={28}
-                    height={28}
-                    className="cursor-pointer rounded-full border border-[#DDDDDD] bg-white"
-                  />
-                )}
-              </div>
+                participant={participant}
+              />
             ))}
-
             {gathering.participantCount > 4 && (
               <div className="bg-secondary text-primary z-10 flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold">
                 +{gathering.participantCount - 4}

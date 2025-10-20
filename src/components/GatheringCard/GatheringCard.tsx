@@ -19,7 +19,10 @@ export interface GatheringCardProps extends PropsWithChildren {
 export function GatheringCard({ className, children }: GatheringCardProps) {
   return (
     <li
-      className={cn("relative list-none rounded-4xl bg-white p-6", className)}
+      className={cn(
+        "relative list-none rounded-4xl border border-[#ddd] bg-white p-6",
+        className,
+      )}
     >
       {children}
     </li>

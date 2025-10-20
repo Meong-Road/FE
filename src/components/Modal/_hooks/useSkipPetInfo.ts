@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 import { userApi } from "@/api/user";
 import { QUERY_KEYS } from "@/hooks/queries/queryKey";
@@ -15,10 +14,6 @@ export function useSkipPetInfo() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pets.myPets() });
-    },
-
-    onError: (error: Error) => {
-      console.error("Pet submission error:", error);
     },
   });
 }

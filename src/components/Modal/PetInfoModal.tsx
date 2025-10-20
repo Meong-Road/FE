@@ -1,6 +1,8 @@
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { usePostPet, usePutPet } from "@/hooks/queries/pets";
+import { PATH } from "@/lib/constants/path";
 
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";
@@ -36,6 +38,7 @@ export default function PetInfoModal({
   onClose,
   petId,
 }: PetInfoModalProps) {
+  const router = useRouter();
   const {
     form,
     isLoading: isPetLoading,
@@ -80,7 +83,12 @@ export default function PetInfoModal({
   const handleSkip = () => {
     skipPetInfo(undefined, {
       onSuccess: () => {
+        toast.success("반려견 정보 건너뛰기 성공");
         onClose();
+        router.push(PATH.REGULAR);
+      },
+      onError: (error: Error) => {
+        toast.error(`건너뛰기에 실패했습니다: ${error.message}`);
       },
     });
   };

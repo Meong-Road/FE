@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SEOUL_DISTRICTS } from "@/lib/constants/location";
+import { SEOUL_ALL, SEOUL_DISTRICTS_WITH_ALL } from "@/lib/constants/location";
 
 export function LocationSelect() {
   const router = useRouter();
@@ -29,11 +29,11 @@ export function LocationSelect() {
   return (
     <Select value={selectedLocation} onValueChange={handleLocationChange}>
       <SelectTrigger className="w-30">
-        <SelectValue placeholder={selectedLocation || "서울 전체"} />
+        <SelectValue placeholder={selectedLocation || SEOUL_ALL} />
         <ChevronDownIcon className="size-6" />
       </SelectTrigger>
       <SelectContent className="max-h-[300px] overflow-y-auto">
-        {SEOUL_DISTRICTS.map((district) => (
+        {SEOUL_DISTRICTS_WITH_ALL.map((district) => (
           <SelectItem key={district} value={district}>
             {district}
           </SelectItem>

@@ -15,7 +15,7 @@ import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 const REVIEW_API = {
   getReviews: ({
-    location = "서울 전체",
+    location,
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],

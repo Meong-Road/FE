@@ -8,6 +8,7 @@ export default function ReviewInfoModal({
   onClose,
   reviewId,
 }: ReviewInfoModalProps) {
+  console.log(type, onClose, reviewId);
   return (
     <>
       <Modal.Title title="리뷰 수정하기" />

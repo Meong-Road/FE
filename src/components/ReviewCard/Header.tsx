@@ -1,3 +1,5 @@
+import { useAuth } from "@/hooks/auth";
+
 import { CreatedAt } from "./Review/CreatedAt";
 import { Rating } from "./Review/Rating";
 import { UserAvatar } from "./User/UserAvatar";
@@ -11,7 +13,10 @@ export function Header({
   score,
   createdAt,
   reviewId,
+  reviewAuthorId,
 }: ReviewCardHeaderProps) {
+  const { user } = useAuth();
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -25,7 +30,7 @@ export function Header({
           </div>
         </div>
       </div>
-      <EditBtn reviewId={reviewId} />
+      {user?.id === reviewAuthorId && <EditBtn reviewId={reviewId} />}
     </div>
   );
 }

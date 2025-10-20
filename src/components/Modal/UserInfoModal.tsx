@@ -8,6 +8,7 @@ export default function UserInfoModal({
   onClose,
   userId,
 }: UserInfoModalProps) {
+  console.log(type, onClose, userId);
   return (
     <>
       <Modal.Title title="프로필 수정하기" />

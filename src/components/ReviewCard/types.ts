@@ -51,6 +51,7 @@ export interface ReviewCardHeaderProps {
   score: ReviewType["score"];
   createdAt: ReviewType["createdAt"];
   reviewId: ReviewType["id"];
+  reviewAuthorId: ReviewType["userId"];
 }
 
 // Body

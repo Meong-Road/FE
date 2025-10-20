@@ -32,6 +32,7 @@ const ReviewItem = ({
           score={review.score}
           nickName={review.user.nickName}
           createdAt={review.createdAt}
+          reviewAuthorId={review.userId}
         />
 
         {/* 본문: 모임 정보 + 코멘트 */}

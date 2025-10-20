@@ -5,19 +5,30 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
+import Modal from "@/components/Modal/Modal";
+import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 import { PATH } from "@/lib/constants/path";
+import { useModalStore } from "@/store/modalStore";
 
 export default function SignupForm() {
   const form = useSignupForm();
   const { mutate: signupMutate, isPending } = useSignupMutation();
   const router = useRouter();
 
+  const { isOpen, openModal, closeModal } = useModalStore();
+
   const handleSubmit = (data: SignupFormSchema) =>
     signupMutate(data, {
-      onSuccess: () => {
+      onSuccess: (res) => {
         toast.success("회원가입에 성공했습니다.");
+
+        if (!res.result.user.isPetInfoSubmitted) {
+          openModal("first-login");
+          return;
+        }
+
         router.push(PATH.REGULAR);
       },
       onError: (error: Error) => {
@@ -129,6 +140,12 @@ export default function SignupForm() {
         {/* 로그인 링크 */}
         <Form.LoginLink />
       </Form>
+
+      {isOpen && (
+        <Modal hasCloseButton>
+          <PetInfoModal type="first-login" onClose={closeModal} />
+        </Modal>
+      )}
     </>
   );
 }

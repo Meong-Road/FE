@@ -24,7 +24,7 @@ export function usePetInfoModal({
     type === "edit-pet" && initialData ? initialData : undefined,
   );
 
-  // 변경사항 체크 함수 (Option 2)
+  // 변경사항 체크 함수
   const hasChanges = useMemo(() => {
     if (type === "first-login") return undefined; // first-login은 변경사항 체크 안함
     if (type === "edit-pet" && initialData) {

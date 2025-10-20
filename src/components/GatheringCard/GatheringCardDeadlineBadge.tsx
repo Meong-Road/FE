@@ -1,7 +1,10 @@
 import Alarm from "@/assets/icons/alarm.svg";
+import { GatheringType } from "@/lib/types/gatherings";
 import { getRegistrationDeadlineInfo } from "@/lib/utils/dateTime";
 
-import { GatheringCardDeadlineBadgeProps } from "./types";
+interface GatheringCardDeadlineBadgeProps {
+  registrationEnd: GatheringType["registrationEnd"];
+}
 
 export default function GatheringCardDeadlineBadge({
   registrationEnd,

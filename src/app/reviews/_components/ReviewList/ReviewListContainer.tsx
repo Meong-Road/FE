@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { useGetReviews } from "@/hooks/queries/reviews";
-import { parseLocationParam } from "@/lib/utils/typeGuard";
+import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
+import { parseLocationParam } from "@/lib/utils/param";
 
 import ReviewList from "./ReviewList";
 
@@ -21,8 +22,7 @@ export default function ReviewListContainer() {
   } = useGetReviews({
     location,
     page,
-    size: 10,
-    sort: ["createdAt", "desc"],
+    ...DEFAULT_LIST_OPTIONS,
   });
 
   if (isPending) {

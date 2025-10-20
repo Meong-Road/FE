@@ -15,7 +15,7 @@ import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 
-export interface GatheringCardLikeBtnProps {
+interface GatheringCardLikeBtnProps {
   className?: string;
   id: GatheringType["id"];
 }

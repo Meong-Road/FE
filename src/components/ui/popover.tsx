@@ -12,9 +12,19 @@ function Popover({
 }
 
 function PopoverTrigger({
+  className,
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
+  return (
+    <PopoverPrimitive.Trigger
+      data-slot="popover-trigger"
+      className={cn(
+        "flex items-center gap-2 rounded-md bg-[#EEEEEE] px-3 py-2 text-base font-medium whitespace-nowrap text-[#606060]",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 function PopoverContent({

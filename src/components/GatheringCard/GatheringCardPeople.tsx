@@ -1,6 +1,9 @@
 import Person from "@/assets/images/person.svg";
 
-import { type GatheringCardPeopleProps } from "./types";
+interface GatheringCardPeopleProps {
+  people: number;
+  limit: number;
+}
 
 export function GatheringCardPeople({
   people,

@@ -13,7 +13,7 @@ export const reviewsHandlers = [
     const size = Number(url.searchParams.get("size") ?? 10);
 
     const filtered = (() => {
-      if (!location || location === "서울 전체") {
+      if (!location) {
         return mockReviews;
       }
       return mockReviews.filter((r) => r.gathering.location === location);

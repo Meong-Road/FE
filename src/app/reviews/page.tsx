@@ -1,8 +1,6 @@
-import {
-  LocationSelect,
-  ReviewDashboardContainer,
-  ReviewListContainer,
-} from "./_components";
+import { LocationSelect } from "@/components/widget/filters/LocationSelect";
+
+import { ReviewDashboardContainer, ReviewListContainer } from "./_components";
 
 export default function ReviewsPage() {
   return (

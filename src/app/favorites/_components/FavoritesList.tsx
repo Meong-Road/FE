@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
-import QuickGatheringCard from "@/app/_components/QuickGatheringCard";
-import RegularGatheringCard from "@/app/_components/RegularGatheringCard";
+import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
+import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
 import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
 import { EGatheringType } from "@/lib/types/gatherings";
 

@@ -1,3 +1,5 @@
+import { PropsWithChildren } from "react";
+
 import { cn } from "@/lib/utils";
 
 import { GatheringCardAttendanceBadge } from "./GatheringCardAttendanceBadge";
@@ -9,7 +11,11 @@ import { GatheringCardJoinBtn } from "./GatheringCardJoinBtn";
 import { GatheringCardLikeBtn } from "./GatheringCardLikeBtn";
 import { GatheringCardPeople } from "./GatheringCardPeople";
 import { GatheringCardTitle } from "./GatheringCardTitle";
-import { type GatheringCardProps } from "./types";
+
+interface GatheringCardProps extends PropsWithChildren {
+  className?: string;
+  bgColor: "white" | "gradient";
+}
 
 export function GatheringCard({
   className,

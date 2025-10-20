@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { userApi } from "@/api/user";
+import { QUERY_KEYS } from "@/hooks/queries/queryKey";
 
 export function useSkipPetInfo() {
   const queryClient = useQueryClient();
@@ -12,8 +13,8 @@ export function useSkipPetInfo() {
     mutationFn: () => userApi.updatePetInfoSubmitted(),
 
     onSuccess: () => {
-      toast.success("반려동물 정보가 등록되었습니다.");
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pets.myPets() });
     },
 
     onError: (error: Error) => {

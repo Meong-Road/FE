@@ -1,4 +1,4 @@
-export { gatheringsQueryKeys } from "./queryKey";
+export { GATHERINGS_QUERY_KEYS } from "./queryKey";
 export { useCancelLike } from "./useCancelLike";
 export { useGetGatheringDetail } from "./useGetGatheringDetail";
 export { useGetInfiniteBookmarkedGatherings } from "./useGetInfiniteBookmarkedGatherings";

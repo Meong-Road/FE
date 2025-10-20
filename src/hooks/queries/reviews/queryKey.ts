@@ -2,18 +2,18 @@ import { PaginationReq } from "@/api/types/common";
 import { GetReviewDashboardReq } from "@/api/types/reviews";
 import { LocationParamType } from "@/lib/types/reviews";
 
-export const reviewsQueryKeys = {
+export const REVIEWS_QUERY_KEYS = {
   all: () => ["reviews"] as const,
-  lists: () => [...reviewsQueryKeys.all(), "list"] as const,
+  lists: () => [...REVIEWS_QUERY_KEYS.all(), "list"] as const,
   list: (
     pagination: Partial<PaginationReq>,
     filters: { location?: LocationParamType; gatheringId?: number },
-  ) => [...reviewsQueryKeys.lists(), pagination, filters] as const,
-  dashboards: () => [...reviewsQueryKeys.all(), "dashboard"] as const,
+  ) => [...REVIEWS_QUERY_KEYS.lists(), pagination, filters] as const,
+  dashboards: () => [...REVIEWS_QUERY_KEYS.all(), "dashboard"] as const,
   dashboard: ({ location }: GetReviewDashboardReq) => [
-    ...reviewsQueryKeys.dashboards(),
+    ...REVIEWS_QUERY_KEYS.dashboards(),
     location,
   ],
   myReviews: (pagination: Partial<PaginationReq>) =>
-    [...reviewsQueryKeys.all(), "my", pagination] as const,
+    [...REVIEWS_QUERY_KEYS.all(), "my", pagination] as const,
 };

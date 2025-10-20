@@ -5,7 +5,7 @@ import { PaginationReq } from "@/api/types/common";
 import { GetQuickGatheringsReq } from "@/api/types/gatherings";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
-import { queryKeys } from "../queryKey";
+import { QUERY_KEYS } from "../queryKey";
 
 interface UseGetInfiniteQuickGatheringsProps
   extends Omit<GetQuickGatheringsReq, keyof PaginationReq>,
@@ -16,7 +16,7 @@ export function useGetInfiniteQuickGatherings({
   sort = DEFAULT_LIST_OPTIONS.sort,
 }: UseGetInfiniteQuickGatheringsProps) {
   return useInfiniteQuery({
-    queryKey: queryKeys.gatherings.quickList({
+    queryKey: QUERY_KEYS.gatherings.quickList({
       size,
       sort,
     }),

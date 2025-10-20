@@ -41,7 +41,11 @@ export default function SigninForm() {
 
   return (
     <>
-      <Form form={form} onSubmit={handleSubmit}>
+      <Form
+        form={form}
+        onSubmit={handleSubmit}
+        className="max-w-lg rounded-4xl"
+      >
         <Form.Title>로그인</Form.Title>
 
         {/* 이메일 */}

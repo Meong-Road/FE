@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import REVIEW_API from "@/api/reviews";
 import { GetReviewsReq } from "@/api/types/reviews";
 
-import { queryKeys } from "../queryKey";
+import { QUERY_KEYS } from "../queryKey";
 
 export function useGetReviews({
   location,
@@ -12,7 +12,7 @@ export function useGetReviews({
   sort = ["createdAt", "desc"],
 }: GetReviewsReq) {
   return useQuery({
-    queryKey: queryKeys.reviews.list({ page, size, sort }, { location }),
+    queryKey: QUERY_KEYS.reviews.list({ page, size, sort }, { location }),
     queryFn: () => REVIEW_API.getReviews({ location, page, size, sort }),
   });
 }

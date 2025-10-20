@@ -4,7 +4,7 @@ import { gatheringApi } from "@/api/gatherings";
 import { PaginationReq } from "@/api/types/common";
 import { GetJoinedGatheringsReq } from "@/api/types/gatherings";
 
-import { queryKeys } from "../queryKey";
+import { QUERY_KEYS } from "../queryKey";
 
 export const useGetInfiniteJoinedGatherings = ({
   size = 10,
@@ -12,7 +12,7 @@ export const useGetInfiniteJoinedGatherings = ({
 }: Omit<GetJoinedGatheringsReq, keyof PaginationReq> &
   Partial<PaginationReq>) => {
   return useInfiniteQuery({
-    queryKey: queryKeys.gatherings.joinedGatherings({ size, sort }),
+    queryKey: QUERY_KEYS.gatherings.joinedGatherings({ size, sort }),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getJoinedGatherings({ page: pageParam, size, sort });
     },

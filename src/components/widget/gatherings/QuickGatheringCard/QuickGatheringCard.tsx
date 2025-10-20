@@ -48,7 +48,7 @@ export default function QuickGatheringCard({
                   date={formatDate(gathering.dateTime)}
                 />
               </div>
-              <GatheringCard.JoinBtn />
+              <GatheringCard.JoinBtn gathering={gathering} />
             </div>
           </div>
         </div>

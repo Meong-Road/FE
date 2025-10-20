@@ -43,7 +43,10 @@ const JoinedGatheringItem = ({
         id={gathering.id}
         className="absolute top-8 right-6"
       />
-      <GatheringCard.JoinBtn className="absolute right-6 bottom-6" />
+      <GatheringCard.JoinBtn
+        className="absolute right-6 bottom-6"
+        gathering={gathering}
+      />
     </GatheringCard>
   </Link>
 );

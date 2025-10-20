@@ -314,8 +314,16 @@ export const REGULAR_GATHERINGS = [
 // 찜하기 상태 관리
 export const isLikedSet = new Set<string>(["1", "2", "4", "11", "12", "14"]);
 
-export const GATHERING_DETAILS = {
-  ...QUICK_GATHERINGS[0],
-  days: "",
-  time: "",
+export const GATHERING_DETAILS = (id: number) => {
+  const gathering =
+    REGULAR_GATHERINGS.find((g) => g.id === id) ??
+    QUICK_GATHERINGS.find((g) => g.id === id);
+
+  if (!gathering) return null;
+
+  return {
+    ...QUICK_GATHERINGS[0],
+    days: "",
+    time: "",
+  };
 };

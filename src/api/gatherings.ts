@@ -4,6 +4,8 @@ import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
+  DeleteJoinGatheringReq,
+  DeleteJoinGatheringRes,
   DeleteLikeReq,
   DeleteLikeRes,
   GetGatheringReq,
@@ -20,6 +22,8 @@ import {
   GetQuickGatheringsRes,
   GetRegularGatheringsReq,
   GetRegularGatheringsRes,
+  PostJoinGatheringReq,
+  PostJoinGatheringRes,
   PostLikeReq,
   PostLikeRes,
 } from "./types/gatherings";
@@ -77,6 +81,18 @@ export const gatheringApi = {
   }: GetJoinedGatheringsReq) => {
     return customFetch.get<GetJoinedGatheringsRes>(
       `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+    );
+  },
+  // POST /meong-road/gatherings/{gatheringId}/join - 모임 참여
+  joinGathering: ({ id }: PostJoinGatheringReq) => {
+    return customFetch.post<PostJoinGatheringRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/join`,
+    );
+  },
+  // Delete /meong-road/gatherings/{gatheringId}/leave - 모임 참여 취소
+  cancelJoinGathering: ({ id }: DeleteJoinGatheringReq) => {
+    return customFetch.delete<DeleteJoinGatheringRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/leave`,
     );
   },
   // 내가 찜한 모임 목록 조회

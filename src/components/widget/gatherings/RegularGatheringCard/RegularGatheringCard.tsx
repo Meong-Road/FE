@@ -47,7 +47,7 @@ export default function RegularGatheringCard({
                   days={gathering.days}
                 />
               </div>
-              <GatheringCard.JoinBtn />
+              <GatheringCard.JoinBtn gathering={gathering} />
             </div>
           </div>
         </div>

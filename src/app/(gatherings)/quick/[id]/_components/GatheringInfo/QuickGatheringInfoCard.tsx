@@ -35,7 +35,7 @@ export default function QuickGatheringInfoCard({
         date={formatDate(gathering.dateTime)}
       />
       <div className="mb-6 justify-self-end">
-        <GatheringCard.JoinBtn />
+        <GatheringCard.JoinBtn gathering={gathering} />
       </div>
       <div className="mb-6 border border-dashed border-[#E5E7EB]"></div>
       <div className="mb-3 flex items-center justify-between">

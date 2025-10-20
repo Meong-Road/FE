@@ -110,6 +110,78 @@ export const gatheringsHandlers = [
     });
   }),
 
+  //================= 모임 참여 ================================
+  http.post(`${FULL_API_ENDPOINTS.GATHERING}/:id/join`, (req) => {
+    const id = req.params.id;
+    const gathering =
+      REGULAR_GATHERINGS.find((g) => g.id === Number(id)) ??
+      QUICK_GATHERINGS.find((g) => g.id === Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    if (gathering.isParticipating)
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "이미 참여한 모임입니다",
+        result: null,
+        errorCode: "ALREADY_JOINED",
+      });
+
+    gathering.isParticipating = true;
+
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: "모임에 참여했습니다",
+      errorCode: null,
+    });
+  }),
+
+  //================= 모임 참여 취소 ================================
+  http.delete(`${FULL_API_ENDPOINTS.GATHERING}/:id/leave`, (req) => {
+    const id = req.params.id;
+    const gathering =
+      REGULAR_GATHERINGS.find((g) => g.id === Number(id)) ??
+      QUICK_GATHERINGS.find((g) => g.id === Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    if (!gathering.isParticipating)
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "이미 참여하지 않은 모임입니다",
+        result: null,
+        errorCode: "NOT_JOINED",
+      });
+
+    gathering.isParticipating = false;
+
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: "모임 참여 취소했습니다",
+      errorCode: null,
+    });
+  }),
+
   //================= 찜한 모임 목록 조회 ================================
   http.get(`${FULL_API_ENDPOINTS.GATHERING}/bookmarks`, async (req) => {
     const url = new URL(req.request.url);
@@ -156,7 +228,9 @@ export const gatheringsHandlers = [
   http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;
 
-    if (!id)
+    const gathering = GATHERING_DETAILS(Number(id));
+
+    if (!gathering)
       return HttpResponse.json({
         success: false,
         code: 404,
@@ -169,7 +243,7 @@ export const gatheringsHandlers = [
       success: true,
       code: 200,
       message: "성공",
-      result: GATHERING_DETAILS,
+      result: gathering,
       errorCode: null,
     });
   }),

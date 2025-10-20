@@ -111,12 +111,14 @@ export const gatheringsHandlers = [
   }),
 
   //================= 찜한 모임 목록 조회 ================================
-  http.get(`${FULL_API_ENDPOINTS.GATHERING}/bookmarks`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/bookmarks`, async (req) => {
     const url = new URL(req.request.url);
     const type = url.searchParams.get("type");
     const page = Number(url.searchParams.get("page")) || 0;
     const size = Number(url.searchParams.get("size")) || 10;
     // const sort = url.searchParams.get("sort") || "createdAt";
+
+    await delay(1000);
 
     let bookmarkedGatherings = [];
 

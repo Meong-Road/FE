@@ -1,40 +1,34 @@
+"use client";
+
+import { useSearchParamsState } from "@/hooks/useSearchParmasState";
+import { FAVORITES_TAB_LIST } from "@/lib/constants/favorites";
 import { PATH } from "@/lib/constants/path";
-import { EGatheringType } from "@/lib/types/gatherings";
 
 import { Tab } from "../profile/_components/Tab";
 
 import FavoritesList from "./_components/FavoritesList";
 
-interface FavoritesProps {
-  searchParams?: Promise<Record<string, string | undefined>>;
-}
+const DEFAULT_TAB = "regular";
 
-export default async function Favorites({ searchParams }: FavoritesProps) {
-  const resolvedSearchParams = await searchParams;
-  const tabParam = resolvedSearchParams?.tab ?? "regular";
-  const currentTab =
-    tabParam === "quick" ? EGatheringType.QUICK : EGatheringType.REGULAR;
+export default function Favorites() {
+  const { tab } = useSearchParamsState({ tab: DEFAULT_TAB });
 
   return (
     <section>
       <Tab>
         <Tab.List>
-          <Tab.Item
-            href={`${PATH.FAVORITES}?tab=regular`}
-            isActive={currentTab === EGatheringType.REGULAR}
-          >
-            정기 모임
-          </Tab.Item>
-          <Tab.Item
-            href={`${PATH.FAVORITES}?tab=quick`}
-            isActive={currentTab === EGatheringType.QUICK}
-          >
-            번개 모임
-          </Tab.Item>
+          {FAVORITES_TAB_LIST.map(({ label, value }) => (
+            <Tab.Item
+              key={value}
+              href={`${PATH.FAVORITES}?tab=${value}`}
+              isActive={tab === value}
+            >
+              {label}
+            </Tab.Item>
+          ))}
         </Tab.List>
       </Tab>
-
-      <FavoritesList currentTab={currentTab} />
+      <FavoritesList />
     </section>
   );
 }

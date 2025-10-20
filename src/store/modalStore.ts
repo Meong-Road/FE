@@ -1,4 +1,3 @@
-import { boolean } from "zod";
 import { create } from "zustand";
 
 type PetInfoModalType = "first-login" | "add-pet" | "edit-pet" | null;

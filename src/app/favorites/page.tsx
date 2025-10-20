@@ -1,10 +1,9 @@
 "use client";
 
+import { Tab } from "@/components/Tab";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { FAVORITES_TAB_LIST } from "@/lib/constants/favorites";
 import { PATH } from "@/lib/constants/path";
-
-import { Tab } from "../profile/_components/Tab";
 
 import FavoritesList from "./_components/FavoritesList";
 

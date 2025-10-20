@@ -31,9 +31,11 @@ const ERROR_MESSAGE = {
 export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
   const router = useRouter();
   const { user, isLoading } = useAuth();
-  const { mutateAsync: join } = useJoinGathering();
-  const { mutateAsync: cancelJoin } = useCancelJoinGathering();
+  const { mutateAsync: join, isPending: isJoinPending } = useJoinGathering();
+  const { mutateAsync: cancelJoin, isPending: isCancelPending } =
+    useCancelJoinGathering();
   const mode = gathering.isParticipating ? "cancel" : "join"; // join - 참여하기 버튼, cancel - 참여 취소하기 버튼
+  const isMutationPending = isJoinPending || isCancelPending;
 
   const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -58,7 +60,7 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
       size="xl"
       variant={mode === "join" ? "default" : "outline"}
       onClick={handleButtonClick}
-      disabled={isLoading}
+      disabled={isLoading || isMutationPending}
     >
       {mode === "join" ? "참여하기" : "참여 취소하기"}
     </Button>

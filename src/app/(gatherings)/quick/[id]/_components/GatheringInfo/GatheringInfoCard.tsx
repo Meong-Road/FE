@@ -1,15 +1,15 @@
 import { GatheringCard } from "@/components/GatheringCard";
 import ProgressBar from "@/components/ProgressBar";
-import { QuickGatheringType } from "@/lib/types/gatherings";
+import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 import { formatDate } from "@/lib/utils/dateTime";
 
-interface QuickGatheringInfoCardProps {
-  gathering: QuickGatheringType;
+interface GatheringInfoCardProps {
+  gathering: GatheringType;
 }
 
-export default function QuickGatheringInfoCard({
+export default function GatheringInfoCard({
   gathering,
-}: QuickGatheringInfoCardProps) {
+}: GatheringInfoCardProps) {
   return (
     <GatheringCard className="flex-grow border border-[#ddd] px-10">
       <div className="flex items-start justify-between">
@@ -26,11 +26,19 @@ export default function QuickGatheringInfoCard({
         </div>
         <GatheringCard.LikeBtn id={gathering.id} />
       </div>
-      <GatheringCard.Info
-        className="mb-4"
-        location={gathering.location}
-        date={formatDate(gathering.dateTime)}
-      />
+      {gathering.type === EGatheringType.QUICK ? (
+        <GatheringCard.Info
+          className="mb-4"
+          location={gathering.location}
+          date={formatDate(gathering.dateTime)}
+        />
+      ) : (
+        <GatheringCard.Info
+          className="mb-4"
+          location={gathering.location}
+          days={gathering.days}
+        />
+      )}
       <div className="mb-6 justify-self-end">
         <GatheringCard.JoinBtn gathering={gathering} />
       </div>

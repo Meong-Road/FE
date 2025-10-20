@@ -321,9 +321,5 @@ export const GATHERING_DETAILS = (id: number) => {
 
   if (!gathering) return null;
 
-  return {
-    ...gathering,
-    days: "",
-    time: "",
-  };
+  return gathering;
 };

@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-
-import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
+import InfiniteScroll from "@/components/InfiniteScroll";
+import {
+  QuickGatheringCard,
+  QuickGatheringCardSkeleton,
+} from "@/components/widget/gatherings/QuickGatheringCard";
 import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
+import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
 import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
-import { EGatheringType } from "@/lib/types/gatherings";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
+import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 
-export default function FavoritesList({
-  currentTab,
-}: {
-  currentTab: EGatheringType;
-}) {
-  const { ref, inView } = useInView();
+export default function FavoritesList() {
+  const { tab } = useSearchParamsState({ tab: "regular" });
+  const isQuickTab = tab === "quick";
 
   const {
     data: gatherings,
@@ -22,28 +22,38 @@ export default function FavoritesList({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetInfiniteBookmarkedGatherings(currentTab);
+  } = useGetInfiniteBookmarkedGatherings(
+    isQuickTab ? EGatheringType.QUICK : EGatheringType.REGULAR,
+  );
 
-  useEffect(() => {
-    if (inView) fetchNextPage();
-  }, [inView, fetchNextPage]);
+  const renderGathering = (gathering: GatheringType) => {
+    return gathering.type === EGatheringType.QUICK ? (
+      <QuickGatheringCard key={gathering.id} gathering={gathering} />
+    ) : (
+      <RegularGatheringCard key={gathering.id} gathering={gathering} />
+    );
+  };
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>데이터를 불러오는 데 실패했습니다</div>;
+  const renderSkeleton = () => {
+    return isQuickTab ? (
+      <QuickGatheringCardSkeleton />
+    ) : (
+      <RegularGatheringCardSkeleton />
+    );
+  };
 
   return (
-    <ul className="mt-9 grid grid-cols-1 gap-8">
-      {gatherings.map((gathering) =>
-        gathering.type === EGatheringType.REGULAR ? (
-          <RegularGatheringCard key={gathering.id} gathering={gathering} />
-        ) : (
-          <QuickGatheringCard key={gathering.id} gathering={gathering} />
-        ),
-      )}
-      {isFetchingNextPage && <div>Loading...</div>}
-      {hasNextPage && !isFetchingNextPage && (
-        <div ref={ref} className="h-4"></div>
-      )}
-    </ul>
+    <div className="mt-9 grid grid-cols-1 gap-8">
+      <InfiniteScroll
+        data={gatherings}
+        isPending={isPending}
+        isError={isError}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        render={renderGathering}
+        renderSkeleton={renderSkeleton}
+      />
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-
 import { useAuth } from "@/hooks/auth";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
 import { UserType } from "@/lib/types/user";
 
@@ -36,24 +35,30 @@ const ProfileInfo = ({ user }: { user: UserType }) => (
   </ProfileCard>
 );
 
-const TabNavigation = ({ currentTab }: { currentTab: string }) => (
-  <Tab className="mt-16">
-    <Tab.List>
-      {Object.values(PROFILE_TABS).map((tab) => (
-        <Tab.Item
-          key={tab.key}
-          href={tab.href}
-          isActive={currentTab === tab.key}
-        >
-          {tab.label}
-        </Tab.Item>
-      ))}
-    </Tab.List>
-  </Tab>
-);
+const TabNavigation = () => {
+  const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.key });
 
-const TabContent = ({ currentTab }: { currentTab: string }) => {
-  switch (currentTab) {
+  return (
+    <Tab className="mt-16">
+      <Tab.List>
+        {Object.values(PROFILE_TABS).map((tabItem) => (
+          <Tab.Item
+            key={tabItem.key}
+            href={tabItem.href}
+            isActive={tab === tabItem.key}
+          >
+            {tabItem.label}
+          </Tab.Item>
+        ))}
+      </Tab.List>
+    </Tab>
+  );
+};
+
+const TabContent = () => {
+  const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.key });
+
+  switch (tab) {
     case PROFILE_TABS.JOINED.key:
       return <JoinedSection />;
     case PROFILE_TABS.CREATED.key:
@@ -68,8 +73,6 @@ const TabContent = ({ currentTab }: { currentTab: string }) => {
 };
 
 export default function Profile() {
-  const searchParams = useSearchParams();
-  const currentTab = searchParams.get("tab") || PROFILE_TABS.JOINED.key;
   const { user, isLoading } = useAuth();
 
   if (isLoading) return <div>Loading...</div>;
@@ -79,9 +82,9 @@ export default function Profile() {
     <section>
       <ProfileHeader />
       <ProfileInfo user={user} />
-      <TabNavigation currentTab={currentTab} />
+      <TabNavigation />
       <section className="mt-6">
-        <TabContent currentTab={currentTab} />
+        <TabContent />
       </section>
     </section>
   );

@@ -322,7 +322,7 @@ export const GATHERING_DETAILS = (id: number) => {
   if (!gathering) return null;
 
   return {
-    ...QUICK_GATHERINGS[0],
+    ...gathering,
     days: "",
     time: "",
   };

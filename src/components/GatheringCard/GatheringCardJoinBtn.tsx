@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { useAuth } from "@/hooks/auth";
-import useCancelJoinGathering from "@/hooks/queries/gatherings/useCancelJoinGathering";
-import { useJoinGathering } from "@/hooks/queries/gatherings/useJoinGathering";
+import {
+  useCancelJoinGathering,
+  useJoinGathering,
+} from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
 

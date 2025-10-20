@@ -5,7 +5,7 @@ import { DeleteJoinGatheringReq } from "@/api/types/gatherings";
 
 import { QUERY_KEYS } from "../queryKey";
 
-export default function useCancelJoinGathering() {
+export function useCancelJoinGathering() {
   const queryClient = useQueryClient();
 
   return useMutation({

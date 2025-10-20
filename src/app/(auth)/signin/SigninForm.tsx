@@ -98,7 +98,7 @@ export default function SigninForm() {
       </Form>
 
       {isOpen && (
-        <Modal hasCloseButton>
+        <Modal>
           <PetInfoModal type="first-login" onClose={closeModal} />
         </Modal>
       )}

@@ -10,6 +10,7 @@ import {
   PetInfoUpdateSchema,
 } from "./_hooks/usePetInfoForm";
 import { usePetInfoModal } from "./_hooks/usePetInfoModal";
+import { useSkipPetInfo } from "./_hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
 import { Modal } from ".";
 
@@ -71,6 +72,16 @@ export default function PetInfoModal({
         },
       });
     }
+  };
+
+  const { mutate: skipPetInfo } = useSkipPetInfo();
+
+  const handleSkip = () => {
+    skipPetInfo(undefined, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   return (
@@ -211,8 +222,13 @@ export default function PetInfoModal({
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
           />
         </Form>
+
         {type === "first-login" && (
-          <button className="mt-2 border-b-2" type="button">
+          <button
+            className="mt-2 border-b-2"
+            type="button"
+            onClick={handleSkip}
+          >
             아직 반려견이 없어요
           </button>
         )}

@@ -5,11 +5,14 @@ import { GetIsLikedReq } from "@/api/types/gatherings";
 
 import { queryKeys } from "../queryKey";
 
-export function useGetIsLiked({ id }: GetIsLikedReq) {
+export function useGetIsLiked({
+  id,
+  enabled = true,
+}: GetIsLikedReq & { enabled?: boolean }) {
   return useQuery({
     queryKey: queryKeys.gatherings.like({ id }),
-    queryFn: () => {
-      return gatheringApi.getIsLiked({ id });
-    },
+    queryFn: () => gatheringApi.getIsLiked({ id }),
+    select: (data) => data.result,
+    enabled,
   });
 }

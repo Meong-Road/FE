@@ -33,4 +33,10 @@ export const userApi = {
       },
     );
   },
+
+  updatePetInfoSubmitted: async () => {
+    await customFetch.put(`${API_ENDPOINTS.USER}/my`, {
+      body: JSON.stringify({ isPetInfoSubmitted: true }),
+    });
+  },
 };

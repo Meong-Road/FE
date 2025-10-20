@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
-import Modal from "@/components/Modal/Modal";
+import { Modal } from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 import { PATH } from "@/lib/constants/path";
-import { useModalStore } from "@/store/modalStore";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 export default function SignupForm() {
   const form = useSignupForm();
   const { mutate: signupMutate, isPending } = useSignupMutation();
   const router = useRouter();
 
-  const { isOpen, openModal, closeModal } = useModalStore();
+  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
 
   const handleSubmit = (data: SignupFormSchema) =>
     signupMutate(data, {
@@ -146,9 +146,11 @@ export default function SignupForm() {
       </Form>
 
       {isOpen && (
-        <Modal>
-          <PetInfoModal type="first-login" onClose={closeModal} />
-        </Modal>
+        <PetInfoModal
+          type="first-login"
+          onClose={closeModal}
+          hasCloseBtn={false}
+        />
       )}
     </>
   );

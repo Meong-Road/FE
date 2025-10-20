@@ -32,6 +32,7 @@ const NEUTER_OPTIONS: RadioOptionType[] = [
 
 export default function PetInfoModal({
   type,
+  hasCloseBtn = true, // 기본값은 true
   onClose,
   petId,
 }: PetInfoModalProps) {
@@ -86,7 +87,7 @@ export default function PetInfoModal({
 
   return (
     <Modal>
-      <Modal.CloseBtn />
+      {hasCloseBtn && <Modal.CloseBtn />}
 
       {type === "first-login" ? (
         <Modal.Title

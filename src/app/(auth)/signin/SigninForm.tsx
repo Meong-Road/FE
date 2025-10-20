@@ -4,12 +4,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
-import Modal from "@/components/Modal/Modal";
+import { Modal } from "@/components/Modal/Modal";
 import PetInfoModal from "@/components/Modal/PetInfoModal";
 import { SigninFormSchema, useSigninForm } from "@/hooks/auth/useSigninForm";
 import { useSigninMutation } from "@/hooks/auth/useSigninMutation";
 import { PATH } from "@/lib/constants/path";
-import { useModalStore } from "@/store/modalStore";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 export default function SigninForm() {
   const form = useSigninForm();
@@ -18,7 +18,7 @@ export default function SigninForm() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
 
-  const { isOpen, openModal, closeModal } = useModalStore();
+  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
 
   const handleSubmit = (data: SigninFormSchema) => {
     signinMutate(data, {
@@ -98,9 +98,11 @@ export default function SigninForm() {
       </Form>
 
       {isOpen && (
-        <Modal>
-          <PetInfoModal type="first-login" onClose={closeModal} />
-        </Modal>
+        <PetInfoModal
+          type="first-login"
+          onClose={closeModal}
+          hasCloseBtn={false}
+        />
       )}
     </>
   );

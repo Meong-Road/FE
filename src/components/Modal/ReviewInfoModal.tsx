@@ -5,10 +5,11 @@ import { Modal } from ".";
 
 export default function ReviewInfoModal({
   type,
+  hasCloseBtn = true,
   onClose,
   reviewId,
 }: ReviewInfoModalProps) {
-  console.log(type, onClose, reviewId);
+  console.log(type, hasCloseBtn, onClose, reviewId);
   return (
     <>
       <Modal.Title title="리뷰 수정하기" />

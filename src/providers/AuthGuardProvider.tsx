@@ -5,8 +5,10 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
+import AuthRequiredModal from "@/components/Modal/AuthRequiredModal";
 import { useAuth } from "@/hooks/auth";
 import { PATH, PROTECTED_ROUTES } from "@/lib/constants/path";
+import { useAuthRequiredModalStore } from "@/store/modalStore";
 
 interface AuthGuardProviderProps {
   children: React.ReactNode;
@@ -30,6 +32,7 @@ export default function AuthGuardProvider({
   const pathname = usePathname();
   const router = useRouter();
   const { user, isLoading } = useAuth();
+  const { openModal } = useAuthRequiredModalStore();
 
   useEffect(() => {
     // 로딩 중이거나 인증이 필요하지 않은 경로면 무시
@@ -40,9 +43,14 @@ export default function AuthGuardProvider({
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
     if (!user) {
       const redirectUrl = `${PATH.SIGNIN}?redirect=${encodeURIComponent(pathname)}`;
-      router.replace(redirectUrl);
+      openModal(redirectUrl);
     }
-  }, [pathname, isLoading, user, router]);
+  }, [pathname, isLoading, user, router, openModal]);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <AuthRequiredModal />
+    </>
+  );
 }

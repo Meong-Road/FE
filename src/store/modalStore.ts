@@ -1,3 +1,4 @@
+import { boolean } from "zod";
 import { create } from "zustand";
 
 type PetInfoModalType = "first-login" | "add-pet" | "edit-pet" | null;
@@ -52,5 +53,20 @@ export const useReviewInfoModalStore = create<ReviewInfoModalStoreProps>(
       set({ isOpen: true, modalType: type, reviewId }),
     closeModal: () =>
       set({ isOpen: false, modalType: null, reviewId: undefined }),
+  }),
+);
+
+interface AuthRequiredModalStoreProps {
+  isOpen: boolean;
+  redirectUrl: string;
+  openModal: (redirectUrl: string) => void;
+  closeModal: () => void;
+}
+export const useAuthRequiredModalStore = create<AuthRequiredModalStoreProps>(
+  (set) => ({
+    isOpen: false,
+    redirectUrl: "",
+    openModal: (redirectUrl: string) => set({ isOpen: true, redirectUrl }),
+    closeModal: () => set({ isOpen: false, redirectUrl: "" }),
   }),
 );

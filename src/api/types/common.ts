@@ -30,3 +30,5 @@ export interface PaginationReq {
   size: number;
   sort: string[];
 }
+
+export type PaginationOptions = Omit<PaginationReq, "page">;

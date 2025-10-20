@@ -9,17 +9,16 @@ export function useJoinGathering() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id }: PostJoinGatheringReq) => {
-      return await gatheringApi.joinGathering({ id });
-    },
+    mutationFn: ({ id }: PostJoinGatheringReq) =>
+      gatheringApi.joinGathering({ id }),
     onSuccess: async (_, { id }) => {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: QUERY_KEYS.gatherings.lists(),
         }),
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.gatherings.detail(id),
-        }),
+        // queryClient.invalidateQueries({
+        //   queryKey: QUERY_KEYS.gatherings.detail(id),
+        // }),
       ]);
     },
   });

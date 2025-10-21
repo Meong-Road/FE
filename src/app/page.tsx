@@ -10,7 +10,13 @@ const BUTTON_CN =
   "block w-full rounded bg-gray-400 font-bold px-4 py-2 text-center text-white hover:brightness-90";
 
 export default function Home() {
-  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
+  const { isOpen, setModalData, openModal, closeModal } =
+    usePetInfoModalStore();
+
+  const handleAddPetClick = () => {
+    setModalData("add-pet");
+    openModal();
+  };
 
   return (
     <div className="p-8">
@@ -82,7 +88,7 @@ export default function Home() {
             <Link href={PATH.REVIEWS} className={BUTTON_CN}>
               모든 리뷰
             </Link>
-            <button onClick={() => openModal("add-pet")} className={BUTTON_CN}>
+            <button onClick={handleAddPetClick} className={BUTTON_CN}>
               반려견 정보 등록 모달
             </button>
           </div>

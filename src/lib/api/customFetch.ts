@@ -36,11 +36,17 @@ async function request<T>(
       ? tokenStorage.getAccess()
       : null;
 
-  const finalHeaders: HeadersInit = {
-    "Content-Type": "application/json",
-    ...headers,
-    ...(token && { Authorization: `Bearer ${token}` }),
-  };
+  const finalHeaders: HeadersInit = new Headers(headers);
+
+  // FormData가 아닌 경우에만 Content-Type을 application/json으로 설정
+  if (!(rest.body instanceof FormData)) {
+    finalHeaders.set("Content-Type", "application/json");
+  }
+
+  // Authorization 헤더 설정
+  if (token) {
+    finalHeaders.set("Authorization", `Bearer ${token}`);
+  }
 
   // 3. 요청 실행
   const response = await fetch(url, {

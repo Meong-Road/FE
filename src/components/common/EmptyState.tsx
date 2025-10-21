@@ -1,4 +1,4 @@
-import ImageEmpty from "@/assets/images/img-empty.svg";
+import EmptySvg from "@/assets/icons/empty.svg";
 
 interface EmptyStateProps {
   message: string;
@@ -10,9 +10,10 @@ export const EmptyState = ({
   minHeight = "400px",
 }: EmptyStateProps) => (
   <div
-    className={`flex flex-col gap-8 min-h-[${minHeight}] items-center justify-center pt-10`}
+    style={{ minHeight }}
+    className={`flex flex-col items-center justify-center gap-y-4`}
   >
-    <ImageEmpty />
-    <p className="ml-4 text-base text-slate-400">{message}</p>
+    <EmptySvg className="w-40" />
+    <p className="text-lg font-semibold text-slate-400">{message}</p>
   </div>
 );

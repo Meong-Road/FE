@@ -1,6 +1,11 @@
 "use client";
 
-import { EmptyState, ListContainer, SectionWrapper } from "@/components/common";
+import {
+  EmptyState,
+  ErrorState,
+  ListContainer,
+  SectionWrapper,
+} from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
 import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
@@ -10,23 +15,13 @@ import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
 
 export default function CreatedSection() {
-  const {
-    data: gatherings,
-    isPending,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useGetInfiniteMyGatherings(DEFAULT_LIST_OPTIONS);
-
-  if (gatherings?.length === 0)
-    return <EmptyState message="만든 모임이 없습니다." />;
+  const infiniteQueryResult = useGetInfiniteMyGatherings(DEFAULT_LIST_OPTIONS);
 
   return (
     <SectionWrapper>
       <ListContainer>
         <InfiniteScroll
-          data={gatherings}
+          {...infiniteQueryResult}
           render={(gathering) =>
             gathering.type === EGatheringType.REGULAR ? (
               <RegularGatheringCard key={gathering.id} gathering={gathering} />
@@ -35,11 +30,15 @@ export default function CreatedSection() {
             )
           }
           renderSkeleton={() => <RegularGatheringCardSkeleton />}
-          isPending={isPending}
-          isError={isError}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
+          renderOnEmpty={() => (
+            <EmptyState message="아직 생성한 모임이 없어요" minHeight="200px" />
+          )}
+          renderOnError={() => (
+            <ErrorState
+              message="생성한 모임을 불러오는 중 오류가 발생했어요"
+              minHeight="200px"
+            />
+          )}
         />
       </ListContainer>
     </SectionWrapper>

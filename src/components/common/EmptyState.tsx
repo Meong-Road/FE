@@ -1,4 +1,4 @@
-import ImageEmpty from "@/assets/images/img-Empty.svg";
+import ImageEmpty from "@/assets/images/img-empty.svg";
 
 interface EmptyStateProps {
   message: string;

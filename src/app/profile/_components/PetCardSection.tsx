@@ -51,34 +51,43 @@ const PetAddCardItem = () => {
   );
 };
 
-const PetList = ({ pets }: { pets: PetType[] }) => (
-  <ListContainer className="sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-    {pets.map((pet) => (
-      <PetCardItem key={pet.id} processedPet={processPetInfo(pet)} />
-    ))}
-    <PetAddCardItem />
-  </ListContainer>
-);
+const PetList = ({ pets }: { pets: PetType[] }) => {
+  if (pets.length === 0)
+    return (
+      <EmptyState
+        message="아직 등록한 반려견 정보가 없어요"
+        minHeight="200px"
+      />
+    );
+
+  return (
+    <ListContainer className="sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+      {pets.map((pet) => (
+        <PetCardItem key={pet.id} processedPet={processPetInfo(pet)} />
+      ))}
+      <PetAddCardItem />
+    </ListContainer>
+  );
+};
 
 export default function PetCardSection() {
   const { isOpen, modalType, petId, closeModal } = usePetInfoModalStore();
-  const { data: pets, isLoading, error } = useGetMyPets();
+  const { data: pets, isPending, isError } = useGetMyPets();
 
-  if (isLoading) return <LoadingState message="로딩 중..." />;
-  if (error) return <ErrorState message="데이터를 불러오는데 실패했습니다." />;
+  if (isPending) return <LoadingState message="로딩 중..." minHeight="200px" />;
+  if (!pets || isError)
+    return (
+      <ErrorState
+        message="데이터를 불러오는데 실패했습니다."
+        minHeight="200px"
+      />
+    );
 
   return (
     <>
-      {pets?.length ? (
-        <SectionWrapper>
-          <PetList pets={pets} />
-        </SectionWrapper>
-      ) : (
-        <EmptyState
-          message="등록된 반려견 정보가 없습니다."
-          minHeight="200px"
-        />
-      )}
+      <SectionWrapper>
+        <PetList pets={pets} />
+      </SectionWrapper>
 
       {isOpen && modalType && (
         <PetInfoModal type={modalType} onClose={closeModal} petId={petId} />

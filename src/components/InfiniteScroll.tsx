@@ -33,8 +33,8 @@ export default function InfiniteScroll<T>({
   fetchNextPage,
   renderSkeleton,
   render,
-  textOnEmpty = "데이터가 없어요",
-  textOnError = "에러가 발생했어요",
+  textOnEmpty = "아직 등록된 데이터가 없어요",
+  textOnError = "데이터를 불러오는 중 에러가 발생했어요",
   minimumLoadingTime = 500,
 }: InfiniteScrollProps<T>) {
   const { ref, inView } = useInView();

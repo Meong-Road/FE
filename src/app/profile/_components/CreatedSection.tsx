@@ -1,6 +1,6 @@
 "use client";
 
-import { EmptyState, ListContainer, SectionWrapper } from "@/components/common";
+import { ListContainer, SectionWrapper } from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
 import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
@@ -18,9 +18,6 @@ export default function CreatedSection() {
     hasNextPage,
     isFetchingNextPage,
   } = useGetInfiniteMyGatherings(DEFAULT_LIST_OPTIONS);
-
-  if (gatherings?.length === 0)
-    return <EmptyState message="만든 모임이 없습니다." />;
 
   return (
     <SectionWrapper>
@@ -40,6 +37,8 @@ export default function CreatedSection() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          textOnEmpty="아직 생성한 모임이 없어요"
+          textOnError="생성한 모임을 불러오는 중 오류가 발생했어요"
         />
       </ListContainer>
     </SectionWrapper>

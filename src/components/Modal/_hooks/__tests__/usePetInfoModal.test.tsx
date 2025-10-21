@@ -68,7 +68,7 @@ describe("usePetInfoModal Hook 테스트", () => {
     // 훅 모킹 초기화
     mockGetPet.mockReturnValue({
       data: undefined,
-      isLoading: false,
+      isPending: false,
       error: null,
     } as unknown as ReturnType<typeof useGetPet>);
     mockPostPet.mockReturnValue({
@@ -104,24 +104,24 @@ describe("usePetInfoModal Hook 테스트", () => {
   describe("초기 로딩 상태 테스트", () => {
     it("first-login 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
       const { result } = renderHookWithType("first-login");
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.isPending).toBe(false);
     });
 
     it("add-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
       const { result } = renderHookWithType("add-pet");
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.isPending).toBe(false);
     });
 
     it("edit-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
       // edit-pet 모드에서는 enabled: true로 설정되어 있지만, 데이터가 없으면 로딩이 false
       mockGetPet.mockReturnValue({
         data: undefined,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
       const { result } = renderHookWithType("edit-pet");
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.isPending).toBe(false);
     });
   });
 
@@ -131,7 +131,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       mockGetPet.mockReturnValue({
         data: mockInitialPetData,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
@@ -141,10 +141,11 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.initialData).toEqual({
         name: "멍멍이",
         birthYear: "2025",
-        existingPhotoUrl: "",
+        image: "",
         breed: "골든 리트리버",
-        gender: "male",
-        neuter: "did",
+        gender: "MALE",
+        neuter: "true",
+        petType: "dog",
       });
     });
   });
@@ -155,7 +156,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       mockGetPet.mockReturnValue({
         data: mockInitialPetData,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
@@ -170,7 +171,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       mockGetPet.mockReturnValue({
         data: mockInitialPetData,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
@@ -180,16 +181,16 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(hasChanges).toBe(false);
     });
 
-    it("first-login 타입 모달에서 hasChanges가 undefined인지 테스트", () => {
+    it("first-login 타입 모달에서 hasChanges가 true인지 테스트", () => {
       const { result } = renderHookWithType("first-login");
 
-      expect(result.current.hasChanges).toBeUndefined();
+      expect(result.current.hasChanges).toBe(true);
     });
 
-    it("add-pet 타입 모달에서 hasChanges가 undefined인지 테스트", () => {
+    it("add-pet 타입 모달에서 hasChanges가 true인지 테스트", () => {
       const { result } = renderHookWithType("add-pet");
 
-      expect(result.current.hasChanges).toBeUndefined();
+      expect(result.current.hasChanges).toBe(true);
     });
   });
 
@@ -200,8 +201,8 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       // 훅이 정상적으로 반환되는지 확인
       expect(result.current.form).toBeDefined();
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.hasChanges).toBeUndefined();
+      expect(result.current.isPending).toBe(false);
+      expect(result.current.hasChanges).toBe(true);
     });
 
     it("add-pet 타입일 때 usePostPet 훅이 올바르게 설정되는지 테스트", () => {
@@ -209,8 +210,8 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       // 훅이 정상적으로 반환되는지 확인
       expect(result.current.form).toBeDefined();
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.hasChanges).toBeUndefined();
+      expect(result.current.isPending).toBe(false);
+      expect(result.current.hasChanges).toBe(true);
     });
 
     it("edit-pet 타입일 때 usePutPet 훅이 올바르게 설정되는지 테스트", () => {
@@ -218,7 +219,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       mockGetPet.mockReturnValue({
         data: mockInitialPetData,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
@@ -226,7 +227,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       // 훅이 정상적으로 반환되는지 확인
       expect(result.current.form).toBeDefined();
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.isPending).toBe(false);
       expect(result.current.hasChanges).toBeDefined();
       expect(result.current.initialData).toBeDefined();
     });
@@ -240,7 +241,7 @@ describe("usePetInfoModal Hook 테스트", () => {
     // 에러 상태를 시뮬레이션
     mockGetPet.mockReturnValue({
       data: undefined,
-      isLoading: false,
+      isPending: false,
       error: new Error("API Error"),
     } as unknown as ReturnType<typeof useGetPet>);
 
@@ -248,7 +249,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
     // 에러 상태에서도 훅이 정상적으로 동작하는지 확인
     expect(result.current.form).toBeDefined();
-    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isPending).toBe(false);
     expect(result.current.initialData).toBeNull();
 
     consoleSpy.mockRestore();
@@ -258,14 +259,14 @@ describe("usePetInfoModal Hook 테스트", () => {
     // 로딩 상태를 시뮬레이션
     mockGetPet.mockReturnValue({
       data: undefined,
-      isLoading: true,
+      isPending: true,
       error: null,
     } as unknown as ReturnType<typeof useGetPet>);
 
     const { result } = renderHookWithType("edit-pet", 1);
 
     // 로딩 상태 확인
-    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isPending).toBe(true);
     expect(result.current.form).toBeDefined();
     expect(result.current.initialData).toBeNull();
   });
@@ -279,7 +280,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       mockGetPet.mockReturnValue({
         data: mockData,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
@@ -288,19 +289,20 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.initialData).toEqual({
         name: "멍멍이",
         birthYear: "2025",
-        existingPhotoUrl: "https://example.com/dog.jpg",
+        image: "https://example.com/dog.jpg",
         breed: "골든 리트리버",
-        gender: "male",
-        neuter: "didnot",
+        gender: "MALE",
+        neuter: "false",
+        petType: "dog",
       });
     });
 
-    it("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
+    it("neuter가 null일 때 false로 변환되는지 테스트", async () => {
       const mockData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({
         data: mockData,
-        isLoading: false,
+        isPending: false,
         error: null,
       } as unknown as ReturnType<typeof useGetPet>);
 
@@ -309,10 +311,11 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.initialData).toEqual({
         name: "멍멍이",
         birthYear: "2025",
-        existingPhotoUrl: "",
+        image: "",
         breed: "골든 리트리버",
-        gender: "male",
-        neuter: undefined,
+        gender: "MALE",
+        neuter: "false",
+        petType: "dog",
       });
     });
   });

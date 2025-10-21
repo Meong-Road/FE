@@ -30,7 +30,7 @@ export const mockPets: PetType[] = [
     petType: "dog",
     breed: "믹스견(혼혈)",
     gender: "MALE",
-    neuter: null,
+    neuter: false,
   },
   {
     id: 4,
@@ -70,7 +70,7 @@ export const mockPets: PetType[] = [
     petType: "dog",
     breed: "포메라니안",
     gender: "FEMALE",
-    neuter: null,
+    neuter: false,
   },
   {
     id: 8,

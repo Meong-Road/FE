@@ -10,13 +10,17 @@ export type GetUserRes = Response<UserType>;
 export interface PutUserReq {
   name?: string;
   nickName?: string;
+  isPetInfoSubmitted?: boolean;
+  image?: string;
 }
 
 export type PutUserRes = Response<UserType>;
 
-// PUT /meong-road/user/image - 유저 이미지 프로필 수정
+// PUT /meong-road/user/image - 유저 이미지 프로필 파일 업로드
 export interface PutUserImageReq {
-  image: string;
+  userId: number;
+  image: File;
 }
 
-export type PutUserImageRes = Response<UserType>;
+// PUT /meong-road/user/image - 유저 이미지 프로필 파일 업로드 응답 - 이미지 URL
+export type PutUserImageRes = Response<UserType["image"]>;

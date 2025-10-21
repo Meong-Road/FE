@@ -1,4 +1,4 @@
-import { PetType } from "@/lib/types/pets";
+import { GetPetReq } from "@/api/types/pets";
 
 export const PETS_QUERY_KEYS = {
   all: () => ["pets"] as const,
@@ -8,6 +8,6 @@ export const PETS_QUERY_KEYS = {
   petInfoByUserId: (userId: number) =>
     [...PETS_QUERY_KEYS.all(), "user", userId] as const,
 
-  detail: (id: PetType["id"]) =>
+  detail: (id: GetPetReq["id"]) =>
     [...PETS_QUERY_KEYS.all(), "detail", id] as const,
 };

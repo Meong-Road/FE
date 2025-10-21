@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { ListContainer, SectionWrapper } from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
@@ -10,7 +8,6 @@ import RegularGatheringCardSkeleton from "@/components/widget/gatherings/Regular
 import { useGetInfiniteJoinedGatherings } from "@/hooks/queries/gatherings";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
-import { getGatheringDetailPath } from "@/lib/utils/gathering";
 
 export default function JoinedSection() {
   const {
@@ -27,15 +24,13 @@ export default function JoinedSection() {
       <ListContainer>
         <InfiniteScroll
           data={gatherings}
-          render={(gathering) => (
-            <Link key={gathering.id} href={getGatheringDetailPath(gathering)}>
-              {gathering.type === EGatheringType.REGULAR ? (
-                <RegularGatheringCard gathering={gathering} />
-              ) : (
-                <QuickGatheringCard gathering={gathering} />
-              )}
-            </Link>
-          )}
+          render={(gathering) =>
+            gathering.type === EGatheringType.REGULAR ? (
+              <RegularGatheringCard key={gathering.id} gathering={gathering} />
+            ) : (
+              <QuickGatheringCard key={gathering.id} gathering={gathering} />
+            )
+          }
           renderSkeleton={() => <RegularGatheringCardSkeleton />}
           textOnEmpty="참석한 모임이 없습니다."
           textOnError="참석한 모임 조회 실패"

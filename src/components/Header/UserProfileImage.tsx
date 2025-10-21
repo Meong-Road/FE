@@ -16,13 +16,13 @@ const UserProfileImage = ({
           alt="profile"
           width={42}
           height={42}
-          className="cursor-pointer rounded-full border border-[#DDDDDD]"
+          className="cursor-pointer rounded-full border border-[#DDDDDD] focus:outline-none"
         />
       ) : (
         <ProfileSvg
           width={42}
           height={42}
-          className="cursor-pointer rounded-full border border-[#DDDDDD]"
+          className="cursor-pointer rounded-full border border-[#DDDDDD] focus:outline-none"
         />
       )}
     </>

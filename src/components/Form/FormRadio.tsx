@@ -4,6 +4,7 @@ interface RadioOption {
   id: string;
   label: string;
   value: string;
+  color?: string;
 }
 
 interface ModalRadioInputProps {
@@ -32,7 +33,10 @@ export function Radio({
           />
           <label
             htmlFor={option.id}
-            className="bg-accent peer-checked:bg-primary inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 peer-checked:font-medium peer-checked:text-white"
+            className={cn(
+              "peer-checked:bg-primary inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 peer-checked:font-medium peer-checked:text-white",
+              option.color ? `bg-[${option.color}]` : "bg-accent",
+            )}
           >
             {option.label}
           </label>

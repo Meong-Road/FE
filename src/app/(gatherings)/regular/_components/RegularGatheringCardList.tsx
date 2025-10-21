@@ -1,3 +1,4 @@
+import { EmptyState, ErrorState } from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
 import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
@@ -16,8 +17,10 @@ export default function RegularGatheringCardList() {
           <RegularGatheringCard key={gathering.id} gathering={gathering} />
         )}
         renderSkeleton={() => <RegularGatheringCardSkeleton />}
-        textOnEmpty="정기 모임 데이터가 없어요"
-        textOnError="정기 모임 데이터를 불러오는 중 오류가 발생했어요"
+        renderOnEmpty={() => <EmptyState message="정기 모임 데이터가 없어요" />}
+        renderOnError={() => (
+          <ErrorState message="정기 모임 데이터를 불러오는 중 오류가 발생했어요" />
+        )}
       />
     </ul>
   );

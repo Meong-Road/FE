@@ -1,6 +1,11 @@
 "use client";
 
-import { ListContainer, SectionWrapper } from "@/components/common";
+import {
+  EmptyState,
+  ErrorState,
+  ListContainer,
+  SectionWrapper,
+} from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
 import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
@@ -25,8 +30,15 @@ export default function CreatedSection() {
             )
           }
           renderSkeleton={() => <RegularGatheringCardSkeleton />}
-          textOnEmpty="아직 생성한 모임이 없어요"
-          textOnError="생성한 모임을 불러오는 중 오류가 발생했어요"
+          renderOnEmpty={() => (
+            <EmptyState message="아직 생성한 모임이 없어요" minHeight="200px" />
+          )}
+          renderOnError={() => (
+            <ErrorState
+              message="생성한 모임을 불러오는 중 오류가 발생했어요"
+              minHeight="200px"
+            />
+          )}
         />
       </ListContainer>
     </SectionWrapper>

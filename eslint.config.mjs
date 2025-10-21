@@ -24,9 +24,9 @@ const eslintConfig = [
         {
           groups: [
             // Packages `react` related packages come first.
-            ["^react", "^@?\\w"],
+            ["^react", "^next", "^@?\\w"],
             // Internal packages.
-            ["^(@|components)(/.*|$)"],
+            ["^(@|@/|components)(/.*|$)"],
             // Side effect imports.
             ["^\\u0000"],
             // Parent imports. Put `..` last.
@@ -39,6 +39,7 @@ const eslintConfig = [
         },
       ],
     },
+    ignorePatterns: ["node_modules", ".next", "next-env.d.ts"],
   }),
 ];
 

@@ -1,1 +1,222 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-font-default: var(--font-default);
+  --color-font-input: var(--font-input);
+  --color-font-inactive: var(--font-inactive);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* 그라디언트 테마 추가 */
+  --gradient-primary: linear-gradient(to right, #ffd664, #ff8400);
+  --gradient-primary-opacity: linear-gradient(
+    to right,
+    rgba(255, 214, 100, 0.15),
+    rgba(255, 132, 0, 0.15)
+  );
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* 기본 */
+  --background: #fafafa; /* Gray Background */
+  --foreground: #111827; /* Default Font */
+
+  /* 카드/팝오버 */
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  /* 브랜드 */
+  --primary: #ff8400; /* Main Orange */
+  --primary-foreground: #ffffff;
+  --secondary: #ffe59e; /* Sub Orange */
+  --secondary-foreground: #111827;
+
+  /* 보조/무채 */
+  --muted: #eeeeee; /* Inactivated Button */
+  --muted-foreground: #a4a4a4; /* Font in Inactive Button */
+  --accent: #f9fafb; /* Input Field */
+  --accent-foreground: #737373; /* Font in Input Field */
+
+  /* 강조 */
+  --destructive: #ff5757; /* Required Field */
+
+  /* 경계/입력 */
+  --border: #e0e0e0;
+  --input: #f9fafb;
+  --ring: #737373;
+
+  /* 폰트 계열 */
+  --font-default: #111827;
+  --font-input: #737373;
+  --font-inactive: #a4a4a4;
+
+  /* 그래프(임의) */
+  --chart-1: #ff8400;
+  --chart-2: #ffe59e;
+  --chart-3: #ff5757;
+  --chart-4: #a4a4a4;
+  --chart-5: #737373;
+
+  /* 사이드바 */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #ff8400;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffe59e;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #e0e0e0;
+  --sidebar-ring: #737373;
+}
+
+.dark {
+  /* 다크 모드: 배경/글자 반전 */
+  --background: #111827;
+  --foreground: #fafafa;
+
+  --card: #1f2937;
+  --card-foreground: #fafafa;
+  --popover: #1f2937;
+  --popover-foreground: #fafafa;
+
+  /* 브랜드 컬러(유지) */
+  --primary: #ff8400;
+  --primary-foreground: #ffffff;
+  --secondary: #ffe59e;
+  --secondary-foreground: #111827;
+
+  --muted: #374151;
+  --muted-foreground: #a4a4a4;
+  --accent: #4b5563;
+  --accent-foreground: #d1d5db;
+
+  --destructive: #ff5757;
+
+  --border: #374151;
+  --input: #1f2937;
+  --ring: #9ca3af;
+
+  --font-default: #fafafa;
+  --font-input: #d1d5db;
+  --font-inactive: #6b7280;
+
+  /* 사이드바 */
+  --sidebar: #1f2937;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #ff8400;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffe59e;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #374151;
+  --sidebar-ring: #9ca3af;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    @apply [&::-webkit-scrollbar]:w-1.5;
+    @apply [&::-webkit-scrollbar-track]:rounded-full;
+    @apply [&::-webkit-scrollbar-track]:bg-transparent;
+    @apply [&::-webkit-scrollbar-thumb]:rounded-full;
+    @apply [&::-webkit-scrollbar-thumb]:bg-gray-300;
+    @apply [&::-webkit-scrollbar-thumb:hover]:bg-gray-400;
+    @apply [&::-webkit-scrollbar-thumb:active]:bg-gray-500;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    @apply overflow-x-hidden overflow-y-scroll;
+  }
+}
+
+@layer utilities {
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .bg-gradient-opacity {
+    background: var(--gradient-primary-opacity);
+  }
+  .border-gradient-primary {
+    border-image: var(--gradient-primary) 1;
+  }
+
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  [data-sonner-toast][data-type="success"] [data-icon] svg,
+  [data-sonner-toast][data-type="success"] [data-icon] * {
+    color: #ff8400 !important;
+    fill: #ff8400 !important;
+  }
+
+  [data-sonner-toast][data-type="error"] [data-icon] svg,
+  [data-sonner-toast][data-type="error"] [data-icon] * {
+    color: #ff5757 !important;
+    fill: #ff5757 !important;
+  }
+
+  [data-sonner-toast][data-type="loading"] .sonner-loading-bar {
+    background-color: #737373 !important;
+  }
+}
+
+/* shadcn/ui scroll-lock 시 스크롤바만큼 밀리는 현상 방지 */
+body[data-scroll-locked][data-scroll-locked] {
+  overflow-y: scroll !important;
+  margin-right: 0 !important;
+}

@@ -1,7 +1,11 @@
+"use client";
+import { useRouter } from "next/navigation";
+
+import { PATH } from "@/lib/constants/path";
+
 export default function Home() {
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold text-green-700">멍로드</h1>
-    </div>
-  );
+  const router = useRouter();
+
+  router.push(PATH.REGULAR);
+  return <></>;
 }

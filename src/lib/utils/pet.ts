@@ -1,23 +1,8 @@
-import { PostPetReq } from "@/api/types/pets";
 import type {
   PetInfoFormSchema,
   PetInfoUpdateSchema,
 } from "@/components/Modal/_hooks/usePetInfoForm";
 import type { PetType } from "@/lib/types/pets";
-
-const normalizeNeuter = (
-  value: PetInfoFormSchema["neuter"] | PetInfoUpdateSchema["neuter"],
-): "true" | "false" | undefined => {
-  if (typeof value === "string") {
-    return value === "true" ? "true" : value === "false" ? "false" : undefined;
-  }
-
-  if (typeof value === "boolean") {
-    return value ? "true" : "false";
-  }
-
-  return undefined;
-};
 
 export const transformPetToFormData = (pet: PetType): PetInfoFormSchema => ({
   image: pet?.image ?? null,

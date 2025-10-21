@@ -17,6 +17,9 @@ const pretendardVariable = localFont({
 export const metadata: Metadata = {
   title: "멍로드",
   description: "멍로드에서 함개 걸어요!",
+  icons: {
+    icon: "./favicon.ico",
+  },
 };
 
 initMocks();

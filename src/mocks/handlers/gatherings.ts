@@ -1,5 +1,5 @@
 // src/mocks/handlers/gatherings.ts
-import { delay, http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw";
 
 import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
 import { EGatheringType } from "@/lib/types/gatherings";

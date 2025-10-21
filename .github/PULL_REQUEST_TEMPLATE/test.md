@@ -2,6 +2,7 @@
 name: TEST Pull Request
 about: TEST PR 작성 시 사용해주세요
 title: "[TEST] "
+labels: TEST PR
 assignees: ""
 ---
 

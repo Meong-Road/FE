@@ -44,7 +44,7 @@ export default function FavoritesList() {
         renderSkeleton={renderSkeleton}
         renderOnEmpty={() => (
           <EmptyState
-            message={`찜한 ${isQuickTab ? "번개 모임" : "정기 모임"}이 없어요`}
+            message={`아직 찜한 ${isQuickTab ? "번개 모임" : "정기 모임"}이 없어요`}
           />
         )}
         renderOnError={() => (

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 
+import { EmptyState, ErrorState, LoadingState } from "@/components/common";
 import { ReviewCard } from "@/components/ReviewCard";
 import {
   Pagination,
@@ -14,23 +15,36 @@ import {
 } from "@/components/ui/pagination";
 import { useGetReviewsByGathering } from "@/hooks/queries/reviews";
 
-export default function GatheringReviewSection() {
+function GatheringReviewList() {
   const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isPending, isError } = useGetReviewsByGathering({
+  const {
+    data: reviews,
+    isPending,
+    isError,
+  } = useGetReviewsByGathering({
     gatheringId: Number(id),
     page: currentPage,
   });
 
-  // TODO 로딩, 에러 처리
-  if (isPending) return <div>Loading...</div>;
-  if (isError || !data.result) return <div>에러</div>;
+  if (isPending)
+    return (
+      <LoadingState message="리뷰를 불러오고 있어요..." minHeight="200px" />
+    );
+  if (isError || !reviews)
+    return (
+      <ErrorState
+        message="리뷰를 불러오는 중 오류가 발생했어요"
+        minHeight="200px"
+      />
+    );
+  if (reviews.length === 0)
+    return <EmptyState message="아직 등록된 리뷰가 없어요" minHeight="200px" />;
 
   return (
-    <section>
-      <div className="mb-6 text-2xl font-semibold">모임 리뷰 모아보기</div>
+    <>
       <ReviewCard className="mb-8 border border-[#ddd] px-12 py-10">
-        {data.result.content.map((review, idx) => (
+        {reviews.map((review, idx) => (
           <>
             <div key={`review-${review.id}`} className="flex flex-col gap-y-6">
               <ReviewCard.Profile
@@ -40,13 +54,12 @@ export default function GatheringReviewSection() {
               />
               <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>
             </div>
-            {idx !== data.result.content.length - 1 && (
+            {idx !== reviews.length - 1 && (
               <ReviewCard.Divider className="my-6" />
             )}
           </>
         ))}
       </ReviewCard>
-
       <Pagination className="mb-10">
         <PaginationContent>
           <PaginationItem>
@@ -80,6 +93,15 @@ export default function GatheringReviewSection() {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+    </>
+  );
+}
+
+export default function GatheringReviewSection() {
+  return (
+    <section>
+      <div className="mb-6 text-2xl font-semibold">모임 리뷰 모아보기</div>
+      <GatheringReviewList />
     </section>
   );
 }

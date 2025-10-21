@@ -21,9 +21,11 @@ export default function QuickGatheringCardList() {
           <QuickGatheringCard key={gathering.id} gathering={gathering} />
         )}
         renderSkeleton={() => <QuickGatheringCardSkeleton />}
-        renderOnEmpty={() => <EmptyState message="번개 모임 데이터가 없어요" />}
+        renderOnEmpty={() => (
+          <EmptyState message="아직 등록된 번개 모임이 없어요" />
+        )}
         renderOnError={() => (
-          <ErrorState message="번개 모임 데이터를 불러오는 중 오류가 발생했어요" />
+          <ErrorState message="등록된 번개 모임을 불러오는 중 오류가 발생했어요" />
         )}
       />
     </ul>

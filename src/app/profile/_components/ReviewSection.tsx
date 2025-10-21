@@ -69,7 +69,10 @@ export default function ReviewSection() {
     isError,
   } = useGetMyReviews({ page: 0, size: 10 });
 
-  if (isPending) return <LoadingState message="로딩 중..." minHeight="200px" />;
+  if (isPending)
+    return (
+      <LoadingState message="리뷰를 불러오고 있어요..." minHeight="200px" />
+    );
   if (!reviews || isError)
     return (
       <ErrorState message="리뷰를 불러오는데 실패했습니다." minHeight="200px" />

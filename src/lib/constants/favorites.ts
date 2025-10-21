@@ -4,7 +4,7 @@ export const FAVORITES_TAB = {
     value: "regular",
   },
   QUICK: {
-    label: "정기 모임",
+    label: "번개 모임",
     value: "quick",
   },
 };

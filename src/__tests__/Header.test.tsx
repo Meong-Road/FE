@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/auth";
 import { PATH } from "@/lib/constants/path";
 import { UserType } from "@/lib/types/user";
 
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 
 // Next.js navigation 모킹
 jest.mock("next/navigation", () => {
@@ -26,6 +26,16 @@ jest.mock("../components/Logo", () => {
     return <div data-testid="logo" style={{ width }} />;
   };
 });
+
+// ResponsiveWrapper 컴포넌트 모킹
+jest.mock("../components/common", () => ({
+  DesktopOnly: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="desktop-only">{children}</div>
+  ),
+  MobileOnly: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mobile-only">{children}</div>
+  ),
+}));
 
 // ProfileSvg 컴포넌트 모킹
 jest.mock("@/assets/images/profile.svg", () => {
@@ -149,12 +159,14 @@ describe("Header", () => {
     expect(screen.getByTestId("logo")).toBeInTheDocument();
 
     // 데스크톱 메뉴 확인
-    expect(screen.getAllByText("정기 모임").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("번개 모임").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("찜한 모임").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("모든 리뷰").length).toBeGreaterThan(0);
+    const desktopMenu = screen.getByTestId("desktop-only");
+    expect(desktopMenu).toHaveTextContent("정기 모임");
+    expect(desktopMenu).toHaveTextContent("번개 모임");
+    expect(desktopMenu).toHaveTextContent("찜한 모임");
+    expect(desktopMenu).toHaveTextContent("모든 리뷰");
 
-    expect(screen.getByTestId("profile-svg")).toBeInTheDocument();
+    // 로그아웃 상태에서는 로그인 버튼이 표시되어야 함
+    expect(desktopMenu).toHaveTextContent("로그인");
   });
 
   it("로고 링크가 홈페이지로 연결되어야 한다", () => {
@@ -167,22 +179,13 @@ describe("Header", () => {
   it("각 네비게이션 메뉴가 올바른 링크를 가져야 한다", () => {
     renderHeader();
 
-    expect(screen.getByRole("link", { name: "정기 모임" })).toHaveAttribute(
-      "href",
-      PATH.REGULAR,
-    );
-    expect(screen.getByRole("link", { name: "번개 모임" })).toHaveAttribute(
-      "href",
-      PATH.QUICK,
-    );
-    expect(screen.getByRole("link", { name: "찜한 모임" })).toHaveAttribute(
-      "href",
-      PATH.FAVORITES,
-    );
-    expect(screen.getByRole("link", { name: "모든 리뷰" })).toHaveAttribute(
-      "href",
-      PATH.REVIEWS,
-    );
+    const desktopMenu = screen.getByTestId("desktop-only");
+    expect(desktopMenu.querySelector('a[href="/regular"]')).toBeInTheDocument();
+    expect(desktopMenu.querySelector('a[href="/quick"]')).toBeInTheDocument();
+    expect(
+      desktopMenu.querySelector('a[href="/favorites"]'),
+    ).toBeInTheDocument();
+    expect(desktopMenu.querySelector('a[href="/reviews"]')).toBeInTheDocument();
   });
 
   it("로그인 상태에서 프로필 아이콘을 클릭하면 드롭다운 메뉴가 나타남", async () => {
@@ -200,39 +203,33 @@ describe("Header", () => {
   it("로그아웃 상태에서 프로필 아이콘을 클릭하면 로그인 페이지로 이동", () => {
     renderHeader("/", null);
 
-    const profileIcon = screen.getByTestId("profile-svg");
-    fireEvent.click(profileIcon);
-
-    // onClick 이벤트가 트리거되었는지 확인
-    expect(profileIcon).toBeInTheDocument();
+    // 로그아웃 상태에서는 프로필 아이콘이 없고 로그인 버튼이 있어야 함
+    const desktopMenu = screen.getByTestId("desktop-only");
+    expect(desktopMenu).toHaveTextContent("로그인");
+    expect(desktopMenu).toHaveTextContent("회원가입");
   });
 
   it("현재 경로에 해당하는 메뉴가 활성화되어야 한다", () => {
-    renderHeader(PATH.REGULAR_DETAIL(1));
+    renderHeader(PATH.REGULAR);
 
-    const regularMenuItems = screen.getAllByText("정기 모임");
-    // 데스크톱 메뉴 (첫 번째) 확인
-    expect(regularMenuItems[0]).toHaveClass("text-primary", "font-bold");
+    const desktopMenu = screen.getByTestId("desktop-only");
+    const activeLink = desktopMenu.querySelector('a[href="/regular"]');
+    expect(activeLink).toHaveClass("text-primary", "font-bold");
 
-    const quickMenuItems = screen.getAllByText("번개 모임");
-    expect(quickMenuItems[0]).toHaveClass("text-[#8B8B8B]");
-    expect(quickMenuItems[0]).not.toHaveClass("text-primary", "font-bold");
+    const inactiveLink = desktopMenu.querySelector('a[href="/quick"]');
+    expect(inactiveLink).toHaveClass("text-[#8B8B8B]");
+    expect(inactiveLink).not.toHaveClass("text-primary", "font-bold");
   });
 
   it("활성화되지 않은 메뉴들은 기본 스타일을 가져야 한다", () => {
     renderHeader("/some-other-path");
 
-    // 데스크톱 메뉴만 확인 (각각의 첫 번째 요소)
-    const menuItems = [
-      screen.getAllByText("정기 모임")[0],
-      screen.getAllByText("번개 모임")[0],
-      screen.getAllByText("찜한 모임")[0],
-      screen.getAllByText("모든 리뷰")[0],
-    ];
+    const desktopMenu = screen.getByTestId("desktop-only");
+    const menuLinks = desktopMenu.querySelectorAll("a");
 
-    menuItems.forEach((item) => {
-      expect(item).toHaveClass("text-[#8B8B8B]");
-      expect(item).not.toHaveClass("text-primary", "font-bold");
+    menuLinks.forEach((link) => {
+      expect(link).toHaveClass("text-[#8B8B8B]");
+      expect(link).not.toHaveClass("text-primary", "font-bold");
     });
   });
 

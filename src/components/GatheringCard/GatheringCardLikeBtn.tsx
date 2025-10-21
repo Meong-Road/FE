@@ -79,7 +79,13 @@ export function GatheringCardLikeBtn({
   };
 
   return (
-    <button className={className} onClick={handleLikeButtonClick}>
+    <button
+      className={cn(
+        "cursor-pointer rounded-full bg-white hover:brightness-[.98]",
+        className,
+      )}
+      onClick={handleLikeButtonClick}
+    >
       {isLiked ? (
         <LikeBtnFilled width={48} height={48} />
       ) : (

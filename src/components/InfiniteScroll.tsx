@@ -5,6 +5,7 @@ import { UseInfiniteQueryResult } from "@tanstack/react-query";
 
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
+import { EmptyState, ErrorState } from "./common";
 import Iterator from "./Iterator";
 
 interface InfiniteScrollProps<T>
@@ -19,6 +20,8 @@ interface InfiniteScrollProps<T>
   data: T[] | undefined;
   render: (item: T, idx: number) => ReactNode;
   renderSkeleton: () => ReactNode;
+  textOnEmpty?: string;
+  textOnError?: string;
 }
 
 export default function InfiniteScroll<T>({
@@ -29,6 +32,8 @@ export default function InfiniteScroll<T>({
   fetchNextPage,
   renderSkeleton,
   render,
+  textOnEmpty = "데이터가 없어요",
+  textOnError = "에러가 발생했어요",
 }: InfiniteScrollProps<T>) {
   const { ref, inView } = useInView();
 
@@ -40,7 +45,8 @@ export default function InfiniteScroll<T>({
     return (
       <Iterator count={DEFAULT_LIST_OPTIONS.size}>{renderSkeleton()}</Iterator>
     );
-  if (isError) return <div>Error</div>;
+  if (isError) return <ErrorState message={textOnError} />;
+  if (data?.length === 0) return <EmptyState message={textOnEmpty} />;
 
   return (
     <ul className="grid grid-cols-1 gap-6">

@@ -1,6 +1,7 @@
 import {
   BookmarkType,
   GatheringType,
+  ParticipantsType,
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gatherings";
@@ -37,7 +38,18 @@ export type GetJoinedGatheringsRes = Response<
   PaginatedRes<GatheringType & { joinedAt: string }>
 >;
 
+// POST /meong-road/gatherings/{gatheringId}/join - 모임 참여
+export type PostJoinGatheringReq = Pick<GatheringType, "id">;
+export type PostJoinGatheringRes = Response<string>;
+
+// DELETE /meong-road/gatherings/{gatheringId}/leave - 모임 참여 취소
+export type DeleteJoinGatheringReq = Pick<GatheringType, "id">;
+export type DeleteJoinGatheringRes = Response<string>;
+
 export type GetMyBookmarkedGatheringsReq = BookmarkType;
 export type GetMyBookmarkedGatheringsRes = Response<
   PaginatedRes<GatheringType>
 >;
+
+export type GetParticipantsReq = Pick<GatheringType, "id"> & PaginationReq;
+export type GetParticipantsRes = Response<PaginatedRes<ParticipantsType>>;

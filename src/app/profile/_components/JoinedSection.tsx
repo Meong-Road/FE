@@ -2,79 +2,50 @@
 
 import Link from "next/link";
 
-import {
-  EmptyState,
-  ListContainer,
-  LoadingState,
-  SectionWrapper,
-} from "@/components/common";
+import { ListContainer, SectionWrapper } from "@/components/common";
+import InfiniteScroll from "@/components/InfiniteScroll";
+import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
+import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
+import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
 import { useGetInfiniteJoinedGatherings } from "@/hooks/queries/gatherings";
-import { GatheringType } from "@/lib/types/gatherings";
-import { processGatheringInfo } from "@/lib/utils/gathering";
-
-import { GatheringCard } from "../../../components/GatheringCard/GatheringCard";
-
-const JoinedGatheringItem = ({
-  gathering,
-}: {
-  gathering: ReturnType<typeof processGatheringInfo>;
-}) => (
-  <Link href={gathering.detailPath}>
-    <GatheringCard bgColor="white">
-      <div className="flex items-center gap-6">
-        <GatheringCard.Image />
-        <div>
-          <div className="mb-4 flex gap-2">
-            <GatheringCard.AttendanceBadge />
-            <GatheringCard.ConfirmedBadge />
-          </div>
-          <GatheringCard.Title>{gathering.name}</GatheringCard.Title>
-          <GatheringCard.People
-            people={gathering.participantCount}
-            limit={gathering.capacity}
-          />
-          <GatheringCard.Info
-            location={gathering.location}
-            date={gathering.dateInfo}
-          />
-        </div>
-      </div>
-      <GatheringCard.LikeBtn
-        id={gathering.id}
-        className="absolute top-8 right-6"
-      />
-      <GatheringCard.JoinBtn className="absolute right-6 bottom-6" />
-    </GatheringCard>
-  </Link>
-);
-
-const JoinedGatheringList = ({
-  gatherings,
-}: {
-  gatherings: GatheringType[];
-}) => (
-  <ListContainer>
-    {gatherings.map((gathering) => (
-      <JoinedGatheringItem
-        key={gathering.id}
-        gathering={processGatheringInfo(gathering)}
-      />
-    ))}
-  </ListContainer>
-);
+import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
+import { EGatheringType } from "@/lib/types/gatherings";
+import { getGatheringDetailPath } from "@/lib/utils/gathering";
 
 export default function JoinedSection() {
-  const { data: gatherings, isLoading } = useGetInfiniteJoinedGatherings({
-    size: 10,
-  });
-
-  if (isLoading) return <LoadingState message="로딩 중..." />;
-  if (!gatherings?.length)
-    return <EmptyState message="참석한 모임이 없습니다." />;
+  const {
+    data: gatherings,
+    isPending,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetInfiniteJoinedGatherings(DEFAULT_LIST_OPTIONS);
 
   return (
     <SectionWrapper>
-      <JoinedGatheringList gatherings={gatherings} />
+      <ListContainer>
+        <InfiniteScroll
+          data={gatherings}
+          render={(gathering) => (
+            <Link key={gathering.id} href={getGatheringDetailPath(gathering)}>
+              {gathering.type === EGatheringType.REGULAR ? (
+                <RegularGatheringCard gathering={gathering} />
+              ) : (
+                <QuickGatheringCard gathering={gathering} />
+              )}
+            </Link>
+          )}
+          renderSkeleton={() => <RegularGatheringCardSkeleton />}
+          textOnEmpty="참석한 모임이 없습니다."
+          textOnError="참석한 모임 조회 실패"
+          isPending={isPending}
+          isError={isError}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
+      </ListContainer>
     </SectionWrapper>
   );
 }

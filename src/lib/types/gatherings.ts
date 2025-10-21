@@ -1,4 +1,5 @@
 import { LocationType } from "./reviews";
+import { UserType } from "./user";
 
 export enum EGatheringType {
   QUICK = "QUICK",
@@ -37,4 +38,11 @@ export interface BookmarkType {
   page: number;
   size: number;
   sort: string[];
+}
+
+export interface ParticipantsType {
+  userId: UserType["id"];
+  gatheringId: GatheringType["id"];
+  joinedAt: string; // date
+  user: UserType;
 }

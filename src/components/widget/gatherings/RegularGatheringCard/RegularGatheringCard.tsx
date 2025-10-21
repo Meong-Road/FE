@@ -13,13 +13,10 @@ export default function RegularGatheringCard({
 }: RegularGatheringCardProps) {
   return (
     <Link href={PATH.REGULAR_DETAIL(gathering.id)}>
-      <GatheringCard bgColor="white">
+      <GatheringCard>
         <div className="flex h-full flex-row items-center gap-6">
           {gathering.image && (
-            <GatheringCard.Image
-            // src={gathering.image}
-            // alt={gathering.name}
-            />
+            <GatheringCard.Image src={gathering.image} alt={gathering.name} />
           )}
           <div className="flex h-full flex-grow flex-col justify-between gap-y-11 py-2">
             <div className="flex items-start justify-between gap-x-2">
@@ -47,7 +44,7 @@ export default function RegularGatheringCard({
                   days={gathering.days}
                 />
               </div>
-              <GatheringCard.JoinBtn />
+              <GatheringCard.JoinBtn gathering={gathering} />
             </div>
           </div>
         </div>

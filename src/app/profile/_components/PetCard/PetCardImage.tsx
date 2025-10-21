@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import Dog from "@/assets/images/dog2.svg";
+import Dog from "@/assets/images/dog.svg";
 
 interface PetCardImageProps {
   image?: string | null;
@@ -21,7 +21,7 @@ export function PetCardImage({ image }: PetCardImageProps) {
         />
       ) : (
         <div className="flex h-[114px] w-[114px] items-center justify-center rounded-full border-[1px] border-slate-100">
-          <Dog />
+          <Dog className="size-20" />
         </div>
       )}
     </div>

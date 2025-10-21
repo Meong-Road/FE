@@ -27,6 +27,8 @@ export default function RegularGatheringCardList() {
           <RegularGatheringCard key={gathering.id} gathering={gathering} />
         )}
         renderSkeleton={() => <RegularGatheringCardSkeleton />}
+        textOnEmpty="정기 모임 데이터가 없어요"
+        textOnError="정기 모임 데이터를 불러오는 중 오류가 발생했어요"
       />
     </ul>
   );

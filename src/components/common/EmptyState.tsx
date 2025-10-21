@@ -7,7 +7,7 @@ export const EmptyState = ({
   message,
   minHeight = "400px",
 }: EmptyStateProps) => (
-  <div className={`flex min-h-[${minHeight}] items-center justify-center`}>
-    <p className="text-slate-400">{message}</p>
+  <div style={{ minHeight }} className={`flex items-center justify-center`}>
+    <p className="text-slate-600">{message}</p>
   </div>
 );

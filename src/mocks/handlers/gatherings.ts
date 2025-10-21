@@ -8,6 +8,7 @@ import { createPaginatedRes } from "../data/common";
 import {
   GATHERING_DETAILS,
   isLikedSet,
+  PARTICIPANTS,
   QUICK_GATHERINGS,
   REGULAR_GATHERINGS,
 } from "../data/gatherings";
@@ -47,7 +48,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 내가 만든 모임 목록 조회 ================================
-  http.get(`${FULL_API_ENDPOINTS.GATHERING}/my`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/my`, async (req) => {
     const url = new URL(req.request.url);
     const page = Number(url.searchParams.get("page")) || 0;
     const size = Number(url.searchParams.get("size")) || 10;
@@ -61,6 +62,8 @@ export const gatheringsHandlers = [
     const start = page * size;
     const end = start + size;
     const paginated = myGatherings.slice(start, end);
+
+    await delay(1000);
 
     return HttpResponse.json({
       success: true,
@@ -79,7 +82,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 참여한 모임 목록 조회 ================================
-  http.get(`${FULL_API_ENDPOINTS.GATHERING}/joined`, (req) => {
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/joined`, async (req) => {
     const url = new URL(req.request.url);
     const page = Number(url.searchParams.get("page")) || 0;
     const size = Number(url.searchParams.get("size")) || 10;
@@ -94,6 +97,8 @@ export const gatheringsHandlers = [
     const end = start + size;
     const paginated = joinedGatherings.slice(start, end);
 
+    await delay(1000);
+
     return HttpResponse.json({
       success: true,
       code: 0,
@@ -106,6 +111,78 @@ export const gatheringsHandlers = [
         totalPages: Math.ceil(joinedGatherings.length / size),
         last: end >= joinedGatherings.length,
       },
+      errorCode: null,
+    });
+  }),
+
+  //================= 모임 참여 ================================
+  http.post(`${FULL_API_ENDPOINTS.GATHERING}/:id/join`, (req) => {
+    const id = req.params.id;
+    const gathering =
+      REGULAR_GATHERINGS.find((g) => g.id === Number(id)) ??
+      QUICK_GATHERINGS.find((g) => g.id === Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    if (gathering.isParticipating)
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "이미 참여한 모임입니다",
+        result: null,
+        errorCode: "ALREADY_JOINED",
+      });
+
+    gathering.isParticipating = true;
+
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: "모임에 참여했습니다",
+      errorCode: null,
+    });
+  }),
+
+  //================= 모임 참여 취소 ================================
+  http.delete(`${FULL_API_ENDPOINTS.GATHERING}/:id/leave`, (req) => {
+    const id = req.params.id;
+    const gathering =
+      REGULAR_GATHERINGS.find((g) => g.id === Number(id)) ??
+      QUICK_GATHERINGS.find((g) => g.id === Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    if (!gathering.isParticipating)
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "이미 참여하지 않은 모임입니다",
+        result: null,
+        errorCode: "NOT_JOINED",
+      });
+
+    gathering.isParticipating = false;
+
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: "모임 참여 취소했습니다",
       errorCode: null,
     });
   }),
@@ -151,12 +228,40 @@ export const gatheringsHandlers = [
       errorCode: null,
     });
   }),
+  //================= 모임 참가자 목록 조회 ================================
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id/participants`, (req) => {
+    const id = req.params.id;
 
+    const gathering = GATHERING_DETAILS(Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    const url = new URL(req.request.url);
+    const page = url.searchParams.get("page");
+    const size = url.searchParams.get("size");
+    // TODO const sort = url.searchParams.get("sort");
+
+    return HttpResponse.json(
+      createPaginatedRes(PARTICIPANTS(gathering.id), {
+        page: Number(page),
+        size: Number(size),
+      }),
+    );
+  }),
   //================= 모임 상세 조회 ================================
   http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id`, (req) => {
     const id = req.params.id;
 
-    if (!id)
+    const gathering = GATHERING_DETAILS(Number(id));
+
+    if (!gathering)
       return HttpResponse.json({
         success: false,
         code: 404,
@@ -169,7 +274,7 @@ export const gatheringsHandlers = [
       success: true,
       code: 200,
       message: "성공",
-      result: GATHERING_DETAILS,
+      result: gathering,
       errorCode: null,
     });
   }),

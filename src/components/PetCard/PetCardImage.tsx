@@ -18,7 +18,7 @@ export function PetCardImage({
   return (
     <div className="mb-4 flex justify-center">
       <div
-        className={`border-background bg-background relative flex items-center justify-center overflow-hidden rounded-full border-3 shadow-sm ${className || ""}`}
+        className={`bg-background relative flex items-center justify-center overflow-hidden rounded-full border-1 ${className || ""}`}
         style={{ height: size, width: size }}
       >
         {src ? (

@@ -24,9 +24,9 @@ export function PetCardEditButton({
       size="icon"
       variant="default"
       onClick={handleClick}
-      className={`bg-primary text-primary-foreground hover:bg-primary/90 absolute top-3 right-3 h-8 w-8 cursor-pointer rounded-full opacity-50 transition-opacity group-hover:opacity-100 ${className || ""}`}
+      className={`bg-primary/50 text-primary-foreground hover:bg-primary group-hover:bg-primary absolute top-3 right-3 h-8 w-8 cursor-pointer rounded-full transition-all hover:scale-105 ${className || ""}`}
     >
-      <Pencil className="h-3.5 w-3.5" />
+      <Pencil className="size-3.5" />
       <span className="sr-only">반려견 정보 수정</span>
     </Button>
   );

@@ -15,9 +15,9 @@ interface PetCardProps {
 export function PetCard({ children, className }: PetCardProps) {
   return (
     <Card
-      className={`group border-secondary/50 bg-secondary/20 hover:border-primary/30 relative overflow-hidden border-2 transition-all select-none hover:shadow-lg ${className || ""}`}
+      className={`group bg-card hover:bg-primary/5 border-primary/50 relative overflow-hidden transition-all select-none hover:shadow-md ${className || ""}`}
     >
-      <CardContent className="p-5">{children}</CardContent>
+      <CardContent className="pt-4 pb-6">{children}</CardContent>
     </Card>
   );
 }

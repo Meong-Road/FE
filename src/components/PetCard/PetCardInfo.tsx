@@ -15,11 +15,11 @@ export function PetCardInfo({
     <div
       className={`text-foreground/70 flex items-center justify-center gap-2 text-sm ${className || ""}`}
     >
+      <span className="font-medium">{breed}</span>
+      <span className="text-foreground/30">•</span>
       <span className="font-medium">{age}</span>
       <span className="text-foreground/30">•</span>
       <span className="font-medium">{gender}</span>
-      <span className="text-foreground/30">•</span>
-      <span className="font-medium">{breed}</span>
     </div>
   );
 }

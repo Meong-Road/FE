@@ -53,6 +53,8 @@ export default function FavoritesList() {
         isFetchingNextPage={isFetchingNextPage}
         render={renderGathering}
         renderSkeleton={renderSkeleton}
+        textOnEmpty={`찜한 ${isQuickTab ? "번개 모임" : "정기 모임"}이 없어요`}
+        textOnError={`찜한 ${isQuickTab ? "번개 모임" : "정기 모임"}을 불러오는 중 오류가 발생했어요`}
       />
     </div>
   );

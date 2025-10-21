@@ -72,7 +72,7 @@ export default function PetInfoModal({
                     value={field.value as File | null}
                     existingImageUrl={image as string}
                   >
-                    <Dog />
+                    <Dog className="w-20" />
                   </Form.ImageUpload>
                 </Form.Control>
                 <Form.Label className="flex justify-center">

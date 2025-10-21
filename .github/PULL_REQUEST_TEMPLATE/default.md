@@ -2,6 +2,7 @@
 name: Pull Request
 about: PR 작성 시 사용해주세요
 title: "[] "
+labels: PR
 assignees: ""
 ---
 

@@ -14,14 +14,9 @@ export default function QuickGatheringCard({
 }: QuickGatheringCardProps) {
   return (
     <Link href={PATH.QUICK_DETAIL(gathering.id)}>
-      <GatheringCard bgColor="white">
+      <GatheringCard>
         <div className="flex h-full flex-row items-center gap-6">
-          {gathering.image && (
-            <GatheringCard.Image
-            // src={gathering.image}
-            // alt={gathering.name}
-            />
-          )}
+          <GatheringCard.Image src={gathering.image} alt={gathering.name} />
           <div className="flex h-full flex-grow flex-col justify-between gap-y-11 py-2">
             <div className="flex items-start justify-between gap-x-2">
               <div className="flex flex-col gap-y-4">
@@ -48,7 +43,7 @@ export default function QuickGatheringCard({
                   date={formatDate(gathering.dateTime)}
                 />
               </div>
-              <GatheringCard.JoinBtn />
+              <GatheringCard.JoinBtn gathering={gathering} />
             </div>
           </div>
         </div>

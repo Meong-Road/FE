@@ -2,42 +2,67 @@
 
 import { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { useAuth } from "@/hooks/auth";
+import {
+  useCancelJoinGathering,
+  useJoinGathering,
+} from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
-import { cn } from "@/lib/utils";
+import { GatheringType } from "@/lib/types/gatherings";
+
+import { Button } from "../ui/button";
 
 interface GatheringCardJoinBtnProps {
-  className?: string;
+  gathering: GatheringType;
 }
 
-export function GatheringCardJoinBtn({ className }: GatheringCardJoinBtnProps) {
+const SUCCESS_MESSAGE = {
+  join: "모임에 참여했어요",
+  cancel: "모임에 참여 취소했어요",
+};
+
+const ERROR_MESSAGE = {
+  join: "모임 참여에 실패했어요",
+  cancel: "모임 참여 취소에 실패했어요",
+};
+
+export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
   const router = useRouter();
   const { user, isLoading } = useAuth();
+  const { mutateAsync: join, isPending: isJoinPending } = useJoinGathering();
+  const { mutateAsync: cancelJoin, isPending: isCancelPending } =
+    useCancelJoinGathering();
+  const mode = gathering.isParticipating ? "cancel" : "join"; // join - 참여하기 버튼, cancel - 참여 취소하기 버튼
+  const isMutationPending = isJoinPending || isCancelPending;
 
-  const handleParticipateButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isLoading) return; // 로딩중이면 안먹힘 -> 비활성화 or 로딩 스피너 추가?
-
     if (!user) {
       router.push(PATH.SIGNIN);
       return;
     }
 
-    // TODO
-    console.log("참여하기");
+    try {
+      if (mode === "cancel") await cancelJoin({ id: gathering.id });
+      else await join({ id: gathering.id });
+      toast.success(`[${gathering.name}] ${SUCCESS_MESSAGE[mode]}`);
+    } catch (error) {
+      console.error(error);
+      toast.error(`[${gathering.name}] ${ERROR_MESSAGE[mode]}`);
+    }
   };
 
   return (
-    <button
-      className={cn(
-        "bg-primary flex h-9 w-36 items-center justify-center rounded-[10px] font-bold text-white",
-        className,
-      )}
-      onClick={handleParticipateButtonClick}
+    <Button
+      size="xl"
+      variant={mode === "join" ? "default" : "outline"}
+      onClick={handleButtonClick}
+      disabled={isLoading || isMutationPending}
     >
-      참여하기
-    </button>
+      {mode === "join" ? "참여하기" : "참여 취소하기"}
+    </Button>
   );
 }

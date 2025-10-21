@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 
+import { cn } from "@/lib/utils";
+
 interface ModalProps {
+  className?: string;
   children: React.ReactNode;
 }
 
-export function Modal({ children }: ModalProps) {
+export function Modal({ className, children }: ModalProps) {
   useEffect(() => {
     // 현재 스크롤 위치 저장
     const scrollY = window.scrollY;
@@ -31,7 +34,12 @@ export function Modal({ children }: ModalProps) {
 
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-[2px]">
-      <div className="bg-card animate-scaleIn relative flex h-[85vh] w-full max-w-screen-sm flex-col gap-2 rounded-3xl py-8 select-none sm:rounded-4xl sm:py-12">
+      <div
+        className={cn(
+          "bg-card animate-scaleIn relative flex h-[85vh] w-full max-w-screen-sm flex-col gap-2 rounded-3xl py-12 shadow-xl sm:rounded-4xl",
+          className,
+        )}
+      >
         {children}
       </div>
     </div>,

@@ -1,3 +1,4 @@
+import AuthRequiredModal from "./AuthRequiredModal";
 import { Modal as BaseModal } from "./Modal";
 import { ModalBreedSelect } from "./ModalBreedSelect";
 import { ModalCloseBtn } from "./ModalCloseBtn";
@@ -11,4 +12,5 @@ export const Modal = Object.assign(BaseModal, {
   Content: ModalContent,
   DateSelect: ModalDateSelect,
   CloseBtn: ModalCloseBtn,
+  AuthRequired: AuthRequiredModal,
 });

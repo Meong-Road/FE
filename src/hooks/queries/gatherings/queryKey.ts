@@ -1,16 +1,16 @@
-import { PaginationReq } from "@/api/types/common";
+import { PaginationOptions } from "@/api/types/common";
 import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 
 export const GATHERINGS_QUERY_KEYS = {
   all: () => ["gatherings"] as const,
 
   lists: () => [...GATHERINGS_QUERY_KEYS.all(), "list"] as const,
-  list: (pagination: Partial<PaginationReq>) =>
-    [...GATHERINGS_QUERY_KEYS.lists(), pagination] as const,
-  regularList: (pagination: Partial<PaginationReq>) =>
-    [...GATHERINGS_QUERY_KEYS.list(pagination), "regular"] as const,
-  quickList: (pagination: Partial<PaginationReq>) =>
-    [...GATHERINGS_QUERY_KEYS.list(pagination), "quick"] as const,
+  list: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.lists(), options] as const,
+  regularList: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.list(options), "regular"] as const,
+  quickList: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.list(options), "quick"] as const,
 
   details: () => [...GATHERINGS_QUERY_KEYS.all(), "detail"] as const,
   detail: (id: GatheringType["id"]) =>
@@ -22,15 +22,19 @@ export const GATHERINGS_QUERY_KEYS = {
     id,
   ],
 
-  bookmarkedGatherings: (
-    type: EGatheringType,
-    pagination: Partial<PaginationReq>,
-  ) =>
-    [...GATHERINGS_QUERY_KEYS.all(), "bookmarked", type, pagination] as const,
+  bookmarkedGatherings: (type: EGatheringType, options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "bookmarked", type, options] as const,
 
-  myGatherings: (pagination: Partial<PaginationReq>) =>
-    [...GATHERINGS_QUERY_KEYS.all(), "my", pagination] as const,
+  myGatherings: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "my", options] as const,
 
-  joinedGatherings: (pagination: Partial<PaginationReq>) =>
-    [...GATHERINGS_QUERY_KEYS.all(), "joined", pagination] as const,
+  joinedGatherings: (options: PaginationOptions) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "joined", options] as const,
+
+  participants: (
+    { id }: { id: GatheringType["id"] },
+    options: PaginationOptions,
+  ) => [...GATHERINGS_QUERY_KEYS.all(), "participants", id, options] as const,
+  participants4: ({ id }: { id: GatheringType["id"] }) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "participants", id, "last4"] as const,
 };

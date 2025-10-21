@@ -1,4 +1,5 @@
 export { GATHERINGS_QUERY_KEYS } from "./queryKey";
+export { useCancelJoinGathering } from "./useCancelJoinGathering";
 export { useCancelLike } from "./useCancelLike";
 export { useGetGatheringDetail } from "./useGetGatheringDetail";
 export { useGetInfiniteBookmarkedGatherings } from "./useGetInfiniteBookmarkedGatherings";
@@ -7,4 +8,5 @@ export { useGetInfiniteMyGatherings } from "./useGetInfiniteMyGatherings";
 export { useGetInfiniteQuickGatherings } from "./useGetInfiniteQuickGatherings";
 export { useGetInfiniteRegularGatherings } from "./useGetInfiniteRegularGatherings";
 export { useGetIsLiked } from "./useGetIsLiked";
+export { useJoinGathering } from "./useJoinGathering";
 export { useLike } from "./useLike";

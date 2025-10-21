@@ -1,30 +1,20 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { gatheringApi } from "@/api/gatherings";
-import { PaginationReq } from "@/api/types/common";
-import { GetQuickGatheringsReq } from "@/api/types/gatherings";
+import { PaginationOptions } from "@/api/types/common";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
 import { QUERY_KEYS } from "../queryKey";
 
-interface UseGetInfiniteQuickGatheringsProps
-  extends Omit<GetQuickGatheringsReq, keyof PaginationReq>,
-    Partial<PaginationReq> {}
-
-export function useGetInfiniteQuickGatherings({
-  size = DEFAULT_LIST_OPTIONS.size,
-  sort = DEFAULT_LIST_OPTIONS.sort,
-}: UseGetInfiniteQuickGatheringsProps) {
+export function useGetInfiniteQuickGatherings(
+  options: PaginationOptions = DEFAULT_LIST_OPTIONS,
+) {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.gatherings.quickList({
-      size,
-      sort,
-    }),
+    queryKey: QUERY_KEYS.gatherings.quickList(options),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getQuickGatherings({
         page: pageParam,
-        size,
-        sort,
+        ...options,
       });
     },
     initialPageParam: 0,

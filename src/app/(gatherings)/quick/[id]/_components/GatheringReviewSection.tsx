@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 import { ReviewCard } from "@/components/ReviewCard";
 import {
@@ -14,9 +15,10 @@ import {
 import { useGetReviewsByGathering } from "@/hooks/queries/reviews";
 
 export default function GatheringReviewSection() {
+  const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isPending, isError } = useGetReviewsByGathering({
-    gatheringId: 1,
+    gatheringId: Number(id),
     page: currentPage,
   });
 

@@ -9,7 +9,7 @@ export function ModalCloseBtn() {
 
   return (
     <button
-      className="absolute top-6 right-6 cursor-pointer sm:top-10 sm:right-10"
+      className="absolute top-4 right-4 cursor-pointer rounded-full p-2 transition-colors duration-300 hover:bg-gray-100 active:bg-gray-200 sm:top-8 sm:right-8"
       type="button"
       onClick={closeModal}
     >

@@ -22,7 +22,10 @@ const PetCardItem = ({
 }) => {
   return (
     <PetCard>
-      <PetCard.Image src={processedPet.image ?? ""} alt={processedPet.name} />
+      <PetCard.Image
+        src={processedPet.image as string}
+        alt={processedPet.name}
+      />
       <PetCard.Name>{processedPet.name}</PetCard.Name>
       <PetCard.Info
         age={processedPet.age}

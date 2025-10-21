@@ -16,6 +16,9 @@ export function useCancelLike({ id }: DeleteLikeReq) {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.gatherings.like({ id }),
       });
+      queryClient.invalidateQueries({
+        queryKey: [...QUERY_KEYS.gatherings.all(), "bookmarked"],
+      });
     },
   });
 }

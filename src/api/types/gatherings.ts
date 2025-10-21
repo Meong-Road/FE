@@ -1,6 +1,7 @@
 import {
   BookmarkType,
   GatheringType,
+  ParticipantsType,
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gatherings";
@@ -49,3 +50,6 @@ export type GetMyBookmarkedGatheringsReq = BookmarkType;
 export type GetMyBookmarkedGatheringsRes = Response<
   PaginatedRes<GatheringType>
 >;
+
+export type GetParticipantsReq = Pick<GatheringType, "id"> & PaginationReq;
+export type GetParticipantsRes = Response<PaginatedRes<ParticipantsType>>;

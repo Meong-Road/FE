@@ -1,9 +1,11 @@
-import { QuickGatheringType } from "@/lib/types/gatherings";
+import Dog from "@/assets/images/dog.svg";
+import ImageWithFallback from "@/components/common/ImageWithFallback";
+import { GatheringType } from "@/lib/types/gatherings";
 
-import QuickGatheringInfoCard from "./QuickGatheringInfoCard";
+import GatheringInfoCard from "./GatheringInfoCard";
 
 interface GatheringInfoSectionProps {
-  gathering: QuickGatheringType;
+  gathering: GatheringType;
 }
 
 export default function GatheringInfoSection({
@@ -11,9 +13,17 @@ export default function GatheringInfoSection({
 }: GatheringInfoSectionProps) {
   return (
     <section className="mb-12 flex gap-6">
-      <div className="h-[357px] w-[456px] rounded-[20px] bg-gray-200"></div>
-      {/* <Image src={data.result.image} alt={data.result.name} /> */}
-      <QuickGatheringInfoCard gathering={gathering} />
+      <div className="relative flex h-[357px] w-[456px] items-center justify-center overflow-hidden rounded-[20px] border border-[#ddd] bg-white">
+        <ImageWithFallback
+          src={gathering.image}
+          alt={gathering.name}
+          fill
+          sizes="188px"
+          className="object-cover"
+          renderFallback={() => <Dog className="size-28" />}
+        />
+      </div>
+      <GatheringInfoCard gathering={gathering} />
     </section>
   );
 }

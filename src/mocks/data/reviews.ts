@@ -1,6 +1,8 @@
 import { EGatheringType, RegularGatheringType } from "@/lib/types/gatherings";
 import { LocationType, ReviewScore, ReviewType } from "@/lib/types/reviews";
 
+import { USERS } from "./users";
+
 /**
  * @description
  * 고품질의 반려견 산책 모임 후기 mock 데이터입니다.
@@ -32,17 +34,7 @@ export const mockReviews: ReviewType[] = [
       registrationEnd: "2025-10-04T23:59:59.000Z",
       hostId: 10,
     },
-    user: {
-      id: 1,
-      email: "happypuppy@test.com",
-      name: "김민준",
-      nickName: "해피집사",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
-      isPetInfoSubmitted: true,
-      createdAt: "2025-08-10T08:11:47.301Z",
-      updatedAt: "2025-09-10T08:11:47.301Z",
-    },
+    user: USERS[0],
   },
   {
     id: 2,
@@ -70,17 +62,7 @@ export const mockReviews: ReviewType[] = [
       registrationEnd: "2025-10-04T12:00:00.000Z",
       hostId: 11,
     },
-    user: {
-      id: 2,
-      email: "maru_dad@test.com",
-      name: "이도현",
-      nickName: "마루아빠",
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
-      isPetInfoSubmitted: true,
-      createdAt: "2025-09-20T12:11:47.301Z",
-      updatedAt: "2025-09-21T12:11:47.301Z",
-    },
+    user: USERS[1],
   },
   {
     id: 3,
@@ -108,17 +90,7 @@ export const mockReviews: ReviewType[] = [
       registrationEnd: "2025-10-03T12:00:00.000Z",
       hostId: 12,
     },
-    user: {
-      id: 3,
-      email: "bbori_love@test.com",
-      name: "박서아",
-      nickName: "뽀리언니",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
-      isPetInfoSubmitted: true,
-      createdAt: "2025-09-19T08:00:00.000Z",
-      updatedAt: "2025-09-20T08:00:00.000Z",
-    },
+    user: USERS[2],
   },
   {
     id: 4,
@@ -146,17 +118,7 @@ export const mockReviews: ReviewType[] = [
       registrationEnd: "2025-10-02T23:59:00.000Z",
       hostId: 13,
     },
-    user: {
-      id: 4,
-      email: "chocosong@test.com",
-      name: "최하은",
-      nickName: "초코송이",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
-      isPetInfoSubmitted: true,
-      createdAt: "2025-09-18T10:30:00.000Z",
-      updatedAt: "2025-09-19T10:30:00.000Z",
-    },
+    user: USERS[3],
   },
   {
     id: 5,
@@ -184,17 +146,7 @@ export const mockReviews: ReviewType[] = [
       registrationEnd: "2025-10-01T23:59:00.000Z",
       hostId: 14,
     },
-    user: {
-      id: 5,
-      email: "mongsil_sister@test.com",
-      name: "정유나",
-      nickName: "몽실이누나",
-      image:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop",
-      isPetInfoSubmitted: true,
-      createdAt: "2025-09-15T09:00:00.000Z",
-      updatedAt: "2025-09-16T09:00:00.000Z",
-    },
+    user: USERS[4],
   },
   ...Array.from({ length: 15 }, (_, i) => {
     const id = i + 6;

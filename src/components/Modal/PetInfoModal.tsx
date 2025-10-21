@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { PostPetReq, PutPetReq } from "@/api/types/pets";
 import { useUploadPetImage } from "@/hooks/queries/imageUpload";
 import { usePostPet, usePutPet } from "@/hooks/queries/pets";
 import { PATH } from "@/lib/constants/path";
@@ -57,8 +58,8 @@ export default function PetInfoModal({
     values: PetInfoFormSchema | PetInfoUpdateSchema,
   ) => {
     try {
-      // 1. petPayload 준비. 아직 image는 null로 초기화.
-      const petPayload: PetInfoFormSchema = {
+      // 1. petFormData 준비. 아직 image는 null로 초기화.
+      const petFormData: PetInfoFormSchema = {
         name: values.name!,
         gender: values.gender!,
         birthYear: values.birthYear!,
@@ -72,14 +73,25 @@ export default function PetInfoModal({
       if (values.image instanceof File) {
         const imageUrl = await uploadImageMutation.mutateAsync(values.image);
         if (imageUrl.result?.imageUrl) {
-          petPayload.image = imageUrl.result.imageUrl as string; // string or null
+          petFormData.image = imageUrl.result.imageUrl as string; // string or null
         }
       }
 
-      // 3. edit-pet 인 경우 업데이트 요청.
+      // 3. petPayload 준비.
+      const petPayload: PutPetReq = {
+        name: petFormData.name!,
+        gender: petFormData.gender!,
+        birthYear: petFormData.birthYear!,
+        breed: petFormData.breed!,
+        neuter: petFormData.neuter === "true" ? true : false,
+        petType: petFormData.petType,
+        image: petFormData.image! as string,
+      } as PutPetReq;
+
+      // 4. edit-pet 인 경우 업데이트 요청.
       if (type === "edit-pet" && petId) {
         updatePetMutation.mutate(
-          { id: petId, data: petPayload as PetInfoUpdateSchema },
+          { id: petId, data: petPayload },
           {
             onSuccess: () => {
               toast.success("반려동물 정보가 수정되었습니다.");
@@ -92,7 +104,7 @@ export default function PetInfoModal({
         );
       } else {
         // add-pet or first-login
-        createPetMutation.mutate(petPayload, {
+        createPetMutation.mutate(petPayload as PostPetReq, {
           onSuccess: () => {
             toast.success("반려동물 정보가 등록되었습니다.");
             onClose();

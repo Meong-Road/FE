@@ -15,14 +15,7 @@ export default function FavoritesList() {
   const { tab } = useSearchParamsState({ tab: "regular" });
   const isQuickTab = tab === "quick";
 
-  const {
-    data: gatherings,
-    isPending,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useGetInfiniteBookmarkedGatherings(
+  const infiniteQueryResult = useGetInfiniteBookmarkedGatherings(
     isQuickTab ? EGatheringType.QUICK : EGatheringType.REGULAR,
   );
 
@@ -45,12 +38,7 @@ export default function FavoritesList() {
   return (
     <div className="mt-9 grid grid-cols-1 gap-8">
       <InfiniteScroll
-        data={gatherings}
-        isPending={isPending}
-        isError={isError}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
+        {...infiniteQueryResult}
         render={renderGathering}
         renderSkeleton={renderSkeleton}
         textOnEmpty={`찜한 ${isQuickTab ? "번개 모임" : "정기 모임"}이 없어요`}

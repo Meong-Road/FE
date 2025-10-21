@@ -9,24 +9,13 @@ import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gatherings/useGet
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
 export default function QuickGatheringCardList() {
-  const {
-    data: gatherings,
-    isPending,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useGetInfiniteQuickGatherings(DEFAULT_LIST_OPTIONS);
+  const infiniteQueryResult =
+    useGetInfiniteQuickGatherings(DEFAULT_LIST_OPTIONS);
 
   return (
     <ul className="grid grid-cols-1 gap-4">
       <InfiniteScroll
-        data={gatherings}
-        isPending={isPending}
-        isError={isError}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
+        {...infiniteQueryResult}
         render={(gathering) => (
           <QuickGatheringCard key={gathering.id} gathering={gathering} />
         )}

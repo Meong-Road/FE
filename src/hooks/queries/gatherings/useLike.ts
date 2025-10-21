@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { gatheringApi } from "@/api/gatherings";
 import { PostLikeReq } from "@/api/types/gatherings";
-import { EGatheringType } from "@/lib/types/gatherings";
 
 import { QUERY_KEYS } from "../queryKey";
 

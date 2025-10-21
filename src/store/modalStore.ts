@@ -8,7 +8,8 @@ interface PetInfoModalStoreProps {
   isOpen: boolean;
   modalType: PetInfoModalType;
   petId?: number; // 편집 모드일 때 사용할 펫 ID
-  openModal: (type: PetInfoModalType, petId?: number) => void;
+  setModalData: (type: PetInfoModalType, petId?: number) => void;
+  openModal: () => void;
   closeModal: () => void;
 }
 
@@ -16,8 +17,8 @@ export const usePetInfoModalStore = create<PetInfoModalStoreProps>((set) => ({
   isOpen: false,
   modalType: null as PetInfoModalType,
   petId: undefined,
-  openModal: (type, petId?: number) =>
-    set({ isOpen: true, modalType: type, petId }),
+  setModalData: (type, petId?: number) => set({ modalType: type, petId }),
+  openModal: () => set({ isOpen: true }),
   closeModal: () => set({ isOpen: false, modalType: null, petId: undefined }),
 }));
 

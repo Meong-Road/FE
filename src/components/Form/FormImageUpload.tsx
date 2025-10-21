@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -40,7 +42,7 @@ export function ImageUpload({
   }, [previewUrl]);
 
   return (
-    <div className="my-10 flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2">
       <input
         type="file"
         id={id}

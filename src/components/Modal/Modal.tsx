@@ -33,10 +33,10 @@ export function Modal({ className, children }: ModalProps) {
   if (!modalRoot) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-[2px]">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-[2px] duration-300">
       <div
         className={cn(
-          "bg-card animate-scaleIn relative flex h-[85vh] w-full max-w-screen-sm flex-col gap-2 rounded-3xl py-12 shadow-xl sm:rounded-4xl",
+          "bg-card relative flex h-[85vh] w-full max-w-screen-sm flex-col gap-2 rounded-3xl py-12 shadow-xl duration-300 sm:rounded-4xl",
           className,
         )}
       >

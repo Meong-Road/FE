@@ -8,6 +8,6 @@ export const ErrorState = ({
   minHeight = "400px",
 }: ErrorStateProps) => (
   <div style={{ minHeight }} className={`flex items-center justify-center`}>
-    <p className="text-slate-600">{message}</p>
+    <p className="text-lg font-semibold text-slate-400">{message}</p>
   </div>
 );

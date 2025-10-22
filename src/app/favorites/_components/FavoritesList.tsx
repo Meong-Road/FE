@@ -2,15 +2,12 @@
 
 import { EmptyState, ErrorState } from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
-import {
-  QuickGatheringCard,
-  QuickGatheringCardSkeleton,
-} from "@/components/widget/gatherings/QuickGatheringCard";
-import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
-import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
+import GatheringCardItem from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItem";
+import GatheringCardItemSkeleton from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItemSkeleton";
 import { useGetInfiniteBookmarkedGatherings } from "@/hooks/queries/gatherings";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
-import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
+import { PATH } from "@/lib/constants/path";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 export default function FavoritesList() {
   const { tab } = useSearchParamsState({ tab: "regular" });
@@ -20,28 +17,19 @@ export default function FavoritesList() {
     isQuickTab ? EGatheringType.QUICK : EGatheringType.REGULAR,
   );
 
-  const renderGathering = (gathering: GatheringType) => {
-    return gathering.type === EGatheringType.QUICK ? (
-      <QuickGatheringCard key={gathering.id} gathering={gathering} />
-    ) : (
-      <RegularGatheringCard key={gathering.id} gathering={gathering} />
-    );
-  };
-
-  const renderSkeleton = () => {
-    return isQuickTab ? (
-      <QuickGatheringCardSkeleton />
-    ) : (
-      <RegularGatheringCardSkeleton />
-    );
-  };
-
   return (
     <div className="mt-9 grid grid-cols-1 gap-8">
       <InfiniteScroll
         {...infiniteQueryResult}
-        render={renderGathering}
-        renderSkeleton={renderSkeleton}
+        render={(gathering) => (
+          <GatheringCardItem
+            key={gathering.id}
+            gathering={gathering}
+            href={PATH.DETAIL(gathering.id, gathering.type)}
+            as="li"
+          />
+        )}
+        renderSkeleton={() => <GatheringCardItemSkeleton />}
         renderOnEmpty={() => (
           <EmptyState
             message={`아직 찜한 ${isQuickTab ? "번개 모임" : "정기 모임"}이 없어요`}

@@ -7,7 +7,8 @@ import { Button } from "../ui/button";
 import { Modal } from ".";
 
 export default function AuthRequiredModal() {
-  const { isOpen, redirectUrl, closeModal } = useAuthRequiredModalStore();
+  const { isOpen, redirectUrl, closeModal, onClose } =
+    useAuthRequiredModalStore();
   const router = useRouter();
 
   const handleConfirm = () => {
@@ -25,7 +26,7 @@ export default function AuthRequiredModal() {
           <Button
             onClick={() => {
               closeModal();
-              router.back();
+              onClose?.();
             }}
             className="h-10 w-full"
             variant="outline"

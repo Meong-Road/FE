@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
+import { cn } from "@/lib/utils";
 
 import { EmptyState, ErrorState } from "./common";
 import Iterator from "./Iterator";
@@ -17,6 +18,7 @@ interface InfiniteScrollProps<T>
     | "hasNextPage"
     | "fetchNextPage"
   > {
+  className?: string;
   data: T[] | undefined;
   render: (item: T, idx: number) => ReactNode;
   renderSkeleton: () => ReactNode;
@@ -26,6 +28,7 @@ interface InfiniteScrollProps<T>
 }
 
 export default function InfiniteScroll<T>({
+  className,
   data,
   isPending,
   isError,
@@ -60,16 +63,20 @@ export default function InfiniteScroll<T>({
 
   if (showSkeleton)
     return (
-      <Iterator count={DEFAULT_LIST_OPTIONS.size}>{renderSkeleton()}</Iterator>
+      <ul className={cn("grid grid-cols-1 gap-y-6", className)}>
+        <Iterator count={DEFAULT_LIST_OPTIONS.size}>
+          {renderSkeleton()}
+        </Iterator>
+      </ul>
     );
   if (isError) return renderOnError();
   if (data?.length === 0) return renderOnEmpty();
 
   return (
-    <ul className="grid grid-cols-1 gap-6">
+    <ul className={cn("grid grid-cols-1 gap-y-6", className)}>
       {data?.map((item, idx) => render(item, idx))}
       {isFetchingNextPage && (
-        <Iterator count={DEFAULT_LIST_OPTIONS.size}>
+        <Iterator count={DEFAULT_LIST_OPTIONS.size} as="li">
           {renderSkeleton()}
         </Iterator>
       )}

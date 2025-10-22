@@ -7,12 +7,11 @@ import {
   SectionWrapper,
 } from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
-import { QuickGatheringCard } from "@/components/widget/gatherings/QuickGatheringCard";
-import { RegularGatheringCard } from "@/components/widget/gatherings/RegularGatheringCard";
-import RegularGatheringCardSkeleton from "@/components/widget/gatherings/RegularGatheringCard/RegularGatheringCardSkeleton";
+import GatheringCardItem from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItem";
+import GatheringCardItemSkeleton from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItemSkeleton";
 import { useGetInfiniteMyGatherings } from "@/hooks/queries/gatherings";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
-import { EGatheringType } from "@/lib/types/gatherings";
+import { PATH } from "@/lib/constants/path";
 
 export default function CreatedSection() {
   const infiniteQueryResult = useGetInfiniteMyGatherings(DEFAULT_LIST_OPTIONS);
@@ -22,14 +21,15 @@ export default function CreatedSection() {
       <ListContainer>
         <InfiniteScroll
           {...infiniteQueryResult}
-          render={(gathering) =>
-            gathering.type === EGatheringType.REGULAR ? (
-              <RegularGatheringCard key={gathering.id} gathering={gathering} />
-            ) : (
-              <QuickGatheringCard key={gathering.id} gathering={gathering} />
-            )
-          }
-          renderSkeleton={() => <RegularGatheringCardSkeleton />}
+          render={(gathering) => (
+            <GatheringCardItem
+              key={gathering.id}
+              gathering={gathering}
+              href={PATH.DETAIL(gathering.id, gathering.type)}
+              as="li"
+            />
+          )}
+          renderSkeleton={() => <GatheringCardItemSkeleton />}
           renderOnEmpty={() => (
             <EmptyState message="아직 생성한 모임이 없어요" minHeight="200px" />
           )}

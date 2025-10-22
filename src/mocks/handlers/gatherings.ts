@@ -107,6 +107,31 @@ export const gatheringsHandlers = [
     });
   }),
 
+  //================= 모임 참여 여부 조회 ================================
+  http.get(`${FULL_API_ENDPOINTS.GATHERING}/:id/participation`, (req) => {
+    const id = req.params.id;
+    const gathering =
+      REGULAR_GATHERINGS.find((g) => g.id === Number(id)) ??
+      QUICK_GATHERINGS.find((g) => g.id === Number(id));
+
+    if (!gathering)
+      return HttpResponse.json({
+        success: false,
+        code: 404,
+        message: "모임을 찾을 수 없습니다",
+        result: null,
+        errorCode: "NOT_FOUND",
+      });
+
+    return HttpResponse.json({
+      success: true,
+      code: 200,
+      message: "성공",
+      result: { isParticipated: gathering.isParticipating },
+      errorCode: null,
+    });
+  }),
+
   //================= 모임 참여 ================================
   http.post(`${FULL_API_ENDPOINTS.GATHERING}/:id/join`, (req) => {
     const id = req.params.id;

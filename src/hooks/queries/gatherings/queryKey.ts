@@ -37,4 +37,6 @@ export const GATHERINGS_QUERY_KEYS = {
   ) => [...GATHERINGS_QUERY_KEYS.all(), "participants", id, options] as const,
   participants4: ({ id }: { id: GatheringType["id"] }) =>
     [...GATHERINGS_QUERY_KEYS.all(), "participants", id, "last4"] as const,
+  participating: ({ id }: { id: GatheringType["id"] }) =>
+    [...GATHERINGS_QUERY_KEYS.all(), "participating", id] as const,
 };

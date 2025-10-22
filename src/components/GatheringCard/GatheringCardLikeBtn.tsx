@@ -2,6 +2,7 @@
 
 import { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
@@ -14,6 +15,8 @@ import {
 import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
+
+import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
 interface GatheringCardLikeBtnProps {
   className?: string;
@@ -30,43 +33,19 @@ export function GatheringCardLikeBtn({
   // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
   const { data, isPending, isError } = useGetIsLiked({
     id,
-    enabled: !!user && !isLoading,
+    enabled: !!user,
   });
 
   const { mutate: like } = useLike({ id });
   const { mutate: cancelLike } = useCancelLike({ id });
 
-  // 인증 확인중에는 빈 버튼
-  if (isLoading) return <LikeBtn width={48} height={48} />;
-
-  // 비회원이면 로그인 페이지로 리다이렉트
-  if (!user)
-    return (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          router.push(PATH.SIGNIN);
-        }}
-        className={className}
-      >
-        <LikeBtn width={48} height={48} />
-      </button>
-    );
-
   // 쿼리 로딩 중
-  if (isPending)
-    return (
-      <div className={cn("h-12 w-12 rounded-full bg-slate-50", className)} />
-    );
+  if (isLoading || (user && isPending))
+    return <GatheringCardSkeleton.LikeBtn />;
 
   // 쿼리 에러
-  if (isError)
-    return (
-      <div className={cn("h-12 w-12 rounded-full bg-slate-50", className)}>
-        오류
-      </div>
-    );
+  if (user && (isError || !data))
+    return <div className={cn("size-12 rounded-full", className)}>오류</div>;
 
   // 정상 상태
   const isLiked = data?.isLiked;
@@ -74,6 +53,12 @@ export function GatheringCardLikeBtn({
   const handleLikeButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!user) {
+      toast.info("로그인이 필요한 기능이예요");
+      router.push(PATH.SIGNIN);
+      return;
+    }
+
     if (isLiked) cancelLike();
     else like();
   };

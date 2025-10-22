@@ -209,7 +209,7 @@ export default function QuickCreatePage() {
                       <Form.Radio
                         options={PET_REQUIRED_OPTIONS}
                         {...field}
-                        defaultChecked="true"
+                        defaultChecked={true}
                       />
                     </Form.Control>
                     <Form.Message />

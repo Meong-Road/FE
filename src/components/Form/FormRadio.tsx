@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 interface RadioOption<TValue> {
   id: string;
   label: string;
-
   value: TValue;
   color?: string;
 }

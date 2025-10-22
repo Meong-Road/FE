@@ -1,7 +1,6 @@
 "use client";
 
 import { MouseEvent } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { useAuth } from "@/hooks/auth";
@@ -12,6 +11,7 @@ import {
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
 import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
+import { useAuthRequiredModalStore } from "@/store/modalStore";
 
 import { Button } from "../ui/button";
 
@@ -32,8 +32,8 @@ const ERROR_MESSAGE = {
 };
 
 export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
-  const router = useRouter();
   const { user, isLoading } = useAuth();
+  const { openModal } = useAuthRequiredModalStore();
 
   // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
   const { data, isPending, isError } = useGetIsParticipating({
@@ -60,8 +60,7 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      toast.info("로그인이 필요한 기능이예요");
-      router.push(PATH.SIGNIN);
+      openModal(PATH.SIGNIN);
       return;
     }
 

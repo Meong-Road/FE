@@ -1,8 +1,6 @@
 "use client";
 
 import { MouseEvent } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
@@ -15,6 +13,7 @@ import {
 import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
+import { useAuthRequiredModalStore } from "@/store/modalStore";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
@@ -27,8 +26,8 @@ export function GatheringCardLikeBtn({
   className,
   id,
 }: GatheringCardLikeBtnProps) {
-  const router = useRouter();
   const { user, isLoading } = useAuth();
+  const { openModal } = useAuthRequiredModalStore();
 
   // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
   const { data, isPending, isError } = useGetIsLiked({
@@ -39,23 +38,18 @@ export function GatheringCardLikeBtn({
   const { mutate: like } = useLike({ id });
   const { mutate: cancelLike } = useCancelLike({ id });
 
-  // 쿼리 로딩 중
   if (isLoading || (user && isPending))
     return <GatheringCardSkeleton.LikeBtn />;
-
-  // 쿼리 에러
   if (user && (isError || !data))
     return <div className={cn("size-12 rounded-full", className)}>오류</div>;
 
-  // 정상 상태
   const isLiked = data?.isLiked;
 
   const handleLikeButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      toast.info("로그인이 필요한 기능이예요");
-      router.push(PATH.SIGNIN);
+      openModal(PATH.SIGNIN);
       return;
     }
 

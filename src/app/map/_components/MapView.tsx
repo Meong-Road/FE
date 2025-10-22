@@ -11,15 +11,22 @@ type NaverMarker = {
   setPosition: (pos: unknown) => void;
 };
 
-type NaverMapsNS = {
+type NaverMapNS = {
   Map: new (el: HTMLElement, options?: Record<string, unknown>) => NaverMap;
   LatLng: new (lat: number, lon: number) => unknown;
   Marker: new (options: { position: unknown; map: NaverMap }) => NaverMarker;
+  Event: {
+    addListener: (
+      map: NaverMap,
+      eventName: string,
+      handler: (e: { coord: unknown }) => void,
+    ) => void;
+  };
 };
 
 declare global {
   interface Window {
-    naver?: { maps: NaverMapsNS };
+    naver?: { maps: NaverMapNS };
   }
 }
 
@@ -44,6 +51,23 @@ export function MapView({ lat, lon }: Props) {
       center: new naver.maps.LatLng(37.5666805, 126.9784147),
       zoom: 16,
     });
+
+    naver.maps.Event.addListener(
+      mapRef.current,
+      "click",
+      (e: { coord: unknown }) => {
+        if (!e.coord) return;
+
+        if (!markerRef.current) {
+          markerRef.current = new naver.maps.Marker({
+            position: e.coord,
+            map: mapRef.current!,
+          });
+        } else {
+          markerRef.current.setPosition(e.coord);
+        }
+      },
+    );
   }, []);
 
   useEffect(() => {

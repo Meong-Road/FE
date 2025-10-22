@@ -1,9 +1,15 @@
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import { useDeletePet } from "@/hooks/queries/pets/useDeletePet";
+import { PATH } from "@/lib/constants/path";
+
 import Dog from "../../assets/images/dog.svg";
 import { Form } from "../Form";
 
 import { usePetInfoModal } from "./_hooks/usePetInfoModal";
-import { usePetInfoSkip } from "./_hooks/usePetInfoSkip";
 import { usePetInfoSubmit } from "./_hooks/usePetInfoSubmit";
+import { useSkipPetInfo } from "./_hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
 import { Modal } from ".";
 
@@ -42,7 +48,36 @@ export default function PetInfoModal({
     onClose,
   });
 
-  const { handleSkip } = usePetInfoSkip({ onClose });
+  const router = useRouter();
+  const { skipPetInfo, isPending: isSkipping } = useSkipPetInfo();
+
+  const { mutate: deletePet, isPending: isDeleting } = useDeletePet();
+
+  const handleSkip = () => {
+    skipPetInfo(undefined, {
+      onSuccess: () => {
+        toast.success("반려견 정보 입력을 건너뛰었어요.");
+        onClose();
+        router.push(PATH.REGULAR);
+      },
+      onError: (error: Error) => {
+        toast.error(`건너뛰기에 실패했어요: ${error.message}`);
+      },
+    });
+  };
+
+  const handleDelete = () => {
+    if (!petId) return;
+    deletePet(petId, {
+      onSuccess: () => {
+        toast.success("반려견 정보가 등록 해제되었습니다.");
+        onClose();
+      },
+      onError: (error: Error) => {
+        toast.error(`등록 해제에 실패했어요: ${error.message}`);
+      },
+    });
+  };
 
   return (
     <Modal>
@@ -188,15 +223,25 @@ export default function PetInfoModal({
           />
         </Form>
 
-        {type === "first-login" && (
+        {type === "first-login" ? (
           <button
             className="mt-2 border-b-2"
             type="button"
             onClick={handleSkip}
+            disabled={isSkipping}
           >
-            아직 반려견이 없어요
+            {isSkipping ? "건너 뛰는 중..." : "아직 반려견이 없어요"}
           </button>
-        )}
+        ) : type === "edit-pet" ? (
+          <button
+            className="mt-2 border-b-2"
+            type="button"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "등록 해제 중..." : "등록 해제하기"}
+          </button>
+        ) : null}
       </Modal.Content>
     </Modal>
   );

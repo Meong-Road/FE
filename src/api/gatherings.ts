@@ -12,6 +12,8 @@ import {
   GetGatheringRes,
   GetIsLikedReq,
   GetIsLikedRes,
+  GetIsParticipatingReq,
+  GetIsParticipatingRes,
   GetJoinedGatheringsReq,
   GetJoinedGatheringsRes,
   GetMyBookmarkedGatheringsReq,
@@ -85,6 +87,12 @@ export const gatheringApi = {
       `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
+  // 모임 참여 조회
+  getIsParticipating: ({ id }: GetIsParticipatingReq) => {
+    return customFetch.get<GetIsParticipatingRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}/participation`,
+    );
+  },
   // POST /meong-road/gatherings/{gatheringId}/join - 모임 참여
   joinGathering: ({ id }: PostJoinGatheringReq) => {
     return customFetch.post<PostJoinGatheringRes>(
@@ -93,7 +101,7 @@ export const gatheringApi = {
   },
   // Delete /meong-road/gatherings/{gatheringId}/leave - 모임 참여 취소
   cancelJoinGathering: ({ id }: DeleteJoinGatheringReq) => {
-    return customFetch.delete<DeleteJoinGatheringRes>(
+    return customFetch.post<DeleteJoinGatheringRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/leave`,
     );
   },

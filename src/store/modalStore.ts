@@ -59,14 +59,16 @@ export const useReviewInfoModalStore = create<ReviewInfoModalStoreProps>(
 interface AuthRequiredModalStoreProps {
   isOpen: boolean;
   redirectUrl: string;
-  openModal: (redirectUrl: string) => void;
+  openModal: (redirectUrl: string, onClose?: () => void) => void;
   closeModal: () => void;
+  onClose?: () => void;
 }
 export const useAuthRequiredModalStore = create<AuthRequiredModalStoreProps>(
   (set) => ({
     isOpen: false,
     redirectUrl: "",
-    openModal: (redirectUrl: string) => set({ isOpen: true, redirectUrl }),
+    openModal: (redirectUrl, onClose) =>
+      set({ isOpen: true, redirectUrl, onClose }),
     closeModal: () => set({ isOpen: false, redirectUrl: "" }),
   }),
 );

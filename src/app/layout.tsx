@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { Toaster } from "sonner";
 
 import Header from "@/components/Header";
@@ -28,6 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <Script
+          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NCP_MAP_CLIENT_ID}`}
+          strategy="afterInteractive"
+        />
+      </head>
       <body className={`${pretendardVariable.className}`}>
         <MSWProvider>
           <QueryProvider>

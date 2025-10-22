@@ -55,7 +55,7 @@ export default function QuickCreatePage() {
             <Form.Field
               name="photo"
               render={({ field: { onChange, value, ...field } }) => (
-                <Form.Item className="bg-card h-[357px] w-[456px] rounded-xl border-1 border-[#bbb]">
+                <Form.Item className="bg-card flex h-[357px] w-[456px] flex-col justify-center rounded-xl border-1 border-[#bbb]">
                   <Form.Control>
                     <Form.ImageUpload
                       onChange={onChange}

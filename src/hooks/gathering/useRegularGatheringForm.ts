@@ -46,7 +46,7 @@ export function useRegularGatheringForm() {
       description: "",
       location: "",
       days: [],
-      registrationEnd: new Date().toISOString(),
+      registrationEnd: "undefined",
       isPetRequired: true,
       capacity: "5",
     },

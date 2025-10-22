@@ -44,7 +44,7 @@ export function useQuickGatheringForm() {
       description: "",
       location: "",
       dateTime: { hour: 0, minute: 0 },
-      registrationEnd: new Date().toISOString(),
+      registrationEnd: "undefined",
       isPetRequired: true,
       capacity: "5",
     },

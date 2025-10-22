@@ -9,5 +9,6 @@ export const useGetMyPets = () => {
     queryKey: QUERY_KEYS.pets.myPets(),
     queryFn: () => petsApi.getMyPetInfo(),
     select: (data) => data.result,
+    retry: false,
   });
 };

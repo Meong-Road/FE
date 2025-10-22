@@ -8,12 +8,16 @@ import { QUERY_KEYS } from "@/hooks/queries/queryKey";
 export function useSkipPetInfo() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: () => userApi.updatePetInfoSubmitted(),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pets.myPets() });
     },
   });
+
+  return {
+    skipPetInfo: mutation.mutate,
+    isPending: mutation.isPending,
+  };
 }

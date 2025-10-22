@@ -6,31 +6,10 @@ import {
   QuickGatheringFormSchema,
   useQuickGatheringForm,
 } from "@/hooks/gathering/useQuickGatheringForm";
+import { PET_REQUIRED_OPTIONS } from "@/lib/constants/petRequired";
 import { cn } from "@/lib/utils";
 
 import Dog from "../../../../assets/images/dog.svg";
-
-interface RadioOptionType {
-  id: string;
-  label: string;
-  value: boolean;
-  color: string;
-}
-
-const PET_REQUIRED_OPTIONS: RadioOptionType[] = [
-  {
-    id: "optional",
-    label: "반려견 없이도 참여 가능해요",
-    value: false,
-    color: "#edf4fb",
-  },
-  {
-    id: "required",
-    label: "반려견이 함께 해야 해요",
-    value: true,
-    color: "#edf4fb",
-  },
-];
 
 export default function QuickCreatePage() {
   const form = useQuickGatheringForm();

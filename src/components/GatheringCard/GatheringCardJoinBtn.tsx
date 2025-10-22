@@ -1,7 +1,6 @@
 "use client";
 
 import { MouseEvent } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { useAuth } from "@/hooks/auth";
@@ -9,10 +8,14 @@ import {
   useCancelJoinGathering,
   useJoinGathering,
 } from "@/hooks/queries/gatherings";
+import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
 import { PATH } from "@/lib/constants/path";
 import { GatheringType } from "@/lib/types/gatherings";
+import { useAuthRequiredModalStore } from "@/store/modalStore";
 
 import { Button } from "../ui/button";
+
+import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
 interface GatheringCardJoinBtnProps {
   gathering: GatheringType;
@@ -29,19 +32,35 @@ const ERROR_MESSAGE = {
 };
 
 export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
-  const router = useRouter();
   const { user, isLoading } = useAuth();
+  const { openModal } = useAuthRequiredModalStore();
+
+  // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
+  const { data, isPending, isError } = useGetIsParticipating({
+    id: gathering.id,
+    enabled: !!user && !isLoading,
+  });
+
   const { mutateAsync: join, isPending: isJoinPending } = useJoinGathering();
   const { mutateAsync: cancelJoin, isPending: isCancelPending } =
     useCancelJoinGathering();
-  const mode = gathering.isParticipating ? "cancel" : "join"; // join - 참여하기 버튼, cancel - 참여 취소하기 버튼
+
+  if (user && isPending) return <GatheringCardSkeleton.JoinBtn />;
+  if (user && (isError || !data))
+    return (
+      <div className="flex h-11 w-30 items-center justify-center rounded-[10px] bg-slate-50">
+        에러
+      </div>
+    );
+
+  const mode = data?.isParticipated ? "cancel" : "join"; // join - 참여하기 버튼, cancel - 참여 취소하기 버튼
   const isMutationPending = isJoinPending || isCancelPending;
 
   const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      router.push(PATH.SIGNIN);
+      openModal(PATH.SIGNIN);
       return;
     }
 

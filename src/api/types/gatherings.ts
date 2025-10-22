@@ -38,6 +38,9 @@ export type GetJoinedGatheringsRes = Response<
   PaginatedRes<GatheringType & { joinedAt: string }>
 >;
 
+export type GetIsParticipatingReq = Pick<GatheringType, "id">;
+export type GetIsParticipatingRes = Response<{ isParticipated: boolean }>;
+
 // POST /meong-road/gatherings/{gatheringId}/join - 모임 참여
 export type PostJoinGatheringReq = Pick<GatheringType, "id">;
 export type PostJoinGatheringRes = Response<string>;

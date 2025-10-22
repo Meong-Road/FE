@@ -43,7 +43,9 @@ export default function AuthGuardProvider({
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
     if (!user) {
       const redirectUrl = `${PATH.SIGNIN}?redirect=${encodeURIComponent(pathname)}`;
-      openModal(redirectUrl);
+      openModal(redirectUrl, () => {
+        router.back();
+      });
     }
   }, [pathname, isLoading, user, router, openModal]);
 

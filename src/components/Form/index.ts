@@ -1,4 +1,5 @@
 import { Form as BaseForm } from "./Form";
+import { Checkbox } from "./FormCheckbox";
 import { Control } from "./FormControl";
 import { Description } from "./FormDescription";
 import { DuplicateCheckButton } from "./FormDuplicateCheckButton";
@@ -14,6 +15,7 @@ import { Select } from "./FormSelect";
 import { SignupLink } from "./FormSignupLink";
 import { SocialButtons } from "./FormSocialButtons";
 import { SubmitButton } from "./FormSubmitButton";
+import { Textarea } from "./FormTextarea";
 import { Title } from "./FormTitle";
 
 export const Form = Object.assign(BaseForm, {
@@ -33,6 +35,8 @@ export const Form = Object.assign(BaseForm, {
   ImageUpload,
   Radio,
   DuplicateCheckButton,
+  Textarea,
+  Checkbox,
 });
 
 export * from "./types";

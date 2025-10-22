@@ -6,6 +6,7 @@ interface RadioOption<TValue> {
   id: string;
   label: string;
   value: TValue;
+  color?: string;
 }
 
 interface FormRadioProps<TValue extends string | boolean | undefined>
@@ -41,8 +42,10 @@ export const Radio = React.forwardRef<
             key={option.id}
             htmlFor={option.id}
             className={cn(
-              "bg-accent inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 transition-colors",
+              "inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 transition-colors",
               isChecked && "bg-primary font-medium text-white",
+              !isChecked &&
+                (option.color ? `bg-[${option.color}]` : "bg-accent"),
               disabled && "cursor-not-allowed opacity-50",
             )}
           >

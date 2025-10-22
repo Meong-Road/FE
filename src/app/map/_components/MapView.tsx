@@ -5,12 +5,16 @@ import { useEffect, useRef } from "react";
 type NaverMap = {
   setCenter: (pos: unknown) => void;
   setZoom: (level: number, animated?: boolean) => void;
-  Marker: new (options: { position: unknown; map: NaverMap }) => unknown;
+};
+
+type NaverMarker = {
+  setPosition: (pos: unknown) => void;
 };
 
 type NaverMapsNS = {
   Map: new (el: HTMLElement, options?: Record<string, unknown>) => NaverMap;
   LatLng: new (lat: number, lon: number) => unknown;
+  Marker: new (options: { position: unknown; map: NaverMap }) => NaverMarker;
 };
 
 declare global {
@@ -27,7 +31,7 @@ type Props = {
 export function MapView({ lat, lon }: Props) {
   const boxRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<NaverMap | null>(null);
-  const markerRef = useRef<unknown | null>(null);
+  const markerRef = useRef<NaverMarker | null>(null);
 
   useEffect(() => {
     if (!boxRef.current || !window.naver?.maps) {
@@ -61,7 +65,7 @@ export function MapView({ lat, lon }: Props) {
       markerRef.current = new naver.maps.Marker({
         position: pos,
         map: mapRef.current,
-      });
+      }) as NaverMarker;
     } else {
       markerRef.current.setPosition(pos);
     }

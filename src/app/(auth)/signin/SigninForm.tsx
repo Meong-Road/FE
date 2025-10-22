@@ -17,7 +17,8 @@ export default function SigninForm() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
 
-  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
+  const { isOpen, setModalData, openModal, closeModal } =
+    usePetInfoModalStore();
 
   const handleSubmit = (data: SigninFormSchema) => {
     signinMutate(data, {
@@ -25,7 +26,8 @@ export default function SigninForm() {
         toast.success("로그인에 성공했습니다.");
 
         if (!res.result.user.isPetInfoSubmitted) {
-          openModal("first-login");
+          setModalData("first-login");
+          openModal();
           return;
         }
 

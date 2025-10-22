@@ -2,6 +2,7 @@
 
 import {
   EmptyState,
+  ErrorState,
   ListContainer,
   LoadingState,
   SectionWrapper,
@@ -47,21 +48,35 @@ const ReviewItem = ({
   </ReviewCard>
 );
 
-const ReviewList = ({ reviews }: { reviews: ReviewType[] }) => (
-  <ListContainer>
-    {reviews.map((review) => (
-      <ReviewItem key={review.id} review={processReviewInfo(review)} />
-    ))}
-  </ListContainer>
-);
+const ReviewList = ({ reviews }: { reviews: ReviewType[] }) => {
+  if (reviews.length === 0)
+    return <EmptyState message="아직 등록된 리뷰가 없어요" minHeight="200px" />;
+
+  return (
+    <ListContainer>
+      {reviews.map((review) => (
+        <ReviewItem key={review.id} review={processReviewInfo(review)} />
+      ))}
+    </ListContainer>
+  );
+};
 
 export default function ReviewSection() {
   const { isOpen, modalType, reviewId, closeModal } = useReviewInfoModalStore();
-  const { data: reviews, isLoading } = useGetMyReviews({ page: 0, size: 10 });
+  const {
+    data: reviews,
+    isPending,
+    isError,
+  } = useGetMyReviews({ page: 0, size: 10 });
 
-  if (isLoading) return <LoadingState message="로딩 중..." />;
-  if (!reviews?.content?.length)
-    return <EmptyState message="작성한 리뷰가 없습니다." />;
+  if (isPending)
+    return (
+      <LoadingState message="리뷰를 불러오고 있어요..." minHeight="200px" />
+    );
+  if (!reviews || isError)
+    return (
+      <ErrorState message="리뷰를 불러오는데 실패했습니다." minHeight="200px" />
+    );
 
   return (
     <>

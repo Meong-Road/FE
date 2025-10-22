@@ -46,10 +46,10 @@ export function DuplicateCheckButton<T extends FieldValues>({
         "flex w-18 items-center justify-center",
         "text-xs font-medium",
         "transition-all duration-200",
-        "focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none",
+        "focus-visible:ring-primary-600 focus-visible:ring-[1px] focus-visible:outline-none",
 
         // Primary filled 스타일 (모든 상태 동일)
-        "border-primary bg-primary text-primary-foreground border",
+        "bg-primary text-primary-foreground border-none",
 
         // Hover (enabled일 때만)
         !isButtonDisabled && "hover:bg-primary/90",

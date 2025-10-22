@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import type { PetInfoModalProps } from "@/components/Modal/types/petInfoModal";
 import { useGetPet } from "@/hooks/queries/pets";
@@ -10,35 +10,38 @@ export function usePetInfoModal({
   type,
   petId,
 }: Pick<PetInfoModalProps, "type" | "petId">) {
-  // 편집 모드이고 펫 아이디가 있으면 조회
-  const { data: petData, isLoading: isPetLoading } = useGetPet(petId || 0, {
-    enabled: type === "edit-pet" && !!petId,
+  const isEditMode = type === "edit-pet";
+  const shouldFetchPet = isEditMode && !!petId;
+
+  const { data: petData, isPending: isPetPending } = useGetPet(petId || 0, {
+    enabled: shouldFetchPet,
   });
 
-  // 초기 데이터
-  const initialData =
-    type === "edit-pet" && petData ? transformPetToFormData(petData) : null;
+  const initialData = useMemo(() => {
+    if (!shouldFetchPet || !petData) return null;
+    return transformPetToFormData(petData);
+  }, [shouldFetchPet, petData]);
 
-  // 편집모드이고 초기데이터가 있으면 그걸로 채운 폼 생성
-  const form = usePetInfoForm(
-    type === "edit-pet" && initialData ? initialData : undefined,
-  );
+  const form = usePetInfoForm();
 
-  // 변경사항 체크 함수
-  const hasChanges = useMemo(() => {
-    if (type === "first-login") return undefined; // first-login은 변경사항 체크 안함
-    if (type === "edit-pet" && initialData) {
-      return hasPetFormChanges(
-        form.getValues() as PetInfoUpdateSchema,
-        initialData,
-      );
+  const watchedValues = form.watch();
+
+  useEffect(() => {
+    if (initialData) {
+      form.reset(initialData);
     }
-    return undefined;
-  }, [type, initialData, form]);
+  }, [initialData, form]);
+
+  const hasChanges = useMemo(() => {
+    if (!isEditMode) return true;
+    if (!initialData) return false;
+
+    return hasPetFormChanges(watchedValues as PetInfoUpdateSchema, initialData);
+  }, [isEditMode, initialData, watchedValues]);
 
   return {
     form,
-    isLoading: isPetLoading,
+    isPending: shouldFetchPet ? isPetPending : false,
     initialData,
     hasChanges,
   };

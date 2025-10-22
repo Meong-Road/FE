@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 
@@ -20,8 +20,9 @@ interface InfiniteScrollProps<T>
   data: T[] | undefined;
   render: (item: T, idx: number) => ReactNode;
   renderSkeleton: () => ReactNode;
-  textOnEmpty?: string;
-  textOnError?: string;
+  renderOnEmpty: () => ReactNode;
+  renderOnError: () => ReactNode;
+  minimumLoadingTime?: number;
 }
 
 export default function InfiniteScroll<T>({
@@ -32,21 +33,37 @@ export default function InfiniteScroll<T>({
   fetchNextPage,
   renderSkeleton,
   render,
-  textOnEmpty = "데이터가 없어요",
-  textOnError = "에러가 발생했어요",
+  renderOnEmpty = () => <EmptyState message="아직 등록된 데이터가 없어요" />,
+  renderOnError = () => (
+    <ErrorState message="데이터를 불러오는 중 에러가 발생했어요" />
+  ),
+  minimumLoadingTime = 500,
 }: InfiniteScrollProps<T>) {
   const { ref, inView } = useInView();
+  const [showSkeleton, setShowSkeleton] = useState(isPending);
 
   useEffect(() => {
     if (inView) fetchNextPage();
   }, [inView, fetchNextPage]);
 
-  if (isPending)
+  useEffect(() => {
+    if (isPending) {
+      setShowSkeleton(true);
+    } else {
+      const timer = setTimeout(() => {
+        setShowSkeleton(false);
+      }, minimumLoadingTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isPending, minimumLoadingTime]);
+
+  if (showSkeleton)
     return (
       <Iterator count={DEFAULT_LIST_OPTIONS.size}>{renderSkeleton()}</Iterator>
     );
-  if (isError) return <ErrorState message={textOnError} />;
-  if (data?.length === 0) return <EmptyState message={textOnEmpty} />;
+  if (isError) return renderOnError();
+  if (data?.length === 0) return renderOnEmpty();
 
   return (
     <ul className="grid grid-cols-1 gap-6">

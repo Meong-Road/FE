@@ -1,0 +1,23 @@
+import { cn } from "@/lib/utils";
+
+interface TextareaProps {
+  className?: string;
+  placeholder: string;
+}
+
+export function Textarea({ className, placeholder, ...props }: TextareaProps) {
+  return (
+    <textarea
+      className={cn(
+        "resize-none",
+        "outline-none",
+        "transition-[border-color, ring-color] duration-300",
+        "focus-visible:border-ring focus-visible:ring-primary focus-visible:ring-[1px]",
+        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
+      {...props}
+      placeholder={placeholder}
+    />
+  );
+}

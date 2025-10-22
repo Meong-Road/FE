@@ -1,43 +1,70 @@
+import * as React from "react";
+
 import { cn } from "@/lib/utils";
 
-interface RadioOption {
+interface RadioOption<TValue> {
   id: string;
   label: string;
-  value: string;
+  value: TValue;
+  color?: string;
 }
 
-interface ModalRadioInputProps {
-  className?: string;
+interface FormRadioProps<TValue extends string | boolean | undefined>
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   name: string;
-  options: RadioOption[];
-  defaultChecked?: string;
+  options: RadioOption<TValue>[];
+  value?: TValue;
+  onChange?: (value: TValue) => void;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  disabled?: boolean;
 }
 
-export function Radio({
-  className,
-  name,
-  options,
-  defaultChecked,
-}: ModalRadioInputProps) {
+export const Radio = React.forwardRef<
+  HTMLInputElement,
+  FormRadioProps<string | boolean>
+>(function Radio(
+  { className, name, options, value, onChange, onBlur, disabled, ...rest },
+  ref,
+) {
+  const handleChange = (optionValue: string | boolean) => {
+    if (disabled) return;
+    onChange?.(optionValue as string | boolean);
+  };
+
   return (
-    <div className={cn("flex w-full gap-2.5", className)}>
-      {options.map((option, index) => (
-        <div className="flex-1" key={index}>
-          <input
-            type="radio"
-            name={name}
-            id={option.id}
-            className="peer sr-only"
-            defaultChecked={defaultChecked === option.value}
-          />
+    <div className={cn("flex w-full gap-2.5", className)} {...rest}>
+      {options.map((option, index) => {
+        const isChecked = value === option.value;
+        const inputRef = index === 0 ? ref : undefined;
+
+        return (
           <label
+            key={option.id}
             htmlFor={option.id}
-            className="bg-accent peer-checked:bg-primary inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 peer-checked:font-medium peer-checked:text-white"
+            className={cn(
+              "inline-flex w-full cursor-pointer items-center justify-center rounded-lg py-2 transition-colors",
+              isChecked && "bg-primary font-medium text-white",
+              !isChecked &&
+                (option.color ? `bg-[${option.color}]` : "bg-accent"),
+              disabled && "cursor-not-allowed opacity-50",
+            )}
           >
+            <input
+              ref={inputRef}
+              id={option.id}
+              type="radio"
+              name={name}
+              value={option.value?.toString() ?? ""}
+              checked={isChecked}
+              onBlur={onBlur}
+              onChange={() => handleChange(option.value as string | boolean)}
+              className="peer sr-only"
+              disabled={disabled}
+            />
             {option.label}
           </label>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
-}
+});

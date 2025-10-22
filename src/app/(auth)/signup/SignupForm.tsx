@@ -16,7 +16,8 @@ export default function SignupForm() {
   const { mutate: signupMutate, isPending } = useSignupMutation();
   const router = useRouter();
 
-  const { isOpen, openModal, closeModal } = usePetInfoModalStore();
+  const { isOpen, setModalData, openModal, closeModal } =
+    usePetInfoModalStore();
 
   const handleSubmit = (data: SignupFormSchema) =>
     signupMutate(data, {
@@ -24,7 +25,8 @@ export default function SignupForm() {
         toast.success("회원가입에 성공했습니다.");
 
         if (!res.result.user.isPetInfoSubmitted) {
-          openModal("first-login");
+          setModalData("first-login");
+          openModal();
           return;
         }
 

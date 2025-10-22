@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 
-import Header from "@/components/Header";
+import { Header } from "@/components/Header";
 import { initMocks } from "@/mocks";
 import AuthGuardProvider from "@/providers/AuthGuardProvider";
 import MSWProvider from "@/providers/MSWProvider";

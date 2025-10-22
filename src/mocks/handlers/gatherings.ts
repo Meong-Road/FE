@@ -169,7 +169,7 @@ export const gatheringsHandlers = [
   }),
 
   //================= 모임 참여 취소 ================================
-  http.delete(`${FULL_API_ENDPOINTS.GATHERING}/:id/leave`, (req) => {
+  http.post(`${FULL_API_ENDPOINTS.GATHERING}/:id/leave`, (req) => {
     const id = req.params.id;
     const gathering =
       REGULAR_GATHERINGS.find((g) => g.id === Number(id)) ??

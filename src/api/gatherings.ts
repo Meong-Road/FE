@@ -101,7 +101,7 @@ export const gatheringApi = {
   },
   // Delete /meong-road/gatherings/{gatheringId}/leave - 모임 참여 취소
   cancelJoinGathering: ({ id }: DeleteJoinGatheringReq) => {
-    return customFetch.delete<DeleteJoinGatheringRes>(
+    return customFetch.post<DeleteJoinGatheringRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/leave`,
     );
   },

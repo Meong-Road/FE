@@ -13,7 +13,7 @@ import Dog from "../../../../assets/images/dog.svg";
 interface RadioOptionType {
   id: string;
   label: string;
-  value: string;
+  value: boolean;
   color: string;
 }
 
@@ -21,13 +21,13 @@ const PET_REQUIRED_OPTIONS: RadioOptionType[] = [
   {
     id: "optional",
     label: "반려견 없이도 참여 가능해요",
-    value: "false",
+    value: false,
     color: "#edf4fb",
   },
   {
     id: "required",
     label: "반려견이 함께 해야 해요",
-    value: "true",
+    value: true,
     color: "#edf4fb",
   },
 ];
@@ -206,11 +206,7 @@ export default function QuickCreatePage() {
                       반려견 동반 여부
                     </Form.Label>
                     <Form.Control>
-                      <Form.Radio
-                        options={PET_REQUIRED_OPTIONS}
-                        {...field}
-                        defaultChecked={true}
-                      />
+                      <Form.Radio options={PET_REQUIRED_OPTIONS} {...field} />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>

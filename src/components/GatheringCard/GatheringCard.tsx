@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { ElementType, PropsWithChildren } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -14,18 +14,23 @@ import { GatheringCardTitle } from "./GatheringCardTitle";
 
 export interface GatheringCardProps extends PropsWithChildren {
   className?: string;
+  as?: ElementType;
 }
 
-export function GatheringCard({ className, children }: GatheringCardProps) {
+export function GatheringCard({
+  className,
+  children,
+  as: Component = "div",
+}: GatheringCardProps) {
   return (
-    <li
+    <Component
       className={cn(
         "relative list-none rounded-4xl border border-[#ddd] bg-white p-6",
         className,
       )}
     >
       {children}
-    </li>
+    </Component>
   );
 }
 

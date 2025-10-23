@@ -1,14 +1,19 @@
-import { PropsWithChildren } from "react";
+import { ElementType, PropsWithChildren } from "react";
 
 interface IteratorProps extends PropsWithChildren {
   count: number;
+  as?: ElementType;
 }
 
-export default function Iterator({ count, children }: IteratorProps) {
+export default function Iterator({
+  count,
+  children,
+  as: Component = "div",
+}: IteratorProps) {
   return (
     <>
       {Array.from({ length: count }).map((_, index) => (
-        <div key={index}>{children}</div>
+        <Component key={index}>{children}</Component>
       ))}
     </>
   );

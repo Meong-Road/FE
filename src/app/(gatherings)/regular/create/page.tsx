@@ -1,4 +1,5 @@
 "use client";
+
 import CreateGatheringForm from "@/components/CreateGatheringForm/CreateGatheringForm";
 import {
   QuickGatheringFormSchema,

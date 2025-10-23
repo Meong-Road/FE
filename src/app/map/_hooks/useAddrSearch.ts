@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { getTopGeocode } from "@/lib/api/geocoding";
-import { GeocodedAddressType } from "@/lib/types/geocodings";
+import { getTopGeocode } from "@/app/map/_repositories/geocoding";
+import { GeocodedAddressType } from "@/app/map/_types/geocodings";
 
 export function useAddrSearch(onPick: (item: GeocodedAddressType) => void) {
   const [inputAddr, setInputAddr] = useState("");

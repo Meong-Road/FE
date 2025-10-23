@@ -3,7 +3,7 @@ import {
   GetReverseGeocodeRes,
   RawGeocodeItem,
   ReverseGeocodedAddressType,
-} from "@/lib/types/geocodings";
+} from "@/app/map/_types/geocodings";
 
 export function extractDistrict(address: string): string {
   /**

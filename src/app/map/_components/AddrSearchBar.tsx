@@ -1,7 +1,7 @@
 "use client";
 
-import { useAddrSearch } from "@/hooks/geocoding/useAddrSearch";
-import { GeocodedAddressType } from "@/lib/types/geocodings";
+import { useAddrSearch } from "@/app/map/_hooks/useAddrSearch";
+import { GeocodedAddressType } from "@/app/map/_types/geocodings";
 
 type Props = { onPick: (item: GeocodedAddressType) => void };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useNaverMap } from "@/hooks/geocoding/useNaverMap";
+import { useNaverMap } from "@/app/map/_hooks/useNaverMap";
 
 type Props = {
   lat: number | null;

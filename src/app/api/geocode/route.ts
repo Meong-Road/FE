@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { rawsToGeocode } from "@/lib/utils/geocoding/mappers";
-import { ncpHeaders } from "@/lib/utils/geocoding/ncp";
+import { rawsToGeocode } from "@/app/map/_services/mappers";
+import { ncpHeaders } from "@/app/map/_services/ncp";
 
 export async function GET(req: Request) {
   const inputAddr = new URL(req.url).searchParams.get("q") ?? "";

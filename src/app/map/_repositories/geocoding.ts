@@ -2,7 +2,7 @@ import {
   GeocodedAddressType,
   GetReverseGeocodeReq,
   ReverseGeocodedAddressType,
-} from "../types/geocodings";
+} from "../_types/geocodings";
 
 async function geocode(query: string): Promise<GeocodedAddressType[]> {
   const res = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`, {

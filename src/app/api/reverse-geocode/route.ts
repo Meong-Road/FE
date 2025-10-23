@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { reverseGeocodeToAddress } from "@/lib/utils/geocoding/mappers";
-import { ncpHeaders } from "@/lib/utils/geocoding/ncp";
+import { reverseGeocodeToAddress } from "@/app/map/_services/mappers";
+import { ncpHeaders } from "@/app/map/_services/ncp";
 
 export async function GET(req: Request) {
   const urlObj = new URL(req.url);

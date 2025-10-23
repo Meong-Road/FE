@@ -12,7 +12,8 @@ const UserProfileImage = ({
       <ImageWithFallback
         src={userProfileImageURL}
         alt="profile"
-        fill
+        width={42}
+        height={42}
         sizes="42px"
         className="cursor-pointer rounded-full border border-[#DDDDDD] focus:outline-none"
         renderFallback={() => <ProfileSvg width={42} height={42} />}

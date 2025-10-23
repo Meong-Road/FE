@@ -15,7 +15,7 @@ import { ProfileCard } from "./_components/ProfileCard";
 import ReviewSection from "./_components/ReviewSection";
 
 const ProfileHeader = () => (
-  <h2 className="mb-4 text-left text-[32px] leading-none font-semibold">
+  <h2 className="mb-4 text-left text-[32px] leading-none font-semibold select-none">
     마이페이지
   </h2>
 );

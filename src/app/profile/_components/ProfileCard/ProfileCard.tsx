@@ -11,7 +11,7 @@ import { ProfileCardProps } from "./types";
 export function ProfileCard({ children, className }: ProfileCardProps) {
   return (
     <Card
-      className={`group bg-card border-border relative overflow-hidden transition-all select-none ${className || ""}`}
+      className={`group bg-card border-border relative overflow-hidden transition-all ${className || ""}`}
     >
       <CardContent>{children}</CardContent>
     </Card>

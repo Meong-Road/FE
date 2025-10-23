@@ -6,7 +6,7 @@ export function ProfileCardImage() {
   const { data: userData } = useGetMyInfo();
 
   return (
-    <div className="bg-background size-14 overflow-hidden rounded-full border border-[#ddd]">
+    <div className="bg-background size-14 overflow-hidden rounded-full border border-[#ddd] select-none">
       <ImageWithFallback
         src={userData?.image ?? null}
         alt="프로필 이미지"

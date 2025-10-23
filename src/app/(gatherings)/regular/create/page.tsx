@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { gatheringApi } from "@/api/gatherings";
@@ -9,6 +8,7 @@ import {
   QuickGatheringFormSchema,
   RegularGatheringFormSchema,
 } from "@/hooks/gathering/schemas";
+import { useGatheringFormNavigation } from "@/hooks/gathering/useGatheringFormNavigation";
 import {
   CreateRegularGatheringReq,
   EGatheringType,
@@ -16,13 +16,12 @@ import {
 import { isRegularGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function RegularCreatePage() {
-  const router = useRouter();
-
-  const handleCancle = () => {
-    // TODO : 작성 중인 내용이 있을 때 스토리지에 저장
-    // TODO : 만약 나가기를 통해 작성 페이지를 벗어나면, 뒤로가기 버튼으로 접근 불가하도록?
-    router.back();
-  };
+  // const handleCancel = () => {
+  //   // TODO : 작성 중인 내용이 있을 때 스토리지에 저장
+  //   // TODO : 만약 나가기를 통해 작성 페이지를 벗어나면, 뒤로가기 버튼으로 접근 불가하도록?
+  //   router.back();
+  // };
+  const { handleCancel, handleSuccess } = useGatheringFormNavigation();
 
   const handleSubmit = async (
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
@@ -45,7 +44,7 @@ export default function RegularCreatePage() {
 
         if (response.success) {
           toast.success("정기 모임 생성에 성공했습니다");
-          router.push(`gathering/regular/${response.result.id}`);
+          handleSuccess(response.result.id, "regular");
         }
       } catch (error) {
         console.error("정기 모임 생성 실패", error);
@@ -61,7 +60,7 @@ export default function RegularCreatePage() {
       </h1>
       <CreateGatheringForm
         type={EGatheringType.REGULAR}
-        onCancel={handleCancle}
+        onCancel={handleCancel}
         onSubmit={handleSubmit}
       />
     </div>

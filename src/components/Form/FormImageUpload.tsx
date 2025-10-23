@@ -14,15 +14,6 @@ interface FormImageUploadProps {
   value?: File | null;
   existingImageUrl?: string | null;
   showRemoveButton?: boolean;
-  // 커스터마이징 props
-  editButtonSize?: "sm" | "md" | "lg";
-  editButtonVariant?: "primary" | "secondary" | "outline";
-  editButtonClassName?: string;
-  removeButtonSize?: "sm" | "md" | "lg";
-  removeButtonVariant?: "zinc" | "gray" | "red";
-  removeButtonClassName?: string;
-  containerClassName?: string;
-  imageContainerClassName?: string;
 }
 
 export function FormImageUpload({
@@ -32,14 +23,6 @@ export function FormImageUpload({
   onChange,
   existingImageUrl,
   showRemoveButton = true,
-  editButtonSize = "lg",
-  editButtonVariant = "primary",
-  editButtonClassName = "",
-  removeButtonSize = "md",
-  removeButtonVariant = "zinc",
-  removeButtonClassName = "",
-  containerClassName = "",
-  imageContainerClassName = "",
 }: FormImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -69,7 +52,7 @@ export function FormImageUpload({
   }, [previewUrl]);
 
   return (
-    <div className={`flex flex-col items-center gap-3 ${containerClassName}`}>
+    <div className="flex flex-col items-center gap-3">
       <div className="relative">
         <input
           type="file"
@@ -79,9 +62,7 @@ export function FormImageUpload({
           accept="image/*"
         />
         <label htmlFor={id} className="relative cursor-pointer">
-          <div
-            className={`flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300 ${imageContainerClassName}`}
-          >
+          <div className="flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300">
             <ImageWithFallback
               src={currentImageUrl || null}
               alt="업로드 사진 미리보기"
@@ -91,20 +72,11 @@ export function FormImageUpload({
               renderFallback={() => children}
             />
           </div>
-          <EditButton
-            size={editButtonSize}
-            variant={editButtonVariant}
-            className={editButtonClassName}
-          />
+          <EditButton />
         </label>
 
         {showRemoveButton && currentImageUrl && (
-          <RemoveButton
-            onClick={handleRemoveImage}
-            size={removeButtonSize}
-            variant={removeButtonVariant}
-            className={removeButtonClassName}
-          />
+          <RemoveButton onClick={handleRemoveImage} />
         )}
       </div>
 

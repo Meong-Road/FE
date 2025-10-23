@@ -6,7 +6,7 @@ import { type TabProps } from "./types";
 
 export function Tab({ className, children }: TabProps) {
   return (
-    <nav className={cn("border-b-1 border-[#ddd] select-none", className)}>
+    <nav className={cn("border-border border-b-1 select-none", className)}>
       {children}
     </nav>
   );

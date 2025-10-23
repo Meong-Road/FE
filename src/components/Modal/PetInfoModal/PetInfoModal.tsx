@@ -41,7 +41,7 @@ export default function PetInfoModal({
     isPending: isPetPending,
     hasChanges,
   } = usePetInfoModal({ type, petId });
-  const image = form.watch("image");
+  const currentImage = form.watch("image");
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({
     type,
@@ -106,9 +106,10 @@ export default function PetInfoModal({
                     id="pet-image-upload"
                     onChange={field.onChange}
                     value={field.value as File | null}
-                    existingImageUrl={image as string}
+                    existingImageUrl={currentImage as string}
+                    showRemoveButton={true}
                   >
-                    <Dog className="w-20" />
+                    <Dog />
                   </Form.ImageUpload>
                 </Form.Control>
                 <Form.Label className="flex justify-center">

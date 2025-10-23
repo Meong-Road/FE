@@ -23,7 +23,7 @@ export function ProfileCardEditBtn({
       size="icon"
       variant="default"
       onClick={handleClick}
-      className={`bg-primary/50 text-primary-foreground hover:bg-primary group-hover:bg-primary absolute top-3 right-3 h-8 w-8 cursor-pointer rounded-full transition-all hover:scale-105 ${className || ""}`}
+      className={`text-background absolute top-3 right-3 h-8 w-8 cursor-pointer rounded-full bg-zinc-600/50 transition-all group-hover:bg-zinc-600/75 hover:scale-105 hover:bg-zinc-600 ${className || ""}`}
     >
       <Pencil className="size-3.5" />
       <span className="sr-only">프로필 수정</span>

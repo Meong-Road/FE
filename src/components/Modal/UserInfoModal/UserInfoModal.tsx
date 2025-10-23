@@ -1,15 +1,13 @@
 import React from "react";
-import { toast } from "sonner";
 
-import Person from "@/assets/images/person.svg";
-
-import { Form } from "../../Form";
-import { Modal } from "../shared";
+import Person from "@/assets/images/profile.svg";
+import { Form } from "@/components/Form";
+import { Modal } from "@/components/Modal/shared";
 
 import { UserInfoFormSchema } from "./hooks/useUserInfoForm";
 import { useUserInfoModal } from "./hooks/useUserInfoModal";
 import { useUserInfoSubmit } from "./hooks/useUserInfoSubmit";
-import { UserInfoModalProps } from "./types/userInfoModal";
+import { type UserInfoModalProps } from "./types/userInfoModal";
 
 export default function UserInfoModal({
   type,
@@ -65,8 +63,9 @@ export default function UserInfoModal({
                     onChange={field.onChange}
                     value={field.value as File | null}
                     existingImageUrl={image as string}
+                    showRemoveButton={true}
                   >
-                    <Person className="w-20" />
+                    <Person />
                   </Form.ImageUpload>
                 </Form.Control>
                 <Form.Label className="flex justify-center">

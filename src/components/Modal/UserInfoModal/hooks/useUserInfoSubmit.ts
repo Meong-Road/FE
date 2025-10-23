@@ -31,7 +31,7 @@ export function useUserInfoSubmit({
         isPetInfoSubmitted: values.isPetInfoSubmitted ?? false,
       };
 
-      let imageUrl: string | undefined = undefined;
+      let imageUrl: string | null | undefined = undefined;
 
       // 2. 이미지 업로드 처리
       if (values.image instanceof File) {
@@ -43,7 +43,8 @@ export function useUserInfoSubmit({
         if (uploadResult.result) {
           imageUrl = uploadResult.result as string;
         }
-      } else if (typeof values.image === "string") {
+      } else {
+        // string이거나 null이거나 그대로 사용
         imageUrl = values.image;
       }
 
@@ -56,7 +57,7 @@ export function useUserInfoSubmit({
 
       // 4. edit-user인 경우 업데이트 요청
       if (type === "edit-user" && userId) {
-        updateUserMutation.mutate(userPayload, {
+        await updateUserMutation.mutateAsync(userPayload, {
           onSuccess: () => {
             toast.success("프로필이 성공적으로 수정되었습니다.");
           },
@@ -65,15 +66,23 @@ export function useUserInfoSubmit({
           },
         });
 
-        // 이미지 URL이 있으면 별도로 업데이트
-        if (imageUrl) {
-          updateImageURLMutation.mutate(imageUrl, {
-            onError: (error: Error) => {
-              toast.error(
-                `프로필 이미지 업데이트에 실패했어요: ${error.message}`,
-              );
+        // 이미지가 변경되었을 때만 이미지 URL 업데이트
+        // (새 파일 업로드했거나, 기존 이미지를 지웠거나, 다른 이미지 URL로 변경했을 때)
+        if (
+          values.image instanceof File ||
+          values.image === null ||
+          (typeof values.image === "string" && values.image !== "")
+        ) {
+          await updateImageURLMutation.mutateAsync(
+            imageUrl === null ? "" : imageUrl || "",
+            {
+              onError: (error: Error) => {
+                toast.error(
+                  `프로필 이미지 업데이트에 실패했어요: ${error.message}`,
+                );
+              },
             },
-          });
+          );
         }
       } else {
         throw new Error("Invalid operation");

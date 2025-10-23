@@ -20,7 +20,7 @@ export default function UserInfoModal({
     isPending: isUserPending,
     hasChanges,
   } = useUserInfoModal({ type, userId });
-  const image = form.watch("image");
+  const currentImage = form.watch("image");
 
   const { handleSubmit, isSubmitting } = useUserInfoSubmit({
     type,
@@ -62,8 +62,7 @@ export default function UserInfoModal({
                     id="user-image-upload"
                     onChange={field.onChange}
                     value={field.value as File | null}
-                    existingImageUrl={image as string}
-                    showRemoveButton={true}
+                    existingImageUrl={currentImage as string}
                   >
                     <Person />
                   </Form.ImageUpload>

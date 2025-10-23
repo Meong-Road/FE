@@ -13,7 +13,6 @@ interface FormImageUploadProps {
   onChange: (file: File | null) => void;
   value?: File | null;
   existingImageUrl?: string | null;
-  showRemoveButton?: boolean;
 }
 
 export function ImageUpload({
@@ -22,7 +21,6 @@ export function ImageUpload({
   children,
   onChange,
   existingImageUrl,
-  showRemoveButton = true,
 }: FormImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -53,7 +51,7 @@ export function ImageUpload({
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="relative">
+      <div className="group relative">
         <input
           type="file"
           id={id}
@@ -75,9 +73,7 @@ export function ImageUpload({
           <EditButton />
         </label>
 
-        {showRemoveButton && currentImageUrl && (
-          <RemoveButton onClick={handleRemoveImage} />
-        )}
+        {currentImageUrl && <RemoveButton onClick={handleRemoveImage} />}
       </div>
 
       {placeholder && (

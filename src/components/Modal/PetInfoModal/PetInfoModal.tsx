@@ -107,7 +107,6 @@ export default function PetInfoModal({
                     onChange={field.onChange}
                     value={field.value as File | null}
                     existingImageUrl={currentImage as string}
-                    showRemoveButton={true}
                   >
                     <Dog />
                   </Form.ImageUpload>

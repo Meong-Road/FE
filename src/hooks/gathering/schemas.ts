@@ -3,7 +3,7 @@ import z from "zod";
 import { DAY_OF_WEEK } from "@/lib/constants/date";
 
 export const BaseGatheringFormSchema = z.object({
-  photo: z.instanceof(File).optional(),
+  image: z.instanceof(File).optional(),
   name: z.string().min(1, "모임 이름을 입력해주세요"),
   description: z.string().optional(),
   location: z.string(),
@@ -27,7 +27,7 @@ export const BaseGatheringFormSchema = z.object({
 });
 
 export const baseDefaultValues = {
-  photo: undefined,
+  image: undefined,
   name: "",
   description: "",
   location: "",

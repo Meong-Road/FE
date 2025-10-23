@@ -1,16 +1,18 @@
 import React from "react";
 
+import { EGatheringType } from "@/lib/types/gatherings";
+
 import QuickDateTimeField from "./QuickDateTimeField";
 import RegularDateTimeField from "./RegularDateTimeField";
 
 interface GatheringDateTimeFieldProps {
-  type: "quick" | "regular";
+  type: EGatheringType;
 }
 
 export default function GatheringDateTimeField({
   type,
 }: GatheringDateTimeFieldProps) {
-  if (type === "quick") {
+  if (type === EGatheringType.QUICK) {
     return <QuickDateTimeField />;
   } else {
     return <RegularDateTimeField />;

@@ -7,6 +7,7 @@ import {
 } from "@/hooks/gathering/schemas";
 import { useQuickGatheringForm } from "@/hooks/gathering/useQuickGatheringForm";
 import { useRegularGatheringForm } from "@/hooks/gathering/useRegularGatheringForm";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 import { Form } from "../Form";
 
@@ -20,7 +21,7 @@ type GatheringFormSchema =
   | RegularGatheringFormSchema;
 
 interface CreateGatheringFormProps {
-  type: "quick" | "regular";
+  type: EGatheringType;
   onCancel: () => void;
   onSubmit: (data: GatheringFormSchema) => void;
 }
@@ -33,7 +34,7 @@ export default function CreateGatheringForm({
   const quickForm = useQuickGatheringForm();
   const regularForm = useRegularGatheringForm();
 
-  const form = type === "quick" ? quickForm : regularForm;
+  const form = type === EGatheringType.QUICK ? quickForm : regularForm;
 
   return (
     <Form

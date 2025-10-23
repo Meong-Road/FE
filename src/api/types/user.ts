@@ -8,10 +8,9 @@ export type GetUserRes = Response<UserType>;
 
 // PUT /meong-road/user/my - 내 회원 정보 부분 수정
 export interface PutUserReq {
-  name?: string;
+  image?: string;
   nickName?: string;
   isPetInfoSubmitted?: boolean;
-  image?: string;
 }
 
 export type PutUserRes = Response<UserType>;

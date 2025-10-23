@@ -19,6 +19,7 @@ export default function UserInfoModal({
     form,
     isPending: isUserPending,
     hasChanges,
+    initialData,
   } = useUserInfoModal({ type, userId });
   const currentImage = form.watch("image");
 
@@ -75,36 +76,27 @@ export default function UserInfoModal({
           />
 
           <Form.Field
-            name="name"
-            render={({ field }) => (
-              <Form.Item>
-                <Form.Label required>이름</Form.Label>
-                <Form.Control>
-                  <Form.Input
-                    className="px-4 py-2.5"
-                    type="text"
-                    placeholder="이름을 입력해주세요"
-                    {...field}
-                  />
-                </Form.Control>
-                <Form.Message />
-              </Form.Item>
-            )}
-          />
-
-          <Form.Field
             name="nickName"
             render={({ field }) => (
               <Form.Item>
                 <Form.Label required>닉네임</Form.Label>
-                <Form.Control>
-                  <Form.Input
-                    className="px-4 py-2.5"
-                    type="text"
-                    placeholder="닉네임을 입력해주세요"
-                    {...field}
+                <div className="flex w-full items-center gap-2">
+                  <Form.Control>
+                    <Form.Input
+                      className="px-4 py-2.5"
+                      type="text"
+                      placeholder="닉네임을 입력해주세요"
+                      {...field}
+                    />
+                  </Form.Control>
+                  <Form.DuplicateCheckButton
+                    form={form}
+                    field="nickName"
+                    type="nickname"
+                    checkPassedField="nickNameCheckPassed"
+                    initialValue={initialData?.nickName}
                   />
-                </Form.Control>
+                </div>
                 <Form.Message />
               </Form.Item>
             )}

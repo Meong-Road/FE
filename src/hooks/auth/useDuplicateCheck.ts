@@ -15,19 +15,26 @@ interface UseDuplicateCheckProps<T extends FieldValues> {
   field: Path<T>;
   checkPassedField?: Path<T>;
   errorMessage?: string;
+  initialValue?: string; // 초기값을 명시적으로 전달
 }
 
 type DuplicateCheckType = "email" | "nickname";
 
 export function useDuplicateCheck<T extends FieldValues>(
   type: DuplicateCheckType,
-  { form, field, checkPassedField, errorMessage }: UseDuplicateCheckProps<T>,
+  {
+    form,
+    field,
+    checkPassedField,
+    errorMessage,
+    initialValue,
+  }: UseDuplicateCheckProps<T>,
 ) {
+  const currentValue = (form.watch(field) as string)?.trim() ?? "";
+
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
-  const [lastChecked, setLastChecked] = useState("");
-
-  const currentValue = (form.watch(field) as string)?.trim() ?? "";
+  const [lastChecked, setLastChecked] = useState<string | null>(null);
 
   const defaultErrorMessage =
     errorMessage ??
@@ -46,9 +53,16 @@ export function useDuplicateCheck<T extends FieldValues>(
     [form, checkPassedField],
   );
 
+  /** 초기값 설정 및 폼 리셋 감지 */
+  useEffect(() => {
+    if (initialValue !== undefined) {
+      setLastChecked(initialValue);
+    }
+  }, [initialValue]);
+
   /** 필드 값 변경 시 중복확인 상태 초기화 */
   useEffect(() => {
-    if (currentValue !== lastChecked) {
+    if (lastChecked !== null && currentValue !== lastChecked) {
       resetCheckState(null, false);
     }
   }, [currentValue, lastChecked, resetCheckState]);
@@ -96,7 +110,11 @@ export function useDuplicateCheck<T extends FieldValues>(
   const isButtonDisabled = useMemo(() => {
     const hasError = !!form.formState.errors[field];
     const sameAsLast = currentValue === lastChecked;
-    return isChecking || !currentValue || sameAsLast || hasError;
+    const noLastChecked = lastChecked === null;
+
+    return (
+      isChecking || !currentValue || sameAsLast || hasError || noLastChecked
+    );
   }, [isChecking, currentValue, lastChecked, form.formState.errors, field]);
 
   return {

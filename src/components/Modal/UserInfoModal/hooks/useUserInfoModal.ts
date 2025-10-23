@@ -60,7 +60,6 @@ function hasUserFormChanges(
   initialData: UserInfoUpdateSchema,
 ): boolean {
   return (
-    currentValues.name !== initialData.name ||
     currentValues.nickName !== initialData.nickName ||
     currentValues.image !== initialData.image ||
     currentValues.isPetInfoSubmitted !== initialData.isPetInfoSubmitted

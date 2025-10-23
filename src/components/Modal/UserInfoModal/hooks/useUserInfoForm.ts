@@ -4,16 +4,14 @@ import { z } from "zod";
 
 const UserInfoFormSchema = z.object({
   image: z.union([z.instanceof(File), z.string()]).nullable(),
-  name: z
-    .string()
-    .trim()
-    .min(1, "이름을 입력해주세요.")
-    .max(20, "이름은 20자 이하로 입력해 주세요."),
   nickName: z
     .string()
     .trim()
     .min(1, "닉네임을 입력해주세요.")
-    .max(20, "닉네임은 20자 이하로 입력해 주세요."),
+    .max(20, "닉네임은 20자 이하로 입력해주세요."),
+  nickNameCheckPassed: z.boolean().refine((val) => val === true, {
+    message: "이미 사용중인 닉네임입니다.",
+  }),
   isPetInfoSubmitted: z.boolean().optional(),
 });
 
@@ -25,8 +23,8 @@ export type UserInfoUpdateSchema = z.infer<typeof UserInfoUpdateSchema>;
 export function useUserInfoForm(initialValues?: Partial<UserInfoFormSchema>) {
   const defaultValues: DefaultValues<UserInfoFormSchema> = {
     image: null,
-    name: "",
     nickName: "",
+    nickNameCheckPassed: false,
     isPetInfoSubmitted: false,
   };
 

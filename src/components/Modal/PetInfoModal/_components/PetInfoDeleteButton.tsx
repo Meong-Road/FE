@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 interface PetInfoDeleteButtonProps {
   onClick: () => void;
   disabled: boolean;
@@ -8,13 +10,14 @@ export function PetInfoDeleteButton({
   disabled,
 }: PetInfoDeleteButtonProps) {
   return (
-    <button
-      className="w-full rounded-lg bg-zinc-500 px-4 py-3 text-white transition-colors hover:bg-zinc-600 disabled:cursor-not-allowed disabled:bg-gray-300"
-      type="button"
+    <Button
+      className="text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500 disabled:cursor-not-allowed disabled:bg-gray-300"
+      variant="ghost"
+      size="sm"
       onClick={onClick}
       disabled={disabled}
     >
       {disabled ? "등록 해제 중..." : "등록 해제하기"}
-    </button>
+    </Button>
   );
 }

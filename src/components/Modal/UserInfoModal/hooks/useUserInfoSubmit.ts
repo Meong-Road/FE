@@ -24,8 +24,7 @@ export function useUserInfoSubmit({
   ) => {
     try {
       // 1. userFormData 준비
-      const userFormData: UserInfoFormSchema = {
-        name: values.name!,
+      const userFormData: Partial<UserInfoFormSchema> = {
         nickName: values.nickName!,
         image: null,
         isPetInfoSubmitted: values.isPetInfoSubmitted ?? false,
@@ -50,7 +49,6 @@ export function useUserInfoSubmit({
 
       // 3. userPayload 준비
       const userPayload: PutUserReq = {
-        name: userFormData.name,
         nickName: userFormData.nickName,
         isPetInfoSubmitted: userFormData.isPetInfoSubmitted,
       };

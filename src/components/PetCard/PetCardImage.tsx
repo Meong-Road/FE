@@ -25,8 +25,8 @@ export function PetCardImage({
           alt={alt}
           width={size}
           height={size}
-          className="object-cover"
-          renderFallback={() => <DogImg width={size} height={size} />}
+          className="size-full object-cover"
+          renderFallback={() => <DogImg className="size-full" />}
         />
       </div>
     </div>

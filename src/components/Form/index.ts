@@ -32,7 +32,7 @@ export const Form = Object.assign(BaseForm, {
   LoginLink,
   SignupLink,
   Select,
-  ImageUpload: ImageUpload,
+  ImageUpload,
   Radio,
   DuplicateCheckButton,
   Textarea,

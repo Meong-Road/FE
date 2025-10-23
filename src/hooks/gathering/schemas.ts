@@ -2,7 +2,7 @@ import z from "zod";
 
 import { DAY_OF_WEEK } from "@/lib/constants/date";
 
-export const BaseGatheringFormSchma = z.object({
+export const BaseGatheringFormSchema = z.object({
   photo: z.instanceof(File).optional(),
   name: z.string().min(1, "모임 이름을 입력해주세요"),
   description: z.string().optional(),
@@ -36,14 +36,14 @@ export const baseDefaultValues = {
   capacity: "5",
 };
 
-export const QuickGatheringFormSchema = BaseGatheringFormSchma.extend({
+export const QuickGatheringFormSchema = BaseGatheringFormSchema.extend({
   dateTime: z.object({
     hour: z.number().min(1).max(24),
     minute: z.number().min(1).max(60),
   }),
 });
 
-export const RegularGatheringFormSchema = BaseGatheringFormSchma.extend({
+export const RegularGatheringFormSchema = BaseGatheringFormSchema.extend({
   days: z
     .array(z.enum(DAY_OF_WEEK as [string, ...string[]]))
     .min(1, "모임 날짜를 하나 이상 선택해주세요"),

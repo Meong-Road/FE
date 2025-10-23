@@ -1,6 +1,7 @@
-import { GatheringType } from "@/lib/types/gatherings";
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import { cn } from "@/lib/utils";
-import { formatDays } from "@/lib/utils/dateTime";
+import { formatDate, formatDays } from "@/lib/utils/dateTime";
+import { isRegularGathering } from "@/lib/utils/typeGuard";
 
 function TextWrapper({ children }: { children: React.ReactNode }) {
   return <div className="flex items-center gap-1.5">{children}</div>;
@@ -22,38 +23,31 @@ function Bar() {
 
 interface GatheringCardInfoProps {
   className?: string;
-  location: GatheringType["location"];
-  date?: string;
-  days?: string;
 }
 
-export function GatheringCardInfo({
-  className,
-  location,
-  date,
-  days,
-}: GatheringCardInfoProps) {
+export function GatheringCardInfo({ className }: GatheringCardInfoProps) {
+  const { gathering } = useGatheringStateContext();
+
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
       <TextWrapper>
         <Title>위치</Title>
-        <Content>{location}</Content>
+        <Content>{gathering.location}</Content>
       </TextWrapper>
-      {date && (
-        <>
-          <Bar />
-          <TextWrapper>
-            <Title>날짜</Title>
-            <Content>{date}</Content>
-          </TextWrapper>
-        </>
-      )}
-      {days && (
+      {isRegularGathering(gathering) ? (
         <>
           <Bar />
           <TextWrapper>
             <Title>요일</Title>
-            <Content>{formatDays(days)}</Content>
+            <Content>{formatDays(gathering.days)}</Content>
+          </TextWrapper>
+        </>
+      ) : (
+        <>
+          <Bar />
+          <TextWrapper>
+            <Title>날짜</Title>
+            <Content>{formatDate(gathering.dateTime)}</Content>
           </TextWrapper>
         </>
       )}

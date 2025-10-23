@@ -1,92 +1,118 @@
 "use client";
 
 import { MouseEvent } from "react";
-import { VariantProps } from "class-variance-authority";
 import { toast } from "sonner";
 
-import { useAuth } from "@/hooks/auth";
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import {
   useCancelJoinGathering,
   useJoinGathering,
 } from "@/hooks/queries/gatherings";
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
+import { GATHERING_STATE_MESSAGE } from "@/lib/constants/gathering";
 import { PATH } from "@/lib/constants/path";
-import { GatheringType } from "@/lib/types/gatherings";
+import { EGatheringState, GatheringType } from "@/lib/types/gatherings";
+import { cn } from "@/lib/utils";
+import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 import { useAuthRequiredModalStore } from "@/store/modalStore";
 
 import { Button, buttonVariants } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
-enum EButtonType {
+enum EJoinButtonType {
   JOIN = "join",
   CANCEL = "cancel",
 }
 
-const SUCCESS_MESSAGE: Record<EButtonType, string> = {
-  [EButtonType.JOIN]: "모임에 참여했어요",
-  [EButtonType.CANCEL]: "모임에 참여 취소했어요",
+const MESSAGE: Record<EJoinButtonType, string> = {
+  [EJoinButtonType.JOIN]: "참여",
+  [EJoinButtonType.CANCEL]: "참여 취소",
 };
 
-const ERROR_MESSAGE: Record<EButtonType, string> = {
-  [EButtonType.JOIN]: "모임 참여 중 오류가 발생했어요",
-  [EButtonType.CANCEL]: "모임 참여 취소 중 오류가 발생했어요",
-};
-
-const BUTTON_VARIANT: Record<
-  EButtonType,
-  VariantProps<typeof buttonVariants>["variant"]
+const IS_AVAILABLE: Record<
+  EGatheringState,
+  { join: boolean; cancel: boolean }
 > = {
-  [EButtonType.JOIN]: "default",
-  [EButtonType.CANCEL]: "outline",
+  [EGatheringState.REGISTRATION_END_PASSED]: {
+    join: false,
+    cancel: false,
+  },
+  [EGatheringState.FIXED_GATHERING]: {
+    join: true,
+    cancel: false,
+  },
+  [EGatheringState.CAPACITY_FULL]: {
+    join: false,
+    cancel: false,
+  },
+  [EGatheringState.CANCELED]: {
+    join: false,
+    cancel: false,
+  },
+  [EGatheringState.PET_REQUIRED]: {
+    join: false,
+    cancel: true,
+  },
+  [EGatheringState.AUTH_REQUIRED]: {
+    join: false,
+    cancel: false,
+  },
+  [EGatheringState.GENERAL]: {
+    join: true,
+    cancel: true,
+  },
 };
 
 interface GatheringCardJoinBtnProps {
   gathering: GatheringType;
-  isInvalid?: boolean;
 }
 
-export function GatheringCardJoinBtn({
-  gathering,
-  isInvalid = false,
-}: GatheringCardJoinBtnProps) {
-  const { user, isLoading } = useAuth();
+export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
+  const { user, state } = useGatheringStateContext();
   const { openModal } = useAuthRequiredModalStore();
+  const isClosedGatheringState = checkIsClosedGatheringState(state);
 
   // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
-  const { data, isPending, isError } = useGetIsParticipating({
+  const {
+    data: isParticipated,
+    isPending: isGettingParticipating,
+    isError: isGettingParticipatingError,
+  } = useGetIsParticipating({
     id: gathering.id,
-    enabled: !isInvalid && !!user && !isLoading,
+    enabled: !isClosedGatheringState,
   });
 
   const { mutateAsync: join, isPending: isJoinPending } = useJoinGathering();
   const { mutateAsync: cancelJoin, isPending: isCancelPending } =
     useCancelJoinGathering();
 
-  if (isInvalid)
+  if (isClosedGatheringState)
     return (
-      <Button
-        className="cursor-not-allowed"
-        size="xl"
-        variant="gray"
+      <div
+        className={cn(
+          buttonVariants({ variant: "gray", size: "xl" }),
+          "cursor-not-allowed",
+        )}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
         }}
       >
-        모집종료
-      </Button>
+        모집마감
+      </div>
     );
-  if (user && isPending) return <GatheringCardSkeleton.JoinBtn />;
-  if (user && (isError || !data))
+
+  if (user && isGettingParticipating) return <GatheringCardSkeleton.JoinBtn />;
+  if (user && isGettingParticipatingError)
     return (
       <div className="flex h-11 w-30 items-center justify-center rounded-[10px] bg-slate-50">
         에러
       </div>
     );
-
-  const mode = data?.isParticipated ? EButtonType.CANCEL : EButtonType.JOIN;
   const isMutationPending = isJoinPending || isCancelPending;
+  const mode = isParticipated ? EJoinButtonType.CANCEL : EJoinButtonType.JOIN;
 
   const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -97,23 +123,42 @@ export function GatheringCardJoinBtn({
     }
 
     try {
-      if (mode === EButtonType.CANCEL) await cancelJoin({ id: gathering.id });
+      if (isParticipated) await cancelJoin({ id: gathering.id });
       else await join({ id: gathering.id });
-      toast.success(`[${gathering.name}] ${SUCCESS_MESSAGE[mode]}`);
+
+      toast.success(`[${gathering.name}] 모임에 ${MESSAGE[mode]}했어요`);
     } catch (error) {
       console.error(error);
-      toast.error(`[${gathering.name}] ${ERROR_MESSAGE[mode]}`);
+      toast.error(
+        `[${gathering.name}] 모임에 ${MESSAGE[mode]} 중 오류가 발생했어요`,
+      );
     }
   };
 
-  return (
+  const isJoinDisabled =
+    mode === EJoinButtonType.JOIN && !IS_AVAILABLE[state].join;
+  const isCancelDisabled =
+    mode === EJoinButtonType.CANCEL && !IS_AVAILABLE[state].cancel;
+  const button = (
     <Button
       size="xl"
-      variant={BUTTON_VARIANT[mode]}
+      variant={mode === EJoinButtonType.JOIN ? "default" : "outline"}
       onClick={handleButtonClick}
-      disabled={isLoading || isMutationPending}
+      disabled={isMutationPending || isJoinDisabled || isCancelDisabled}
     >
-      {mode === EButtonType.JOIN ? "참여하기" : "참여 취소하기"}
+      {MESSAGE[mode]}하기
     </Button>
   );
+
+  if (isJoinDisabled || isCancelDisabled)
+    return (
+      <Tooltip>
+        <TooltipTrigger>{button}</TooltipTrigger>
+        <TooltipContent>
+          {GATHERING_STATE_MESSAGE[state]}은 {MESSAGE[mode]}할 수 없어요
+        </TooltipContent>
+      </Tooltip>
+    );
+
+  return button;
 }

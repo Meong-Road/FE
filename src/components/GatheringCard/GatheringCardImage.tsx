@@ -1,21 +1,16 @@
 import Dog from "@/assets/images/dog.svg";
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
+import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 
 import ImageWithFallback from "../common/ImageWithFallback";
 
-interface GatheringCardImageProps {
-  src: string | null;
-  alt: string;
-  isInvalid?: boolean;
-}
+export function GatheringCardImage() {
+  const { gathering, state } = useGatheringStateContext();
+  const isClosedGathering = checkIsClosedGatheringState(state);
 
-export function GatheringCardImage({
-  src,
-  alt,
-  isInvalid = false,
-}: GatheringCardImageProps) {
   return (
     <div className="relative flex size-[188px] items-center justify-center overflow-hidden rounded-3xl">
-      {isInvalid && (
+      {isClosedGathering && (
         <div className="absolute inset-0 z-[5] flex items-center justify-center bg-black/60">
           <span className="text-base font-bold text-white">
             모집이 마감되었어요
@@ -23,8 +18,8 @@ export function GatheringCardImage({
         </div>
       )}
       <ImageWithFallback
-        src={src}
-        alt={alt}
+        src={gathering.image}
+        alt={gathering.name}
         fill
         sizes="188px"
         className="object-cover"

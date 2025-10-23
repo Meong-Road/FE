@@ -5,32 +5,28 @@ import { toast } from "sonner";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
-import { useAuth } from "@/hooks/auth";
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import {
   useCancelLike,
   useGetIsLiked,
   useLike,
 } from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
-import { GatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
+import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 import { useAuthRequiredModalStore } from "@/store/modalStore";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
 interface GatheringCardLikeBtnProps {
   className?: string;
-  gathering: GatheringType;
-  isInvalid?: boolean;
 }
 
-export function GatheringCardLikeBtn({
-  className,
-  gathering,
-  isInvalid = false,
-}: GatheringCardLikeBtnProps) {
-  const { user, isLoading } = useAuth();
+export function GatheringCardLikeBtn({ className }: GatheringCardLikeBtnProps) {
+  const { gathering, user, state } = useGatheringStateContext();
   const { openModal } = useAuthRequiredModalStore();
+
+  const isClosedGathering = checkIsClosedGatheringState(state);
 
   // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
   const { data, isPending, isError } = useGetIsLiked({
@@ -41,8 +37,7 @@ export function GatheringCardLikeBtn({
   const { mutateAsync: like } = useLike({ id: gathering.id });
   const { mutateAsync: cancelLike } = useCancelLike({ id: gathering.id });
 
-  if (isLoading || (user && isPending))
-    return <GatheringCardSkeleton.LikeBtn />;
+  if (user && isPending) return <GatheringCardSkeleton.LikeBtn />;
   if (user && (isError || !data))
     return <div className={cn("size-12 rounded-full", className)}>오류</div>;
 
@@ -70,7 +65,7 @@ export function GatheringCardLikeBtn({
     <button
       className={cn(
         "cursor-pointer rounded-full bg-white hover:brightness-[.98]",
-        isInvalid && "grayscale-100",
+        isClosedGathering && "grayscale-100",
         className,
       )}
       onClick={handleLikeButtonClick}

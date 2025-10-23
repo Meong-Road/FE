@@ -12,7 +12,7 @@ export function useGetIsParticipating({
   return useQuery({
     queryKey: QUERY_KEYS.gatherings.participating({ id }),
     queryFn: () => gatheringApi.getIsParticipating({ id }),
-    select: (data) => data.result,
+    select: (data) => data.result?.isParticipated ?? false,
     enabled,
   });
 }

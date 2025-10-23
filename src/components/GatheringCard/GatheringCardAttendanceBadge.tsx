@@ -1,11 +1,13 @@
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
+import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
+
 import Badge from "../common/Badge";
 
-interface GatheringCardAttendanceBadgeProps {
-  isInvalid?: boolean;
-}
+export function GatheringCardAttendanceBadge() {
+  const { state } = useGatheringStateContext();
+  const isClosedGathering = checkIsClosedGatheringState(state);
 
-export function GatheringCardAttendanceBadge({
-  isInvalid = false,
-}: GatheringCardAttendanceBadgeProps) {
-  return <Badge variant={isInvalid ? "gray" : "primary"}>이용 예정</Badge>;
+  return (
+    <Badge variant={isClosedGathering ? "gray" : "primary"}>이용 예정</Badge>
+  );
 }

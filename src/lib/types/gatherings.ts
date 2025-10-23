@@ -6,6 +6,16 @@ export enum EGatheringType {
   REGULAR = "REGULAR",
 }
 
+export enum EGatheringState {
+  AUTH_REQUIRED = "AUTH_REQUIRED", // 로그인이 필요한 경우
+  REGISTRATION_END_PASSED = "REGISTRATION_END_PASSED", // 마감 기한이 지난 경우
+  FIXED_GATHERING = "FIXED_GATHERING", // 모임 개설이 확정된 경우
+  CAPACITY_FULL = "CAPACITY_FULL", // 모임 정원이 가득 찬 경우
+  CANCELED = "CANCELED", // 모임이 취소된 경우
+  PET_REQUIRED = "PET_REQUIRED", // 반려견 필수 여부
+  GENERAL = "GENERAL", // 일반적인 경우
+}
+
 export interface CommonGatheringType {
   id: number;
   name: string;

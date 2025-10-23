@@ -1,3 +1,5 @@
+import { isAfter } from "date-fns";
+
 import { DAY_MAP_KR } from "../constants/date";
 
 /**
@@ -137,3 +139,10 @@ export function formatDays(daysString: string): string {
     }
   }
 }
+
+export const checkIsAfter = (
+  date: Date | string,
+  dateToCompare: Date | string = new Date(),
+) => {
+  return isAfter(date, dateToCompare);
+};

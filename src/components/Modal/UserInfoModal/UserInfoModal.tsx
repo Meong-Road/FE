@@ -68,12 +68,11 @@ export default function UserInfoModal({
                     <Person />
                   </Form.ImageUpload>
                 </Form.Control>
-                <Form.Label className="mt-2 flex justify-center">
-                  프로필 사진 등록
-                </Form.Label>
               </Form.Item>
             )}
           />
+
+          <div className="h-1" />
 
           <Form.Field
             name="nickName"

@@ -8,12 +8,12 @@ const UserProfileImage = ({
   userProfileImageURL: UserType["image"];
 }) => {
   return (
-    <div className="relative size-10 overflow-hidden rounded-full border border-[#DDDDDD]">
+    <div className="relative size-[42px] overflow-hidden rounded-full border border-[#DDDDDD]">
       <ImageWithFallback
         src={userProfileImageURL}
         alt="profile"
-        width={42}
-        height={42}
+        fill
+        sizes="42px"
         className="cursor-pointer rounded-full border border-[#DDDDDD] focus:outline-none"
         renderFallback={() => <ProfileSvg width={42} height={42} />}
       />

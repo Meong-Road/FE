@@ -66,7 +66,6 @@ export function ImageUpload({
               alt="업로드 사진 미리보기"
               width={150}
               height={150}
-              className="h-full w-full object-cover"
               renderFallback={() => children}
             />
           </div>

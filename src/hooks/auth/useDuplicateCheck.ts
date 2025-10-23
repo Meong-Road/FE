@@ -57,15 +57,24 @@ export function useDuplicateCheck<T extends FieldValues>(
   useEffect(() => {
     if (initialValue !== undefined) {
       setLastChecked(initialValue);
+      // 초기값이 있으면 중복체크 통과 상태로 설정
+      resetCheckState(true, true);
     }
-  }, [initialValue]);
+  }, [initialValue, resetCheckState]);
 
   /** 필드 값 변경 시 중복확인 상태 초기화 */
   useEffect(() => {
+    // 현재 값이 초기값과 같으면 중복체크 통과 상태 유지
+    if (initialValue !== undefined && currentValue === initialValue) {
+      resetCheckState(true, true);
+      return;
+    }
+
+    // 값이 변경되었으면 중복확인 상태 초기화
     if (lastChecked !== null && currentValue !== lastChecked) {
       resetCheckState(null, false);
     }
-  }, [currentValue, lastChecked, resetCheckState]);
+  }, [currentValue, lastChecked, initialValue, resetCheckState]);
 
   /** 중복 검사 실행 함수 */
   const checkDuplicate = useCallback(async () => {
@@ -110,12 +119,23 @@ export function useDuplicateCheck<T extends FieldValues>(
   const isButtonDisabled = useMemo(() => {
     const hasError = !!form.formState.errors[field];
     const sameAsLast = currentValue === lastChecked;
-    const noLastChecked = lastChecked === null;
+    const sameAsInitial =
+      initialValue !== undefined && currentValue === initialValue;
 
-    return (
-      isChecking || !currentValue || sameAsLast || hasError || noLastChecked
-    );
-  }, [isChecking, currentValue, lastChecked, form.formState.errors, field]);
+    // 초기값과 같으면 중복체크 불필요 (이미 검증된 값)
+    if (sameAsInitial) {
+      return true;
+    }
+
+    return isChecking || !currentValue || sameAsLast || hasError;
+  }, [
+    isChecking,
+    currentValue,
+    lastChecked,
+    initialValue,
+    form.formState.errors,
+    field,
+  ]);
 
   return {
     checkDuplicate,

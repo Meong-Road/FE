@@ -5,7 +5,9 @@ import {
   ReverseGeocodedAddressType,
 } from "@/app/map/_types/geocodings";
 
-export function extractDistrict(address: string): string {
+import { getGeocode } from "../_repositories/geocoding.repository";
+
+function extractDistrict(address: string): string {
   /**
    * 서울특별시 강남구 논현로 565 휴먼터치빌 -> "강남구"
    * 서울특별시 강남구 역삼동 606-18 휴먼터치빌 -> "강남구"
@@ -31,6 +33,21 @@ export function rawToGeocode(raw: RawGeocodeItem): GeocodedAddressType {
 
 export function rawsToGeocode(raws: RawGeocodeItem[]): GeocodedAddressType[] {
   return raws.map(rawToGeocode);
+}
+
+export async function getTopGeocode(
+  query: string,
+): Promise<GeocodedAddressType | null> {
+  const items = await getGeocode(query);
+  return items[0] ?? null;
+}
+
+export async function searchAddress(
+  query: string,
+): Promise<GeocodedAddressType | null> {
+  if (query.length < 2) return null;
+
+  return await getTopGeocode(query);
 }
 
 // 완전하지 않음 작동은 함

@@ -1,26 +1,25 @@
 import { useState } from "react";
 
-import { getTopGeocode } from "@/app/map/_repositories/geocoding";
 import { GeocodedAddressType } from "@/app/map/_types/geocodings";
 
-export function useAddrSearch(onPick: (item: GeocodedAddressType) => void) {
+import { searchAddress } from "../_services/geocoding.service";
+
+export function useAddrSearch(onPick: (address: GeocodedAddressType) => void) {
   const [inputAddr, setInputAddr] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function search() {
     const query = inputAddr.trim();
-    if (query.length < 2) return;
-
     setLoading(true);
 
     try {
-      const top = await getTopGeocode(query);
-      if (!top) {
+      const firstMatch = await searchAddress(query);
+      if (!firstMatch) {
         console.log("Geocode 결과 없음");
         return;
       }
-      console.log("주소: ", top);
-      onPick(top);
+      console.log("주소: ", firstMatch);
+      onPick(firstMatch);
     } catch (error) {
       console.error("error", error);
     } finally {

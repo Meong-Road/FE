@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { reverseGeocodeToAddress } from "@/app/map/_services/mappers";
-import { ncpHeaders } from "@/app/map/_services/ncp";
+import { reverseGeocodeToAddress } from "@/app/map/_services/geocoding.service";
+import { ncpHeaders } from "@/app/map/_utils/ncp";
 
 export async function GET(req: Request) {
   const urlObj = new URL(req.url);
@@ -9,7 +9,7 @@ export async function GET(req: Request) {
   const lon = urlObj.searchParams.get("lon");
 
   if (!lat || !lon) {
-    return NextResponse.json({ items: [] });
+    return NextResponse.json({ parsedAddrs: [] });
   }
 
   const url = `https://maps.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${lon},${lat}&output=json&orders=roadaddr,addr`;
@@ -26,8 +26,7 @@ export async function GET(req: Request) {
 
   const data = await res.json();
   const rawResults = data?.results ?? [];
+  const parsedAddrs = rawResults.map(reverseGeocodeToAddress).filter(Boolean);
 
-  const items = rawResults.map(reverseGeocodeToAddress).filter(Boolean);
-
-  return NextResponse.json({ items });
+  return NextResponse.json({ parsedAddrs });
 }

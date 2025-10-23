@@ -4,7 +4,9 @@ import {
   ReverseGeocodedAddressType,
 } from "../_types/geocodings";
 
-async function geocode(query: string): Promise<GeocodedAddressType[]> {
+export async function getGeocode(
+  query: string,
+): Promise<GeocodedAddressType[]> {
   const res = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`, {
     cache: "no-store",
   });
@@ -12,16 +14,9 @@ async function geocode(query: string): Promise<GeocodedAddressType[]> {
   if (!res.ok) throw new Error("");
 
   const data = await res.json();
-  return Array.isArray(data?.items)
-    ? (data.items as GeocodedAddressType[])
+  return Array.isArray(data?.geocodedAddrs)
+    ? (data.geocodedAddrs as GeocodedAddressType[])
     : [];
-}
-
-export async function getTopGeocode(
-  query: string,
-): Promise<GeocodedAddressType | null> {
-  const items = await geocode(query);
-  return items[0] ?? null;
 }
 
 export async function getReverseGeocode(
@@ -35,7 +30,7 @@ export async function getReverseGeocode(
   if (!res.ok) throw new Error("");
 
   const data = await res.json();
-  return Array.isArray(data?.items)
-    ? ((data.items[0] as ReverseGeocodedAddressType) ?? null)
+  return Array.isArray(data?.parsedAddrs)
+    ? ((data.parsedAddrs[0] as ReverseGeocodedAddressType) ?? null)
     : null;
 }

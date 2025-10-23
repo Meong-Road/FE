@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { getReverseGeocode } from "@/app/map/_repositories/geocoding";
+import { getReverseGeocode } from "@/app/map/_repositories/geocoding.repository";
 
 type Coord = {
   lat: () => number;

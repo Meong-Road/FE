@@ -12,6 +12,7 @@ import { usePetInfoModal } from "./hooks/usePetInfoModal";
 import { usePetInfoSubmit } from "./hooks/usePetInfoSubmit";
 import { useSkipPetInfo } from "./hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
+import { PetInfoDeleteButton, PetInfoSkipButton } from "./_components";
 
 interface RadioOption {
   id: string;
@@ -224,23 +225,9 @@ export default function PetInfoModal({
         </Form>
 
         {type === "first-login" ? (
-          <button
-            className="mt-2 border-b-2"
-            type="button"
-            onClick={handleSkip}
-            disabled={isSkipping}
-          >
-            {isSkipping ? "건너 뛰는 중..." : "아직 반려견이 없어요"}
-          </button>
+          <PetInfoSkipButton onClick={handleSkip} disabled={isSkipping} />
         ) : type === "edit-pet" ? (
-          <button
-            className="mt-2 border-b-2"
-            type="button"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "등록 해제 중..." : "등록 해제하기"}
-          </button>
+          <PetInfoDeleteButton onClick={handleDelete} disabled={isDeleting} />
         ) : null}
       </Modal.Content>
     </Modal>

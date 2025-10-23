@@ -5,8 +5,8 @@ import { ProfileCardEditBtn } from "./ProfileCardEditBtn";
 import { ProfileCardHeader } from "./ProfileCardHeader";
 import { ProfileCardImage } from "./ProfileCardImage";
 import { ProfileCardInfo } from "./ProfileCardInfo";
-import { ProfileCardName } from "./ProfileCardName";
-import { type ProfileCardProps } from "./types";
+import { ProfileCardNickName } from "./ProfileCardNickName";
+import { ProfileCardProps } from "./types";
 
 export function ProfileCard({ children, className }: ProfileCardProps) {
   return (
@@ -21,6 +21,6 @@ export function ProfileCard({ children, className }: ProfileCardProps) {
 ProfileCard.Header = ProfileCardHeader;
 ProfileCard.Content = ProfileCardContent;
 ProfileCard.Image = ProfileCardImage;
-ProfileCard.Name = ProfileCardName;
 ProfileCard.Info = ProfileCardInfo;
 ProfileCard.EditBtn = ProfileCardEditBtn;
+ProfileCard.NickName = ProfileCardNickName;

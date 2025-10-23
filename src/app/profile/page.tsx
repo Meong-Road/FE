@@ -15,7 +15,9 @@ import { ProfileCard } from "./_components/ProfileCard";
 import ReviewSection from "./_components/ReviewSection";
 
 const ProfileHeader = () => (
-  <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
+  <h2 className="mb-4 text-left text-[32px] leading-none font-semibold">
+    마이페이지
+  </h2>
 );
 
 const ProfileInfo = ({ user }: { user: UserType }) => (
@@ -26,12 +28,9 @@ const ProfileInfo = ({ user }: { user: UserType }) => (
     </div>
     <ProfileCard.Content>
       <ProfileCard.Image />
-      <div className="flex-1">
-        <ProfileCard.Name>{user.nickName || user.name}</ProfileCard.Name>
-        <dl>
-          <ProfileCard.Info label="ID" value={user.name} />
-          <ProfileCard.Info label="E-mail" value={user.email} />
-        </dl>
+      <div className="flex flex-1 flex-col justify-between">
+        <ProfileCard.NickName nickName={user.nickName || user.name} />
+        <ProfileCard.Info name={user.name} email={user.email} />
       </div>
     </ProfileCard.Content>
   </ProfileCard>

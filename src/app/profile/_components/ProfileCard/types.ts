@@ -11,11 +11,11 @@ export interface ProfileCardContentProps {
   children: React.ReactNode;
 }
 
-export interface ProfileCardNameProps {
-  children: React.ReactNode;
+export interface ProfileCardNickNameProps {
+  nickName: string;
 }
 
 export interface ProfileCardInfoProps {
-  label: string;
-  value: string;
+  name: string;
+  email: string;
 }

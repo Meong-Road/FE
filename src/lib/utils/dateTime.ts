@@ -1,4 +1,4 @@
-import { isAfter } from "date-fns";
+import { isAfter, subHours } from "date-fns";
 
 import { DAY_MAP_KR } from "../constants/date";
 
@@ -145,4 +145,8 @@ export const checkIsAfter = (
   dateToCompare: Date | string = new Date(),
 ) => {
   return isAfter(date, dateToCompare);
+};
+
+export const getHoursBefore = (date: Date | string, amount: number) => {
+  return subHours(date, amount);
 };

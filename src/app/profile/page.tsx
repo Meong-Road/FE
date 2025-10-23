@@ -1,10 +1,12 @@
 "use client";
 
+import { UserInfoModal } from "@/components/Modal";
 import { Tab } from "@/components/Tab";
 import { useAuth } from "@/hooks/auth";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
 import { UserType } from "@/lib/types/user";
+import { useUserInfoModalStore } from "@/store/modalStore";
 
 import CreatedSection from "./_components/CreatedSection";
 import JoinedSection from "./_components/JoinedSection";
@@ -18,13 +20,13 @@ const ProfileHeader = () => (
 
 const ProfileInfo = ({ user }: { user: UserType }) => (
   <ProfileCard>
-    <div className="mb-3 flex items-center justify-between">
+    <div className="mb-4 flex items-center justify-between">
       <ProfileCard.Header>내 프로필</ProfileCard.Header>
       <ProfileCard.EditBtn userId={user.id} />
     </div>
     <ProfileCard.Content>
       <ProfileCard.Image />
-      <div className="pt-4">
+      <div className="flex-1">
         <ProfileCard.Name>{user.nickName || user.name}</ProfileCard.Name>
         <dl>
           <ProfileCard.Info label="ID" value={user.name} />
@@ -74,6 +76,7 @@ const TabContent = () => {
 
 export default function Profile() {
   const { user, isLoading } = useAuth();
+  const { isOpen, modalType, userId, closeModal } = useUserInfoModalStore();
 
   if (isLoading) return <div>Loading...</div>;
   if (!user) return <div>데이터가 없습니다.</div>;
@@ -86,6 +89,14 @@ export default function Profile() {
       <section className="mt-6">
         <TabContent />
       </section>
+
+      {isOpen && modalType && (
+        <UserInfoModal
+          type={modalType}
+          onClose={closeModal}
+          userId={userId || user.id}
+        />
+      )}
     </section>
   );
 }

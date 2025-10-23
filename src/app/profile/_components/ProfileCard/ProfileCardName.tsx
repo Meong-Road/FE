@@ -1,5 +1,7 @@
 import { type ProfileCardNameProps } from "./types";
 
 export function ProfileCardName({ children }: ProfileCardNameProps) {
-  return <h4 className="mb-2 font-semibold text-gray-800">{children}</h4>;
+  return (
+    <h4 className="text-foreground mb-3 text-lg font-semibold">{children}</h4>
+  );
 }

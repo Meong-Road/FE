@@ -50,7 +50,7 @@ export function usePetInfoSubmit({
         gender: petFormData.gender!,
         birthYear: petFormData.birthYear!,
         breed: petFormData.breed!,
-        neuter: petFormData.neuter === "true" ? true : false,
+        neuter: !!(petFormData.neuter === "true"),
         petType: petFormData.petType,
         image: petFormData.image! as string,
       } as PutPetReq;

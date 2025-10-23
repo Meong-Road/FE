@@ -4,14 +4,14 @@ import { toast } from "sonner";
 import { useDeletePet } from "@/hooks/queries/pets/useDeletePet";
 import { PATH } from "@/lib/constants/path";
 
-import Dog from "../../assets/images/dog.svg";
-import { Form } from "../Form";
+import Dog from "../../../assets/images/dog.svg";
+import { Form } from "../../Form";
+import { Modal } from "../shared";
 
-import { usePetInfoModal } from "./_hooks/usePetInfoModal";
-import { usePetInfoSubmit } from "./_hooks/usePetInfoSubmit";
-import { useSkipPetInfo } from "./_hooks/useSkipPetInfo";
+import { usePetInfoModal } from "./hooks/usePetInfoModal";
+import { usePetInfoSubmit } from "./hooks/usePetInfoSubmit";
+import { useSkipPetInfo } from "./hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
-import { Modal } from ".";
 
 interface RadioOption {
   id: string;

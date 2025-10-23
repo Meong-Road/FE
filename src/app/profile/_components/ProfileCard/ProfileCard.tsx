@@ -1,3 +1,5 @@
+import { Card, CardContent } from "@/components/ui/card";
+
 import { ProfileCardContent } from "./ProfileCardContent";
 import { ProfileCardEditBtn } from "./ProfileCardEditBtn";
 import { ProfileCardHeader } from "./ProfileCardHeader";
@@ -6,11 +8,13 @@ import { ProfileCardInfo } from "./ProfileCardInfo";
 import { ProfileCardName } from "./ProfileCardName";
 import { type ProfileCardProps } from "./types";
 
-export function ProfileCard({ children }: ProfileCardProps) {
+export function ProfileCard({ children, className }: ProfileCardProps) {
   return (
-    <section className="rounded-3xl border-2 border-gray-200 bg-white px-6 py-4">
-      {children}
-    </section>
+    <Card
+      className={`group bg-card border-border relative overflow-hidden transition-all select-none ${className || ""}`}
+    >
+      <CardContent>{children}</CardContent>
+    </Card>
   );
 }
 

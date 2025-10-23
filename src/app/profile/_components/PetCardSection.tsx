@@ -7,7 +7,7 @@ import {
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
-import PetInfoModal from "@/components/Modal/PetInfoModal";
+import { PetInfoModal } from "@/components/Modal";
 import { PetAddCard } from "@/components/PetAddCard";
 import { PetCard } from "@/components/PetCard";
 import { useGetMyPets } from "@/hooks/queries/pets";

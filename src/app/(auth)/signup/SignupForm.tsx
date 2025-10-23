@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
-import PetInfoModal from "@/components/Modal/PetInfoModal";
+import { PetInfoModal } from "@/components/Modal";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 import { PATH } from "@/lib/constants/path";

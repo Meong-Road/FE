@@ -1,5 +1,3 @@
-import { getSpecialButtonClass } from "@/lib/utils/buttonStyles";
-
 interface PetInfoSkipButtonProps {
   onClick: () => void;
   disabled: boolean;
@@ -11,7 +9,7 @@ export function PetInfoSkipButton({
 }: PetInfoSkipButtonProps) {
   return (
     <button
-      className={getSpecialButtonClass("skip")}
+      className="w-full rounded-lg bg-gray-500 px-4 py-3 text-white transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:bg-gray-300"
       type="button"
       onClick={onClick}
       disabled={disabled}

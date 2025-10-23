@@ -1,5 +1,3 @@
-import { getSpecialButtonClass } from "@/lib/utils/buttonStyles";
-
 interface PetInfoDeleteButtonProps {
   onClick: () => void;
   disabled: boolean;
@@ -11,7 +9,7 @@ export function PetInfoDeleteButton({
 }: PetInfoDeleteButtonProps) {
   return (
     <button
-      className={getSpecialButtonClass("delete")}
+      className="w-full rounded-lg bg-zinc-500 px-4 py-3 text-white transition-colors hover:bg-zinc-600 disabled:cursor-not-allowed disabled:bg-gray-300"
       type="button"
       onClick={onClick}
       disabled={disabled}

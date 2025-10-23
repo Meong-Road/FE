@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-import { getTopGeocode } from "@/lib/api/geocode";
-import type { GeocodedItem } from "@/lib/types/geocode";
+import { getTopGeocode } from "@/lib/api/geocoding";
+import { GeocodedAddressType } from "@/lib/types/geocodings";
 
-type Props = { onPick: (item: GeocodedItem) => void };
+type Props = { onPick: (item: GeocodedAddressType) => void };
 
 export default function AddrSearchBar({ onPick }: Props) {
   const [userInput, setUserInput] = useState("");

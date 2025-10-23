@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { normalizeAddresses } from "@/lib/utils/map/geocoding";
-import { ncpHeaders } from "@/lib/utils/map/ncp";
+import { rawsToGeocode } from "@/lib/utils/geocoding/mappers";
+import { ncpHeaders } from "@/lib/utils/geocoding/ncp";
 
 export async function GET(req: Request) {
   const inputAddr = new URL(req.url).searchParams.get("q") ?? "";
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   }
 
   const data = await res.json();
-  const items = normalizeAddresses(data?.addresses ?? []);
+  const items = rawsToGeocode(data?.addresses ?? []);
 
   return NextResponse.json({ items });
 }

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { getReverseGeocode } from "@/lib/api/geocoding";
+
 type NaverMap = {
   setCenter: (pos: unknown) => void;
   setZoom: (level: number, animated?: boolean) => void;
@@ -55,8 +57,12 @@ export function MapView({ lat, lon }: Props) {
     naver.maps.Event.addListener(
       mapRef.current,
       "click",
-      (e: { coord: unknown }) => {
+      async (e: { coord: unknown }) => {
         if (!e.coord) return;
+
+        const coord = e.coord as { lat: () => number; lng: () => number };
+        const lat = coord.lat();
+        const lon = coord.lng();
 
         if (!markerRef.current) {
           markerRef.current = new naver.maps.Marker({
@@ -65,6 +71,13 @@ export function MapView({ lat, lon }: Props) {
           });
         } else {
           markerRef.current.setPosition(e.coord);
+        }
+
+        const result = await getReverseGeocode({ lat, lon });
+        if (result) {
+          console.log("역지오코딩 주소:", result);
+        } else {
+          console.log("주소 없음");
         }
       },
     );

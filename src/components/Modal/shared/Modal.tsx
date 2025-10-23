@@ -36,7 +36,7 @@ export function Modal({ className, children }: ModalProps) {
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-[2px] duration-300">
       <div
         className={cn(
-          "bg-card relative flex max-h-[85vh] min-h-[20vh] w-full max-w-screen-sm flex-col gap-2 overflow-hidden rounded-3xl pt-12 pb-6 shadow-xl duration-300 sm:rounded-4xl",
+          "bg-card relative flex max-h-[85vh] min-h-[20vh] w-full max-w-screen-sm flex-col gap-2 overflow-hidden rounded-3xl pt-12 pb-6 shadow-xl duration-300 select-none sm:rounded-4xl",
           className,
         )}
       >

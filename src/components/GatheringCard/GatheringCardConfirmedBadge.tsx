@@ -1,12 +1,18 @@
-import Check from "@/assets/images/check.svg";
+import Check from "@/assets/icons/check.svg";
 
-export function GatheringCardConfirmedBadge() {
+import Badge from "../common/Badge";
+
+interface GatheringCardConfirmedBadgeProps {
+  isInvalid?: boolean;
+}
+
+export function GatheringCardConfirmedBadge({
+  isInvalid = false,
+}: GatheringCardConfirmedBadgeProps) {
   return (
-    <div className="bg-gradient-primary inline-block rounded-3xl p-[1px]">
-      <div className="flex h-8 items-center gap-0.5 rounded-3xl bg-white px-2">
-        <Check width={24} height={24} />
-        <span className="text-primary text-sm font-semibold">개설확정</span>
-      </div>
-    </div>
+    <Badge variant={isInvalid ? "gray" : "primary"} outline={true}>
+      <Check className="size-6" />
+      <span>개설확정</span>
+    </Badge>
   );
 }

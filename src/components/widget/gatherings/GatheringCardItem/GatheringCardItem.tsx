@@ -10,18 +10,24 @@ interface GatheringProps {
   gathering: GatheringType;
   href?: string;
   as?: ElementType;
+  isInvalid?: boolean;
 }
 
 export default function GatheringCardItem({
   gathering,
   href,
   as = "div",
+  isInvalid = false,
 }: GatheringProps) {
   const content = (
     <GatheringCard as={as}>
       <div className="flex h-full flex-row items-center gap-6">
         {gathering.image && (
-          <GatheringCard.Image src={gathering.image} alt={gathering.name} />
+          <GatheringCard.Image
+            src={gathering.image}
+            alt={gathering.name}
+            isInvalid={isInvalid}
+          />
         )}
         <div className="flex h-full flex-grow flex-col justify-between gap-y-11 py-2">
           <div className="flex items-start justify-between gap-x-2">
@@ -29,14 +35,18 @@ export default function GatheringCardItem({
               <div className="flex flex-row justify-start gap-x-2">
                 <GatheringCard.DeadlineBadge
                   registrationEnd={gathering.registrationEnd}
+                  isInvalid={isInvalid}
                 />
                 {gathering.participantCount >= 5 && (
-                  <GatheringCard.ConfirmedBadge />
+                  <GatheringCard.ConfirmedBadge isInvalid={isInvalid} />
                 )}
               </div>
               <GatheringCard.Title>{gathering.name}</GatheringCard.Title>
             </div>
-            <GatheringCard.LikeBtn id={gathering.id} />
+            <GatheringCard.LikeBtn
+              gathering={gathering}
+              isInvalid={isInvalid}
+            />
           </div>
           <div className="flex w-full items-end justify-between">
             <div>
@@ -56,7 +66,10 @@ export default function GatheringCardItem({
                 />
               )}
             </div>
-            <GatheringCard.JoinBtn gathering={gathering} />
+            <GatheringCard.JoinBtn
+              gathering={gathering}
+              isInvalid={isInvalid}
+            />
           </div>
         </div>
       </div>

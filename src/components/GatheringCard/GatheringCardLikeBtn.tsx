@@ -1,6 +1,7 @@
 "use client";
 
 import { MouseEvent } from "react";
+import { toast } from "sonner";
 
 import LikeBtn from "@/assets/icons/like-btn.svg";
 import LikeBtnFilled from "@/assets/icons/like-btn-filled.svg";
@@ -19,24 +20,26 @@ import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
 interface GatheringCardLikeBtnProps {
   className?: string;
-  id: GatheringType["id"];
+  gathering: GatheringType;
+  isInvalid?: boolean;
 }
 
 export function GatheringCardLikeBtn({
   className,
-  id,
+  gathering,
+  isInvalid = false,
 }: GatheringCardLikeBtnProps) {
   const { user, isLoading } = useAuth();
   const { openModal } = useAuthRequiredModalStore();
 
   // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
   const { data, isPending, isError } = useGetIsLiked({
-    id,
+    id: gathering.id,
     enabled: !!user,
   });
 
-  const { mutate: like } = useLike({ id });
-  const { mutate: cancelLike } = useCancelLike({ id });
+  const { mutateAsync: like } = useLike({ id: gathering.id });
+  const { mutateAsync: cancelLike } = useCancelLike({ id: gathering.id });
 
   if (isLoading || (user && isPending))
     return <GatheringCardSkeleton.LikeBtn />;
@@ -45,7 +48,7 @@ export function GatheringCardLikeBtn({
 
   const isLiked = data?.isLiked;
 
-  const handleLikeButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleLikeButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
@@ -53,14 +56,21 @@ export function GatheringCardLikeBtn({
       return;
     }
 
-    if (isLiked) cancelLike();
-    else like();
+    try {
+      if (isLiked) await cancelLike();
+      else await like();
+      toast.success(`[${gathering.name}] 모임을 찜했어요`);
+    } catch (error) {
+      console.error(error);
+      toast.error(`[${gathering.name}] 모임을 찜하는 중 오류가 발생했어요`);
+    }
   };
 
   return (
     <button
       className={cn(
         "cursor-pointer rounded-full bg-white hover:brightness-[.98]",
+        isInvalid && "grayscale-100",
         className,
       )}
       onClick={handleLikeButtonClick}

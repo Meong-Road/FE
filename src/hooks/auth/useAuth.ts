@@ -1,6 +1,6 @@
 // src/hooks/auth/useAuth.ts
 import { useGetMyInfo } from "@/hooks/queries/user";
-import { tokenStorage } from "@/lib/utils/token";
+import { tokenStorage } from "@/lib/utils/storage";
 
 /**
  * 전역 인증 상태 훅

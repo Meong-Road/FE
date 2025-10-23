@@ -37,3 +37,30 @@ export interface GetReverseGeocodeRes {
     number2: string;
   };
 }
+
+export interface Coord {
+  lat: () => number;
+  lng: () => number;
+}
+
+export interface NaverMap {
+  setCenter: (pos: unknown) => void;
+  setZoom: (level: number, animated?: boolean) => void;
+}
+
+export interface NaverMarker {
+  setPosition: (pos: unknown) => void;
+}
+
+export interface NaverMapNS {
+  Map: new (el: HTMLElement, options?: Record<string, unknown>) => NaverMap;
+  LatLng: new (lat: number, lon: number) => unknown;
+  Marker: new (options: { position: unknown; map: NaverMap }) => NaverMarker;
+  Event: {
+    addListener: (
+      map: NaverMap,
+      eventName: string,
+      handler: (e: { coord: unknown }) => void,
+    ) => void;
+  };
+}

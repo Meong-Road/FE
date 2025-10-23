@@ -34,7 +34,7 @@ export default function RegularCreatePage() {
           name: data.name,
           description: data.description,
           days: data.days,
-          location: "강남구", //data.location,
+          location: data.location,
           capacity: parseInt(data.capacity, 10),
           image: data.image ? URL.createObjectURL(data.image) : null, // TODO 이미지 업로드 API 나온 후 수정
           isPetRequired: data.isPetRequired,

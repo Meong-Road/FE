@@ -4,7 +4,7 @@ import { Control } from "./FormControl";
 import { Description } from "./FormDescription";
 import { DuplicateCheckButton } from "./FormDuplicateCheckButton";
 import { Field } from "./FormField";
-import { FormImageUpload } from "./FormImageUpload";
+import { ImageUpload } from "./FormImageUpload";
 import { Input } from "./FormInput";
 import { Item } from "./FormItem";
 import { Label } from "./FormLabel";
@@ -32,7 +32,7 @@ export const Form = Object.assign(BaseForm, {
   LoginLink,
   SignupLink,
   Select,
-  ImageUpload: FormImageUpload,
+  ImageUpload: ImageUpload,
   Radio,
   DuplicateCheckButton,
   Textarea,

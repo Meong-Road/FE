@@ -16,7 +16,7 @@ interface FormImageUploadProps {
   showRemoveButton?: boolean;
 }
 
-export function FormImageUpload({
+export function ImageUpload({
   id,
   placeholder,
   children,

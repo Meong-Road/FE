@@ -1,32 +1,28 @@
-import { PATH } from "./path";
-
 /**
  * 프로필 탭 정보
  */
 export const PROFILE_TABS = {
   JOINED: {
-    key: "joined",
-    label: "내 모임",
-    href: PATH.MY_PROFILE,
-  },
-  REVIEWS: {
-    key: "reviews",
-    label: "내 리뷰",
-    href: `${PATH.MY_PROFILE}?tab=reviews`,
+    label: "참여한 모임",
+    value: "joined",
   },
   CREATED: {
-    key: "created",
-    label: "내가 만든 모임",
-    href: `${PATH.MY_PROFILE}?tab=created`,
+    label: "만든 모임",
+    value: "created",
+  },
+  REVIEWS: {
+    label: "작성한 리뷰",
+    value: "reviews",
   },
   PETS: {
-    key: "pets",
     label: "반려견 정보",
-    href: `${PATH.MY_PROFILE}?tab=pets`,
+    value: "pets",
   },
 } as const;
 
-/**
- * 탭 키 타입
- */
-export type ProfileTabKey = keyof typeof PROFILE_TABS;
+export const PROFILE_TAB_LIST = [
+  PROFILE_TABS.JOINED,
+  PROFILE_TABS.CREATED,
+  PROFILE_TABS.REVIEWS,
+  PROFILE_TABS.PETS,
+];

@@ -13,7 +13,7 @@ export function ProfileCard({ children, className }: ProfileCardProps) {
     <Card
       className={`group bg-card border-border relative overflow-hidden transition-all ${className || ""}`}
     >
-      <CardContent>{children}</CardContent>
+      <CardContent className="p-2 sm:p-4">{children}</CardContent>
     </Card>
   );
 }

@@ -43,3 +43,7 @@ next-env.d.ts
 
 # husky
 .husky/_
+
+# Claude
+CLAUDE.md
+.claude/

@@ -6,7 +6,7 @@ import { renderHook } from "@testing-library/react";
 import { petsApi } from "@/api/pets";
 import { useGetPet, usePostPet, usePutPet } from "@/hooks/queries/pets";
 
-import { usePetInfoModal } from "../usePetInfoModal";
+import { usePetInfoModal } from "../hooks/usePetInfoModal";
 
 const createMockPetInfoResponse = (overrides = {}) => ({
   id: 1,

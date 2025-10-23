@@ -2,9 +2,8 @@ import { useRouter } from "next/navigation";
 
 import { useAuthRequiredModalStore } from "@/store/modalStore";
 
-import { Button } from "../ui/button";
-
-import { Modal } from ".";
+import { Button } from "../../ui/button";
+import { Modal } from "../shared";
 
 export default function AuthRequiredModal() {
   const { isOpen, redirectUrl, closeModal, onClose } =

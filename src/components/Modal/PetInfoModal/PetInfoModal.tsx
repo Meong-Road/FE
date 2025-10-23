@@ -4,14 +4,15 @@ import { toast } from "sonner";
 import { useDeletePet } from "@/hooks/queries/pets/useDeletePet";
 import { PATH } from "@/lib/constants/path";
 
-import Dog from "../../assets/images/dog.svg";
-import { Form } from "../Form";
+import Dog from "../../../assets/images/dog.svg";
+import { Form } from "../../Form";
+import { Modal } from "../shared";
 
-import { usePetInfoModal } from "./_hooks/usePetInfoModal";
-import { usePetInfoSubmit } from "./_hooks/usePetInfoSubmit";
-import { useSkipPetInfo } from "./_hooks/useSkipPetInfo";
+import { usePetInfoModal } from "./hooks/usePetInfoModal";
+import { usePetInfoSubmit } from "./hooks/usePetInfoSubmit";
+import { useSkipPetInfo } from "./hooks/useSkipPetInfo";
 import { PetInfoModalProps } from "./types/petInfoModal";
-import { Modal } from ".";
+import { PetInfoDeleteButton, PetInfoSkipButton } from "./_components";
 
 interface RadioOption {
   id: string;
@@ -40,7 +41,7 @@ export default function PetInfoModal({
     isPending: isPetPending,
     hasChanges,
   } = usePetInfoModal({ type, petId });
-  const image = form.watch("image");
+  const currentImage = form.watch("image");
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({
     type,
@@ -105,9 +106,9 @@ export default function PetInfoModal({
                     id="pet-image-upload"
                     onChange={field.onChange}
                     value={field.value as File | null}
-                    existingImageUrl={image as string}
+                    existingImageUrl={currentImage as string}
                   >
-                    <Dog className="w-20" />
+                    <Dog />
                   </Form.ImageUpload>
                 </Form.Control>
                 <Form.Label className="flex justify-center">
@@ -224,23 +225,9 @@ export default function PetInfoModal({
         </Form>
 
         {type === "first-login" ? (
-          <button
-            className="mt-2 border-b-2"
-            type="button"
-            onClick={handleSkip}
-            disabled={isSkipping}
-          >
-            {isSkipping ? "건너 뛰는 중..." : "아직 반려견이 없어요"}
-          </button>
+          <PetInfoSkipButton onClick={handleSkip} disabled={isSkipping} />
         ) : type === "edit-pet" ? (
-          <button
-            className="mt-2 border-b-2"
-            type="button"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "등록 해제 중..." : "등록 해제하기"}
-          </button>
+          <PetInfoDeleteButton onClick={handleDelete} disabled={isDeleting} />
         ) : null}
       </Modal.Content>
     </Modal>

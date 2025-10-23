@@ -1,12 +1,14 @@
 import { ProfileCardInfoProps } from "./types";
 
-export function ProfileCardInfo({ label, value }: ProfileCardInfoProps) {
+export function ProfileCardInfo({ name, email }: ProfileCardInfoProps) {
   return (
-    <div className="mb-1 flex items-center gap-6">
-      <dt className="w-11 shrink-0 text-sm font-semibold text-gray-800">
-        {label}
-      </dt>
-      <dd className="text-sm text-gray-700">{value}</dd>
+    <div className="flex items-center gap-2">
+      <span className="text-muted-foreground line-clamp-1 text-sm font-light">
+        E-mail.
+      </span>
+      <span className="line-clamp-1 text-sm font-light text-zinc-600">
+        {email}
+      </span>
     </div>
   );
 }

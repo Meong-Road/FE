@@ -19,7 +19,8 @@ export default function ImageWithFallback({
       {src && !imageError ? (
         <NextImage
           src={src}
-          fill
+          width={props.width}
+          height={props.height}
           onError={() => setImageError(true)}
           {...props}
         />

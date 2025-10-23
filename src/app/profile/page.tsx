@@ -1,10 +1,12 @@
 "use client";
 
+import { UserInfoModal } from "@/components/Modal";
 import { Tab } from "@/components/Tab";
 import { useAuth } from "@/hooks/auth";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
 import { UserType } from "@/lib/types/user";
+import { useUserInfoModalStore } from "@/store/modalStore";
 
 import CreatedSection from "./_components/CreatedSection";
 import JoinedSection from "./_components/JoinedSection";
@@ -13,23 +15,22 @@ import { ProfileCard } from "./_components/ProfileCard";
 import ReviewSection from "./_components/ReviewSection";
 
 const ProfileHeader = () => (
-  <h2 className="mb-4 text-center text-[32px] font-semibold">마이페이지</h2>
+  <h2 className="mb-4 text-left text-[32px] leading-none font-semibold select-none">
+    마이페이지
+  </h2>
 );
 
 const ProfileInfo = ({ user }: { user: UserType }) => (
   <ProfileCard>
-    <div className="mb-3 flex items-center justify-between">
+    <div className="mb-4 flex items-center justify-between">
       <ProfileCard.Header>내 프로필</ProfileCard.Header>
       <ProfileCard.EditBtn userId={user.id} />
     </div>
     <ProfileCard.Content>
       <ProfileCard.Image />
-      <div className="pt-4">
-        <ProfileCard.Name>{user.nickName || user.name}</ProfileCard.Name>
-        <dl>
-          <ProfileCard.Info label="ID" value={user.name} />
-          <ProfileCard.Info label="E-mail" value={user.email} />
-        </dl>
+      <div className="flex flex-1 flex-col justify-between">
+        <ProfileCard.NickName nickName={user.nickName || user.name} />
+        <ProfileCard.Info name={user.name} email={user.email} />
       </div>
     </ProfileCard.Content>
   </ProfileCard>
@@ -74,6 +75,7 @@ const TabContent = () => {
 
 export default function Profile() {
   const { user, isLoading } = useAuth();
+  const { isOpen, modalType, userId, closeModal } = useUserInfoModalStore();
 
   if (isLoading) return <div>Loading...</div>;
   if (!user) return <div>데이터가 없습니다.</div>;
@@ -86,6 +88,14 @@ export default function Profile() {
       <section className="mt-6">
         <TabContent />
       </section>
+
+      {isOpen && modalType && (
+        <UserInfoModal
+          type={modalType}
+          onClose={closeModal}
+          userId={userId || user.id}
+        />
+      )}
     </section>
   );
 }

@@ -1,5 +1,9 @@
 import { type ProfileCardHeaderProps } from "./types";
 
 export function ProfileCardHeader({ children }: ProfileCardHeaderProps) {
-  return <h3 className="text-lg font-semibold text-gray-900">{children}</h3>;
+  return (
+    <h3 className="text-[18px] font-semibold text-zinc-800 select-none">
+      {children}
+    </h3>
+  );
 }

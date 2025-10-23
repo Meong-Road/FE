@@ -1,6 +1,5 @@
-import Image from "next/image";
-
 import DogImg from "@/assets/images/dog.svg";
+import ImageWithFallback from "@/components/common/ImageWithFallback";
 
 interface PetCardImageProps {
   src: string;
@@ -21,17 +20,14 @@ export function PetCardImage({
         className={`bg-background relative flex items-center justify-center overflow-hidden rounded-full border-1 ${className || ""}`}
         style={{ height: size, width: size }}
       >
-        {src ? (
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover"
-            sizes={`${size}px`}
-          />
-        ) : (
-          <DogImg className="object-cover" />
-        )}
+        <ImageWithFallback
+          src={src}
+          alt={alt}
+          width={size}
+          height={size}
+          className="object-cover"
+          renderFallback={() => <DogImg width={size} height={size} />}
+        />
       </div>
     </div>
   );

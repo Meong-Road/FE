@@ -24,7 +24,6 @@ interface GatheringCardInfoProps {
   className?: string;
   location: GatheringType["location"];
   date?: string;
-  time?: string;
   days?: string;
 }
 
@@ -32,7 +31,6 @@ export function GatheringCardInfo({
   className,
   location,
   date,
-  time,
   days,
 }: GatheringCardInfoProps) {
   return (
@@ -56,15 +54,6 @@ export function GatheringCardInfo({
           <TextWrapper>
             <Title>요일</Title>
             <Content>{formatDays(days)}</Content>
-          </TextWrapper>
-        </>
-      )}
-      {time && (
-        <>
-          <Bar />
-          <TextWrapper>
-            <Title>시간</Title>
-            <Content>{time}</Content>
           </TextWrapper>
         </>
       )}

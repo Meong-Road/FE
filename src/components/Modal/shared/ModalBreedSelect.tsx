@@ -1,28 +1,28 @@
 import React from "react";
 
-import { years } from "../../lib/constants/brtihdayDate";
-import { Form } from "../Form";
+import { dogBreeds } from "../../../lib/constants/dogBreed";
+import { Form } from "../../Form";
 
-interface ModalDateSelectProps {
+interface ModalBreedSelectProps {
   name: string;
   htmlFor?: string;
-  value?: number;
+  value?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export function ModalDateSelect({
+export function ModalBreedSelect({
   name,
   htmlFor,
   value,
   onChange,
-}: ModalDateSelectProps) {
+}: ModalBreedSelectProps) {
   return (
     <div className="flex w-full flex-col">
       <Form.Select
         id={htmlFor}
+        placeholder="견종을 선택해주세요"
         name={name}
-        placeholder="연도"
-        options={years}
+        options={dogBreeds}
         value={value}
         onChange={onChange}
         className="bg-accent flex-1 rounded-lg px-4 py-2.5"

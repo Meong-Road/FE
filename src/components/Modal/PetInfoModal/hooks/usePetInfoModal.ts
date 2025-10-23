@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 
-import type { PetInfoModalProps } from "@/components/Modal/types/petInfoModal";
+import type { PetInfoModalProps } from "@/components/Modal/PetInfoModal/types/petInfoModal";
 import { useGetPet } from "@/hooks/queries/pets";
 import { hasPetFormChanges, transformPetToFormData } from "@/lib/utils/pet";
 

@@ -72,3 +72,11 @@ export const useAuthRequiredModalStore = create<AuthRequiredModalStoreProps>(
     closeModal: () => set({ isOpen: false, redirectUrl: "" }),
   }),
 );
+
+// 모든 모달을 닫는 통합 함수
+export const closeAllModals = () => {
+  usePetInfoModalStore.getState().closeModal();
+  useUserInfoModalStore.getState().closeModal();
+  useReviewInfoModalStore.getState().closeModal();
+  useAuthRequiredModalStore.getState().closeModal();
+};

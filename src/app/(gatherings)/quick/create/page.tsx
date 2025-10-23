@@ -1,8 +1,11 @@
 "use client";
 
 import CreateGatheringForm from "@/components/CreateGatheringForm/CreateGatheringForm";
-import { QuickGatheringFormSchema } from "@/hooks/gathering/useQuickGatheringForm";
-import { RegularGatheringFormSchema } from "@/hooks/gathering/useRegularGatheringForm";
+import {
+  QuickGatheringFormSchema,
+  RegularGatheringFormSchema,
+} from "@/hooks/gathering/schemas";
+import { isQuickGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function QuickCreatePage() {
   const handleCancel = () => {
@@ -11,9 +14,9 @@ export default function QuickCreatePage() {
   const handleSubmit = (
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
-    // TODO: 생성 API 추가
-    if ("dateTime" in data) {
-      console.log("폼 제출하기 : ", data);
+    //  data가 quick일 때만 제출하도록 타입 가드
+    if (isQuickGatheringForm(data)) {
+      // TODO: 생성 API 추가
     }
   };
 

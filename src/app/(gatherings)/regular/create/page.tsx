@@ -1,7 +1,10 @@
 "use client";
 import CreateGatheringForm from "@/components/CreateGatheringForm/CreateGatheringForm";
-import { QuickGatheringFormSchema } from "@/hooks/gathering/useQuickGatheringForm";
-import { RegularGatheringFormSchema } from "@/hooks/gathering/useRegularGatheringForm";
+import {
+  QuickGatheringFormSchema,
+  RegularGatheringFormSchema,
+} from "@/hooks/gathering/schemas";
+import { isRegularGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function RegularCreatePage() {
   const handleCancle = () => {
@@ -10,9 +13,9 @@ export default function RegularCreatePage() {
   const handleSubmit = (
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
-    // TODO: 생성 API 추가
-    if ("days" in data) {
-      console.log("폼 제출하기 : ", data);
+    // data가 regular일 때만 제출하도록 타입 가드
+    if (isRegularGatheringForm(data)) {
+      // TODO: 생성 API 추가
     }
   };
 

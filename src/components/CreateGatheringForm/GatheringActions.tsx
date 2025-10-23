@@ -1,8 +1,10 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 
-import { QuickGatheringFormSchema } from "@/hooks/gathering/useQuickGatheringForm";
-import { RegularGatheringFormSchema } from "@/hooks/gathering/useRegularGatheringForm";
+import {
+  QuickGatheringFormSchema,
+  RegularGatheringFormSchema,
+} from "@/hooks/gathering/schemas";
 import { cn } from "@/lib/utils";
 
 import { Form } from "../Form";
@@ -36,7 +38,7 @@ export default function GatheringActions({
       <Form.SubmitButton
         label="정기 모임 만들기"
         className="mt-0 flex-1"
-        disabled={!form.formState.isValid} // TODO : 부모에게 전달 받아야 함
+        disabled={!form.formState.isValid}
       >
         정기 모임 만들기
       </Form.SubmitButton>

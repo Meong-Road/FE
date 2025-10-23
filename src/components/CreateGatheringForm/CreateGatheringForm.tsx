@@ -3,12 +3,10 @@ import { UseFormReturn } from "react-hook-form";
 
 import {
   QuickGatheringFormSchema,
-  useQuickGatheringForm,
-} from "@/hooks/gathering/useQuickGatheringForm";
-import {
   RegularGatheringFormSchema,
-  useRegularGatheringForm,
-} from "@/hooks/gathering/useRegularGatheringForm";
+} from "@/hooks/gathering/schemas";
+import { useQuickGatheringForm } from "@/hooks/gathering/useQuickGatheringForm";
+import { useRegularGatheringForm } from "@/hooks/gathering/useRegularGatheringForm";
 
 import { Form } from "../Form";
 
@@ -17,12 +15,14 @@ import GatheringBasicInfo from "./GatheringBasicInfo";
 import GatheringDetails from "./GatheringDetails";
 import GatheringLocation from "./GatheringLocation";
 
+type GatheringFormSchema =
+  | QuickGatheringFormSchema
+  | RegularGatheringFormSchema;
+
 interface CreateGatheringFormProps {
   type: "quick" | "regular";
   onCancel: () => void;
-  onSubmit: (
-    data: QuickGatheringFormSchema | RegularGatheringFormSchema,
-  ) => void;
+  onSubmit: (data: GatheringFormSchema) => void;
 }
 
 export default function CreateGatheringForm({
@@ -37,11 +37,7 @@ export default function CreateGatheringForm({
 
   return (
     <Form
-      form={
-        form as UseFormReturn<
-          QuickGatheringFormSchema | RegularGatheringFormSchema
-        >
-      }
+      form={form as UseFormReturn<GatheringFormSchema>}
       onSubmit={onSubmit}
       className="bg-transparent !p-0"
     >
@@ -51,11 +47,7 @@ export default function CreateGatheringForm({
         <GatheringDetails type={type} />
         <GatheringActions
           onCancel={onCancel}
-          form={
-            form as UseFormReturn<
-              QuickGatheringFormSchema | RegularGatheringFormSchema
-            >
-          }
+          form={form as UseFormReturn<GatheringFormSchema>}
         />
       </div>
     </Form>

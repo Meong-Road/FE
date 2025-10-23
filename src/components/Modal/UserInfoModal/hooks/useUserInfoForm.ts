@@ -8,18 +8,20 @@ const UserInfoFormSchema = z
     nickName: z
       .string()
       .trim()
-      .min(1, "닉네임을 입력해주세요.")
-      .max(20, "닉네임은 20자 이하로 입력해주세요."),
+      .min(2, "닉네임을 2자 이상 입력해주세요.")
+      .max(8, "닉네임은 8자 이하로 입력해주세요.")
+      .regex(
+        /^[가-힣a-zA-Z0-9]+$/,
+        "초성, 특수문자, 공백은 사용할 수 없습니다.",
+      ),
     nickNameCheckPassed: z.boolean(),
     isPetInfoSubmitted: z.boolean().optional(),
     initialNickName: z.string().optional(), // 초기 닉네임 추적용
   })
   .refine(
     (data) => {
-      // 닉네임이 변경되지 않았으면 중복체크 불필요
-      if (data.nickName === data.initialNickName) {
-        return true;
-      }
+      // 닉네임이 초기값과 같으면 중복체크 불필요
+      if (data.nickName === data.initialNickName) return true;
       // 닉네임이 변경되었으면 중복체크 필수
       return data.nickNameCheckPassed === true;
     },
@@ -45,9 +47,7 @@ export function useUserInfoForm(initialValues?: Partial<UserInfoFormSchema>) {
 
   return useForm<UserInfoFormSchema>({
     resolver: zodResolver(UserInfoFormSchema),
-    defaultValues: initialValues
-      ? { ...defaultValues, ...initialValues }
-      : defaultValues,
+    defaultValues: { ...defaultValues, ...initialValues },
     mode: "onChange",
   });
 }

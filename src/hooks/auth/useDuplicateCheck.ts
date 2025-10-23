@@ -133,8 +133,7 @@ export function useDuplicateCheck<T extends FieldValues>(
     currentValue,
     lastChecked,
     initialValue,
-    form.formState.errors,
-    field,
+    form.formState.errors[field],
   ]);
 
   return {

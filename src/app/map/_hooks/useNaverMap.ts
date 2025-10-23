@@ -11,7 +11,7 @@ import {
 } from "../_services/map.service";
 import { NaverMap, NaverMarker } from "../_types/geocodings";
 
-export function useNaverMap(lat: number | null, lon: number | null) {
+export function useNaverMap(lat: number, lon: number) {
   const boxRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<NaverMap | null>(null);
   const markerRef = useRef<NaverMarker | null>(null);
@@ -19,7 +19,7 @@ export function useNaverMap(lat: number | null, lon: number | null) {
   useEffect(() => {
     if (!boxRef.current) return;
 
-    mapRef.current = createMapInstance(boxRef.current);
+    mapRef.current = createMapInstance(boxRef.current, { lat, lon });
 
     setupMapClickHandler(mapRef.current, async (lat, lon, rawCoord) => {
       if (!markerRef.current) {

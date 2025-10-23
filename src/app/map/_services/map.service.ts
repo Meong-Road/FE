@@ -1,11 +1,22 @@
 import { Coord, NaverMap, NaverMarker } from "../_types/geocodings";
 
-export function createMapInstance(container: HTMLElement): NaverMap {
+declare global {
+  interface Window {
+    naver?: {
+      maps: import("@/app/map/_types/geocodings").NaverMapNS;
+    };
+  }
+}
+
+export function createMapInstance(
+  container: HTMLElement,
+  center: { lat: number; lon: number },
+): NaverMap {
   const naver = window.naver;
   if (!naver) throw new Error("Naver Map script is not loaded yet.");
 
   return new naver.maps.Map(container, {
-    center: new naver.maps.LatLng(37.5666805, 126.9784147),
+    center: new naver.maps.LatLng(center.lat, center.lon),
     zoom: 16,
   });
 }

@@ -5,7 +5,7 @@ import { GeocodedAddressType } from "@/app/map/_types/geocodings";
 
 type Props = { onPick: (item: GeocodedAddressType) => void };
 
-export default function AddrSearchBar({ onPick }: Props) {
+export function AddrSearchBar({ onPick }: Props) {
   const { inputAddr, setInputAddr, loading, search } = useAddrSearch(onPick);
 
   return (

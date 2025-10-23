@@ -3,8 +3,8 @@
 import { useNaverMap } from "@/app/map/_hooks/useNaverMap";
 
 type Props = {
-  lat: number | null;
-  lon: number | null;
+  lat: number;
+  lon: number;
 };
 
 export function MapView({ lat, lon }: Props) {

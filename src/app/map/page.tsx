@@ -3,19 +3,21 @@
 
 import { useState } from "react";
 
-import AddrSearchBar from "@/app/map/_components/AddrSearchBar";
+import { AddrSearchBar } from "@/app/map/_components/AddrSearchBar";
 import { MapView } from "@/app/map/_components/MapView";
 
+const DEFAULT_COORD = {
+  lat: 37.5666805,
+  lon: 126.9784147,
+};
+
 export default function MapTestPage() {
-  const [pos, setPos] = useState<{ lat: number | null; lon: number | null }>({
-    lat: null,
-    lon: null,
-  });
+  const [pos, setPos] = useState<{ lat: number; lon: number }>(DEFAULT_COORD);
   return (
     <>
       <AddrSearchBar
-        onPick={(item) => {
-          setPos({ lat: item.lat, lon: item.lon });
+        onPick={(addr) => {
+          setPos({ lat: addr.lat, lon: addr.lon });
         }}
       />
       <div className="mt-6">

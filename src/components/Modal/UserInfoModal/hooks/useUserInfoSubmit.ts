@@ -24,8 +24,7 @@ export function useUserInfoSubmit({
   ) => {
     try {
       // 1. userFormData 준비
-      const userFormData: UserInfoFormSchema = {
-        name: values.name!,
+      const userFormData: Partial<UserInfoFormSchema> = {
         nickName: values.nickName!,
         image: null,
         isPetInfoSubmitted: values.isPetInfoSubmitted ?? false,
@@ -50,39 +49,32 @@ export function useUserInfoSubmit({
 
       // 3. userPayload 준비
       const userPayload: PutUserReq = {
-        name: userFormData.name,
         nickName: userFormData.nickName,
         isPetInfoSubmitted: userFormData.isPetInfoSubmitted,
       };
 
       // 4. edit-user인 경우 업데이트 요청
       if (type === "edit-user" && userId) {
-        await updateUserMutation.mutateAsync(userPayload, {
-          onSuccess: () => {
-            toast.success("프로필이 성공적으로 수정되었습니다.");
-          },
-          onError: (error: Error) => {
-            toast.error(`프로필 수정에 실패했어요: ${error.message}`);
-          },
-        });
+        try {
+          await updateUserMutation.mutateAsync(userPayload);
 
-        // 이미지가 변경되었을 때만 이미지 URL 업데이트
-        // (새 파일 업로드했거나, 기존 이미지를 지웠거나, 다른 이미지 URL로 변경했을 때)
-        if (
-          values.image instanceof File ||
-          values.image === null ||
-          (typeof values.image === "string" && values.image !== "")
-        ) {
-          await updateImageURLMutation.mutateAsync(
-            imageUrl === null ? "" : imageUrl || "",
-            {
-              onError: (error: Error) => {
-                toast.error(
-                  `프로필 이미지 업데이트에 실패했어요: ${error.message}`,
-                );
-              },
-            },
-          );
+          // 이미지가 변경되었을 때만 이미지 URL 업데이트
+          // (새 파일 업로드했거나, 기존 이미지를 지웠거나, 다른 이미지 URL로 변경했을 때)
+          if (
+            values.image instanceof File ||
+            values.image === null ||
+            (typeof values.image === "string" && values.image !== "")
+          ) {
+            await updateImageURLMutation.mutateAsync(
+              imageUrl === null ? "" : imageUrl || "",
+            );
+          }
+
+          toast.success("프로필이 성공적으로 수정되었습니다.");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : "알 수 없는 오류";
+          toast.error(`프로필 수정에 실패했어요: ${errorMessage}`);
         }
       } else {
         throw new Error("Invalid operation");

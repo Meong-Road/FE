@@ -41,11 +41,7 @@ const PetAddCardItem = () => {
     <PetAddCard>
       <PetAddCard.Icon />
       <PetAddCard.Title>반려견 추가</PetAddCard.Title>
-      <PetAddCard.Description>
-        새로운 반려견 정보를
-        <br />
-        등록해보세요
-      </PetAddCard.Description>
+      <PetAddCard.Description>새 반려견을 추가해보세요</PetAddCard.Description>
     </PetAddCard>
   );
 };

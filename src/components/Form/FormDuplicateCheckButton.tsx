@@ -14,6 +14,7 @@ interface DuplicateCheckButtonProps<T extends FieldValues> {
   errorMessage?: string;
   successMessage?: string;
   className?: string;
+  initialValue?: string;
 }
 
 export function DuplicateCheckButton<T extends FieldValues>({
@@ -23,6 +24,7 @@ export function DuplicateCheckButton<T extends FieldValues>({
   checkPassedField,
   errorMessage,
   className,
+  initialValue,
 }: DuplicateCheckButtonProps<T>) {
   const { checkDuplicate, isChecking, isButtonDisabled, isAvailable } =
     useDuplicateCheck<T>(type, {
@@ -30,6 +32,7 @@ export function DuplicateCheckButton<T extends FieldValues>({
       field,
       checkPassedField,
       errorMessage,
+      initialValue,
     });
 
   const hasError = !!form.formState.errors[field];

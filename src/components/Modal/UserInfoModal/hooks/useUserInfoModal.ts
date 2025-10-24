@@ -23,6 +23,8 @@ export function useUserInfoModal({
       nickName: userData.nickName || "",
       image: userData.image || null,
       isPetInfoSubmitted: userData.isPetInfoSubmitted || false,
+      initialNickName: userData.nickName || "", // 초기 닉네임 저장
+      nickNameCheckPassed: true, // 초기 닉네임은 이미 검증된 상태
     };
   }, [shouldFetchUser, userData]);
 
@@ -60,7 +62,6 @@ function hasUserFormChanges(
   initialData: UserInfoUpdateSchema,
 ): boolean {
   return (
-    currentValues.name !== initialData.name ||
     currentValues.nickName !== initialData.nickName ||
     currentValues.image !== initialData.image ||
     currentValues.isPetInfoSubmitted !== initialData.isPetInfoSubmitted

@@ -108,12 +108,12 @@ export default function PetInfoModal({
                     value={field.value as File | null}
                     existingImageUrl={currentImage as string}
                   >
-                    <Dog />
+                    <Dog width={150} height={150} />
                   </Form.ImageUpload>
                 </Form.Control>
-                <Form.Label className="flex justify-center">
-                  반려견 사진 등록
-                </Form.Label>
+                <span className="mt-4 flex justify-center text-base font-medium text-zinc-700">
+                  사진을 등록해주세요
+                </span>
               </Form.Item>
             )}
           />

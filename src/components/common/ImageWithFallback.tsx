@@ -22,6 +22,7 @@ export default function ImageWithFallback({
           width={props.width}
           height={props.height}
           onError={() => setImageError(true)}
+          className="object-cover"
           {...props}
         />
       ) : (

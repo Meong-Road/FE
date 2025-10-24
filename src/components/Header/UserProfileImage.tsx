@@ -1,6 +1,5 @@
-import Image from "next/image";
-
 import ProfileSvg from "@/assets/images/profile.svg";
+import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { UserType } from "@/lib/types/user";
 
 const UserProfileImage = ({
@@ -9,23 +8,17 @@ const UserProfileImage = ({
   userProfileImageURL: UserType["image"];
 }) => {
   return (
-    <>
-      {userProfileImageURL ? (
-        <Image
-          src={userProfileImageURL}
-          alt="profile"
-          width={42}
-          height={42}
-          className="cursor-pointer rounded-full border border-[#DDDDDD] focus:outline-none"
-        />
-      ) : (
-        <ProfileSvg
-          width={42}
-          height={42}
-          className="cursor-pointer rounded-full border border-[#DDDDDD] focus:outline-none"
-        />
-      )}
-    </>
+    <div className="relative size-[45px] overflow-hidden rounded-full border border-[#DDDDDD]">
+      <ImageWithFallback
+        src={userProfileImageURL}
+        alt="profile"
+        width={45}
+        height={45}
+        sizes="45px"
+        className="rounded-full focus:outline-none"
+        renderFallback={() => <ProfileSvg width={45} height={45} />}
+      />
+    </div>
   );
 };
 

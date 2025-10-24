@@ -13,7 +13,7 @@ interface Props {
 export default function KakaoMap({ input }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
 
-  useKakaoMap({ mapRef, input });
+  const { resetMap } = useKakaoMap({ mapRef, input });
 
   return (
     <div className="relative">
@@ -26,6 +26,7 @@ export default function KakaoMap({ input }: Props) {
       <button
         type="button"
         className="absolute bottom-5 left-6 z-1 rounded-full shadow"
+        onClick={resetMap}
       >
         <ResetLocationIcon />
       </button>

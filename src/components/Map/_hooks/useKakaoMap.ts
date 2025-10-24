@@ -65,6 +65,13 @@ export default function useKakaoMap({ mapRef, input }: Props) {
     }
   };
 
+  const resetMap = () => {
+    if (!mapRef.current) return;
+
+    clearMarkers();
+    map.current = kakaoMapService.resetMap(mapRef.current, onMapClick);
+  };
+
   /**
    * 초기 지도 및 서비스 오브젝트 생성, 지도 클릭 이벤트 등록
    */
@@ -91,4 +98,8 @@ export default function useKakaoMap({ mapRef, input }: Props) {
       }
     });
   }, [input]);
+
+  return {
+    resetMap,
+  };
 }

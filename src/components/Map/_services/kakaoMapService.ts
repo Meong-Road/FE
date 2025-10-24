@@ -76,4 +76,13 @@ export const kakaoMapService = {
       callback(event.latLng);
     });
   },
+
+  resetMap(
+    container: HTMLDivElement,
+    onMapClick: (latlng: kakao.maps.LatLng) => void,
+  ) {
+    const map = this.createMap(container);
+    this.bindMapClick(map, onMapClick);
+    return map;
+  },
 };

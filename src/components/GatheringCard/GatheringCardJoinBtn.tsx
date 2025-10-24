@@ -153,7 +153,7 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
   if (isJoinDisabled || isCancelDisabled)
     return (
       <Tooltip>
-        <TooltipTrigger>{button}</TooltipTrigger>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent>
           {GATHERING_STATE_MESSAGE[state]}은 {MESSAGE[mode]}할 수 없어요
         </TooltipContent>

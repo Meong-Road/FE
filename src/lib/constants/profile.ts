@@ -11,11 +11,11 @@ export const PROFILE_TABS = {
     value: "created",
   },
   REVIEWS: {
-    label: "리뷰 관리",
+    label: "내 리뷰",
     value: "reviews",
   },
   PETS: {
-    label: "반려견",
+    label: "반려견 정보",
     value: "pets",
   },
 } as const;

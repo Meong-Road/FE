@@ -11,6 +11,7 @@ export function ReviewInfoDeleteButton({
 }: ReviewInfoDeleteButtonProps) {
   return (
     <Button
+      type="button"
       className="text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500 disabled:cursor-not-allowed disabled:bg-gray-300"
       variant="ghost"
       size="sm"

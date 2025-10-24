@@ -15,7 +15,7 @@ export const PROFILE_TABS = {
     value: "reviews",
   },
   PETS: {
-    label: "반려견 정보",
+    label: "반려견",
     value: "pets",
   },
 } as const;

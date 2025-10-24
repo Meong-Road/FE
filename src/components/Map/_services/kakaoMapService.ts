@@ -25,7 +25,17 @@ export const kakaoMapService = {
    * @returns 마커 인스턴스
    */
   createMarker(map: kakao.maps.Map, position: kakao.maps.LatLng) {
-    return new window.kakao.maps.Marker({ map, position });
+    const imageSrc = "/map-marker.svg"; // public 폴더 안에 있어야 한다고 합니다
+    const imageSize = new kakao.maps.Size(24, 24);
+    const imageOption = { offset: new kakao.maps.Point(12, 24) };
+
+    const markerImage = new kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption,
+    );
+
+    return new window.kakao.maps.Marker({ map, position, image: markerImage });
   },
 
   /**

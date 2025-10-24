@@ -28,8 +28,24 @@ declare global {
         setBounds(bounds: LatLngBounds): void;
       }
 
+      class Size {
+        constructor(width: number, height: number);
+      }
+
+      class Point {
+        constructor(x: number, y: number);
+      }
+
+      class MarkerImage {
+        constructor(src: string, size: Size, options?: object);
+      }
+
       class Marker {
-        constructor(options: { map: Map; position: LatLng });
+        constructor(options: {
+          map: Map;
+          position: LatLng;
+          image?: MarkerImage;
+        });
         setMap(map: Map | null): void;
       }
 

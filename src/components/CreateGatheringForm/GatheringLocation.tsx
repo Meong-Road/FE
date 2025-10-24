@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import AddrSearchBar from "@/app/map/_components/AddrSearchBar";
-import KakaoMap from "@/app/map/_components/KakaoMap";
+import AddrSearchBar from "@/components/Map/_components/AddrSearchBar";
+import KakaoMap from "@/components/Map/_components/KakaoMap";
 
 export default function GatheringLocation() {
   const [input, setInput] = useState("");

@@ -2,15 +2,7 @@ import { ElementType } from "react";
 
 import { GatheringCard } from "@/components/GatheringCard";
 import { GatheringCardReviewBtn } from "@/components/GatheringCard/GatheringCardReviewBtn";
-import { useAuth } from "@/hooks";
-import { useGetMyPets } from "@/hooks/queries/pets";
-import { useGetReviewCheck } from "@/hooks/queries/reviews";
-import {
-  EGatheringState,
-  EGatheringType,
-  GatheringType,
-} from "@/lib/types/gatherings";
-import { getGatheringState } from "@/lib/utils/gathering";
+import { GatheringType } from "@/lib/types/gatherings";
 
 interface WritableGatheringCardItemProps {
   gathering: GatheringType & { joinedAt: string };
@@ -21,21 +13,6 @@ export default function WritableGatheringCardItem({
   gathering,
   as = "div",
 }: WritableGatheringCardItemProps) {
-  const { user } = useAuth();
-
-  // getGatheringState의 필수 인자이므로.. 필요없지만 가져옴
-  const { data: pets } = useGetMyPets({ enabled: !!user });
-  const hasPet = pets && pets.length > 0;
-  const state = getGatheringState(gathering, !!user, !!hasPet);
-
-  const { data: hasReview } = useGetReviewCheck(gathering.id);
-
-  // REGULAR 모임이 아니면 표시 안 함
-  if (gathering.type !== EGatheringType.REGULAR) return null;
-  // FIXED_GATHERING 상태이고 리뷰를 작성하지 않은 경우에만 표시
-  if (state !== EGatheringState.FIXED_GATHERING) return null;
-  if (hasReview === true) return null;
-
   return (
     <GatheringCard gathering={gathering} as={as}>
       <div className="flex h-full flex-row items-center gap-6">

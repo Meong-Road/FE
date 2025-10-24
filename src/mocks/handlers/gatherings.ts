@@ -12,6 +12,7 @@ import {
   QUICK_GATHERINGS,
   REGULAR_GATHERINGS,
 } from "../data/gatherings";
+import { mockCurrentUser } from "../data/users";
 
 export const gatheringsHandlers = [
   //================= 모임 목록 조회 ================================
@@ -265,10 +266,22 @@ export const gatheringsHandlers = [
     const size = url.searchParams.get("size");
     // TODO const sort = url.searchParams.get("sort");
 
+    const participants = gathering.isParticipating
+      ? [
+          {
+            userId: mockCurrentUser.id,
+            gatheringId: gathering.id,
+            joinedAt: new Date().toISOString(),
+            user: mockCurrentUser,
+          },
+          ...PARTICIPANTS(gathering.id),
+        ]
+      : PARTICIPANTS(gathering.id);
+
     return HttpResponse.json(
-      createPaginatedRes(PARTICIPANTS(gathering.id), {
+      createPaginatedRes(participants, {
         page: Number(page),
-        size: Number(size),
+        size: gathering.participantCount,
       }),
     );
   }),

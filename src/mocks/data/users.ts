@@ -9,7 +9,7 @@ export const mockCurrentUser: UserType = {
   name: "멍로드",
   nickName: "멍로드",
   image:
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
   isPetInfoSubmitted: true,
   createdAt: "2025-08-10T08:11:47.301Z",
   updatedAt: "2025-09-10T08:11:47.301Z",

@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function KakaoMap({ input }: Props) {
-  const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
 
   useKakaoMap({ mapRef, input });
 

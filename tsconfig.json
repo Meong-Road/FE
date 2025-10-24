@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "svgr.d.ts"
+    "svgr.d.ts",
+    "lib/types/kakao.d.ts"
   ],
   "exclude": ["node_modules"]
 }

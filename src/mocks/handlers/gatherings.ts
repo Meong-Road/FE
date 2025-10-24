@@ -12,6 +12,7 @@ import {
   QUICK_GATHERINGS,
   REGULAR_GATHERINGS,
 } from "../data/gatherings";
+import { mockCurrentUser } from "../data/users";
 
 export const gatheringsHandlers = [
   //================= 모임 목록 조회 ================================
@@ -157,7 +158,17 @@ export const gatheringsHandlers = [
         errorCode: "ALREADY_JOINED",
       });
 
+    if (gathering.hostId === Number(mockCurrentUser.id))
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "주최자는 참여할 수 없습니다",
+        result: null,
+        errorCode: "HOST_CANNOT_JOIN",
+      });
+
     gathering.isParticipating = true;
+    gathering.participantCount += 1;
 
     return HttpResponse.json({
       success: true,
@@ -193,7 +204,17 @@ export const gatheringsHandlers = [
         errorCode: "NOT_JOINED",
       });
 
+    if (gathering.hostId === Number(mockCurrentUser.id))
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "주최자는 참여 취소할 수 없습니다",
+        result: null,
+        errorCode: "HOST_CANNOT_LEAVE",
+      });
+
     gathering.isParticipating = false;
+    gathering.participantCount -= 1;
 
     return HttpResponse.json({
       success: true,
@@ -263,8 +284,20 @@ export const gatheringsHandlers = [
     const size = url.searchParams.get("size");
     // TODO const sort = url.searchParams.get("sort");
 
+    const participants = gathering.isParticipating
+      ? [
+          {
+            userId: mockCurrentUser.id,
+            gatheringId: gathering.id,
+            joinedAt: new Date().toISOString(),
+            user: mockCurrentUser,
+          },
+          ...PARTICIPANTS(gathering.id),
+        ]
+      : PARTICIPANTS(gathering.id);
+
     return HttpResponse.json(
-      createPaginatedRes(PARTICIPANTS(gathering.id), {
+      createPaginatedRes(participants, {
         page: Number(page),
         size: Number(size),
       }),

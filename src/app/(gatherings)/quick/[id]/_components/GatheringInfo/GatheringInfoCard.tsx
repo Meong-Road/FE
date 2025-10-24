@@ -13,6 +13,7 @@ export default function GatheringInfoCard({
   gathering,
 }: GatheringInfoCardProps) {
   const { data: participants } = useGet4Participants({ id: gathering.id });
+
   return (
     <GatheringCard
       className="flex-grow border border-[#ddd] px-10"
@@ -38,8 +39,8 @@ export default function GatheringInfoCard({
           <div className="font-semibold">
             참여자 {gathering.participantCount}명
           </div>
-          <div className="flex space-x-[-10px]">
-            {participants?.map((participant) => (
+          <div className="flex h-7 space-x-[-10px]">
+            {participants?.reverse().map((participant) => (
               <ParticipantImage
                 key={participant.id}
                 participant={participant}

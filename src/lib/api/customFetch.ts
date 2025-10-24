@@ -1,7 +1,7 @@
 ﻿// Custom Fetch API - 통합 HTTP 클라이언트
 
 import { BASE_URL, PREFIX } from "@/lib/constants/endpoints";
-import { tokenStorage } from "@/lib/utils/token";
+import { tokenStorage } from "@/lib/utils/storage";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 

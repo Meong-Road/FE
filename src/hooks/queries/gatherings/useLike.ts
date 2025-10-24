@@ -5,6 +5,8 @@ import { PostLikeReq } from "@/api/types/gatherings";
 
 import { QUERY_KEYS } from "../queryKey";
 
+import { EType } from "./queryKey";
+
 export function useLike({ id }: PostLikeReq) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -13,10 +15,10 @@ export function useLike({ id }: PostLikeReq) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.gatherings.like({ id }),
+        queryKey: QUERY_KEYS.gatherings.bookmark({ id }),
       });
       queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEYS.gatherings.all(), "bookmarked"],
+        queryKey: [...QUERY_KEYS.gatherings.lists(), EType.BOOKMARKED],
       });
     },
   });

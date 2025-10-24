@@ -1,13 +1,14 @@
 import React from "react";
 
 import { PET_REQUIRED_OPTIONS } from "@/lib/constants/petRequired";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 import { Form } from "../Form";
 
 import GatheringDateTimeField from "./GatheringDateTimeField";
 
 interface GatheringDetailsProps {
-  type: "quick" | "regular";
+  type: EGatheringType;
 }
 
 export default function GatheringDetails({ type }: GatheringDetailsProps) {

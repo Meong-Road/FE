@@ -1,12 +1,8 @@
-import Link from "next/link";
-
-import { buttonVariants } from "@/components/ui/button";
 import FilterPopover from "@/components/widget/filters/FilterPopover";
 import { LocationSelect } from "@/components/widget/filters/LocationSelect";
 import SortBySelector from "@/components/widget/filters/SortBySelector";
-import { PATH } from "@/lib/constants/path";
+import { CreateGatheringButton } from "@/components/widget/gatherings/CreateGatheringButton/CreateGatheringButton";
 import { EGatheringType } from "@/lib/types/gatherings";
-import { cn } from "@/lib/utils";
 
 import QuickGatheringCardList from "./_components/QuickGatheringCardList";
 
@@ -23,12 +19,7 @@ export default function QuickGatheringListPage() {
           </div>
 
           {/* 모임 만들기 버튼 */}
-          <Link
-            href={PATH.QUICK_CREATE}
-            className={cn(buttonVariants({ size: "xl" }))}
-          >
-            + 모임 만들기
-          </Link>
+          <CreateGatheringButton type="quick" />
         </div>
 
         {/* 모임 목록 */}

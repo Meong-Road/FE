@@ -13,10 +13,13 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   return (
     <div
-      className={cn("relative h-1 w-full rounded-full bg-[#eaeaea]", className)}
+      className={cn(
+        "relative h-1.5 w-full rounded-full bg-[#eaeaea]",
+        className,
+      )}
     >
       <div
-        className="from-secondary to-primary absolute h-full rounded-full bg-gradient-to-r"
+        className="from-secondary to-primary absolute h-full rounded-full bg-gradient-to-r transition-[width] duration-200"
         style={{ width: `${percentage}%` }}
       ></div>
       {max && (

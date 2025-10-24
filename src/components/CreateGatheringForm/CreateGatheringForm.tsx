@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import {
   QuickGatheringFormSchema,
   RegularGatheringFormSchema,
 } from "@/hooks/gathering/schemas";
+import { useGatheringAutoSave } from "@/hooks/gathering/useGatheringAutoSave";
 import { useQuickGatheringForm } from "@/hooks/gathering/useQuickGatheringForm";
 import { useRegularGatheringForm } from "@/hooks/gathering/useRegularGatheringForm";
 import { EGatheringType } from "@/lib/types/gatherings";
@@ -34,7 +35,15 @@ export default function CreateGatheringForm({
   const quickForm = useQuickGatheringForm();
   const regularForm = useRegularGatheringForm();
 
-  const form = type === EGatheringType.QUICK ? quickForm : regularForm;
+  const form = useMemo(() => {
+    return type === EGatheringType.QUICK ? quickForm : regularForm;
+  }, [type, quickForm, regularForm]);
+
+  useGatheringAutoSave({
+    form: form as UseFormReturn<GatheringFormSchema>,
+    type: type === EGatheringType.QUICK ? "quick" : "regular",
+    enabled: true,
+  });
 
   return (
     <Form

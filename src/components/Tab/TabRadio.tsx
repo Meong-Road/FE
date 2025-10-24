@@ -42,7 +42,7 @@ export const TabRadio = React.forwardRef<
             key={option.id}
             htmlFor={option.id}
             className={cn(
-              "inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+              "inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2.5 text-xs font-medium transition-colors sm:text-sm",
               isChecked && "bg-primary font-medium text-white",
               !isChecked &&
                 (option.color ? `bg-[${option.color}]` : "bg-muted"),

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { gatheringApi } from "@/api/gatherings";
@@ -8,7 +9,8 @@ import {
   QuickGatheringFormSchema,
   RegularGatheringFormSchema,
 } from "@/hooks/gathering/schemas";
-import { useGatheringFormNavigation } from "@/hooks/gathering/useGatheringFormNavigation";
+import { useGatheringFormAccess } from "@/hooks/gathering/useGatheringFormAccess";
+import { PATH } from "@/lib/constants/path";
 import {
   CreateQuickGatheringReq,
   EGatheringType,
@@ -16,12 +18,16 @@ import {
 import { isQuickGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function QuickCreatePage() {
-  // const handleCancel = () => {
-  //   // TODO : 작성 중인 내용이 있을 때 스토리지에 저장
-  //   // TODO : 만약 나가기를 통해 작성 페이지를 벗어나면, 뒤로가기 버튼으로 접근 불가하도록?
-  //   router.back();
-  // };
-  const { handleCancel, handleSuccess } = useGatheringFormNavigation();
+  const router = useRouter();
+  useGatheringFormAccess({
+    allowedType: "quick",
+    redirectPath: `${PATH.QUICK}`,
+  });
+
+  const handleCancel = () => {
+    //   // TODO : 작성 중인 내용이 있을 때 스토리지에 저장
+    router.back();
+  };
 
   const handleSubmit = async (
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
@@ -43,7 +49,7 @@ export default function QuickCreatePage() {
 
       if (response.success) {
         toast.success("번개 모임 생성에 성공했습니다");
-        handleSuccess(response.result.id, "quick");
+        // handleSuccess(response.result.id, "quick");
       }
       try {
       } catch (error) {

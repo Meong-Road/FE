@@ -14,7 +14,7 @@ export function useCancelLike({ id }: DeleteLikeReq) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.gatherings.like({ id }),
+        queryKey: QUERY_KEYS.gatherings.bookmark({ id }),
       });
       queryClient.invalidateQueries({
         queryKey: [...QUERY_KEYS.gatherings.all(), "bookmarked"],

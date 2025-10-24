@@ -10,7 +10,7 @@ export function useGetIsLiked({
   enabled = true,
 }: GetIsLikedReq & { enabled?: boolean }) {
   return useQuery({
-    queryKey: QUERY_KEYS.gatherings.like({ id }),
+    queryKey: QUERY_KEYS.gatherings.bookmark({ id }),
     queryFn: () => gatheringApi.getIsLiked({ id }),
     select: (data) => data.result,
     enabled,

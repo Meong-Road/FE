@@ -10,7 +10,7 @@ export const useGetInfiniteJoinedGatherings = (
   options: PaginationOptions = DEFAULT_LIST_OPTIONS,
 ) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.gatherings.joinedGatherings(options),
+    queryKey: QUERY_KEYS.gatherings.joinedGatheringList(options),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getJoinedGatherings({ page: pageParam, ...options });
     },

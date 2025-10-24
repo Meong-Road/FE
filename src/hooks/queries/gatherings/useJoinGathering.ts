@@ -13,7 +13,7 @@ export function useJoinGathering() {
       gatheringApi.joinGathering({ id }),
     onSuccess: async (_, { id }) => {
       await queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.gatherings.participating({ id }),
+        queryKey: QUERY_KEYS.gatherings.participation({ id }),
       });
     },
   });

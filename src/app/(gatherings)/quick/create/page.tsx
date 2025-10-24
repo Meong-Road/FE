@@ -15,6 +15,7 @@ import {
   CreateQuickGatheringReq,
   EGatheringType,
 } from "@/lib/types/gatherings";
+import { storageUtils } from "@/lib/utils/storage";
 import { isQuickGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function QuickCreatePage() {
@@ -25,7 +26,6 @@ export default function QuickCreatePage() {
   });
 
   const handleCancel = () => {
-    //   // TODO : 작성 중인 내용이 있을 때 스토리지에 저장
     router.back();
   };
 
@@ -48,6 +48,7 @@ export default function QuickCreatePage() {
       const response = await gatheringApi.postGathering(apiData);
 
       if (response.success) {
+        storageUtils.removeItem(`gathering-draft-quick`);
         toast.success("번개 모임 생성에 성공했습니다");
         router.push(`${PATH.REGULAR}/${response.result.id}`);
       }

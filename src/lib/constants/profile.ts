@@ -11,7 +11,7 @@ export const PROFILE_TABS = {
     value: "created",
   },
   REVIEWS: {
-    label: "리뷰",
+    label: "리뷰 관리",
     value: "reviews",
   },
   PETS: {

@@ -1,5 +1,3 @@
-type ReviewInfoModalType = "add-review" | "edit-review";
-
 type AddReviewModalProps = {
   type: "add-review";
   hasCloseBtn?: boolean;

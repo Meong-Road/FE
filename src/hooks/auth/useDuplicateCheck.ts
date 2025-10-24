@@ -128,7 +128,14 @@ export function useDuplicateCheck<T extends FieldValues>(
     }
 
     return isChecking || !currentValue || sameAsLast || hasError;
-  }, [isChecking, currentValue, lastChecked, initialValue, form.formState]);
+  }, [
+    isChecking,
+    currentValue,
+    lastChecked,
+    initialValue,
+    form.formState,
+    field,
+  ]);
 
   return {
     checkDuplicate,

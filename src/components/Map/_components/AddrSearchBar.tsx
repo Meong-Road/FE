@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Search } from "lucide-react";
+
+import { Form } from "@/components/Form";
 
 interface Props {
   onSearch: (input: string) => void;
@@ -9,18 +12,25 @@ export default function AddrSearchBar({ onSearch }: Props) {
 
   return (
     <div className="mb-4 flex gap-2">
-      <input
-        className="flex-1 rounded-2xl border px-4 py-2"
-        placeholder="예: 마로니에공원"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <button
-        className="rounded-2xl bg-black px-4 py-2 text-white"
-        onClick={() => onSearch(input)}
-      >
-        검색
-      </button>
+      <Form.Label className="text-lg font-semibold whitespace-nowrap" required>
+        모임 위치
+      </Form.Label>
+
+      <div className="relative w-full">
+        <Form.Input
+          type="text"
+          placeholder="지번, 도로명, 건물명으로 검색"
+          className="w-full rounded-xl bg-[#edf4fb] px-4 py-2 pr-10"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button
+          className="absolute top-1/2 right-4 -translate-y-1/2 text-[#737373]"
+          onClick={() => onSearch(input)}
+        >
+          <Search size={20} />
+        </button>
+      </div>
     </div>
   );
 }

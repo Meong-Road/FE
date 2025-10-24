@@ -16,7 +16,7 @@ export default function KakaoMap({ input }: Props) {
   return (
     <div
       ref={mapRef}
-      style={{ width: "100%", height: "300px" }}
+      style={{ width: "100%", height: "350px" }}
       className="rounded-2xl border"
     />
   );

@@ -50,7 +50,7 @@ export default function RegularCreatePage() {
 
         if (response.success) {
           toast.success("정기 모임 생성에 성공했습니다");
-          // handleSuccess(response.result.id, "regular");
+          router.push(`${PATH.REGULAR}/${response.result.id}`);
         }
       } catch (error) {
         console.error("정기 모임 생성 실패", error);

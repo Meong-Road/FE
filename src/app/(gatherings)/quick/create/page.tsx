@@ -49,7 +49,7 @@ export default function QuickCreatePage() {
 
       if (response.success) {
         toast.success("번개 모임 생성에 성공했습니다");
-        // handleSuccess(response.result.id, "quick");
+        router.push(`${PATH.REGULAR}/${response.result.id}`);
       }
       try {
       } catch (error) {

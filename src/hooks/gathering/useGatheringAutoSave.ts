@@ -32,13 +32,10 @@ export function useGatheringAutoSave({
 
     const storageKey = `gathering-draft-${type}`;
     const savedData = storageUtils.getItem(storageKey);
-    console.log("[autoSave] restore effect run", { type });
-    console.log("[autoSave] savedData from storage", savedData);
 
     if (!savedData) {
       // 저장된 데이터가 없으면 바로 저장 허용
       skipSaveRef.current = false;
-      console.log("[autoSave] no saved data, allowing save immediately");
       return;
     }
 
@@ -57,12 +54,10 @@ export function useGatheringAutoSave({
       form.reset(savedData);
       hasRestoredRef.current = true;
       skipSaveRef.current = true; // 복원 직후 저장 금지
-      console.log(`${type} 모임 작성 내용이 자동으로 복원되었습니다.`);
 
       // 1.5초 뒤부터 저장 허용
       setTimeout(() => {
         skipSaveRef.current = false;
-        console.log("[autoSave] now allowing save again");
       }, 1500);
     } else {
       skipSaveRef.current = false;
@@ -92,7 +87,6 @@ export function useGatheringAutoSave({
     if (hasContent) {
       const storageKey = `gathering-draft-${type}`;
       storageUtils.setItem(storageKey, debouncedFormData);
-      console.log(`${type} 모임 작성 내용이 자동저장되었습니다.`);
     }
   }, [debouncedFormData, enabled, type]);
 

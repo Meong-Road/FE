@@ -3,6 +3,7 @@ import { toast } from "sonner";
 
 import { useDeletePet } from "@/hooks/queries/pets/useDeletePet";
 import { PATH } from "@/lib/constants/path";
+import { usePetInfoModalStore } from "@/store/modalStore";
 
 import Dog from "../../../assets/images/dog.svg";
 import { Form } from "../../Form";
@@ -11,7 +12,6 @@ import { Modal } from "../shared";
 import { usePetInfoModal } from "./hooks/usePetInfoModal";
 import { usePetInfoSubmit } from "./hooks/usePetInfoSubmit";
 import { useSkipPetInfo } from "./hooks/useSkipPetInfo";
-import { PetInfoModalProps } from "./types/petInfoModal";
 import { PetInfoDeleteButton, PetInfoSkipButton } from "./_components";
 
 interface RadioOption {
@@ -30,23 +30,20 @@ const NEUTER_OPTIONS: RadioOption[] = [
   { id: "neuter-false", label: "중성화 안 했어요", value: "false" },
 ];
 
-export default function PetInfoModal({
-  type,
-  hasCloseBtn = true,
-  onClose,
-  petId,
-}: PetInfoModalProps) {
+export default function PetInfoModal() {
+  const { isOpen, modalType: type, petId, closeModal } = usePetInfoModalStore();
+
   const {
     form,
     isPending: isPetPending,
     hasChanges,
-  } = usePetInfoModal({ type, petId });
+  } = usePetInfoModal({ type: type || "add-pet", petId });
   const currentImage = form.watch("image");
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({
-    type,
+    type: type || "add-pet",
     petId,
-    onClose,
+    onClose: closeModal,
   });
 
   const router = useRouter();
@@ -58,7 +55,7 @@ export default function PetInfoModal({
     skipPetInfo(undefined, {
       onSuccess: () => {
         toast.success("반려견 정보 입력을 건너뛰었어요.");
-        onClose();
+        closeModal();
         router.push(PATH.REGULAR);
       },
       onError: (error: Error) => {
@@ -72,7 +69,7 @@ export default function PetInfoModal({
     deletePet(petId, {
       onSuccess: () => {
         toast.success("반려견 정보가 등록 해제되었습니다.");
-        onClose();
+        closeModal();
       },
       onError: (error: Error) => {
         toast.error(`등록 해제에 실패했어요: ${error.message}`);
@@ -80,9 +77,12 @@ export default function PetInfoModal({
     });
   };
 
+  // 모달이 열려있지 않으면 렌더링 안 함
+  if (!isOpen || !type) return null;
+
   return (
     <Modal>
-      {hasCloseBtn && <Modal.CloseBtn />}
+      <Modal.CloseBtn />
 
       {type === "first-login" ? (
         <Modal.Title

@@ -40,9 +40,9 @@ export const getGatheringState = (
 ) => {
   if (
     checkIsAfter(
-      gathering.registrationEnd,
+      new Date(),
       isRegularGathering(gathering)
-        ? new Date()
+        ? gathering.registrationEnd
         : getHoursBefore(gathering.dateTime, 3), // 3시간 전
     )
   )

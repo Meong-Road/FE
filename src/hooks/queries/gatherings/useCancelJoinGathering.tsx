@@ -15,6 +15,9 @@ export function useCancelJoinGathering() {
       await queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.gatherings.participating({ id }),
       });
+      await queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.gatherings.detail(id),
+      });
     },
   });
 }

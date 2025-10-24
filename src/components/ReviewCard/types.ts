@@ -19,7 +19,7 @@ export interface ReviewCardUserNameProps {
 
 // Review 관련
 export interface ReviewCardRatingProps {
-  score: ReviewType["score"];
+  score: number; // ReviewDisplayScore 또는 평균 점수 (number)를 받을 수 있도록
   size?: "sm" | "lg";
 }
 

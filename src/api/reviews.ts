@@ -1,14 +1,26 @@
 import qs from "qs";
 
 import {
+  DeleteReviewReq,
+  DeleteReviewRes,
   GetMyReviewsReq,
   GetMyReviewsRes,
+  GetReviewCheckReq,
+  GetReviewCheckRes,
   GetReviewDashboardReq,
   GetReviewDashboardRes,
+  GetReviewReq,
+  GetReviewRes,
   GetReviewsByGatheringReq,
   GetReviewsByGatheringRes,
   GetReviewsReq,
   GetReviewsRes,
+  GetUserReviewByGatheringReq,
+  GetUserReviewByGatheringRes,
+  PostReviewReq,
+  PostReviewRes,
+  PutReviewReq,
+  PutReviewRes,
 } from "@/api/types/reviews";
 import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
@@ -46,6 +58,37 @@ const REVIEW_API = {
   }: GetMyReviewsReq) => {
     return customFetch.get<GetMyReviewsRes>(
       `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+    );
+  },
+  getReview: ({ reviewId }: GetReviewReq) => {
+    return customFetch.get<GetReviewRes>(`${API_ENDPOINTS.REVIEW}/${reviewId}`);
+  },
+  checkReview: ({ gatheringId }: GetReviewCheckReq) => {
+    return customFetch.get<GetReviewCheckRes>(
+      `${API_ENDPOINTS.REVIEW}/check/${gatheringId}`,
+    );
+  },
+  getUserReviewByGathering: ({ gatheringId }: GetUserReviewByGatheringReq) => {
+    return customFetch.get<GetUserReviewByGatheringRes>(
+      `${API_ENDPOINTS.REVIEW}/user-review/${gatheringId}`,
+    );
+  },
+  postReview: (data: PostReviewReq) => {
+    return customFetch.post<PostReviewRes>(API_ENDPOINTS.REVIEW, {
+      body: JSON.stringify(data),
+    });
+  },
+  putReview: ({ reviewId, data }: PutReviewReq) => {
+    return customFetch.put<PutReviewRes>(
+      `${API_ENDPOINTS.REVIEW}/${reviewId}`,
+      {
+        body: JSON.stringify(data),
+      },
+    );
+  },
+  deleteReview: ({ reviewId }: DeleteReviewReq) => {
+    return customFetch.delete<DeleteReviewRes>(
+      `${API_ENDPOINTS.REVIEW}/${reviewId}`,
     );
   },
 };

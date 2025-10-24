@@ -5,7 +5,6 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-import { AuthRequiredModal } from "@/components/Modal";
 import { useAuth } from "@/hooks/auth";
 import { PATH, PROTECTED_ROUTES } from "@/lib/constants/path";
 import { useAuthRequiredModalStore } from "@/store/modalStore";
@@ -49,10 +48,5 @@ export default function AuthGuardProvider({
     }
   }, [pathname, isLoading, user, router, openModal]);
 
-  return (
-    <>
-      {children}
-      <AuthRequiredModal />
-    </>
-  );
+  return <>{children}</>;
 }

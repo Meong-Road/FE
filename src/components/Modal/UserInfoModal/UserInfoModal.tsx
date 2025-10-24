@@ -3,35 +3,40 @@ import React from "react";
 import Person from "@/assets/images/profile.svg";
 import { Form } from "@/components/Form";
 import { Modal } from "@/components/Modal/shared";
+import { useUserInfoModalStore } from "@/store/modalStore";
 
 import { UserInfoFormSchema } from "./hooks/useUserInfoForm";
 import { useUserInfoModal } from "./hooks/useUserInfoModal";
 import { useUserInfoSubmit } from "./hooks/useUserInfoSubmit";
-import { type UserInfoModalProps } from "./types/userInfoModal";
 
-export default function UserInfoModal({
-  type,
-  hasCloseBtn = true,
-  onClose,
-  userId,
-}: UserInfoModalProps) {
+export default function UserInfoModal() {
+  const {
+    isOpen,
+    modalType: type,
+    userId,
+    closeModal,
+  } = useUserInfoModalStore();
+
   const {
     form,
     isPending: isUserPending,
     hasChanges,
     initialData,
-  } = useUserInfoModal({ type, userId });
+  } = useUserInfoModal({ type: type || "edit-user", userId: userId || 0 });
   const currentImage = form.watch("image");
 
   const { handleSubmit, isSubmitting } = useUserInfoSubmit({
-    type,
-    userId,
+    type: type || "edit-user",
+    userId: userId || 0,
   });
 
   const onSubmit = (values: UserInfoFormSchema) => {
     handleSubmit(values);
-    onClose();
+    closeModal();
   };
+
+  // 모달이 열려있지 않으면 렌더링 안 함
+  if (!isOpen || !type || !userId) return null;
 
   if (isUserPending) {
     return (
@@ -48,7 +53,7 @@ export default function UserInfoModal({
 
   return (
     <Modal>
-      {hasCloseBtn && <Modal.CloseBtn />}
+      <Modal.CloseBtn />
 
       <Modal.Title title="프로필 수정하기" />
 

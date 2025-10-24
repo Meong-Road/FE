@@ -11,7 +11,11 @@ import {
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
 import { GATHERING_STATE_MESSAGE } from "@/lib/constants/gathering";
 import { PATH } from "@/lib/constants/path";
-import { EGatheringState, GatheringType } from "@/lib/types/gatherings";
+import {
+  EGatheringState,
+  EGatheringType,
+  GatheringType,
+} from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 import { useAuthRequiredModalStore } from "@/store/modalStore";
@@ -20,6 +24,7 @@ import { Button, buttonVariants } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
+import { GatheringCardReviewBtn } from "./GatheringCardReviewBtn";
 
 enum EJoinButtonType {
   JOIN = "join",
@@ -111,6 +116,17 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
         에러
       </div>
     );
+
+  // REGULAR + FIXED_GATHERING + 참여한 모임 → ReviewBtn 렌더링
+  const shouldShowReviewBtn =
+    gathering.type === EGatheringType.REGULAR &&
+    state === EGatheringState.FIXED_GATHERING &&
+    isParticipated === true;
+
+  if (shouldShowReviewBtn) {
+    return <GatheringCardReviewBtn gathering={gathering} />;
+  }
+
   const isMutationPending = isJoinPending || isCancelPending;
   const mode = isParticipated ? EJoinButtonType.CANCEL : EJoinButtonType.JOIN;
 
@@ -153,7 +169,7 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
   if (isJoinDisabled || isCancelDisabled)
     return (
       <Tooltip>
-        <TooltipTrigger>{button}</TooltipTrigger>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent>
           {GATHERING_STATE_MESSAGE[state]}은 {MESSAGE[mode]}할 수 없어요
         </TooltipContent>

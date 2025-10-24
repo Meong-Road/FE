@@ -15,6 +15,7 @@ export const authApi = {
   signup: async (payload: PostSignupReq): Promise<PostSignupRes> => {
     return await customFetch.post<PostSignupRes>(`${API_ENDPOINTS.USER}`, {
       body: JSON.stringify(payload),
+      skipAuth: true,
     });
   },
 
@@ -23,6 +24,7 @@ export const authApi = {
       `${API_ENDPOINTS.AUTH}/login`,
       {
         body: JSON.stringify(payload),
+        skipAuth: true,
       },
     );
   },

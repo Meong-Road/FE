@@ -1,20 +1,20 @@
 import Alarm from "@/assets/icons/alarm.svg";
-import { GatheringType } from "@/lib/types/gatherings";
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import { getRegistrationDeadlineInfo } from "@/lib/utils/dateTime";
+import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 
-interface GatheringCardDeadlineBadgeProps {
-  registrationEnd: GatheringType["registrationEnd"];
-}
+import Badge from "../common/Badge";
 
-export default function GatheringCardDeadlineBadge({
-  registrationEnd,
-}: GatheringCardDeadlineBadgeProps) {
+export default function GatheringCardDeadlineBadge() {
+  const { gathering, state } = useGatheringStateContext();
+  const isClosedGathering = checkIsClosedGatheringState(state);
+
   return (
-    <div className="bg-secondary flex h-8 items-center gap-0.5 rounded-3xl px-3">
-      <Alarm width={24} height={24} />
-      <span className="text-primary text-sm font-semibold">
-        {getRegistrationDeadlineInfo(registrationEnd).text}
+    <Badge variant={isClosedGathering ? "gray" : "primary"}>
+      <Alarm className="size-6" />
+      <span className="text-sm font-semibold">
+        {getRegistrationDeadlineInfo(gathering.registrationEnd).text}
       </span>
-    </div>
+    </Badge>
   );
 }

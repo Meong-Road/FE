@@ -1,7 +1,13 @@
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
+import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
+
+import Badge from "../common/Badge";
+
 export function GatheringCardAttendanceBadge() {
+  const { state } = useGatheringStateContext();
+  const isClosedGathering = checkIsClosedGatheringState(state);
+
   return (
-    <div className="bg-secondary text-primary flex h-8 items-center justify-center rounded-3xl px-3 text-sm font-semibold">
-      이용 예정
-    </div>
+    <Badge variant={isClosedGathering ? "gray" : "primary"}>이용 예정</Badge>
   );
 }

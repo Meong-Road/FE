@@ -1,7 +1,7 @@
 import type {
   PetInfoFormSchema,
   PetInfoUpdateSchema,
-} from "@/components/Modal/_hooks/usePetInfoForm";
+} from "@/components/Modal/PetInfoModal/hooks/usePetInfoForm";
 import type { PetType } from "@/lib/types/pets";
 
 export const transformPetToFormData = (pet: PetType): PetInfoFormSchema => ({
@@ -20,6 +20,10 @@ export const hasPetFormChanges = (
 ): boolean => {
   if (!initial) return false;
 
+  // 이미지 변경 체크 (File 객체인 경우 항상 변경된 것으로 간주)
+  const isImageChanged =
+    current.image instanceof File || current.image !== initial.image;
+
   return (
     current.name !== initial.name ||
     current.gender !== initial.gender ||
@@ -27,7 +31,7 @@ export const hasPetFormChanges = (
     current.breed !== initial.breed ||
     current.neuter !== initial.neuter ||
     current.petType !== initial.petType ||
-    current.image !== initial.image
+    isImageChanged
   );
 };
 

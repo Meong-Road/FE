@@ -7,7 +7,7 @@ import {
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
-import ReviewInfoModal from "@/components/Modal/ReviewInfoModal";
+import { ReviewInfoModal } from "@/components/Modal";
 import { ReviewCard } from "@/components/ReviewCard";
 import { useGetMyReviews } from "@/hooks/queries/reviews";
 import { ReviewType } from "@/lib/types/reviews";

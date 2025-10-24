@@ -1,13 +1,12 @@
 "use client";
 
 import {
-  EmptyState,
   ErrorState,
   ListContainer,
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
-import PetInfoModal from "@/components/Modal/PetInfoModal";
+import { PetInfoModal } from "@/components/Modal";
 import { PetAddCard } from "@/components/PetAddCard";
 import { PetCard } from "@/components/PetCard";
 import { useGetMyPets } from "@/hooks/queries/pets";
@@ -42,11 +41,7 @@ const PetAddCardItem = () => {
     <PetAddCard>
       <PetAddCard.Icon />
       <PetAddCard.Title>반려견 추가</PetAddCard.Title>
-      <PetAddCard.Description>
-        새로운 반려견 정보를
-        <br />
-        등록해보세요
-      </PetAddCard.Description>
+      <PetAddCard.Description>새 반려견을 추가해보세요</PetAddCard.Description>
     </PetAddCard>
   );
 };
@@ -73,30 +68,26 @@ export default function PetCardSection() {
   const { isOpen, modalType, petId, closeModal } = usePetInfoModalStore();
   const { data: pets, isPending, isError } = useGetMyPets();
 
-  // //임시 주석처리
-  // if (isPending)
-  //   return (
-  //     <LoadingState
-  //       message="반려견 정보를 불러오고 있어요..."
-  //       minHeight="200px"
-  //     />
-  //   );
-  // if (!pets || isError)
-  //   return (
-  //     <ErrorState
-  //       message="등록한 반려견 정보를 불러오는데 실패했습니다."
-  //       minHeight="200px"
-  //     />
-  //   );
+  //임시 주석처리
+  if (isPending)
+    return (
+      <LoadingState
+        message="반려견 정보를 불러오고 있어요..."
+        minHeight="200px"
+      />
+    );
+  if (!pets || isError)
+    return (
+      <ErrorState
+        message="등록한 반려견 정보를 불러오는데 실패했습니다."
+        minHeight="200px"
+      />
+    );
 
   return (
     <>
       <SectionWrapper>
-        {!pets || isError ? (
-          <PetList pets={[]} />
-        ) : (
-          <PetList pets={pets} /> //TODO: 임시 에러처리.. 나중에 수정
-        )}
+        <PetList pets={pets} />
       </SectionWrapper>
 
       {isOpen && modalType && (

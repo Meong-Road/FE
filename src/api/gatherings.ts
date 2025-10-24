@@ -26,6 +26,8 @@ import {
   GetQuickGatheringsRes,
   GetRegularGatheringsReq,
   GetRegularGatheringsRes,
+  PostGatheringReq,
+  PostGatheringRes,
   PostJoinGatheringReq,
   PostJoinGatheringRes,
   PostLikeReq,
@@ -120,5 +122,17 @@ export const gatheringApi = {
     return customFetch.get<GetParticipantsRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
+  },
+  // TODO : 모임 이미지 업로드 API
+  uploadGatheringImage: async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return customFetch.post(`${API_ENDPOINTS.GATHERING}`, { body: formData });
+  },
+  postGathering: (data: PostGatheringReq) => {
+    return customFetch.post<PostGatheringRes>(`${API_ENDPOINTS.GATHERING}`, {
+      body: JSON.stringify(data),
+    });
   },
 };

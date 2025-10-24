@@ -10,7 +10,7 @@ export const QUICK_GATHERINGS = [
     description: "한강에서 가볍게 산책하는 번개 모임",
     registrationEnd: new Date("2025-10-01T12:00:00"),
     location: "여의도 한강공원",
-    participantCount: 5,
+    participantCount: 3,
     capacity: 10,
     image:
       "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=600&fit=crop",

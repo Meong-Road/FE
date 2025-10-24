@@ -2,7 +2,7 @@ import { PATH } from "@/lib/constants/path";
 import { EGatheringState, GatheringType } from "@/lib/types/gatherings";
 
 import {
-  checkIsAfter,
+  checkIsBefore,
   formatDate,
   formatDays,
   getHoursBefore,
@@ -39,11 +39,10 @@ export const getGatheringState = (
   hasPet: boolean,
 ) => {
   if (
-    checkIsAfter(
-      gathering.registrationEnd,
+    checkIsBefore(
       isRegularGathering(gathering)
-        ? new Date()
-        : getHoursBefore(gathering.dateTime, 3), // 3시간 전
+        ? gathering.registrationEnd
+        : getHoursBefore(gathering.dateTime, 3), // TODO: registrationEnd로 통일
     )
   )
     return EGatheringState.REGISTRATION_END_PASSED;

@@ -11,7 +11,7 @@ export function useGetInfiniteBookmarkedGatherings(
   sort = ["createdAt"],
 ) {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.gatherings.bookmarkedGatherings(currentTab, {
+    queryKey: QUERY_KEYS.gatherings.bookmarkedList(currentTab, {
       size,
       sort,
     }),

@@ -25,7 +25,7 @@ export default function KakaoMap({ input }: Props) {
 
       <button
         type="button"
-        className="absolute bottom-4 left-4 z-10 rounded-full shadow"
+        className="absolute bottom-5 left-6 z-1 rounded-full shadow"
       >
         <ResetLocationIcon />
       </button>

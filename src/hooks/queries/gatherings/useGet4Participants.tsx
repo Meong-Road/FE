@@ -6,18 +6,18 @@ import { GatheringType } from "@/lib/types/gatherings";
 import { QUERY_KEYS } from "../queryKey";
 
 export function useGet4Participants({ id }: { id: GatheringType["id"] }) {
-  const options = {
+  const OPTIONS = {
     page: 0,
     size: 4,
     sort: ["joinedAt", "asc"],
   };
 
   return useQuery({
-    queryKey: QUERY_KEYS.gatherings.participantList({ id }, options),
+    queryKey: QUERY_KEYS.gatherings.participantList({ id }, OPTIONS),
     queryFn: () =>
       gatheringApi.getParticipants({
         id,
-        ...options,
+        ...OPTIONS,
       }),
     select: (data) => data.result?.content.flatMap((item) => item.user),
   });

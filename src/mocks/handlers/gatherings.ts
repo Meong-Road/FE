@@ -158,6 +158,7 @@ export const gatheringsHandlers = [
       });
 
     gathering.isParticipating = true;
+    gathering.participantCount += 1;
 
     return HttpResponse.json({
       success: true,
@@ -194,6 +195,7 @@ export const gatheringsHandlers = [
       });
 
     gathering.isParticipating = false;
+    gathering.participantCount -= 1;
 
     return HttpResponse.json({
       success: true,

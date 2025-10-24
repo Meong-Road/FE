@@ -11,9 +11,15 @@ export function useCancelJoinGathering() {
   return useMutation({
     mutationFn: ({ id }: DeleteJoinGatheringReq) =>
       gatheringApi.cancelJoinGathering({ id }),
-    onSuccess: async (_, { id }) => {
-      await queryClient.invalidateQueries({
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.gatherings.participation({ id }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.gatherings.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.gatherings.detail(id),
       });
     },
   });

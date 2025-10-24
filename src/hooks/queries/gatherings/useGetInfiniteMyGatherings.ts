@@ -10,7 +10,7 @@ export const useGetInfiniteMyGatherings = (
   options: PaginationOptions = DEFAULT_LIST_OPTIONS,
 ) => {
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.gatherings.myGatherings(options),
+    queryKey: QUERY_KEYS.gatherings.myGatheringList(options),
     queryFn: ({ pageParam }) => {
       return gatheringApi.getMyGatherings({ page: pageParam, ...options });
     },

@@ -3,26 +3,16 @@
 
 import { useState } from "react";
 
-import { AddrSearchBar } from "@/app/map/_components/AddrSearchBar";
-import { MapView } from "@/app/map/_components/MapView";
+import AddrSearchBar from "./_components/AddrSearchBar";
+import KakaoMap from "./_components/KakaoMap";
 
-const DEFAULT_COORD = {
-  lat: 37.5666805,
-  lon: 126.9784147,
-};
+export default function KakaoMapSearchPage() {
+  const [input, setInput] = useState("");
 
-export default function MapTestPage() {
-  const [pos, setPos] = useState<{ lat: number; lon: number }>(DEFAULT_COORD);
   return (
-    <>
-      <AddrSearchBar
-        onPick={(addr) => {
-          setPos({ lat: addr.lat, lon: addr.lon });
-        }}
-      />
-      <div className="mt-6">
-        <MapView lat={pos.lat} lon={pos.lon} />
-      </div>
-    </>
+    <div>
+      <AddrSearchBar onSearch={setInput} />
+      <KakaoMap input={input} />
+    </div>
   );
 }

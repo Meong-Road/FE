@@ -31,8 +31,8 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <Script
-          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NCP_MAP_CLIENT_ID}`}
-          strategy="afterInteractive"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&libraries=services&autoload=false`}
+          strategy="beforeInteractive"
         />
       </head>
       <body className={`${pretendardVariable.className}`}>

@@ -1,27 +1,25 @@
-"use client";
+import { useState } from "react";
 
-import { useAddrSearch } from "@/app/map/_hooks/useAddrSearch";
-import { GeocodedAddressType } from "@/app/map/_types/geocodings";
+interface Props {
+  onSearch: (input: string) => void;
+}
 
-type Props = { onPick: (item: GeocodedAddressType) => void };
-
-export function AddrSearchBar({ onPick }: Props) {
-  const { inputAddr, setInputAddr, loading, search } = useAddrSearch(onPick);
+export default function AddrSearchBar({ onSearch }: Props) {
+  const [input, setInput] = useState("");
 
   return (
-    <div className="flex gap-2">
+    <div className="mb-4 flex gap-2">
       <input
         className="flex-1 rounded-2xl border px-4 py-2"
-        placeholder="입력 예시: 논현로 565"
-        value={inputAddr}
-        onChange={(e) => setInputAddr(e.target.value)}
+        placeholder="예: 마로니에공원"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
       />
       <button
-        className="rounded-2xl bg-black px-4 py-2 text-white disabled:opacity-50"
-        onClick={search}
-        disabled={loading}
+        className="rounded-2xl bg-black px-4 py-2 text-white"
+        onClick={() => onSearch(input)}
       >
-        {loading ? "검색 중" : "검색"}
+        검색
       </button>
     </div>
   );

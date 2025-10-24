@@ -9,12 +9,7 @@ import InfiniteScroll from "@/components/InfiniteScroll";
 import { useAuth } from "@/hooks";
 import { useGetInfiniteJoinedGatherings } from "@/hooks/queries/gatherings";
 import { useGetMyPets } from "@/hooks/queries/pets";
-import { useGetReviewCheck } from "@/hooks/queries/reviews";
-import {
-  EGatheringState,
-  EGatheringType,
-  GatheringType,
-} from "@/lib/types/gatherings";
+import { EGatheringState, EGatheringType } from "@/lib/types/gatherings";
 import { getGatheringState } from "@/lib/utils/gathering";
 
 export default function WritableReviewSection() {
@@ -27,19 +22,15 @@ export default function WritableReviewSection() {
     sort: ["createdAt", "desc"],
   });
 
-  // 작성 가능한 리뷰만 필터링
+  // 작성 가능한 리뷰만 필터링 (REGULAR, FIXED_GATHERING)
   const filteredGatherings = useMemo(() => {
     if (!infiniteQueryResult.data) return [];
 
     return infiniteQueryResult.data.filter((gathering) => {
-      // REGULAR 모임이 아니면 제외
       if (gathering.type !== EGatheringType.REGULAR) return false;
-
-      // FIXED_GATHERING 상태가 아니면 제외
       const state = getGatheringState(gathering, !!user, !!hasPet);
       if (state !== EGatheringState.FIXED_GATHERING) return false;
-
-      return true; // 리뷰 작성 가능 여부는 GatheringCardReviewBtn에서 처리
+      return true;
     });
   }, [infiniteQueryResult.data, user, hasPet]);
 

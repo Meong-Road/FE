@@ -5,6 +5,7 @@ import { GatheringImage, GatheringInfo, GatheringTitle } from "./Gathering";
 import { Header } from "./Header";
 import { Divider, Location, Profile } from "./Legacy";
 import { Comment, CreatedAt, Rating } from "./Review";
+import { ReviewCardEditButton } from "./ReviewCardEditButton";
 import { ReviewCardProps } from "./types";
 import { UserAvatar, UserName } from "./User";
 
@@ -12,7 +13,7 @@ export function ReviewCard({ className, children }: ReviewCardProps) {
   return (
     <li
       className={cn(
-        "relative w-full list-none rounded-3xl bg-white p-4 transition-shadow hover:shadow-sm sm:p-6",
+        "relative list-none rounded-4xl border border-[#ddd] bg-white p-6",
         className,
       )}
     >
@@ -38,6 +39,9 @@ ReviewCard.Comment = Comment;
 ReviewCard.GatheringImage = GatheringImage;
 ReviewCard.GatheringTitle = GatheringTitle;
 ReviewCard.GatheringInfo = GatheringInfo;
+
+// Action 관련
+ReviewCard.EditButton = ReviewCardEditButton;
 
 // 하위 호환성 (기존 API)
 ReviewCard.Profile = Profile;

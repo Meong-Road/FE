@@ -1,7 +1,11 @@
+"use client";
+
 import { ElementType } from "react";
 
 import { GatheringCard } from "@/components/GatheringCard";
 import { GatheringCardReviewBtn } from "@/components/GatheringCard/GatheringCardReviewBtn";
+import GatheringCardSkeleton from "@/components/GatheringCard/Skeleton/GatheringCardSkeleton";
+import { useGetUserReviewByGathering } from "@/hooks/queries/reviews";
 import { GatheringType } from "@/lib/types/gatherings";
 
 interface WritableGatheringCardItemProps {
@@ -13,6 +17,21 @@ export default function WritableGatheringCardItem({
   gathering,
   as = "div",
 }: WritableGatheringCardItemProps) {
+  // 사용자가 작성한 리뷰 조회
+  const { data: userReview, isPending } = useGetUserReviewByGathering(
+    gathering.id,
+  );
+
+  // 로딩 중
+  if (isPending) {
+    return <GatheringCardSkeleton />;
+  }
+
+  // 이미 리뷰를 작성한 경우 렌더링하지 않음
+  if (userReview) {
+    return null;
+  }
+
   return (
     <GatheringCard gathering={gathering} as={as}>
       <div className="flex h-full flex-row items-center gap-6">

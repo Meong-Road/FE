@@ -4,7 +4,7 @@ import { CreatedAt } from "./Review/CreatedAt";
 import { Rating } from "./Review/Rating";
 import { UserAvatar } from "./User/UserAvatar";
 import { UserName } from "./User/UserName";
-import { EditBtn } from "./Legacy";
+import { ReviewCardEditButton } from "./ReviewCardEditButton";
 import { ReviewCardHeaderProps } from "./types";
 
 export function Header({
@@ -30,7 +30,9 @@ export function Header({
           </div>
         </div>
       </div>
-      {user?.id === reviewAuthorId && <EditBtn reviewId={reviewId} />}
+      {user?.id === reviewAuthorId && (
+        <ReviewCardEditButton reviewId={reviewId} />
+      )}
     </div>
   );
 }

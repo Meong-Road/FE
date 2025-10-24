@@ -18,29 +18,33 @@ const ReviewItem = ({
   review: ReturnType<typeof processReviewInfo>;
 }) => (
   <ReviewCard>
-    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:gap-8">
+    <div className="flex h-full flex-row items-center gap-6">
       {/* 모임 이미지 */}
       <ReviewCard.GatheringImage image={review.gathering.image} />
 
       {/* 리뷰 내용 */}
-      <div className="flex flex-1 flex-col justify-between">
-        {/* 헤더: 유저 정보 + 평점 + 작성날짜 */}
-        <ReviewCard.Header
-          profileImage={review.user?.image || ""}
-          reviewId={review.id}
-          score={review.score}
-          nickName={review.user?.nickName || ""}
-          createdAt={review.createdAt}
-          reviewAuthorId={review.userId}
-        />
+      <div className="flex h-full flex-grow flex-col justify-between gap-y-11 py-2">
+        <div className="flex items-start justify-between gap-x-2">
+          <div className="flex flex-col gap-y-4">
+            {/* 헤더: 유저 정보 + 평점 + 작성날짜 */}
+            <ReviewCard.Header
+              profileImage={review.user?.image || ""}
+              reviewId={review.id}
+              score={review.score}
+              nickName={review.user?.nickName || ""}
+              createdAt={review.createdAt}
+              reviewAuthorId={review.userId}
+            />
 
-        {/* 본문: 모임 정보 + 코멘트 */}
-        <ReviewCard.Body
-          gatheringName={review.gathering.name}
-          location={review.gathering.location}
-          days={review.formattedDays}
-          comment={review.comment}
-        />
+            {/* 본문: 모임 정보 + 코멘트 */}
+            <ReviewCard.Body
+              gatheringName={review.gathering.name}
+              location={review.gathering.location}
+              days={review.formattedDays}
+              comment={review.comment}
+            />
+          </div>
+        </div>
       </div>
     </div>
   </ReviewCard>

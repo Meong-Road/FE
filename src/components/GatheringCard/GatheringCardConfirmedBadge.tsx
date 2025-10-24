@@ -10,7 +10,7 @@ export function GatheringCardConfirmedBadge() {
 
   return (
     <Badge variant={isClosedGathering ? "gray" : "primary"} outline={true}>
-      <Check className="size-6" />
+      <Check />
       <span>개설확정</span>
     </Badge>
   );

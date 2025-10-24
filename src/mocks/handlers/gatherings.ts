@@ -158,6 +158,15 @@ export const gatheringsHandlers = [
         errorCode: "ALREADY_JOINED",
       });
 
+    if (gathering.hostId === Number(mockCurrentUser.id))
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "주최자는 참여할 수 없습니다",
+        result: null,
+        errorCode: "HOST_CANNOT_JOIN",
+      });
+
     gathering.isParticipating = true;
     gathering.participantCount += 1;
 
@@ -193,6 +202,15 @@ export const gatheringsHandlers = [
         message: "이미 참여하지 않은 모임입니다",
         result: null,
         errorCode: "NOT_JOINED",
+      });
+
+    if (gathering.hostId === Number(mockCurrentUser.id))
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "주최자는 참여 취소할 수 없습니다",
+        result: null,
+        errorCode: "HOST_CANNOT_LEAVE",
       });
 
     gathering.isParticipating = false;
@@ -281,7 +299,7 @@ export const gatheringsHandlers = [
     return HttpResponse.json(
       createPaginatedRes(participants, {
         page: Number(page),
-        size: gathering.participantCount,
+        size: Number(size),
       }),
     );
   }),

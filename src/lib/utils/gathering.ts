@@ -1,7 +1,12 @@
 import { PATH } from "@/lib/constants/path";
-import { GatheringType } from "@/lib/types/gatherings";
+import { EGatheringState, GatheringType } from "@/lib/types/gatherings";
 
-import { formatDate, formatDays } from "./dateTime";
+import {
+  checkIsAfter,
+  formatDate,
+  formatDays,
+  getHoursBefore,
+} from "./dateTime";
 import { isRegularGathering } from "./typeGuard";
 
 /**
@@ -23,4 +28,41 @@ export const processGatheringInfo = (gathering: GatheringType) => {
     dateInfo: getGatheringDateInfo(gathering),
     isRegular: isRegularGathering(gathering),
   };
+};
+
+/**
+ * 모임 상태를 반환
+ */
+export const getGatheringState = (
+  gathering: GatheringType,
+  isAuthenticated: boolean,
+  hasPet: boolean,
+) => {
+  if (
+    checkIsAfter(
+      gathering.registrationEnd,
+      isRegularGathering(gathering)
+        ? new Date()
+        : getHoursBefore(gathering.dateTime, 3), // 3시간 전
+    )
+  )
+    return EGatheringState.REGISTRATION_END_PASSED;
+  if (gathering.participantCount >= 5) return EGatheringState.FIXED_GATHERING;
+  if (gathering.participantCount >= gathering.capacity)
+    return EGatheringState.CAPACITY_FULL;
+  if (gathering.canceledAt !== null) return EGatheringState.CANCELED;
+  if (!isAuthenticated) return EGatheringState.AUTH_REQUIRED;
+  if (gathering.isPetRequired && !hasPet) return EGatheringState.PET_REQUIRED;
+  return EGatheringState.GENERAL;
+};
+
+/**
+ * 해당 모임의 상태가 마감/취소된 모임인지 확인
+ */
+export const checkIsClosedGatheringState = (state: EGatheringState) => {
+  return [
+    EGatheringState.REGISTRATION_END_PASSED, // 모집 마감
+    EGatheringState.CAPACITY_FULL, // 인원 마감
+    EGatheringState.CANCELED, // 취소된 모임
+  ].includes(state);
 };

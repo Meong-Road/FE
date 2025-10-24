@@ -1,5 +1,7 @@
 import {
+  checkIsAfter,
   formatDate,
+  getHoursBefore,
   getRegistrationDeadlineInfo,
   getTimeAgo,
 } from "./dateTime";
@@ -129,6 +131,42 @@ describe("dateTime", () => {
       const createdAt = "2025-09-24T10:00:00"; // 7일 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("2025.09.24");
+    });
+  });
+
+  describe("checkIsAfter", () => {
+    it("date가 dateToCompare보다 이후인 경우 true를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T11:00:00");
+      const dateToCompare = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsAfter(date, dateToCompare);
+      expect(result1).toBe(true);
+      const result2 = checkIsAfter(date);
+      expect(result2).toBe(true);
+    });
+
+    it("date와 dateToCompare과 같거나 더 이전인 경우 false를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T09:00:00");
+      const dateToCompare1 = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsAfter(date, dateToCompare1);
+      expect(result1).toBe(false);
+      const result2 = checkIsAfter(date);
+      expect(result2).toBe(false);
+    });
+
+    it("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsAfter(date, date);
+      expect(result1).toBe(false);
+      const result2 = checkIsAfter(date);
+      expect(result2).toBe(false);
+    });
+  });
+
+  describe("getHoursBefore", () => {
+    it("3시간 전을 반환해야 한다", () => {
+      const date = new Date("2025-10-01T10:00:00");
+      const result = getHoursBefore(date, 3);
+      expect(result).toEqual(new Date("2025-10-01T07:00:00"));
     });
   });
 });

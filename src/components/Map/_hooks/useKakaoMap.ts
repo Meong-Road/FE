@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { kakaoMapRepository } from "../_repositories/kakaoMapRepository";
 import { kakaoMapService } from "../_services/kakaoMapService";
@@ -25,7 +25,7 @@ export default function useKakaoMap({ mapRef, input }: Props) {
    * 지도 클릭 시 마커 생성 & 주소 조회
    * @param latlng 클릭한 좌표
    */
-  const onMapClick = (latlng: kakao.maps.LatLng) => {
+  const onMapClick = useCallback((latlng: kakao.maps.LatLng) => {
     clearMarkers();
 
     const newMarker = kakaoMapService.createMarker(map.current!, latlng);
@@ -36,34 +36,37 @@ export default function useKakaoMap({ mapRef, input }: Props) {
       console.log("도로명:", addr.road);
       console.log("지번:", addr.jibun);
     });
-  };
+  }, []);
 
   /**
    * 키워드 검색 결과 마커 생성 & 지도 bounds 설정 (지도가 모든 마커들을 포함하도록)
    * @param results
    */
-  const showSearchResults = (results: kakao.maps.services.PlaceSearchRes[]) => {
-    clearMarkers();
+  const showSearchResults = useCallback(
+    (results: kakao.maps.services.PlaceSearchRes[]) => {
+      clearMarkers();
 
-    const bounds = new window.kakao.maps.LatLngBounds();
+      const bounds = new window.kakao.maps.LatLngBounds();
 
-    results.forEach((place) => {
-      const pos = new window.kakao.maps.LatLng(
-        Number(place.y),
-        Number(place.x),
-      );
-      const marker = kakaoMapService.createMarker(map.current!, pos);
+      results.forEach((place) => {
+        const pos = new window.kakao.maps.LatLng(
+          Number(place.y),
+          Number(place.x),
+        );
+        const marker = kakaoMapService.createMarker(map.current!, pos);
 
-      kakaoMapService.bindMarkerClick(marker, markers);
-      markers.current.push(marker);
+        kakaoMapService.bindMarkerClick(marker, markers);
+        markers.current.push(marker);
 
-      bounds.extend(pos);
-    });
+        bounds.extend(pos);
+      });
 
-    if (map.current) {
-      map.current.setBounds(bounds);
-    }
-  };
+      if (map.current) {
+        map.current.setBounds(bounds);
+      }
+    },
+    [],
+  );
 
   const resetMap = () => {
     if (!mapRef.current) return;
@@ -84,7 +87,7 @@ export default function useKakaoMap({ mapRef, input }: Props) {
 
       kakaoMapService.bindMapClick(map.current, onMapClick);
     });
-  }, []);
+  }, [mapRef, onMapClick]);
 
   /**
    * 키워드 검색 수행
@@ -97,7 +100,7 @@ export default function useKakaoMap({ mapRef, input }: Props) {
         showSearchResults(results);
       }
     });
-  }, [input]);
+  }, [input, showSearchResults]);
 
   return {
     resetMap,

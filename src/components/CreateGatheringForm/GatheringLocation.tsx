@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+
+import AddrSearchBar from "@/app/map/_components/AddrSearchBar";
+import KakaoMap from "@/app/map/_components/KakaoMap";
 
 export default function GatheringLocation() {
-  // TODO : 위치 정보구 현
-  return <section>GatheringLocation</section>;
+  const [input, setInput] = useState("");
+
+  return (
+    <section>
+      <AddrSearchBar onSearch={setInput} />
+      <KakaoMap input={input} />
+    </section>
+  );
 }

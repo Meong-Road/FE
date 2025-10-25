@@ -58,7 +58,7 @@ export interface ParticipantsType {
 }
 
 // 모임 생성 요청을 위한 공통 필드
-export interface CreateGatheringBase {
+export interface CommonCreateGatheringType {
   type: EGatheringType;
   name: string;
   description: string | undefined;
@@ -70,17 +70,17 @@ export interface CreateGatheringBase {
 }
 
 // 번개모임 생성 요청
-export interface CreateQuickGatheringReq extends CreateGatheringBase {
+export interface CreateQuickGatheringType extends CommonCreateGatheringType {
   type: EGatheringType.QUICK;
   dateTime: { hour: number; minute: number };
 }
 
 // 정기모임 생성 요청
-export interface CreateRegularGatheringReq extends CreateGatheringBase {
+export interface CreateRegularGatheringType extends CommonCreateGatheringType {
   type: EGatheringType.REGULAR;
   days: string[];
 }
 
-export type CreateGatheringReq =
-  | CreateQuickGatheringReq
-  | CreateRegularGatheringReq;
+export type CreateGatheringType =
+  | CreateQuickGatheringType
+  | CreateRegularGatheringType;

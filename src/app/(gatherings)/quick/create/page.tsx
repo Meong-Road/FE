@@ -12,7 +12,7 @@ import {
 import { useGatheringFormAccess } from "@/hooks/gathering/useGatheringFormAccess";
 import { PATH } from "@/lib/constants/path";
 import {
-  CreateQuickGatheringReq,
+  CreateQuickGatheringType,
   EGatheringType,
 } from "@/lib/types/gatherings";
 import { storageUtils } from "@/lib/utils/storage";
@@ -35,7 +35,7 @@ export default function QuickCreatePage() {
     if (!isQuickGatheringForm(data)) throw new Error(); // 얼리 리턴 적용
 
     try {
-      const apiData: CreateQuickGatheringReq = {
+      const apiData: CreateQuickGatheringType = {
         type: EGatheringType.QUICK,
         name: data.name,
         description: data.description,

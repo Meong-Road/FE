@@ -12,7 +12,7 @@ import {
 import { useGatheringFormAccess } from "@/hooks/gathering/useGatheringFormAccess";
 import { PATH } from "@/lib/constants/path";
 import {
-  CreateRegularGatheringReq,
+  CreateRegularGatheringType,
   EGatheringType,
 } from "@/lib/types/gatherings";
 import { storageUtils } from "@/lib/utils/storage";
@@ -35,7 +35,7 @@ export default function RegularCreatePage() {
     if (!isRegularGatheringForm(data)) throw new Error(); // 얼리 리턴 적용
 
     try {
-      const apiData: CreateRegularGatheringReq = {
+      const apiData: CreateRegularGatheringType = {
         type: EGatheringType.REGULAR,
         name: data.name,
         description: data.description,

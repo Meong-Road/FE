@@ -15,7 +15,11 @@ export default function ReviewInfoModal() {
     useReviewInfoModalStore();
 
   // 리뷰 데이터 페칭 및 폼 초기화
-  const { form, isPending: isReviewPending } = useReviewInfoModal({
+  const {
+    form,
+    isPending: isReviewPending,
+    hasChanges,
+  } = useReviewInfoModal({
     modalType,
     reviewId,
   });
@@ -114,7 +118,10 @@ export default function ReviewInfoModal() {
             <Form.SubmitButton
               isPending={isSubmitting}
               disabled={
-                isReviewPending || isSubmitting || !form.formState.isValid
+                isReviewPending ||
+                isSubmitting ||
+                !form.formState.isValid ||
+                !hasChanges
               }
               label={modalType === "add-review" ? "작성하기" : "수정하기"}
             />

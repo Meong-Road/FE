@@ -1,8 +1,13 @@
 import { useEffect, useMemo } from "react";
 
 import { useGetReview } from "@/hooks/queries/reviews";
+import { hasReviewFormChanges } from "@/lib/utils/review";
 
-import { ReviewInfoFormSchema, useReviewInfoForm } from "./useReviewInfoForm";
+import {
+  ReviewInfoFormSchema,
+  ReviewInfoUpdateSchema,
+  useReviewInfoForm,
+} from "./useReviewInfoForm";
 
 interface UseReviewInfoModalProps {
   modalType: "add-review" | "edit-review" | null;
@@ -30,6 +35,7 @@ export function useReviewInfoModal({
   );
 
   const form = useReviewInfoForm();
+  const watchedValues = form.watch();
 
   // 초기값 설정
   const initialData = useMemo<Partial<ReviewInfoFormSchema> | null>(() => {
@@ -41,21 +47,35 @@ export function useReviewInfoModal({
     };
   }, [shouldFetchReview, reviewData]);
 
-  // 모달이 열릴 때마다 폼 초기화
   useEffect(() => {
-    if (isEditMode && initialData) {
-      form.reset(initialData);
-    } else if (modalType === "add-review") {
+    if (!isEditMode) {
       form.reset({
         score: undefined,
         comment: "",
       });
     }
-  }, [isEditMode, modalType, initialData, form]);
+  }, [form, isEditMode]);
+
+  useEffect(() => {
+    if (initialData) {
+      form.reset(initialData);
+    }
+  }, [initialData, form]);
+
+  const hasChanges = useMemo(() => {
+    if (!isEditMode) return true;
+    if (!initialData) return false;
+
+    return hasReviewFormChanges(
+      watchedValues as ReviewInfoUpdateSchema,
+      initialData,
+    );
+  }, [isEditMode, initialData, watchedValues]);
 
   return {
     form,
     isPending: shouldFetchReview ? isReviewPending : false,
     initialData,
+    hasChanges,
   };
 }

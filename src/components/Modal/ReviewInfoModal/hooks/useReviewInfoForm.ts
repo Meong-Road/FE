@@ -16,7 +16,9 @@ const ReviewInfoFormSchema = z.object({
     .max(500, "리뷰는 500자 이하로 작성해주세요."),
 });
 
+const ReviewInfoUpdateSchema = ReviewInfoFormSchema.partial();
 export type ReviewInfoFormSchema = z.infer<typeof ReviewInfoFormSchema>;
+export type ReviewInfoUpdateSchema = z.infer<typeof ReviewInfoUpdateSchema>;
 
 export function useReviewInfoForm(
   initialValues?: Partial<ReviewInfoFormSchema>,

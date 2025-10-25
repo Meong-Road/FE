@@ -84,19 +84,19 @@ export const FormRatingInput = forwardRef<
       </div>
 
       {/* 선택된 점수 표시 */}
-      {value && (
-        <p className="text-center text-sm text-zinc-600">
-          {value === 5
-            ? "최고예요! 💕"
-            : value === 4
-              ? "좋아요! 😊"
-              : value === 3
-                ? "괜찮아요 😐"
-                : value === 2
+      <p className="text-center text-sm text-zinc-600">
+        {value === 5
+          ? "최고예요! 😍"
+          : value === 4
+            ? "좋아요! 😊"
+            : value === 3
+              ? "괜찮아요 😐"
+              : value === 2
+                ? "아쉬워요 🤨"
+                : value === 1
                   ? "별로예요 😞"
-                  : "아쉬워요 😢"}
-        </p>
-      )}
+                  : "이 모임, 어떠셨나요?"}
+      </p>
     </div>
   );
 });

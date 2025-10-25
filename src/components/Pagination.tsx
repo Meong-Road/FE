@@ -93,9 +93,10 @@ export function Pagination({
     goToNext,
   } = usePagination({ currentPage, totalPages, scroll });
 
-  if (totalPages <= 1) {
-    return null;
-  }
+  // //주석 처리하면 페이지네이션 무조건 표시
+  // if (totalPages <= 1) {
+  //   return null;
+  // }
 
   return (
     <UIPagination className="my-12">

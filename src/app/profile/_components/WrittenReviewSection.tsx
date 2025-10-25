@@ -1,67 +1,10 @@
 "use client";
 
-import {
-  EmptyState,
-  ErrorState,
-  ListContainer,
-  LoadingState,
-  SectionWrapper,
-} from "@/components/common";
-import { ReviewCard } from "@/components/ReviewCard";
+import ReviewList from "@/app/reviews/_components/ReviewList/ReviewList";
+import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
+import { Pagination } from "@/components/Pagination";
+import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { useGetMyReviews } from "@/hooks/queries/reviews";
-import { ReviewType } from "@/lib/types/reviews";
-import { processReviewInfo } from "@/lib/utils/review";
-
-const ReviewItem = ({
-  review,
-}: {
-  review: ReturnType<typeof processReviewInfo>;
-}) => (
-  <ReviewCard>
-    <div className="flex h-full flex-row items-center gap-6">
-      {/* 모임 이미지 */}
-      <ReviewCard.GatheringImage image={review.gathering.image} />
-
-      {/* 리뷰 내용 */}
-      <div className="flex h-full flex-grow flex-col justify-between gap-y-11 py-2">
-        <div className="flex items-start justify-between gap-x-2">
-          <div className="flex flex-col gap-y-4">
-            {/* 헤더: 유저 정보 + 평점 + 작성날짜 */}
-            <ReviewCard.Header
-              profileImage={review.user?.image || ""}
-              reviewId={review.id}
-              score={review.score}
-              nickName={review.user?.nickName || ""}
-              createdAt={review.createdAt}
-              reviewAuthorId={review.userId}
-            />
-
-            {/* 본문: 모임 정보 + 코멘트 */}
-            <ReviewCard.Body
-              gatheringName={review.gathering.name}
-              location={review.gathering.location}
-              days={review.formattedDays}
-              comment={review.comment}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </ReviewCard>
-);
-
-const ReviewList = ({ reviews }: { reviews: ReviewType[] }) => {
-  if (reviews.length === 0)
-    return <EmptyState message="아직 등록된 리뷰가 없어요" minHeight="200px" />;
-
-  return (
-    <ListContainer>
-      {reviews.map((review) => (
-        <ReviewItem key={review.id} review={processReviewInfo(review)} />
-      ))}
-    </ListContainer>
-  );
-};
 
 export default function WrittenReviewSection() {
   const {
@@ -70,18 +13,25 @@ export default function WrittenReviewSection() {
     isError,
   } = useGetMyReviews({ page: 0, size: 10 });
 
-  if (isPending)
-    return (
-      <LoadingState message="리뷰를 불러오고 있어요..." minHeight="200px" />
-    );
+  if (isPending) {
+    return <ReviewCardSkeletonList count={3} />;
+  }
   if (!reviews || isError)
     return (
       <ErrorState message="리뷰를 불러오는데 실패했습니다." minHeight="200px" />
     );
 
+  if (reviews.content.length === 0)
+    return <EmptyState message="작성한 리뷰가 없어요" minHeight="200px" />;
+
   return (
     <SectionWrapper>
       <ReviewList reviews={reviews.content} />
+      <Pagination
+        currentPage={reviews.page || 0}
+        totalPages={reviews.totalPages || 0}
+        scroll={true}
+      />
     </SectionWrapper>
   );
 }

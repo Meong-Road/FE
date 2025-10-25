@@ -1,3 +1,4 @@
+import { EmptyState, ListContainer } from "@/components/common";
 import { ReviewCard } from "@/components/ReviewCard";
 import { ReviewType } from "@/lib/types/reviews";
 import { formatDays } from "@/lib/utils/dateTime";
@@ -7,26 +8,18 @@ interface ReviewListProps {
 }
 
 export default function ReviewList({ reviews }: ReviewListProps) {
-  if (reviews.length === 0) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500">해당 지역의 리뷰가 없습니다.</p>
-      </div>
-    );
-  }
-
   return (
-    <ol className="flex w-full flex-col gap-3 sm:gap-4">
+    <ListContainer>
       {reviews.map((review) => (
         <ReviewCard key={review.id}>
           <div className="flex w-full flex-col justify-between gap-4 sm:flex-row sm:gap-8">
             <ReviewCard.GatheringImage image={review.gathering.image} />
             <div className="flex w-full flex-1 flex-col justify-between">
               <ReviewCard.Header
-                profileImage={review.user.image}
+                profileImage={review.user?.image || null}
                 reviewId={review.id}
                 score={review.score}
-                nickName={review.user.nickName}
+                nickName={review.user?.nickName || "사용자"}
                 createdAt={review.createdAt}
                 reviewAuthorId={review.userId}
               />
@@ -40,6 +33,6 @@ export default function ReviewList({ reviews }: ReviewListProps) {
           </div>
         </ReviewCard>
       ))}
-    </ol>
+    </ListContainer>
   );
 }

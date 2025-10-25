@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
+import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
 import { Pagination } from "@/components/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { useGetReviews } from "@/hooks/queries/reviews";
@@ -26,23 +27,26 @@ export default function ReviewListContainer() {
   });
 
   if (isPending) {
-    return <ReviewCardSkeletonList count={10} />;
+    return <ReviewCardSkeletonList count={3} />;
   }
 
-  if (isError) {
+  if (!reviews || isError)
     return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-red-500">리뷰를 불러오는 중 오류가 발생했습니다.</p>
-      </div>
+      <ErrorState message="리뷰를 불러오는데 실패했습니다." minHeight="200px" />
     );
+
+  if (reviews.content.length === 0) {
+    return <EmptyState message="해당 지역의 리뷰가 없어요" minHeight="200px" />;
   }
 
   return (
     <>
-      <ReviewList reviews={reviews.result?.content || []} />
+      <SectionWrapper>
+        <ReviewList reviews={reviews.content} />
+      </SectionWrapper>
       <Pagination
-        currentPage={reviews.result?.page || 0}
-        totalPages={reviews.result?.totalPages || 0}
+        currentPage={reviews.page || 0}
+        totalPages={reviews.totalPages || 2}
         scroll={true}
       />
     </>

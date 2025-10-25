@@ -32,7 +32,9 @@ export default function QuickCreatePage() {
   const handleSubmit = async (
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
-    if (isQuickGatheringForm(data)) {
+    if (!isQuickGatheringForm(data)) throw new Error(); // 얼리 리턴 적용
+
+    try {
       const apiData: CreateQuickGatheringReq = {
         type: EGatheringType.QUICK,
         name: data.name,
@@ -52,11 +54,9 @@ export default function QuickCreatePage() {
         toast.success("번개 모임 생성에 성공했습니다");
         router.push(`${PATH.REGULAR}/${response.result.id}`);
       }
-      try {
-      } catch (error) {
-        console.error("번개 모임 생성 실패", error);
-        toast.error("번개 모임 생성 중 오류가 발생했습니다");
-      }
+    } catch (error) {
+      console.error("번개 모임 생성 실패", error);
+      toast.error("번개 모임 생성 중 오류가 발생했습니다");
     }
   };
 

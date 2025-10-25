@@ -32,31 +32,31 @@ export default function RegularCreatePage() {
   const handleSubmit = async (
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
-    if (isRegularGatheringForm(data)) {
-      try {
-        const apiData: CreateRegularGatheringReq = {
-          type: EGatheringType.REGULAR,
-          name: data.name,
-          description: data.description,
-          days: data.days,
-          location: data.location,
-          capacity: parseInt(data.capacity, 10),
-          image: data.image ? URL.createObjectURL(data.image) : null, // TODO 이미지 업로드 API 나온 후 수정
-          isPetRequired: data.isPetRequired,
-          registrationEnd: data.registrationEnd,
-        };
+    if (!isRegularGatheringForm(data)) throw new Error(); // 얼리 리턴 적용
 
-        const response = await gatheringApi.postGathering(apiData);
+    try {
+      const apiData: CreateRegularGatheringReq = {
+        type: EGatheringType.REGULAR,
+        name: data.name,
+        description: data.description,
+        days: data.days,
+        location: data.location,
+        capacity: parseInt(data.capacity, 10),
+        image: data.image ? URL.createObjectURL(data.image) : null, // TODO 이미지 업로드 API 나온 후 수정
+        isPetRequired: data.isPetRequired,
+        registrationEnd: data.registrationEnd,
+      };
 
-        if (response.success) {
-          storageUtils.removeItem(`gathering-draft-regular`);
-          toast.success("정기 모임 생성에 성공했습니다");
-          router.push(`${PATH.REGULAR}/${response.result.id}`);
-        }
-      } catch (error) {
-        console.error("정기 모임 생성 실패", error);
-        toast.error("정기 모임 생성 중 오류가 발생했습니다");
+      const response = await gatheringApi.postGathering(apiData);
+
+      if (response.success) {
+        storageUtils.removeItem(`gathering-draft-regular`);
+        toast.success("정기 모임 생성에 성공했습니다");
+        router.push(`${PATH.REGULAR}/${response.result.id}`);
       }
+    } catch (error) {
+      console.error("정기 모임 생성 실패", error);
+      toast.error("정기 모임 생성 중 오류가 발생했습니다");
     }
   };
 

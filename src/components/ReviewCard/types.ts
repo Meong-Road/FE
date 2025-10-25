@@ -60,5 +60,4 @@ export interface ReviewCardBodyProps {
   gatheringName: ReviewType["gathering"]["name"];
   location: ReviewType["gathering"]["location"];
   days: string;
-  comment: ReviewType["comment"];
 }

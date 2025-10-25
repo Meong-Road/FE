@@ -13,7 +13,7 @@ export function ReviewCard({ className, children }: ReviewCardProps) {
   return (
     <li
       className={cn(
-        "relative list-none rounded-4xl border border-[#ddd] bg-white p-6",
+        "relative list-none rounded-3xl border border-[#ddd] bg-white p-6 sm:rounded-4xl",
         className,
       )}
     >

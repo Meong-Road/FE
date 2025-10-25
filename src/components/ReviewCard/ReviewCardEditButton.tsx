@@ -26,7 +26,7 @@ export function ReviewCardEditButton({
       variant="default"
       onClick={handleEdit}
       disabled={disabled}
-      className={`bg-primary/50 text-primary-foreground hover:bg-primary group-hover:bg-primary active:bg-primary/75 absolute top-4 right-4 h-8 w-8 cursor-pointer rounded-full transition-all hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:bg-gray-300 ${className || ""}`}
+      className={`bg-primary/50 text-primary-foreground hover:bg-primary group-hover:bg-primary active:bg-primary/75 absolute top-50 right-3 h-8 w-8 cursor-pointer rounded-full transition-[opacity,transform,background-color] hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:bg-gray-300 sm:top-4 sm:right-4 ${className || ""}`}
     >
       <Pencil className="size-3.5" />
       <span className="sr-only">리뷰 수정</span>

@@ -18,13 +18,13 @@ export function Header({
   const { user } = useAuth();
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
+    <>
+      <div className="flex items-center gap-3 sm:mb-3">
         <UserAvatar image={profileImage} />
 
         <div className="flex-1 flex-col items-center gap-2 overflow-hidden">
           <UserName nickName={nickName} />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
             <Rating score={score} />
             <CreatedAt date={createdAt} />
           </div>
@@ -33,6 +33,6 @@ export function Header({
       {user?.id === reviewAuthorId && (
         <ReviewCardEditButton reviewId={reviewId} />
       )}
-    </div>
+    </>
   );
 }

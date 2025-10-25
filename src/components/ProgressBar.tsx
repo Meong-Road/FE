@@ -19,7 +19,7 @@ export default function ProgressBar({
       )}
     >
       <div
-        className="from-secondary to-primary absolute h-full rounded-full bg-gradient-to-r transition-[width] duration-200"
+        className="from-secondary to-primary absolute h-full rounded-full bg-gradient-to-r transition-[width] duration-500 ease-out"
         style={{ width: `${percentage}%` }}
       ></div>
       {max && (

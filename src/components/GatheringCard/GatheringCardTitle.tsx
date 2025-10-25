@@ -8,6 +8,13 @@ interface GatheringCardTitleProps {
 export function GatheringCardTitle({ className }: GatheringCardTitleProps) {
   const { gathering } = useGatheringStateContext();
   return (
-    <h4 className={cn("text-xl font-semibold", className)}>{gathering.name}</h4>
+    <h4
+      className={cn(
+        "line-clamp-1 text-lg font-semibold text-zinc-900 sm:text-xl",
+        className,
+      )}
+    >
+      {gathering.name}
+    </h4>
   );
 }

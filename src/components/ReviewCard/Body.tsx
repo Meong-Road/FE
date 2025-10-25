@@ -11,9 +11,9 @@ export function Body({
 }: ReviewCardBodyProps) {
   return (
     <div className="flex flex-col gap-2.5">
+      <Comment>{comment}</Comment>
       <GatheringTitle>{gatheringName}</GatheringTitle>
       <GatheringInfo location={location} days={days} />
-      <Comment>{comment}</Comment>
     </div>
   );
 }

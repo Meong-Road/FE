@@ -17,7 +17,7 @@ export function PetCard({ children, className }: PetCardProps) {
     <Card
       className={`group bg-card border-primary/30 hover:border-primary/50 relative overflow-hidden border-2 transition-all duration-300 select-none hover:shadow-md ${className || ""}`}
     >
-      <CardContent className="p-5">{children}</CardContent>
+      <CardContent className="px-0 py-5">{children}</CardContent>
     </Card>
   );
 }

@@ -18,7 +18,7 @@ export default function Profile() {
       <ProfileHeader />
       <ProfileInfo user={user} />
       <ProfileTabs />
-      <section className="mt-8">
+      <section className="mt-6 sm:mt-8">
         <ProfileTabContent />
       </section>
     </section>

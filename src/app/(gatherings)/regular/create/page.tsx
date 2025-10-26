@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import CreateGatheringForm from "@/components/CreateGatheringForm/CreateGatheringForm";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/hooks/gathering/schemas";
 import { useGatheringFormAccess } from "@/hooks/gathering/useGatheringFormAccess";
 import { usePostGathering } from "@/hooks/queries/gatherings/usePostGathering";
+import { useUploadGatheringImage } from "@/hooks/queries/imageUpload";
 import { PATH } from "@/lib/constants/path";
 import {
   CreateRegularGatheringType,
@@ -24,6 +26,7 @@ export default function RegularCreatePage() {
   });
 
   const postGatheringMutation = usePostGathering();
+  const uploadImageMutation = useUploadGatheringImage();
 
   const handleCancel = () => {
     router.back();
@@ -34,19 +37,35 @@ export default function RegularCreatePage() {
   ) => {
     if (!isRegularGatheringForm(data)) throw new Error(); // 얼리 리턴 적용
 
-    const apiData: CreateRegularGatheringType = {
-      type: EGatheringType.REGULAR,
-      name: data.name,
-      description: data.description,
-      days: data.days,
-      location: data.location,
-      capacity: parseInt(data.capacity, 10),
-      image: data.image ? URL.createObjectURL(data.image) : null, // TODO 이미지 업로드 API 나온 후 수정
-      isPetRequired: data.isPetRequired,
-      registrationEnd: data.registrationEnd,
-    };
+    try {
+      let imageUrl: string | null = null;
 
-    postGatheringMutation.mutate(apiData);
+      if (data.image instanceof File) {
+        const response = await uploadImageMutation.mutateAsync(data.image);
+        if (response?.result?.imageUrl) {
+          imageUrl = response.result.imageUrl;
+        }
+      } else {
+        imageUrl = data.image;
+      }
+
+      const apiData: CreateRegularGatheringType = {
+        type: EGatheringType.REGULAR,
+        name: data.name,
+        description: data.description,
+        days: data.days,
+        location: data.location,
+        capacity: parseInt(data.capacity, 10),
+        image: imageUrl,
+        isPetRequired: data.isPetRequired,
+        registrationEnd: data.registrationEnd,
+      };
+
+      postGatheringMutation.mutate(apiData);
+    } catch (error) {
+      console.error("오류가 발생했습니다", error);
+      toast.error("오류가 발생했습니다");
+    }
   };
 
   return (

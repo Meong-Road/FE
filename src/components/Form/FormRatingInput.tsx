@@ -79,7 +79,9 @@ export const FormRatingInput = forwardRef<
                 "size-12 transition-colors duration-300",
                 isDecreasingScore(score)
                   ? isIncreasingScore(score)
-                    ? "text-primary/80" // 호버 중
+                    ? score !== value || hoveredScore === score
+                      ? "text-primary/80"
+                      : "text-primary" // 호버 중
                     : "text-primary" // 선택됨
                   : "fill-slate-200 text-slate-200", // 빈 하트
               )}

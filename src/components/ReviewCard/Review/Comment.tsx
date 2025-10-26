@@ -28,7 +28,7 @@ export function Comment({ children }: ReviewCardCommentProps) {
         className={cn(
           "text-base leading-relaxed text-zinc-700 transition-all duration-300 ease-in-out sm:text-base",
           !isExpanded && "line-clamp-2 sm:line-clamp-1",
-          showButton && "mb-2 sm:mb-0",
+          showButton && "mb-3 sm:mb-0",
         )}
       >
         {children}

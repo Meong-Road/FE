@@ -70,3 +70,9 @@ export interface GetUserReviewByGatheringReq {
   gatheringId: number;
 }
 export type GetUserReviewByGatheringRes = Response<ReviewType | null>;
+
+// GET /meong-road/reviews/reviewable-gatherings - 리뷰 작성 가능한 모임 목록 조회
+export type GetReviewableGatheringsReq = PaginationReq;
+export type GetReviewableGatheringsRes = Response<
+  PaginatedRes<ReviewType["gathering"] & { joinedAt: string }>
+>;

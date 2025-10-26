@@ -10,19 +10,11 @@ export function usePostReview() {
 
   return useMutation({
     mutationFn: (data: PostReviewReq) => REVIEW_API.postReview(data),
-    onSuccess: (_, variables) => {
-      // 리뷰 작성 후 작성 여부 캐시 무효화
+    onSuccess: () => {
+      // 모든 리뷰 관련 쿼리 무효화
+      // (myReviews, reviewableGatherings, userReview, list 등 모두 포함)
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.reviews.userReview(variables.gatheringId)],
-      });
-      // 내 리뷰 목록 무효화
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.reviews.myReviews({}),
-      });
-
-      // 특정 모임 리뷰 작성 여부조회 캐시 무효화
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.reviews.userReview(variables.gatheringId ?? 0),
+        queryKey: QUERY_KEYS.reviews.all(),
       });
     },
   });

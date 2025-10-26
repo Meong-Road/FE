@@ -1,5 +1,6 @@
 export { REVIEWS_QUERY_KEYS } from "./queryKey";
 export { useDeleteReview } from "./useDeleteReview";
+export { useGetInfiniteReviewableGatherings } from "./useGetInfiniteReviewableGatherings";
 export { useGetMyReviews } from "./useGetMyReviews";
 export { useGetReview } from "./useGetReview";
 export { useGetReviewCheck } from "./useGetReviewCheck";

@@ -5,6 +5,8 @@ import {
   DeleteReviewRes,
   GetMyReviewsReq,
   GetMyReviewsRes,
+  GetReviewableGatheringsReq,
+  GetReviewableGatheringsRes,
   GetReviewCheckReq,
   GetReviewCheckRes,
   GetReviewDashboardReq,
@@ -71,6 +73,15 @@ const REVIEW_API = {
   getUserReviewByGathering: ({ gatheringId }: GetUserReviewByGatheringReq) => {
     return customFetch.get<GetUserReviewByGatheringRes>(
       `${API_ENDPOINTS.REVIEW}/user-review/${gatheringId}`,
+    );
+  },
+  getReviewableGatherings: ({
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: GetReviewableGatheringsReq) => {
+    return customFetch.get<GetReviewableGatheringsRes>(
+      `${API_ENDPOINTS.REVIEW}/reviewable-gatherings?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
   postReview: (data: PostReviewReq) => {

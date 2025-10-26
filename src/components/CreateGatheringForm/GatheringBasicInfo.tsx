@@ -1,19 +1,27 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
 
 import Dog from "@/assets/images/dog.svg";
 
 import { Form } from "../Form";
 
 export default function GatheringBasicInfo() {
+  const form = useFormContext();
+  const currentImage = form.watch("image");
+
   return (
     <section className="flex gap-6">
       {/* 모임 대표사진 */}
       <Form.Field
-        name="photo"
-        render={({ field: { onChange, value, ...field } }) => (
+        name="image"
+        render={({ field: { onChange, value } }) => (
           <Form.Item className="bg-card flex h-[357px] w-[456px] flex-col justify-center rounded-xl border-1 border-[#bbb]">
             <Form.Control>
-              <Form.ImageUpload onChange={onChange} value={value} {...field}>
+              <Form.ImageUpload
+                onChange={onChange}
+                value={value as File | null}
+                existingImageUrl={currentImage as string}
+              >
                 <Dog className="w-20" />
               </Form.ImageUpload>
             </Form.Control>

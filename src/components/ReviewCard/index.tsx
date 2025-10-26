@@ -1,7 +1,6 @@
-export { Body } from "./Body";
+export { Divider } from "./common";
 export { GatheringImage, GatheringInfo, GatheringTitle } from "./Gathering";
-export { Header } from "./Header";
-export { Divider, Location, Profile } from "./Legacy";
+export { Profile } from "./Profile";
 export { Comment, CreatedAt, Rating } from "./Review";
 export { ReviewCard } from "./ReviewCard";
 export { UserAvatar, UserName } from "./User";

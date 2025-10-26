@@ -8,7 +8,7 @@ export function UserAvatar({ className, image }: ReviewCardUserAvatarProps) {
   return (
     <div
       className={cn(
-        "relative flex size-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-[1px] border-[#DDDDDD] sm:size-12",
+        "relative flex size-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-[1px] border-[#DDDDDD] sm:size-12",
         className,
       )}
     >

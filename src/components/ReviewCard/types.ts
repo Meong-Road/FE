@@ -44,20 +44,3 @@ export interface ReviewCardGatheringInfoProps {
   location: ReviewType["gathering"]["location"];
   days: string;
 }
-
-// Header
-export interface ReviewCardHeaderProps {
-  profileImage: ReviewType["user"]["image"];
-  nickName: ReviewType["user"]["nickName"];
-  score: ReviewType["score"];
-  createdAt: ReviewType["createdAt"];
-  reviewId: ReviewType["id"];
-  reviewAuthorId: ReviewType["userId"];
-}
-
-// Body
-export interface ReviewCardBodyProps {
-  gatheringName: ReviewType["gathering"]["name"];
-  location: ReviewType["gathering"]["location"];
-  days: string;
-}

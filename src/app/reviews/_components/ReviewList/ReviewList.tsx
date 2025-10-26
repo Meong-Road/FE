@@ -13,25 +13,38 @@ export default function ReviewList({ reviews }: ReviewListProps) {
       {reviews.map((review) => (
         <ReviewCard key={review.id} className="overflow-hidden p-0 sm:p-6">
           <div className="flex w-full flex-col justify-between gap-0 sm:flex-row sm:gap-6">
+            {/* 모임 이미지 */}
             <ReviewCard.GatheringImage image={review.gathering.image} />
-            <div className="flex w-full flex-col gap-3 p-6 sm:gap-4 sm:p-0 sm:py-2">
-              <ReviewCard.Header
-                profileImage={review.user?.image || null}
-                reviewId={review.id}
+
+            {/* 리뷰 콘텐츠 */}
+            <div className="flex w-full flex-1 flex-col gap-3 p-6 sm:gap-4 sm:p-0 sm:py-2">
+              {/* 프로필 (사용자 정보, 별점, 날짜) */}
+              <ReviewCard.Profile
+                user={review.user}
                 score={review.score}
-                nickName={review.user?.nickName || "사용자"}
-                createdAt={review.createdAt}
-                reviewAuthorId={review.userId}
+                date={review.createdAt}
               />
-              <div className="flex flex-col gap-3 px-2">
-                <ReviewCard.Body
-                  gatheringName={review.gathering.name}
+
+              {/* 모임 정보 (제목, 위치, 요일) */}
+              <div className="flex flex-col gap-1 sm:gap-2">
+                <ReviewCard.GatheringTitle>
+                  {review.gathering.name}
+                </ReviewCard.GatheringTitle>
+                <ReviewCard.GatheringInfo
                   location={review.gathering.location}
                   days={formatDays(review.gathering.days)}
                 />
-                <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>
               </div>
+
+              {/* 리뷰 내용 */}
+              <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>
             </div>
+
+            {/* 수정 버튼 (absolute) */}
+            <ReviewCard.EditButton
+              reviewId={review.id}
+              reviewAuthorId={review.userId}
+            />
           </div>
         </ReviewCard>
       ))}

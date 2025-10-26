@@ -1,9 +1,8 @@
 import { cn } from "@/lib/utils";
 
-import { Body } from "./Body";
+import { Divider } from "./common";
 import { GatheringImage, GatheringInfo, GatheringTitle } from "./Gathering";
-import { Header } from "./Header";
-import { Divider, Location, Profile } from "./Legacy";
+import { Profile } from "./Profile";
 import { Comment, CreatedAt, Rating } from "./Review";
 import { ReviewCardEditButton } from "./ReviewCardEditButton";
 import { ReviewCardProps } from "./types";
@@ -22,9 +21,8 @@ export function ReviewCard({ className, children }: ReviewCardProps) {
   );
 }
 
-// 조합
-ReviewCard.Header = Header;
-ReviewCard.Body = Body;
+// Profile 관련
+ReviewCard.Profile = Profile;
 
 // User 관련
 ReviewCard.UserAvatar = UserAvatar;
@@ -43,8 +41,8 @@ ReviewCard.GatheringInfo = GatheringInfo;
 // Action 관련
 ReviewCard.EditButton = ReviewCardEditButton;
 
-// 하위 호환성 (기존 API)
-ReviewCard.Profile = Profile;
-ReviewCard.Location = Location;
+// Common 관련
 ReviewCard.Divider = Divider;
+
+// 하위 호환성 (기존 API)
 ReviewCard.Image = GatheringImage;

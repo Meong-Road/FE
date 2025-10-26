@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-import ArrowDownIcon from "@/assets/icons/arrow-down.svg";
-import ArrowUpIcon from "@/assets/icons/arrow-up.svg";
 import { cn } from "@/lib/utils";
 
 import { ReviewCardCommentProps } from "../types";
@@ -28,7 +27,8 @@ export function Comment({ children }: ReviewCardCommentProps) {
         ref={textRef}
         className={cn(
           "text-base leading-relaxed text-zinc-700 transition-all duration-300 ease-in-out sm:text-base",
-          !isExpanded && "line-clamp-1",
+          !isExpanded && "line-clamp-2 sm:line-clamp-1",
+          showButton && "mb-2 sm:mb-0",
         )}
       >
         {children}
@@ -38,17 +38,17 @@ export function Comment({ children }: ReviewCardCommentProps) {
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className={cn(
-            "flex h-6 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500",
-            isExpanded && "self-center sm:self-end",
+            "transition-[opacity, background-color, color] absolute bottom-1.5 flex flex-shrink-0 items-center justify-center rounded-full px-0.5 text-zinc-300 opacity-50 duration-300 ease-in-out group-hover:opacity-100 hover:bg-zinc-100 hover:text-zinc-400 sm:static",
+            isExpanded && "self-center opacity-100 sm:self-end",
             !isExpanded && "self-center sm:self-start",
           )}
           aria-expanded={isExpanded}
           role="button"
         >
           {isExpanded ? (
-            <ArrowUpIcon className="size-6" />
+            <ChevronUp className="size-6" />
           ) : (
-            <ArrowDownIcon className="size-6" />
+            <ChevronDown className="size-6" />
           )}
         </button>
       )}

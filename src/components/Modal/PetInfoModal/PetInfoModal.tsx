@@ -80,6 +80,9 @@ export default function PetInfoModal() {
   // 모달이 열려있지 않으면 렌더링 안 함
   if (!isOpen || !type) return null;
 
+  // 펫 데이터를 가져오는 중이면 렌더링 안 함
+  if (isPetPending) return null;
+
   return (
     <Modal>
       <Modal.CloseBtn />

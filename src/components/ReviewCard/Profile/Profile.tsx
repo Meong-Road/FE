@@ -16,10 +16,10 @@ interface ProfileProps {
 
 export function Profile({ user, score, date }: ProfileProps) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 sm:gap-3">
       <UserAvatar image={user?.image || null} />
 
-      <div className="flex-1 flex-col items-center gap-2 overflow-hidden">
+      <div className="flex flex-col">
         <UserName nickName={user?.nickName || "익명"} />
         <div className="flex items-center gap-2">
           <Rating score={score} />

@@ -12,7 +12,8 @@ export function ReviewCard({ className, children }: ReviewCardProps) {
   return (
     <li
       className={cn(
-        "relative list-none rounded-3xl border border-[#ddd] bg-white p-6 sm:rounded-4xl",
+        "group relative list-none rounded-3xl border border-[#ddd] bg-white p-6 sm:rounded-4xl",
+        "transition-[shadow] duration-300 ease-in-out hover:shadow-md",
         className,
       )}
     >

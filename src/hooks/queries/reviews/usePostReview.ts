@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import REVIEW_API from "@/api/reviews";
 import { PostReviewReq } from "@/api/types/reviews";
-import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
 import { QUERY_KEYS } from "../queryKey";
 

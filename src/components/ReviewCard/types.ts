@@ -34,10 +34,12 @@ export interface ReviewCardCommentProps {
 // Gathering 관련
 export interface ReviewCardGatheringImageProps {
   image: string | null;
+  gatheringId: number;
 }
 
 export interface ReviewCardGatheringTitleProps {
   children: React.ReactNode;
+  gatheringId: number;
 }
 
 export interface ReviewCardGatheringInfoProps {

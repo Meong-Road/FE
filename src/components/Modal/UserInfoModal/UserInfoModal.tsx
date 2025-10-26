@@ -38,18 +38,8 @@ export default function UserInfoModal() {
   // 모달이 열려있지 않으면 렌더링 안 함
   if (!isOpen || !type || !userId) return null;
 
-  if (isUserPending) {
-    return (
-      <Modal>
-        <Modal.Title title="프로필 수정하기" />
-        <Modal.Content>
-          <div className="flex justify-center py-8">
-            <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2"></div>
-          </div>
-        </Modal.Content>
-      </Modal>
-    );
-  }
+  // 유저 데이터를 가져오는 중이면 렌더링 안 함
+  if (isUserPending) return null;
 
   return (
     <Modal>

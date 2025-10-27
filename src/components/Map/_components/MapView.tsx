@@ -12,8 +12,7 @@ interface Props {
 
 export default function MapView({ place }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
-
-  useKakaoMap({ mapRef, place });
+  const { resetMap } = useKakaoMap({ mapRef, place });
 
   return (
     <div className="relative">
@@ -26,7 +25,7 @@ export default function MapView({ place }: Props) {
       <button
         type="button"
         className="absolute bottom-5 left-6 z-1 rounded-full shadow"
-        // onClick={}
+        onClick={resetMap}
       >
         <ResetLocationIcon />
       </button>

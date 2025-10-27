@@ -18,7 +18,6 @@ export default function useKakaoMap({ mapRef, place }: Props) {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-
         const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
         const onMapClick = (latlng: kakao.maps.LatLng) => {
@@ -61,5 +60,18 @@ export default function useKakaoMap({ mapRef, place }: Props) {
     map.current.setCenter(latlng);
   }, [place]);
 
-  // return {};
+  const resetMap = () => {
+    if (!map.current || !marker.current) return;
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const locPosition = new window.kakao.maps.LatLng(lat, lng);
+
+      map.current!.setCenter(locPosition);
+      marker.current!.setPosition(locPosition);
+    });
+  };
+
+  return { resetMap };
 }

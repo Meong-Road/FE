@@ -3,16 +3,18 @@
 import { useRef } from "react";
 
 import ResetLocationIcon from "@/assets/icons/reset-location.svg";
+import { LocationType } from "@/lib/types/location";
 
 import useKakaoMap from "../_hooks/useKakaoMap";
 
 interface Props {
   place: kakao.maps.services.PlaceType | null;
+  setLocation: (loc: LocationType) => void;
 }
 
-export default function MapView({ place }: Props) {
+export default function MapView({ place, setLocation }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { resetMap } = useKakaoMap({ mapRef, place });
+  const { resetMap } = useKakaoMap({ mapRef, place, setLocation });
 
   return (
     <div className="relative">

@@ -1,13 +1,16 @@
 import { useEffect, useRef } from "react";
 
+import { LocationType } from "@/lib/types/location";
+
 import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
   mapRef: React.RefObject<HTMLDivElement | null>;
   place: kakao.maps.services.PlaceType | null;
+  setLocation: (loc: LocationType) => void;
 }
 
-export default function useKakaoMap({ mapRef, place }: Props) {
+export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
   const map = useRef<kakao.maps.Map | null>(null);
   const marker = useRef<kakao.maps.Marker | null>(null);
 
@@ -20,13 +23,24 @@ export default function useKakaoMap({ mapRef, place }: Props) {
         const lng = position.coords.longitude;
         const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
+        kakaoMapService.reverseGeocode(locPosition).then((place) => {
+          setLocation({
+            district: place.address,
+            latlng: { lat, lng },
+          });
+        });
+
         const onMapClick = (latlng: kakao.maps.LatLng) => {
           if (!marker.current) return;
 
           marker.current.setPosition(latlng);
 
           kakaoMapService.reverseGeocode(latlng).then((place) => {
-            console.log("ReverseGeocodePlace:", place);
+            // console.log("ReverseGeocodePlace:", place);
+            setLocation({
+              district: place.address,
+              latlng: { lat: latlng.getLat(), lng: latlng.getLng() },
+            });
           });
         };
 
@@ -41,7 +55,7 @@ export default function useKakaoMap({ mapRef, place }: Props) {
         marker.current = initialMarker;
       });
     });
-  }, [mapRef]);
+  }, [mapRef, setLocation]);
 
   useEffect(() => {
     if (!place || !map.current) return;
@@ -58,7 +72,12 @@ export default function useKakaoMap({ mapRef, place }: Props) {
     }
 
     map.current.setCenter(latlng);
-  }, [place]);
+
+    setLocation({
+      district: place.address_name,
+      latlng: { lat: Number(place.y), lng: Number(place.x) },
+    });
+  }, [place, setLocation]);
 
   const resetMap = () => {
     if (!map.current || !marker.current) return;
@@ -70,6 +89,13 @@ export default function useKakaoMap({ mapRef, place }: Props) {
 
       map.current!.setCenter(locPosition);
       marker.current!.setPosition(locPosition);
+
+      kakaoMapService.reverseGeocode(locPosition).then((place) => {
+        setLocation({
+          district: place.address,
+          latlng: { lat, lng },
+        });
+      });
     });
   };
 

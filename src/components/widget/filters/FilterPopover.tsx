@@ -3,9 +3,7 @@ import { useState } from "react";
 import { DateRange } from "react-day-picker";
 
 import Filter from "@/assets/icons/filter.svg";
-import { Radio } from "@/components/Form/FormRadio";
 import { Calendar } from "@/components/ui/calendar";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Popover,
   PopoverContent,
@@ -14,6 +12,8 @@ import {
 import { DAY_MAP_KR, DAY_OF_WEEK } from "@/lib/constants/date";
 import { EGatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
+
+import ClosedCheckbox from "./ClosedCheckbox";
 
 interface FilterPopoverProps {
   type: EGatheringType;
@@ -24,11 +24,14 @@ interface FilterPopoverTitleProps {
 }
 
 function FilterPopoverTitle({ title }: FilterPopoverTitleProps) {
-  return <div className="text-sm font-semibold">{title}</div>;
+  return <div className="font-semibold">{title}</div>;
 }
 
 export default function FilterPopover({ type }: FilterPopoverProps) {
   const [date, setDate] = useState<DateRange>();
+  const [dayOfWeek, setDayOfWeek] = useState<string[]>([]);
+  const [isClosed, setIsClosed] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange>();
 
   return (
     <Popover>
@@ -36,53 +39,47 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
         <Filter className="hidden size-4 sm:block" />
         상세 필터
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col gap-8 p-6" align="start">
-        <div className="flex flex-col gap-2">
-          <FilterPopoverTitle title="반려견" />
-          <Radio
-            className="flex flex-col gap-2 text-sm"
-            name="pet-condition"
-            options={[
-              {
-                id: "with-pet",
-                value: "with-pet",
-                label: "함께 산책할 반려견이 있어요",
-              },
-              {
-                id: "without-pet",
-                value: "without-pet",
-                label: "반려견 없이 참여하고 싶어요",
-              },
-            ]}
-          />
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Checkbox id="show-closed" />
-          <label htmlFor="show-closed" className="text-sm font-medium">
-            마감된 모임도 볼래요
-          </label>
-        </div>
+      <PopoverContent className="flex w-80 flex-col gap-10 p-6" align="start">
+        <ClosedCheckbox />
 
         {type === EGatheringType.QUICK && (
           <div className="flex flex-col gap-2">
-            <FilterPopoverTitle title="모임 날짜" />
-            <Calendar selected={date} onSelect={setDate} mode="range" />
+            <FilterPopoverTitle title="모임 가능한 날짜" />
+            <Calendar
+              selected={date}
+              onSelect={setDate}
+              mode="range"
+              className="w-full"
+            />
           </div>
         )}
 
         {type === EGatheringType.REGULAR && (
           <div className="flex flex-col gap-2">
-            <FilterPopoverTitle title="요일" />
-            <Radio
-              className="flex gap-x-1 text-sm"
-              name="day-of-week"
-              options={DAY_OF_WEEK.map((day) => ({
-                id: day,
-                value: day,
-                label: DAY_MAP_KR[day],
-              }))}
-            />
+            <FilterPopoverTitle title="모임 가능한 요일" />
+            <div className="grid grid-cols-7 gap-1.5">
+              {DAY_OF_WEEK.map((day) => (
+                <div key={day} className="flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    id={day}
+                    className="hidden"
+                    onClick={() => setDayOfWeek([...dayOfWeek, day])}
+                  />
+                  <label
+                    htmlFor={day}
+                    className={cn(
+                      "flex w-full items-center justify-center rounded-lg p-2",
+                      dayOfWeek.includes(day)
+                        ? "bg-primary font-medium text-white"
+                        : "bg-[#EEEEEE]",
+                    )}
+                  >
+                    {DAY_MAP_KR[day]}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </PopoverContent>

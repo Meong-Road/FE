@@ -58,7 +58,7 @@ export default function RegularCreatePage() {
         capacity: parseInt(data.capacity, 10),
         image: imageUrl,
         isPetRequired: data.isPetRequired,
-        registrationEnd: data.registrationEnd,
+        registrationEnd: `${data.registrationEnd}T23:59:59.999Z`,
       };
 
       postGatheringMutation.mutate(apiData);

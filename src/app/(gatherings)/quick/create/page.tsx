@@ -53,12 +53,12 @@ export default function QuickCreatePage() {
         type: EGatheringType.QUICK,
         name: data.name,
         description: data.description,
-        dateTime: data.dateTime,
+        dateTime: `${data.dateTime}:00.00Z`,
         location: data.location,
         capacity: parseInt(data.capacity, 10),
         image: imageUrl,
         isPetRequired: data.isPetRequired,
-        registrationEnd: data.registrationEnd,
+        registrationEnd: `${data.registrationEnd}:00.00Z`,
       };
 
       postGatheringMutation.mutate(apiData);

@@ -72,7 +72,7 @@ export interface CommonCreateGatheringType {
 // 번개모임 생성 요청
 export interface CreateQuickGatheringType extends CommonCreateGatheringType {
   type: EGatheringType.QUICK;
-  dateTime: { hour: number; minute: number };
+  dateTime: string;
 }
 
 // 정기모임 생성 요청

@@ -27,10 +27,18 @@ export const gatheringsHandlers = [
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
+    const location = url.searchParams.get("location");
     // TODO const sort = url.searchParams.get("sort");
 
+    console.log("page", page);
+    console.log("location", location);
+
+    const filtered = location
+      ? REGULAR_GATHERINGS.filter((g) => g.location === location)
+      : REGULAR_GATHERINGS;
+
     return HttpResponse.json(
-      createPaginatedRes(REGULAR_GATHERINGS, {
+      createPaginatedRes(filtered, {
         page: Number(page),
         size: Number(size),
       }),
@@ -41,10 +49,15 @@ export const gatheringsHandlers = [
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
+    const location = url.searchParams.get("location");
     // TODO const sort = url.searchParams.get("sort");
 
+    const filtered = location
+      ? QUICK_GATHERINGS.filter((g) => g.location === location)
+      : QUICK_GATHERINGS;
+
     return HttpResponse.json(
-      createPaginatedRes(QUICK_GATHERINGS, {
+      createPaginatedRes(filtered, {
         page: Number(page),
         size: Number(size),
       }),

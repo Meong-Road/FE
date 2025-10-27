@@ -10,12 +10,16 @@ import {
 
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
-export type GetRegularGatheringsReq = PaginationReq;
+export interface GatheringFilter {
+  location?: string;
+}
+
+export type GetRegularGatheringsReq = PaginationReq & GatheringFilter;
 export type GetRegularGatheringsRes = Response<
   PaginatedRes<RegularGatheringType>
 >;
 
-export type GetQuickGatheringsReq = PaginationReq;
+export type GetQuickGatheringsReq = PaginationReq & GatheringFilter;
 export type GetQuickGatheringsRes = Response<PaginatedRes<QuickGatheringType>>;
 
 export type GetGatheringReq = Pick<GatheringType, "id">;

@@ -7,13 +7,13 @@ import ResetLocationIcon from "@/assets/icons/reset-location.svg";
 import useKakaoMap from "../_hooks/useKakaoMap";
 
 interface Props {
-  input: string;
+  place: kakao.maps.services.PlaceType | null;
 }
 
-export default function KakaoMap({ input }: Props) {
+export default function MapView({ place }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const { resetMap } = useKakaoMap({ mapRef, input });
+  useKakaoMap({ mapRef, place });
 
   return (
     <div className="relative">
@@ -26,7 +26,7 @@ export default function KakaoMap({ input }: Props) {
       <button
         type="button"
         className="absolute bottom-5 left-6 z-1 rounded-full shadow"
-        onClick={resetMap}
+        // onClick={}
       >
         <ResetLocationIcon />
       </button>

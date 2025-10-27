@@ -1,20 +1,10 @@
-const DEFAULT_CENTER = {
-  // 서울시청 좌표
-  lat: 37.5666805,
-  lng: 126.9784147,
-};
-
 export const kakaoMapService = {
   /**
    * 초기 카카오 지도 생성
    * @param container 지도를 렌더링할 HTML 요소
    * @returns 지도 인스턴스
    */
-  createMap(container: HTMLDivElement) {
-    const center = new window.kakao.maps.LatLng(
-      DEFAULT_CENTER.lat,
-      DEFAULT_CENTER.lng,
-    );
+  createMap(container: HTMLDivElement, center: kakao.maps.LatLng) {
     return new window.kakao.maps.Map(container, { center, level: 3 });
   },
 
@@ -39,30 +29,6 @@ export const kakaoMapService = {
   },
 
   /**
-   * @returns: 장소 검색 서비스 인스턴스
-   */
-  createPlaces() {
-    return new window.kakao.maps.services.Places();
-  },
-
-  /**
-   * 마커 클릭 시 다른 마커들 제거하고 현재만 유지하는 이벤트 바인딩
-   * @param marker 이벤트를 바인딩할 마커
-   * @param markersRef 현재 마커 목록
-   */
-  bindMarkerClick(
-    marker: kakao.maps.Marker,
-    markersRef: React.RefObject<kakao.maps.Marker[]>,
-  ) {
-    window.kakao.maps.event.addListener(marker, "click", () => {
-      markersRef.current.forEach((m) => {
-        if (m !== marker) m.setMap(null);
-      });
-      markersRef.current = [marker];
-    });
-  },
-
-  /**
    * 지도 클릭 시 좌표를 callback으로 전달하는 이벤트 바인딩
    * @param map 이벤트를 바인딩할 지도 인스턴스
    * @param callback 클릭한 좌표를 처리할 함수
@@ -77,12 +43,91 @@ export const kakaoMapService = {
     });
   },
 
-  resetMap(
+  initializeMap(
     container: HTMLDivElement,
+    center: kakao.maps.LatLng,
     onMapClick: (latlng: kakao.maps.LatLng) => void,
   ) {
-    const map = this.createMap(container);
+    const map = this.createMap(container, center);
+    const marker = this.createMarker(map, center);
     this.bindMapClick(map, onMapClick);
-    return map;
+
+    return { map, marker };
+  },
+
+  mapKakaoPlaces(
+    data: kakao.maps.services.PlaceType[],
+  ): kakao.maps.services.PlaceType[] {
+    return data.map((place) => ({
+      address_name: place.address_name,
+      place_name: place.place_name,
+      road_address_name: place.road_address_name,
+      x: place.x,
+      y: place.y,
+    }));
+  },
+
+  /**
+   * 키워드로 장소 검색
+   * @param keyword 검색할 키워드
+   * @param ps 장소 검색 서비스 인스턴스
+   * @returns 검색 결과 어레이
+   */
+  searchAddr(
+    keyword: string,
+    ps: kakao.maps.services.Places,
+  ): Promise<kakao.maps.services.PlaceType[]> {
+    return new Promise((resolve) => {
+      ps.keywordSearch(keyword, (data, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          resolve(
+            this.mapKakaoPlaces(
+              data as unknown as kakao.maps.services.PlaceType[], // ?
+            ),
+          );
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  },
+
+  /**
+   * 좌표를 주소로
+   * @param latlng 주소로 변환할 좌표
+   * @returns 도로명/지번 주소 오브젝트
+   */
+  reverseGeocode(
+    latlng: kakao.maps.LatLng,
+  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> {
+    return new Promise((resolve) => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+
+      geocoder.coord2Address(
+        latlng.getLng(),
+        latlng.getLat(),
+        (result, status) => {
+          if (
+            status === window.kakao.maps.services.Status.OK &&
+            result.length > 0
+          ) {
+            const item = result[0];
+            resolve({
+              address: item.address?.address_name ?? "",
+              road_address: item.road_address?.address_name ?? "",
+              x: latlng.getLng().toString(),
+              y: latlng.getLat().toString(),
+            });
+          } else {
+            resolve({
+              address: "",
+              road_address: "",
+              x: latlng.getLng().toString(),
+              y: latlng.getLat().toString(),
+            });
+          }
+        },
+      );
+    });
   },
 };

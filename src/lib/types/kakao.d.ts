@@ -26,6 +26,7 @@ declare global {
       class Map {
         constructor(container: HTMLElement, options: unknown);
         setBounds(bounds: LatLngBounds): void;
+        setCenter(latlng: LatLng): void;
       }
 
       class Size {
@@ -52,12 +53,21 @@ declare global {
       namespace services {
         enum Status {
           OK = "OK",
+          ZERO_RESULT = "ZERO_RESULT",
           ERROR = "ERROR",
         }
 
-        interface PlaceSearchRes {
+        interface PlaceType {
           address_name: string;
           place_name: string;
+          road_address_name: string;
+          x: string;
+          y: string;
+        }
+
+        interface ReverseGeocodePlaceType {
+          address: string;
+          road_address: string;
           x: string;
           y: string;
         }
@@ -65,7 +75,7 @@ declare global {
         class Places {
           keywordSearch(
             keyword: string,
-            callback: (data: PlaceSearchRes[], status: Status) => void,
+            callback: (data: PlaceType[], status: Status) => void,
           ): void;
         }
 

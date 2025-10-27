@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import AddrSearchBar from "@/components/Map/_components/AddrSearchBar";
-import KakaoMap from "@/components/Map/_components/KakaoMap";
+import MapSearchBar from "@/components/Map/_components/MapSearchBar";
+import MapView from "@/components/Map/_components/MapView";
 
 export default function GatheringLocation() {
   const [input, setInput] = useState("");
+  const [places, setPlaces] = useState<kakao.maps.services.PlaceType[] | []>(
+    [],
+  );
+
+  // debouncing 전 테스트용
+  const top = places.length > 0 ? places[0] : null;
+  useEffect(() => {
+    if (places.length > 0) {
+      console.log("top", top);
+    }
+  }, [top]);
 
   return (
     <section>
-      <AddrSearchBar onSearch={setInput} />
-      <KakaoMap input={input} />
+      <MapSearchBar input={input} setInput={setInput} onSearch={setPlaces} />
+      <MapView place={top} />
     </section>
   );
 }

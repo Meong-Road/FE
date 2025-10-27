@@ -1,14 +1,26 @@
-import { useState } from "react";
 import { Search } from "lucide-react";
 
 import { Form } from "@/components/Form";
 
+import { usePlaceSearch } from "../_hooks/usePlaceSearch";
+
 interface Props {
-  onSearch: (input: string) => void;
+  input: string;
+  setInput: (value: string) => void;
+  onSearch: (results: kakao.maps.services.PlaceType[]) => void;
 }
 
-export default function AddrSearchBar({ onSearch }: Props) {
-  const [input, setInput] = useState("");
+export default function MapSearchBar({ input, setInput, onSearch }: Props) {
+  const { placeSearch } = usePlaceSearch();
+
+  const handleSearch = async () => {
+    const results = await placeSearch(input);
+    console.log("MapSearchBar:", results);
+
+    if (results) {
+      onSearch(results);
+    }
+  };
 
   return (
     <div className="mb-4 flex gap-2">
@@ -26,7 +38,7 @@ export default function AddrSearchBar({ onSearch }: Props) {
         />
         <button
           className="absolute top-1/2 right-4 -translate-y-1/2 text-[#737373]"
-          onClick={() => onSearch(input)}
+          onClick={handleSearch}
         >
           <Search size={20} />
         </button>

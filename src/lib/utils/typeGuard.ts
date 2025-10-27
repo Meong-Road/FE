@@ -1,3 +1,8 @@
+import {
+  QuickGatheringFormSchema,
+  RegularGatheringFormSchema,
+} from "@/hooks/gathering/schemas";
+
 import { SEOUL_DISTRICTS } from "../constants/location";
 import {
   GatheringType,
@@ -24,3 +29,15 @@ export const isLocationParamType = (
   if (location === null) return true;
   return SEOUL_DISTRICTS.some((l) => l === location);
 };
+
+export function isQuickGatheringForm(
+  data: QuickGatheringFormSchema | RegularGatheringFormSchema,
+): data is QuickGatheringFormSchema {
+  return "dataTime" in data;
+}
+
+export function isRegularGatheringForm(
+  data: QuickGatheringFormSchema | RegularGatheringFormSchema,
+): data is RegularGatheringFormSchema {
+  return "days" in data;
+}

@@ -10,9 +10,9 @@ export function useGetIsParticipating({
   enabled = true,
 }: GetIsParticipatingReq & { enabled?: boolean }) {
   return useQuery({
-    queryKey: QUERY_KEYS.gatherings.participating({ id }),
+    queryKey: QUERY_KEYS.gatherings.participation({ id }),
     queryFn: () => gatheringApi.getIsParticipating({ id }),
-    select: (data) => data.result,
+    select: (data) => data.result?.isParticipated ?? false,
     enabled,
   });
 }

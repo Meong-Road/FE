@@ -1,5 +1,10 @@
 import {
+  checkIsAfter,
+  checkIsBefore,
   formatDate,
+  formatDateShort,
+  formatDays,
+  getHoursBefore,
   getRegistrationDeadlineInfo,
   getTimeAgo,
 } from "./dateTime";
@@ -53,44 +58,28 @@ describe("dateTime", () => {
   });
 
   describe("getRegistrationDeadlineInfo", () => {
-    it("이미 마감된 경우 '모집 마감'와 'secondary'를 반환해야 한다", () => {
+    it("이미 마감된 경우 '모집 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T09:00:00"; // 1시간 전
       const result = getRegistrationDeadlineInfo(registrationEnd);
-
-      expect(result).toEqual({
-        text: "모집 마감",
-        variant: "secondary",
-      });
+      expect(result).toBe("모집 마감");
     });
 
-    it("마감까지 남은 시간이 1시간 이내인 경우, 'n분 후 마감'과 'primary'를 반환해야 한다", () => {
+    it("마감까지 남은 시간이 1시간 이내인 경우, 'n분 후 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T10:30:00"; // 30분 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
-
-      expect(result).toEqual({
-        text: "30분 후 마감",
-        variant: "primary",
-      });
+      expect(result).toBe("30분 후 마감");
     });
 
-    it("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 후 마감'과 'primary'를 반환해야 한다", () => {
+    it("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 후 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-02T09:00:00"; // 23시간 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
-
-      expect(result).toEqual({
-        text: "23시간 후 마감",
-        variant: "primary",
-      });
+      expect(result).toBe("23시간 후 마감");
     });
 
-    it("마감까지 남은 시간이 24시간 이상인 경우, 'n일 후 마감'과 'secondary'를 반환해야 한다", () => {
+    it("마감까지 남은 시간이 24시간 이상인 경우, 'n일 후 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-04T10:00:00"; // 3일 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
-
-      expect(result).toEqual({
-        text: "3일 후 마감",
-        variant: "secondary",
-      });
+      expect(result).toBe("3일 후 마감");
     });
   });
 
@@ -129,6 +118,86 @@ describe("dateTime", () => {
       const createdAt = "2025-09-24T10:00:00"; // 7일 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("2025.09.24");
+    });
+  });
+
+  describe("checkIsBefore", () => {
+    it("date와 dateToCompare보다 이전인 경우 true를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T09:00:00");
+      const dateToCompare1 = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsBefore(date, dateToCompare1);
+      expect(result1).toBe(true);
+      const result2 = checkIsBefore(date);
+      expect(result2).toBe(true);
+    });
+
+    it("date가 dateToCompare보다 이후인 경우 false를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T11:00:00");
+      const dateToCompare = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsBefore(date, dateToCompare);
+      expect(result1).toBe(false);
+      const result2 = checkIsBefore(date);
+      expect(result2).toBe(false);
+    });
+
+    it("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsBefore(date, date);
+      expect(result1).toBe(false);
+      const result2 = checkIsBefore(date);
+      expect(result2).toBe(false);
+    });
+  });
+
+  describe("checkIsAfter", () => {
+    it("date가 dateToCompare보다 이후인 경우 true를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T11:00:00");
+      const dateToCompare = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsAfter(date, dateToCompare);
+      expect(result1).toBe(true);
+      const result2 = checkIsAfter(date);
+      expect(result2).toBe(true);
+    });
+
+    it("date와 dateToCompare보다 더 이전인 경우 false를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T09:00:00");
+      const dateToCompare1 = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsAfter(date, dateToCompare1);
+      expect(result1).toBe(false);
+      const result2 = checkIsAfter(date);
+      expect(result2).toBe(false);
+    });
+
+    it("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
+      const date = new Date("2025-10-01T10:00:00");
+      const result1 = checkIsAfter(date, date);
+      expect(result1).toBe(false);
+      const result2 = checkIsAfter(date);
+      expect(result2).toBe(false);
+    });
+  });
+
+  describe("getHoursBefore", () => {
+    it("3시간 전을 반환해야 한다", () => {
+      const date = new Date("2025-10-01T10:00:00");
+      const result = getHoursBefore(date, 3);
+      expect(result).toEqual(new Date("2025-10-01T07:00:00"));
+    });
+  });
+
+  describe("formatDateShort", () => {
+    it("날짜를 올바른 형식으로 포맷해야 한다", () => {
+      const date = "2025-10-01T10:00:00";
+      const result = formatDateShort(date);
+      expect(result).toBe("2025.10.01");
+    });
+  });
+
+  describe("formatDays", () => {
+    it("요일 배열을 올바른 형식으로 포맷해야 한다", () => {
+      const days = ["MON", "WED", "FRI"];
+      const result = formatDays(days);
+      expect(result).toBe("월, 수, 금");
     });
   });
 });

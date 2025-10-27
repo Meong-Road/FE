@@ -1,19 +1,20 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-
+import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
 import { Pagination } from "@/components/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { useGetReviews } from "@/hooks/queries/reviews";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
+import { SEOUL_ALL } from "@/lib/constants/location";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { parseLocationParam } from "@/lib/utils/param";
 
 import ReviewList from "./ReviewList";
 
 export default function ReviewListContainer() {
-  const searchParams = useSearchParams();
-  const location = parseLocationParam(searchParams.get("location"));
-  const page = Number(searchParams.get("page")) ?? 0;
+  const Params = useSearchParamsState({ location: SEOUL_ALL, page: "0" });
+  const location = parseLocationParam(Params.location);
+  const page = Number(Params.page);
 
   const {
     data: reviews,
@@ -26,23 +27,31 @@ export default function ReviewListContainer() {
   });
 
   if (isPending) {
-    return <ReviewCardSkeletonList count={10} />;
+    return <ReviewCardSkeletonList count={3} />;
   }
 
-  if (isError) {
+  if (!reviews || isError)
     return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-red-500">리뷰를 불러오는 중 오류가 발생했습니다.</p>
-      </div>
+      <ErrorState message="리뷰를 불러오는데 실패했습니다." minHeight="200px" />
+    );
+
+  if (location && reviews.content.length === 0) {
+    return (
+      <EmptyState
+        message={`${location}에 등록된 리뷰가 없어요`}
+        minHeight="300px"
+      />
     );
   }
 
   return (
     <>
-      <ReviewList reviews={reviews.result?.content || []} />
+      <SectionWrapper>
+        <ReviewList reviews={reviews.content} />
+      </SectionWrapper>
       <Pagination
-        currentPage={reviews.result?.page || 0}
-        totalPages={reviews.result?.totalPages || 0}
+        currentPage={reviews.page || 0}
+        totalPages={reviews.totalPages || 2}
         scroll={true}
       />
     </>

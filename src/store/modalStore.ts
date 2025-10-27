@@ -41,7 +41,8 @@ interface ReviewInfoModalStoreProps {
   isOpen: boolean;
   modalType: ReviewInfoModalType;
   reviewId?: number; // 편집 모드일 때 사용할 리뷰 ID
-  openModal: (type: ReviewInfoModalType, reviewId?: number) => void;
+  gatheringId?: number; // 작성 모드일 때 사용할 모임 ID
+  openModal: (type: ReviewInfoModalType, idOrGatheringId?: number) => void;
   closeModal: () => void;
 }
 export const useReviewInfoModalStore = create<ReviewInfoModalStoreProps>(
@@ -49,10 +50,21 @@ export const useReviewInfoModalStore = create<ReviewInfoModalStoreProps>(
     isOpen: false,
     modalType: null as ReviewInfoModalType,
     reviewId: undefined,
-    openModal: (type, reviewId?) =>
-      set({ isOpen: true, modalType: type, reviewId }),
+    gatheringId: undefined,
+    openModal: (type, idOrGatheringId?) => {
+      if (type === "add-review") {
+        set({ isOpen: true, modalType: type, gatheringId: idOrGatheringId });
+      } else {
+        set({ isOpen: true, modalType: type, reviewId: idOrGatheringId });
+      }
+    },
     closeModal: () =>
-      set({ isOpen: false, modalType: null, reviewId: undefined }),
+      set({
+        isOpen: false,
+        modalType: null,
+        reviewId: undefined,
+        gatheringId: undefined,
+      }),
   }),
 );
 
@@ -72,3 +84,11 @@ export const useAuthRequiredModalStore = create<AuthRequiredModalStoreProps>(
     closeModal: () => set({ isOpen: false, redirectUrl: "" }),
   }),
 );
+
+// 모든 모달을 닫는 통합 함수
+export const closeAllModals = () => {
+  usePetInfoModalStore.getState().closeModal();
+  useUserInfoModalStore.getState().closeModal();
+  useReviewInfoModalStore.getState().closeModal();
+  useAuthRequiredModalStore.getState().closeModal();
+};

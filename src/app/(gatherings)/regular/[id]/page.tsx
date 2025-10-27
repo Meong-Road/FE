@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { useGetGatheringDetail } from "@/hooks/queries/gatherings";
 import { PATH } from "@/lib/constants/path";
+import { EGatheringType } from "@/lib/types/gatherings";
 import { isRegularGathering } from "@/lib/utils/typeGuard";
 
 import GatheringInfoSection from "../../quick/[id]/_components/GatheringInfo/GatheringInfoSection";
@@ -21,7 +22,7 @@ export default function RegularGatheringDetailPage() {
   if (!data.result) return <div>데이터가 없습니다.</div>;
 
   if (!isRegularGathering(data.result)) {
-    router.push(PATH.QUICK_DETAIL(id as string));
+    router.push(PATH.DETAIL(id as string, EGatheringType.REGULAR));
     return;
   }
 

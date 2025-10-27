@@ -1,45 +1,63 @@
 "use client";
-import { Form } from "@/components/Form";
-import { Button } from "@/components/ui/button";
+
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import { gatheringApi } from "@/api/gatherings";
+import CreateGatheringForm from "@/components/CreateGatheringForm/CreateGatheringForm";
 import {
+  QuickGatheringFormSchema,
   RegularGatheringFormSchema,
-  useRegularGatheringForm,
-} from "@/hooks/gathering/useRegularGatheringForm";
-import { DAY_MAP_KR, DAY_OF_WEEK } from "@/lib/constants/date";
-import { cn } from "@/lib/utils";
-
-import Dog from "../../../../assets/images/dog.svg";
-
-interface RadioOptionType {
-  id: string;
-  label: string;
-  value: boolean;
-  color: string;
-}
-
-const PET_REQUIRED_OPTIONS: RadioOptionType[] = [
-  {
-    id: "optional",
-    label: "반려견 없이도 참여 가능해요",
-    value: false,
-    color: "#edf4fb",
-  },
-  {
-    id: "required",
-    label: "반려견이 함께 해야 해요",
-    value: true,
-    color: "#edf4fb",
-  },
-];
+} from "@/hooks/gathering/schemas";
+import { useGatheringFormAccess } from "@/hooks/gathering/useGatheringFormAccess";
+import { PATH } from "@/lib/constants/path";
+import {
+  CreateRegularGatheringReq,
+  EGatheringType,
+} from "@/lib/types/gatherings";
+import { storageUtils } from "@/lib/utils/storage";
+import { isRegularGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function RegularCreatePage() {
-  const form = useRegularGatheringForm();
-  const handleCancle = () => {
-    // TODO : 취소 로직 추가
+  const router = useRouter();
+  useGatheringFormAccess({
+    allowedType: "regular",
+    redirectPath: `${PATH.REGULAR}`,
+  });
+
+  const handleCancel = () => {
+    router.back();
   };
-  const handleSubmit = (data: RegularGatheringFormSchema) => {
-    // TODO: 생성 API 추가
-    console.log("폼 제출하기 : ", data);
+
+  const handleSubmit = async (
+    data: QuickGatheringFormSchema | RegularGatheringFormSchema,
+  ) => {
+    if (isRegularGatheringForm(data)) {
+      try {
+        const apiData: CreateRegularGatheringReq = {
+          type: EGatheringType.REGULAR,
+          name: data.name,
+          description: data.description,
+          days: data.days,
+          location: data.location,
+          capacity: parseInt(data.capacity, 10),
+          image: data.image ? URL.createObjectURL(data.image) : null, // TODO 이미지 업로드 API 나온 후 수정
+          isPetRequired: data.isPetRequired,
+          registrationEnd: data.registrationEnd,
+        };
+
+        const response = await gatheringApi.postGathering(apiData);
+
+        if (response.success) {
+          storageUtils.removeItem(`gathering-draft-regular`);
+          toast.success("정기 모임 생성에 성공했습니다");
+          router.push(`${PATH.REGULAR}/${response.result.id}`);
+        }
+      } catch (error) {
+        console.error("정기 모임 생성 실패", error);
+        toast.error("정기 모임 생성 중 오류가 발생했습니다");
+      }
+    }
   };
 
   return (
@@ -47,201 +65,11 @@ export default function RegularCreatePage() {
       <h1 className="mb-13 text-3xl font-semibold text-gray-900">
         정기 모임 만들기
       </h1>
-      {/* 이미지, 모임 이름, 모임 설명 section */}
-      <Form form={form} onSubmit={handleSubmit} className="bg-transparent !p-0">
-        <div className="flex flex-col gap-11">
-          <section className="flex gap-6">
-            {/* 이미지 */}
-            <Form.Field
-              name="photo"
-              render={({ field: { onChange, value, ...field } }) => (
-                <Form.Item className="bg-card flex h-[357px] w-[456px] flex-col justify-center rounded-xl border-1 border-[#bbb]">
-                  <Form.Control>
-                    <Form.ImageUpload
-                      onChange={onChange}
-                      value={value}
-                      {...field}
-                    >
-                      <Dog className="w-20" />
-                    </Form.ImageUpload>
-                  </Form.Control>
-                  <Form.Label className="flex justify-center">
-                    모임의 대표사진을 등록해주세요
-                  </Form.Label>
-                </Form.Item>
-              )}
-            />
-
-            {/* 모임 이름, 모임 설명 */}
-            <div className="flex flex-1 flex-col gap-6">
-              <div className="flex flex-col gap-3">
-                <Form.Field
-                  name="name"
-                  render={({ field }) => (
-                    <Form.Item>
-                      <Form.Label required className="text-lg font-semibold">
-                        모임 이름
-                        <span>
-                          0/<span className="text-primary">30</span>
-                        </span>
-                      </Form.Label>
-                      <Form.Control>
-                        <Form.Input
-                          type="text"
-                          placeholder="모임 이름을 작성해주세요"
-                          className="w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
-                          {...field}
-                        />
-                      </Form.Control>
-                      <Form.Message />
-                    </Form.Item>
-                  )}
-                />
-              </div>
-              <div className="flex flex-1 flex-col gap-3">
-                <Form.Field
-                  name="description"
-                  render={({ field }) => (
-                    <Form.Item className="flex flex-1 flex-col">
-                      <Form.Label className="text-lg font-semibold">
-                        모임 설명
-                        <span>
-                          0/<span className="text-primary">1000</span>
-                        </span>
-                      </Form.Label>
-                      <Form.Control>
-                        <Form.Textarea
-                          placeholder="모임 설명을 간단하게 작성해주세요"
-                          className="w-full flex-1 rounded-xl bg-[#edf4fb] px-4 py-2.5"
-                          {...field}
-                        />
-                      </Form.Control>
-                    </Form.Item>
-                  )}
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* 모임 위치 section */}
-          <section></section>
-
-          {/* 모임 디테일 section*/}
-          <section className="flex flex-col gap-13">
-            <div className="flex justify-between gap-29">
-              {/* 모임 날짜 */}
-              <Form.Field
-                name="days"
-                render={({ field }) => (
-                  <Form.Item className="flex-1">
-                    <Form.Label required className="text-lg font-semibold">
-                      모임 날짜
-                    </Form.Label>
-                    <Form.Control>
-                      <Form.Checkbox
-                        name="days"
-                        options={DAY_OF_WEEK.map((day) => ({
-                          id: day,
-                          label: DAY_MAP_KR[day],
-                          value: day,
-                        }))}
-                        value={field.value || []}
-                        onChange={field.onChange}
-                        className="flex gap-1"
-                      />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-
-              {/* 마감 날짜 */}
-              <Form.Field
-                name="registrationEnd"
-                render={({ field }) => (
-                  <Form.Item className="flex-1">
-                    <Form.Label required className="text-lg font-semibold">
-                      마감 날짜
-                    </Form.Label>
-                    <Form.Control>
-                      <Form.Input
-                        type="date"
-                        placeholder="마감 날짜를 선택해주세요"
-                        className="w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
-                        {...field}
-                      />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-            </div>
-
-            <div className="flex justify-between gap-29">
-              {/* 반려견 동반 여부 */}
-              <Form.Field
-                name="isPetRequired"
-                render={({ field }) => (
-                  <Form.Item className="flex-1">
-                    <Form.Label required className="text-lg font-semibold">
-                      반려견 동반 여부
-                    </Form.Label>
-                    <Form.Control>
-                      <Form.Radio options={PET_REQUIRED_OPTIONS} {...field} />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-
-              {/* 모집 인원 */}
-              <Form.Field
-                name="capacity"
-                render={({ field }) => (
-                  <Form.Item className="flex-1">
-                    <Form.Label required className="text-lg font-semibold">
-                      모집 인원
-                    </Form.Label>
-                    <Form.Control>
-                      <Form.Input
-                        type="number"
-                        className="w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
-                        {...field}
-                      />
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              />
-            </div>
-          </section>
-
-          {/* 버튼 section */}
-          <section className="mx-auto mt-27 flex w-1/2 items-center justify-center gap-6">
-            <Button
-              type="button"
-              onClick={handleCancle}
-              className={cn(
-                "h-12 flex-1",
-                "border-primary border bg-white",
-                "rounded-2xl",
-                "text-primary text-base font-semibold md:text-lg",
-                "select-none",
-                "hover:bg-primary/5",
-              )}
-            >
-              나가기
-            </Button>
-            <Form.SubmitButton
-              label="정기 모임 만들기"
-              className="mt-0 flex-1"
-              disabled={!form.formState.isValid}
-            >
-              정기 모임 만들기
-            </Form.SubmitButton>
-          </section>
-        </div>
-      </Form>
+      <CreateGatheringForm
+        type={EGatheringType.REGULAR}
+        onCancel={handleCancel}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

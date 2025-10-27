@@ -22,7 +22,7 @@ export function Rating({ score, size }: ReviewCardRatingProps) {
           <Heart
             className={cn(
               "text-primary",
-              size === "lg" ? "size-9.5" : "size-6",
+              size === "lg" ? "size-9.5" : "size-5 sm:size-6",
             )}
           />
         </li>
@@ -34,7 +34,7 @@ export function Rating({ score, size }: ReviewCardRatingProps) {
           <HeartHalf
             className={cn(
               "text-primary",
-              size === "lg" ? "size-9.5" : "size-6",
+              size === "lg" ? "size-9.5" : "size-5 sm:size-6",
             )}
           />
         </li>
@@ -49,7 +49,7 @@ export function Rating({ score, size }: ReviewCardRatingProps) {
           <Heart
             className={cn(
               "fill-slate-200",
-              size === "lg" ? "size-9.5" : "size-6",
+              size === "lg" ? "size-9.5" : "size-5 sm:size-6",
             )}
           />
         </li>

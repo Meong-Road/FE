@@ -15,19 +15,26 @@ interface UseDuplicateCheckProps<T extends FieldValues> {
   field: Path<T>;
   checkPassedField?: Path<T>;
   errorMessage?: string;
+  initialValue?: string; // 초기값을 명시적으로 전달
 }
 
 type DuplicateCheckType = "email" | "nickname";
 
 export function useDuplicateCheck<T extends FieldValues>(
   type: DuplicateCheckType,
-  { form, field, checkPassedField, errorMessage }: UseDuplicateCheckProps<T>,
+  {
+    form,
+    field,
+    checkPassedField,
+    errorMessage,
+    initialValue,
+  }: UseDuplicateCheckProps<T>,
 ) {
+  const currentValue = (form.watch(field) as string)?.trim() ?? "";
+
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
-  const [lastChecked, setLastChecked] = useState("");
-
-  const currentValue = (form.watch(field) as string)?.trim() ?? "";
+  const [lastChecked, setLastChecked] = useState<string | null>(null);
 
   const defaultErrorMessage =
     errorMessage ??
@@ -46,12 +53,28 @@ export function useDuplicateCheck<T extends FieldValues>(
     [form, checkPassedField],
   );
 
+  /** 초기값 설정 및 폼 리셋 감지 */
+  useEffect(() => {
+    if (initialValue !== undefined) {
+      setLastChecked(initialValue);
+      // 초기값이 있으면 중복체크 통과 상태로 설정
+      resetCheckState(true, true);
+    }
+  }, [initialValue, resetCheckState]);
+
   /** 필드 값 변경 시 중복확인 상태 초기화 */
   useEffect(() => {
-    if (currentValue !== lastChecked) {
+    // 현재 값이 초기값과 같으면 중복체크 통과 상태 유지
+    if (initialValue !== undefined && currentValue === initialValue) {
+      resetCheckState(true, true);
+      return;
+    }
+
+    // 값이 변경되었으면 중복확인 상태 초기화
+    if (lastChecked !== null && currentValue !== lastChecked) {
       resetCheckState(null, false);
     }
-  }, [currentValue, lastChecked, resetCheckState]);
+  }, [currentValue, lastChecked, initialValue, resetCheckState]);
 
   /** 중복 검사 실행 함수 */
   const checkDuplicate = useCallback(async () => {
@@ -96,8 +119,23 @@ export function useDuplicateCheck<T extends FieldValues>(
   const isButtonDisabled = useMemo(() => {
     const hasError = !!form.formState.errors[field];
     const sameAsLast = currentValue === lastChecked;
+    const sameAsInitial =
+      initialValue !== undefined && currentValue === initialValue;
+
+    // 초기값과 같으면 중복체크 불필요 (이미 검증된 값)
+    if (sameAsInitial) {
+      return true;
+    }
+
     return isChecking || !currentValue || sameAsLast || hasError;
-  }, [isChecking, currentValue, lastChecked, form.formState.errors, field]);
+  }, [
+    isChecking,
+    currentValue,
+    lastChecked,
+    initialValue,
+    form.formState,
+    field,
+  ]);
 
   return {
     checkDuplicate,

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { Toaster } from "sonner";
 
 import { Header } from "@/components/Header";
 import { initMocks } from "@/mocks";
 import AuthGuardProvider from "@/providers/AuthGuardProvider";
+import ModalProvider from "@/providers/ModalProvider";
 import MSWProvider from "@/providers/MSWProvider";
 import QueryProvider from "@/providers/QueryProvider";
 
@@ -31,6 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <Script
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&libraries=services&autoload=false`}
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={`${pretendardVariable.className}`}>
         <MSWProvider>
           <QueryProvider>
@@ -41,6 +49,7 @@ export default function RootLayout({
               </div>
             </AuthGuardProvider>
             <div id="modal-root"></div>
+            <ModalProvider />
             <Toaster />
           </QueryProvider>
         </MSWProvider>

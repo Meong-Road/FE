@@ -1,3 +1,5 @@
+import { EGatheringType } from "../types/gatherings";
+
 export const PATH = {
   HOME: "/",
   // AUTH
@@ -5,10 +7,10 @@ export const PATH = {
   SIGNUP: "/signup",
   // GATHERINGS
   REGULAR: "/regular",
-  REGULAR_DETAIL: (gatheringId: string | number) => `/regular/${gatheringId}`,
-  REGULAR_CREATE: "/regular/create",
   QUICK: "/quick",
-  QUICK_DETAIL: (gatheringId: string | number) => `/quick/${gatheringId}`,
+  DETAIL: (gatheringId: string | number, type: EGatheringType) =>
+    `/${type === EGatheringType.REGULAR ? "regular" : "quick"}/${gatheringId}`,
+  REGULAR_CREATE: "/regular/create",
   QUICK_CREATE: "/quick/create",
   // FAVORITES
   FAVORITES: `/favorites`,

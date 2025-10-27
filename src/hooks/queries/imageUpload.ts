@@ -5,6 +5,6 @@ import { ImageUploadRes } from "@/api/types/pets";
 
 export function useUploadPetImage() {
   return useMutation<ImageUploadRes, Error, File>({
-    mutationFn: (file: File) => petsApi.uploadPetImage(file),
+    mutationFn: (file) => petsApi.uploadPetImage(file),
   });
 }

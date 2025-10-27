@@ -11,9 +11,15 @@ export function useJoinGathering() {
   return useMutation({
     mutationFn: ({ id }: PostJoinGatheringReq) =>
       gatheringApi.joinGathering({ id }),
-    onSuccess: async (_, { id }) => {
-      await queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.gatherings.participating({ id }),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.gatherings.participation({ id }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.gatherings.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.gatherings.detail(id),
       });
     },
   });

@@ -1,16 +1,8 @@
-import AuthRequiredModal from "./AuthRequiredModal";
-import { Modal as BaseModal } from "./Modal";
-import { ModalBreedSelect } from "./ModalBreedSelect";
-import { ModalCloseBtn } from "./ModalCloseBtn";
-import { ModalContent } from "./ModalContent";
-import { ModalDateSelect } from "./ModalDateSelect";
-import { ModalTitle } from "./ModalTitle";
+// Shared components
+export * from "./shared";
 
-export const Modal = Object.assign(BaseModal, {
-  Title: ModalTitle,
-  BreedSelect: ModalBreedSelect,
-  Content: ModalContent,
-  DateSelect: ModalDateSelect,
-  CloseBtn: ModalCloseBtn,
-  AuthRequired: AuthRequiredModal,
-});
+// Individual modals
+export { default as AuthRequiredModal } from "./AuthRequiredModal/AuthRequiredModal";
+export { default as PetInfoModal } from "./PetInfoModal/PetInfoModal";
+export { default as ReviewInfoModal } from "./ReviewInfoModal/ReviewInfoModal";
+export { default as UserInfoModal } from "./UserInfoModal/UserInfoModal";

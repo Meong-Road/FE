@@ -1,23 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
+
+import Dog from "@/assets/images/dog.svg";
+import ImageWithFallback from "@/components/common/ImageWithFallback";
+import { PATH } from "@/lib/constants/path";
+import { EGatheringType } from "@/lib/types/gatherings";
 
 import { ReviewCardGatheringImageProps } from "../types";
 
-export function GatheringImage({ image }: ReviewCardGatheringImageProps) {
-  const [imageError, setImageError] = useState(false);
+export function GatheringImage({
+  image,
+  gatheringId,
+}: ReviewCardGatheringImageProps) {
   return (
-    <div className="relative h-45 w-45 rounded-3xl bg-gray-200 select-none">
-      {image && !imageError && (
-        <Image
+    <Link
+      href={PATH.DETAIL(gatheringId, EGatheringType.REGULAR)}
+      className="sm:size-fit"
+    >
+      <div className="group/image relative flex h-[188px] w-full flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-t-3xl bg-gray-200 transition-opacity sm:w-[188px] sm:rounded-3xl">
+        <ImageWithFallback
           src={image}
           alt="gathering image"
           fill
-          className="h-full w-full overflow-hidden rounded-3xl object-cover"
-          onError={() => setImageError(true)}
+          sizes="(max-width: 640px) calc(100vw - 32px), 188px"
+          className="object-cover transition-all duration-300 ease-in-out group-hover/image:scale-105"
+          renderFallback={() => (
+            <Dog className="size-28 transition-all duration-300 ease-in-out group-hover/image:scale-105" />
+          )}
         />
-      )}
-    </div>
+      </div>
+    </Link>
   );
 }

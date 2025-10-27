@@ -1,5 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { EGatheringType } from "@/lib/types/gatherings";
 
 function TextWrapperSkeleton({ children }: { children: React.ReactNode }) {
   return <div className="flex items-center gap-1.5">{children}</div>;
@@ -17,13 +16,7 @@ function BarSkeleton() {
   return <Skeleton className="h-2 w-0.5" />;
 }
 
-interface GatheringCardInfoSkeletonProps {
-  type: EGatheringType;
-}
-
-export function GatheringCardInfoSkeleton({
-  type,
-}: GatheringCardInfoSkeletonProps) {
+export function GatheringCardInfoSkeleton() {
   return (
     <div className="flex items-center gap-2.5">
       {/* 위치 */}
@@ -31,26 +24,12 @@ export function GatheringCardInfoSkeleton({
         <TitleSkeleton />
         <ContentSkeleton className="w-16" />
       </TextWrapperSkeleton>
-      {type === EGatheringType.QUICK && (
-        <>
-          <BarSkeleton />
-          {/* 날짜 */}
-          <TextWrapperSkeleton>
-            <TitleSkeleton />
-            <ContentSkeleton className="w-24" />
-          </TextWrapperSkeleton>
-        </>
-      )}
-      {type === EGatheringType.REGULAR && (
-        <>
-          <BarSkeleton />
-          {/* 요일 */}
-          <TextWrapperSkeleton>
-            <TitleSkeleton />
-            <ContentSkeleton className="w-12" />
-          </TextWrapperSkeleton>
-        </>
-      )}
+      <BarSkeleton />
+      {/* 날짜 */}
+      <TextWrapperSkeleton>
+        <TitleSkeleton />
+        <ContentSkeleton className="w-24" />
+      </TextWrapperSkeleton>
     </div>
   );
 }

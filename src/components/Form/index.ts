@@ -11,6 +11,7 @@ import { Label } from "./FormLabel";
 import { LoginLink } from "./FormLoginLink";
 import { Message } from "./FormMessage";
 import { Radio } from "./FormRadio";
+import { FormRatingInput as RatingInput } from "./FormRatingInput";
 import { Select } from "./FormSelect";
 import { SignupLink } from "./FormSignupLink";
 import { SocialButtons } from "./FormSocialButtons";
@@ -34,6 +35,7 @@ export const Form = Object.assign(BaseForm, {
   Select,
   ImageUpload,
   Radio,
+  RatingInput,
   DuplicateCheckButton,
   Textarea,
   Checkbox,

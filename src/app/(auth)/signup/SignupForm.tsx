@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
-import { PetInfoModal } from "@/components/Modal";
 import { SignupFormSchema, useSignupForm } from "@/hooks/auth/useSignupForm";
 import { useSignupMutation } from "@/hooks/auth/useSignupMutation";
 import { PATH } from "@/lib/constants/path";
@@ -16,8 +15,7 @@ export default function SignupForm() {
   const { mutate: signupMutate, isPending } = useSignupMutation();
   const router = useRouter();
 
-  const { isOpen, setModalData, openModal, closeModal } =
-    usePetInfoModalStore();
+  const { setModalData, openModal } = usePetInfoModalStore();
 
   const handleSubmit = (data: SignupFormSchema) =>
     signupMutate(data, {
@@ -145,14 +143,6 @@ export default function SignupForm() {
         {/* 로그인 링크 */}
         <Form.LoginLink />
       </Form>
-
-      {isOpen && (
-        <PetInfoModal
-          type="first-login"
-          onClose={closeModal}
-          hasCloseBtn={false}
-        />
-      )}
     </>
   );
 }

@@ -15,6 +15,7 @@ import { GatheringCardJoinBtn } from "./GatheringCardJoinBtn";
 import { GatheringCardLikeBtn } from "./GatheringCardLikeBtn";
 import { GatheringCardPeople } from "./GatheringCardPeople";
 import { GatheringCardProvider } from "./GatheringCardProvider";
+import { GatheringCardReviewBtn } from "./GatheringCardReviewBtn";
 import { GatheringCardTitle } from "./GatheringCardTitle";
 
 export interface GatheringCardProps extends PropsWithChildren {
@@ -63,3 +64,4 @@ GatheringCard.People = GatheringCardPeople;
 GatheringCard.Info = GatheringCardInfo;
 GatheringCard.LikeBtn = GatheringCardLikeBtn;
 GatheringCard.JoinBtn = GatheringCardJoinBtn;
+GatheringCard.ReviewBtn = GatheringCardReviewBtn;

@@ -7,7 +7,7 @@ export function ProfileTabs() {
   const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });
 
   return (
-    <Tab className="mt-8 sm:mt-16">
+    <Tab className="mt-12 sm:mt-16">
       <Tab.List>
         {PROFILE_TAB_LIST.map((tabItem) => (
           <Tab.Item

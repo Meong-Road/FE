@@ -1,8 +1,17 @@
-type ReviewInfoModalType = "edit-review" | "add-review" | null;
-
-export interface ReviewInfoModalProps {
-  type: ReviewInfoModalType;
+type AddReviewModalProps = {
+  type: "add-review";
   hasCloseBtn?: boolean;
   onClose: () => void;
-  reviewId?: number; // 편집 모드일 때만 필요
-}
+  gatheringId: number;
+  reviewId?: never;
+};
+
+type EditReviewModalProps = {
+  type: "edit-review";
+  hasCloseBtn?: boolean;
+  onClose: () => void;
+  gatheringId?: never;
+  reviewId: number;
+};
+
+export type ReviewInfoModalProps = AddReviewModalProps | EditReviewModalProps;

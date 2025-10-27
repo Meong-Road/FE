@@ -16,4 +16,10 @@ export const REVIEWS_QUERY_KEYS = {
   ],
   myReviews: (pagination: Partial<PaginationReq>) =>
     [...REVIEWS_QUERY_KEYS.all(), "my", pagination] as const,
+  reviewableGatherings: (pagination: Partial<PaginationReq>) =>
+    [...REVIEWS_QUERY_KEYS.all(), "reviewable-gatherings", pagination] as const,
+  userReview: (gatheringId: number) =>
+    [...REVIEWS_QUERY_KEYS.all(), "user-review", gatheringId] as const,
+  detail: (reviewId: number) =>
+    [...REVIEWS_QUERY_KEYS.all(), "detail", reviewId] as const,
 };

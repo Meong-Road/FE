@@ -4,24 +4,19 @@ import { cn } from "@/lib/utils";
 
 import { ReviewCardUserAvatarProps } from "../types";
 
-export function UserAvatar({
-  className,
-  image,
-  size = 40,
-}: ReviewCardUserAvatarProps) {
+export function UserAvatar({ className, image }: ReviewCardUserAvatarProps) {
   return (
     <div
       className={cn(
-        "relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-[1px] border-[#DDDDDD]",
+        "relative flex size-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-[1px] border-[#DDDDDD] sm:size-12",
         className,
       )}
-      style={{ width: size, height: size }}
     >
       <ImageWithFallback
         src={image}
         alt="profile"
         fill
-        sizes={`${size}px`}
+        sizes="100px"
         className="object-cover"
         renderFallback={() => <ProfileDefault />}
       />

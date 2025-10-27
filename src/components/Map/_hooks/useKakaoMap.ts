@@ -15,30 +15,32 @@ export default function useKakaoMap({ mapRef, place }: Props) {
     if (!mapRef.current || map.current) return;
 
     window.kakao.maps.load(() => {
-      const DEFAULT_CENTER = new window.kakao.maps.LatLng( // 서울시청 좌표
-        37.5666805,
-        126.9784147,
-      );
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
 
-      const onMapClick = (latlng: kakao.maps.LatLng) => {
-        if (!marker.current) return;
+        const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-        marker.current.setPosition(latlng);
+        const onMapClick = (latlng: kakao.maps.LatLng) => {
+          if (!marker.current) return;
 
-        kakaoMapService.reverseGeocode(latlng).then((place) => {
-          console.log("ReverseGeocodePlace:", place);
-        });
-      };
+          marker.current.setPosition(latlng);
 
-      const { map: initialMap, marker: initialMarker } =
-        kakaoMapService.initializeMap(
-          mapRef.current!,
-          DEFAULT_CENTER,
-          onMapClick,
-        );
+          kakaoMapService.reverseGeocode(latlng).then((place) => {
+            console.log("ReverseGeocodePlace:", place);
+          });
+        };
 
-      map.current = initialMap;
-      marker.current = initialMarker;
+        const { map: initialMap, marker: initialMarker } =
+          kakaoMapService.initializeMap(
+            mapRef.current!,
+            locPosition,
+            onMapClick,
+          );
+
+        map.current = initialMap;
+        marker.current = initialMarker;
+      });
     });
   }, [mapRef]);
 

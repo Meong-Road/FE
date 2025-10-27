@@ -102,7 +102,7 @@ export default function ReviewInfoModal() {
                 <Form.Control>
                   <Form.Textarea
                     placeholder="모임에 대한 솔직한 리뷰를 작성해주세요."
-                    className="bg-background scrollbar-hidden min-h-[150px] w-full flex-1 resize-y rounded-xl px-4 py-2.5"
+                    className="bg-background scrollbar-hidden min-h-[150px] w-full flex-1 resize-y rounded-lg px-4 py-2.5 sm:rounded-xl"
                     {...field}
                   />
                 </Form.Control>

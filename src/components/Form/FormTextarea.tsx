@@ -23,8 +23,8 @@ export function Textarea({
         className,
       )}
       maxLength={maxLength}
-      {...props}
       placeholder={placeholder}
+      {...props}
     />
   );
 }

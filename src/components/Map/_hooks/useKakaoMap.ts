@@ -21,12 +21,9 @@ export default function useKakaoMap({ mapRef, place }: Props) {
       );
 
       const onMapClick = (latlng: kakao.maps.LatLng) => {
-        if (marker.current) {
-          marker.current.setMap(null);
-        }
+        if (!marker.current) return;
 
-        const newMarker = kakaoMapService.createMarker(map.current!, latlng);
-        marker.current = newMarker;
+        marker.current.setPosition(latlng);
 
         kakaoMapService.reverseGeocode(latlng).then((place) => {
           console.log("ReverseGeocodePlace:", place);
@@ -53,12 +50,11 @@ export default function useKakaoMap({ mapRef, place }: Props) {
       Number(place.x),
     );
 
-    if (marker.current) {
-      marker.current.setMap(null);
+    if (!marker.current) {
+      marker.current = kakaoMapService.createMarker(map.current, latlng);
+    } else {
+      marker.current.setPosition(latlng);
     }
-
-    const newMarker = kakaoMapService.createMarker(map.current, latlng);
-    marker.current = newMarker;
 
     map.current.setCenter(latlng);
   }, [place]);

@@ -19,13 +19,8 @@ declare global {
         getLng(): number;
       }
 
-      class LatLngBounds {
-        extend(latlng: LatLng): void;
-      }
-
       class Map {
         constructor(container: HTMLElement, options: unknown);
-        setBounds(bounds: LatLngBounds): void;
         setCenter(latlng: LatLng): void;
       }
 
@@ -48,13 +43,12 @@ declare global {
           image?: MarkerImage;
         });
         setMap(map: Map | null): void;
+        setPosition(position: LatLng): void;
       }
 
       namespace services {
         enum Status {
           OK = "OK",
-          ZERO_RESULT = "ZERO_RESULT",
-          ERROR = "ERROR",
         }
 
         interface PlaceType {

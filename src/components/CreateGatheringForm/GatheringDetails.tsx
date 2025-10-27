@@ -28,9 +28,12 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
               </Form.Label>
               <Form.Control>
                 <Form.Input
-                  type="date"
+                  type={
+                    type === EGatheringType.QUICK ? "datetime-local" : "date"
+                  }
                   placeholder="마감 날짜를 선택해주세요"
                   className="w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
+                  disabled={type === EGatheringType.QUICK}
                   {...field}
                 />
               </Form.Control>

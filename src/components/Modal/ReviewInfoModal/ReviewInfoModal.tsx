@@ -100,10 +100,8 @@ export default function ReviewInfoModal() {
               <Form.Item>
                 <Form.Label required>리뷰 내용</Form.Label>
                 <Form.Control>
-                  <textarea
-                    className="w-full rounded-lg border border-zinc-300 p-3 text-sm focus:border-zinc-500 focus:outline-none"
+                  <Form.Textarea
                     placeholder="모임에 대한 솔직한 리뷰를 작성해주세요."
-                    rows={6}
                     {...field}
                   />
                 </Form.Control>

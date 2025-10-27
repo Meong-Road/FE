@@ -3,7 +3,8 @@
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { REVIEW_SUB_TABS } from "@/lib/constants/profile";
 
-import ReviewSubTabs from "./ReviewSubTabs";
+import ReviewSubTabs from "../SubTabs/ReviewSubTabs";
+
 import WritableReviewSection from "./WritableReviewSection";
 import WrittenReviewSection from "./WrittenReviewSection";
 

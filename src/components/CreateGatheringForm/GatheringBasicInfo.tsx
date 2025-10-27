@@ -42,7 +42,8 @@ export default function GatheringBasicInfo() {
                 <Form.Label required className="text-lg font-semibold">
                   모임 이름
                   <span>
-                    0/<span className="text-primary">30</span>
+                    {field.value.length}/
+                    <span className="text-primary">30</span>
                   </span>
                 </Form.Label>
                 <Form.Control>
@@ -50,6 +51,7 @@ export default function GatheringBasicInfo() {
                     type="text"
                     placeholder="모임 이름을 작성해주세요"
                     className="w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
+                    maxLength={30}
                     {...field}
                   />
                 </Form.Control>
@@ -68,13 +70,15 @@ export default function GatheringBasicInfo() {
                 <Form.Label className="text-lg font-semibold">
                   모임 설명
                   <span>
-                    0/<span className="text-primary">1000</span>
+                    {field.value.length}/
+                    <span className="text-primary">1000</span>
                   </span>
                 </Form.Label>
                 <Form.Control>
                   <Form.Textarea
                     placeholder="모임 설명을 간단하게 작성해주세요"
                     className="w-full flex-1 rounded-xl bg-[#edf4fb] px-4 py-2.5"
+                    maxLength={1000}
                     {...field}
                   />
                 </Form.Control>

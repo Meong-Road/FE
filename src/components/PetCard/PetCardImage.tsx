@@ -5,27 +5,19 @@ interface PetCardImageProps {
   src: string;
   alt: string;
   className?: string;
-  size?: number;
 }
 
-export function PetCardImage({
-  src,
-  alt,
-  className,
-  size = 112,
-}: PetCardImageProps) {
+export function PetCardImage({ src, alt, className }: PetCardImageProps) {
   return (
     <div className="mb-4 flex justify-center">
       <div
-        className={`bg-background relative flex items-center justify-center overflow-hidden rounded-full border-1 ${className || ""}`}
-        style={{ height: size, width: size }}
+        className={`bg-background relative flex size-[112px] items-center justify-center overflow-hidden rounded-full border-1 ${className || ""}`}
       >
         <ImageWithFallback
           src={src}
           alt={alt}
-          width={size}
-          height={size}
-          className="size-full object-cover"
+          fill
+          sizes="112px"
           renderFallback={() => <DogImg className="size-full" />}
         />
       </div>

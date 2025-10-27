@@ -1,23 +1,20 @@
 import { GatheringCard } from "@/components/GatheringCard";
 import ProgressBar from "@/components/ProgressBar";
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import { useGet4Participants } from "@/hooks/queries/gatherings/useGet4Participants";
-import { GatheringType } from "@/lib/types/gatherings";
+import { cn } from "@/lib/utils";
 
 import ParticipantImage from "./ParticipantImage";
 
-interface GatheringInfoCardProps {
-  gathering: GatheringType;
-}
-
-export default function GatheringInfoCard({
-  gathering,
-}: GatheringInfoCardProps) {
+export default function GatheringInfoCard() {
+  const { gathering } = useGatheringStateContext();
   const { data: participants } = useGet4Participants({ id: gathering.id });
 
   return (
-    <GatheringCard
-      className="flex-grow border border-[#ddd] px-10"
-      gathering={gathering}
+    <div
+      className={cn(
+        "relative flex-grow rounded-4xl border border-[#ddd] bg-white px-10 py-6",
+      )}
     >
       <div className="flex items-start justify-between">
         <div>
@@ -31,7 +28,7 @@ export default function GatheringInfoCard({
       </div>
       <GatheringCard.Info className="mb-4" />
       <div className="mb-6 justify-self-end">
-        <GatheringCard.JoinBtn gathering={gathering} />
+        <GatheringCard.JoinBtn />
       </div>
       <div className="mb-6 border border-dashed border-[#E5E7EB]"></div>
       <div className="mb-3 flex items-center justify-between">
@@ -59,6 +56,6 @@ export default function GatheringInfoCard({
         percentage={(gathering.participantCount / gathering.capacity) * 100}
         max={`최대 ${gathering.capacity}명`}
       />
-    </GatheringCard>
+    </div>
   );
 }

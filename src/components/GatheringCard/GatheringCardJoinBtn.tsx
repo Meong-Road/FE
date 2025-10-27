@@ -70,12 +70,8 @@ const IS_AVAILABLE: Record<
   },
 };
 
-interface GatheringCardJoinBtnProps {
-  gathering: GatheringType;
-}
-
-export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
-  const { user, state } = useGatheringStateContext();
+export function GatheringCardJoinBtn() {
+  const { gathering, user, state } = useGatheringStateContext();
   const { openModal } = useAuthRequiredModalStore();
   const isClosedGatheringState = checkIsClosedGatheringState(state);
 

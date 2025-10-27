@@ -60,12 +60,12 @@ export function ImageUpload({
           accept="image/*"
         />
         <label htmlFor={id} className="relative cursor-pointer">
-          <div className="flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300">
+          <div className="relative flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300">
             <ImageWithFallback
               src={currentImageUrl || null}
               alt="업로드 사진 미리보기"
-              width={150}
-              height={150}
+              fill
+              sizes="150px"
               renderFallback={() => children}
             />
           </div>

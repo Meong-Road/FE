@@ -14,12 +14,11 @@ export function useGetUserReviewByGathering(
 ) {
   return useQuery({
     queryKey: REVIEWS_QUERY_KEYS.userReview(gatheringId),
-    queryFn: async () => {
-      const response = await REVIEW_API.getUserReviewByGathering({
+    queryFn: () =>
+      REVIEW_API.getUserReviewByGathering({
         gatheringId,
-      });
-      return response.result;
-    },
+      }),
+    select: (data) => data.result,
     enabled: options?.enabled !== false,
   });
 }

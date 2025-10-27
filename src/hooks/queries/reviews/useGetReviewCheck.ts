@@ -10,10 +10,8 @@ export function useGetReviewCheck(
 ) {
   return useQuery({
     queryKey: [REVIEW_CHECK_QUERY_KEY, gatheringId],
-    queryFn: async () => {
-      const response = await REVIEW_API.checkReview({ gatheringId });
-      return response.result;
-    },
+    queryFn: () => REVIEW_API.checkReview({ gatheringId }),
+    select: (data) => data.result,
     enabled: options?.enabled !== false,
   });
 }

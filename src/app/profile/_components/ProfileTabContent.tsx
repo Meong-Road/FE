@@ -1,10 +1,10 @@
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
 
-import CreatedSection from "./CreatedSection";
-import JoinedSection from "./JoinedSection";
-import PetCardSection from "./PetCardSection";
-import ReviewSection from "./ReviewSection";
+import CreatedSection from "./CreatedSection/CreatedSection";
+import JoinedSection from "./JoinedSection/JoinedSection";
+import PetCardSection from "./PetCardSection/PetCardSection";
+import ReviewSection from "./ReviewSection/ReviewSection";
 
 export function ProfileTabContent() {
   const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });

@@ -16,7 +16,7 @@ jest.mock("next/navigation", () => {
       replace: jest.fn(),
       prefetch: jest.fn(),
     }),
-    usePathname: jest.fn(() => "/"),
+    usePathname: jest.fn(() => "/regular"),
   };
 });
 
@@ -128,7 +128,7 @@ const renderWithQueryClient = (component: React.ReactElement) => {
 };
 
 const renderHeader = (
-  pathname = "/",
+  pathname = "/regular",
   user: UserType | null = null,
   isLoading = false,
 ) => {
@@ -173,7 +173,7 @@ describe("Header", () => {
     renderHeader();
 
     const logoLink = screen.getByTestId("logo").closest("a");
-    expect(logoLink).toHaveAttribute("href", PATH.HOME);
+    expect(logoLink).toHaveAttribute("href", PATH.REGULAR);
   });
 
   it("각 네비게이션 메뉴가 올바른 링크를 가져야 한다", () => {
@@ -201,7 +201,7 @@ describe("Header", () => {
   });
 
   it("로그아웃 상태에서 프로필 아이콘을 클릭하면 로그인 페이지로 이동", () => {
-    renderHeader("/", null);
+    renderHeader("/regular", null);
 
     // 로그아웃 상태에서는 프로필 아이콘이 없고 로그인 버튼이 있어야 함
     const desktopMenu = screen.getByTestId("desktop-only");
@@ -249,7 +249,7 @@ describe("Header", () => {
   });
 
   it("로그인 상태에서 모바일 메뉴를 클릭하면 메뉴와 사용자 옵션이 나타남", async () => {
-    renderHeader("/", loggedInUser);
+    renderHeader("/regular", loggedInUser);
 
     const mobileMenuButton = screen.getByTestId("menu-icon");
     expect(mobileMenuButton).toBeInTheDocument();

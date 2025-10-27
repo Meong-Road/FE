@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { Header } from "@/components/Header";
 import { initMocks } from "@/mocks";
 import AuthGuardProvider from "@/providers/AuthGuardProvider";
+import ModalProvider from "@/providers/ModalProvider";
 import MSWProvider from "@/providers/MSWProvider";
 import QueryProvider from "@/providers/QueryProvider";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
               </div>
             </AuthGuardProvider>
             <div id="modal-root"></div>
+            <ModalProvider />
             <Toaster />
           </QueryProvider>
         </MSWProvider>

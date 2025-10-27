@@ -11,7 +11,7 @@ export const PROFILE_TABS = {
     value: "created",
   },
   REVIEWS: {
-    label: "작성한 리뷰",
+    label: "내 리뷰",
     value: "reviews",
   },
   PETS: {
@@ -25,4 +25,23 @@ export const PROFILE_TAB_LIST = [
   PROFILE_TABS.CREATED,
   PROFILE_TABS.REVIEWS,
   PROFILE_TABS.PETS,
+];
+
+/**
+ * 리뷰 서브탭 정보
+ */
+export const REVIEW_SUB_TABS = {
+  WRITABLE: {
+    label: "작성 가능",
+    value: "writable",
+  },
+  WRITTEN: {
+    label: "작성한 리뷰",
+    value: "written",
+  },
+} as const;
+
+export const REVIEW_SUB_TAB_LIST = [
+  REVIEW_SUB_TABS.WRITABLE,
+  REVIEW_SUB_TABS.WRITTEN,
 ];

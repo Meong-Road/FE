@@ -19,12 +19,27 @@ export function usePetInfoModal({
 
   const initialData = useMemo(() => {
     if (!shouldFetchPet || !petData) return null;
+    if (!isEditMode) return null;
     return transformPetToFormData(petData);
-  }, [shouldFetchPet, petData]);
+  }, [shouldFetchPet, petData, isEditMode]);
 
   const form = usePetInfoForm();
 
   const watchedValues = form.watch();
+
+  useEffect(() => {
+    if (!isEditMode) {
+      form.reset({
+        name: "",
+        birthYear: "",
+        image: null,
+        breed: "",
+        gender: undefined,
+        neuter: undefined,
+        petType: "dog",
+      });
+    }
+  }, [form, isEditMode]);
 
   useEffect(() => {
     if (initialData) {

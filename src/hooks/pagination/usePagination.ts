@@ -49,7 +49,7 @@ export function usePagination({
 
   const goToPage = useCallback(
     (page: number) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams);
       params.set("page", page.toString());
       router.push(`${pathname}?${params.toString()}`, { scroll });
     },

@@ -6,13 +6,11 @@ import {
   LoadingState,
   SectionWrapper,
 } from "@/components/common";
-import { PetInfoModal } from "@/components/Modal";
 import { PetAddCard } from "@/components/PetAddCard";
 import { PetCard } from "@/components/PetCard";
 import { useGetMyPets } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
 import { processPetInfo } from "@/lib/utils/pet";
-import { usePetInfoModalStore } from "@/store/modalStore";
 
 const PetCardItem = ({
   processedPet,
@@ -65,7 +63,6 @@ const PetList = ({ pets }: { pets: PetType[] }) => {
 };
 
 export default function PetCardSection() {
-  const { isOpen, modalType, petId, closeModal } = usePetInfoModalStore();
   const { data: pets, isPending, isError } = useGetMyPets();
 
   //임시 주석처리
@@ -85,14 +82,8 @@ export default function PetCardSection() {
     );
 
   return (
-    <>
-      <SectionWrapper>
-        <PetList pets={pets} />
-      </SectionWrapper>
-
-      {isOpen && modalType && (
-        <PetInfoModal type={modalType} onClose={closeModal} petId={petId} />
-      )}
-    </>
+    <SectionWrapper>
+      <PetList pets={pets} />
+    </SectionWrapper>
   );
 }

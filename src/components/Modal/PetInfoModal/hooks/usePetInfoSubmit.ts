@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { ImageUploadRes, PostPetReq, PutPetReq } from "@/api/types/pets";
+import { ImageUploadRes } from "@/api/types/pets";
 import { useUploadPetImage } from "@/hooks/queries/imageUpload";
 import { usePostPet, usePutPet } from "@/hooks/queries/pets";
 import { PATH } from "@/lib/constants/path";

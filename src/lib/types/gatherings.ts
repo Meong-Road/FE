@@ -1,5 +1,9 @@
+import { DAY_OF_WEEK } from "@/lib/constants/date";
+
 import { LocationType } from "./reviews";
 import { UserType } from "./user";
+
+export type DayOfWeek = (typeof DAY_OF_WEEK)[number];
 
 export enum EGatheringType {
   QUICK = "QUICK",
@@ -38,7 +42,7 @@ export interface QuickGatheringType extends CommonGatheringType {
 
 export interface RegularGatheringType extends CommonGatheringType {
   type: EGatheringType.REGULAR;
-  days: string;
+  days: DayOfWeek[];
 }
 
 export type GatheringType = QuickGatheringType | RegularGatheringType;

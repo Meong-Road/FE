@@ -14,5 +14,6 @@ export function useGetReviews({
   return useQuery({
     queryKey: QUERY_KEYS.reviews.list({ page, size, sort }, { location }),
     queryFn: () => REVIEW_API.getReviews({ location, page, size, sort }),
+    select: (data) => data.result,
   });
 }

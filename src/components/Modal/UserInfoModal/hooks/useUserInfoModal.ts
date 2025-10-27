@@ -33,6 +33,15 @@ export function useUserInfoModal({
   const watchedValues = form.watch();
 
   useEffect(() => {
+    if (!isEditMode) {
+      form.reset({
+        nickName: "",
+        image: null,
+      });
+    }
+  }, [form, isEditMode]);
+
+  useEffect(() => {
     if (initialData) {
       form.reset(initialData);
     }

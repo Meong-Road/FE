@@ -1,3 +1,7 @@
+import {
+  ReviewInfoFormSchema,
+  ReviewInfoUpdateSchema,
+} from "@/components/Modal/ReviewInfoModal/hooks/useReviewInfoForm";
 import { ReviewType } from "@/lib/types/reviews";
 
 import { formatDays } from "./dateTime";
@@ -17,4 +21,13 @@ export const processReviewInfo = (review: ReviewType) => {
  */
 export const processReviewsInfo = (reviews: ReviewType[]) => {
   return reviews.map(processReviewInfo);
+};
+
+export const hasReviewFormChanges = (
+  current: ReviewInfoUpdateSchema,
+  initial: Partial<ReviewInfoFormSchema> | null,
+): boolean => {
+  if (!initial) return false;
+
+  return current.score !== initial.score || current.comment !== initial.comment;
 };

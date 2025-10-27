@@ -2,6 +2,8 @@ import {
   checkIsAfter,
   checkIsBefore,
   formatDate,
+  formatDateShort,
+  formatDays,
   getHoursBefore,
   getRegistrationDeadlineInfo,
   getTimeAgo,
@@ -180,6 +182,22 @@ describe("dateTime", () => {
       const date = new Date("2025-10-01T10:00:00");
       const result = getHoursBefore(date, 3);
       expect(result).toEqual(new Date("2025-10-01T07:00:00"));
+    });
+  });
+
+  describe("formatDateShort", () => {
+    it("날짜를 올바른 형식으로 포맷해야 한다", () => {
+      const date = "2025-10-01T10:00:00";
+      const result = formatDateShort(date);
+      expect(result).toBe("2025.10.01");
+    });
+  });
+
+  describe("formatDays", () => {
+    it("요일 배열을 올바른 형식으로 포맷해야 한다", () => {
+      const days = ["MON", "WED", "FRI"];
+      const result = formatDays(days);
+      expect(result).toBe("월, 수, 금");
     });
   });
 });

@@ -6,9 +6,9 @@ import { PATH } from "@/lib/constants/path";
 import { EGatheringType } from "@/lib/types/gatherings";
 import { isQuickGathering } from "@/lib/utils/typeGuard";
 
-import GatheringInfoSection from "./_components/GatheringInfo/GatheringInfoSection";
-import GatheringIntroductionSection from "./_components/GatheringIntroductionSection";
-import GatheringReviewSection from "./_components/GatheringReviewSection";
+import GatheringInfoSection from "../../_components/GatheringDetail/GatheringInfo/GatheringInfoSection";
+import GatheringIntroductionSection from "../../_components/GatheringDetail/GatheringIntroductionSection";
+import GatheringReviewSection from "../../_components/GatheringDetail/GatheringReviewSection";
 
 export default function QuickGatheringDetailPage() {
   const router = useRouter();

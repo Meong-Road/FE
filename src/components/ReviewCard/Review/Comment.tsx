@@ -16,10 +16,13 @@ export function Comment({ children }: ReviewCardCommentProps) {
     if (textRef.current) {
       // 텍스트가 1줄을 초과하는지 체크
       const isTruncated =
-        textRef.current.scrollHeight > textRef.current.clientHeight;
+        (!isExpanded &&
+          textRef.current.scrollHeight > textRef.current.clientHeight) ||
+        (isExpanded &&
+          textRef.current.scrollHeight === textRef.current.clientHeight);
       setShowButton(isTruncated);
     }
-  }, [children]);
+  }, [children, textRef.current?.scrollHeight, textRef.current?.clientHeight]);
 
   return (
     <div className="flex flex-col items-start gap-2 sm:flex-row">

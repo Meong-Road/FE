@@ -23,7 +23,7 @@ export default function ProgressBar({
         style={{ width: `${percentage}%` }}
       ></div>
       {max && (
-        <div className="absolute top-4 right-0 text-sm font-medium text-gray-700">
+        <div className="absolute top-3 right-0 text-sm font-medium text-gray-700">
           {max}
         </div>
       )}

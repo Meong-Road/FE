@@ -45,7 +45,7 @@ export function GatheringCard({
     <GatheringCardProvider value={value}>
       <Component
         className={cn(
-          "relative list-none rounded-4xl border border-[#ddd] bg-white p-6",
+          "relative list-none rounded-4xl border border-[#ddd] bg-white sm:p-6",
           className,
         )}
       >

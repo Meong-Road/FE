@@ -9,22 +9,20 @@ import QuickGatheringCardList from "./_components/QuickGatheringCardList";
 export default function QuickGatheringListPage() {
   return (
     <>
-      <div>
-        <div className="mb-6 flex items-center justify-between">
-          {/* 필터 */}
-          <div className="flex items-center gap-4">
-            <LocationSelect />
-            <SortBySelector />
-            <FilterPopover type={EGatheringType.QUICK} />
-          </div>
-
-          {/* 모임 만들기 버튼 */}
-          <CreateGatheringButton type="quick" />
+      <div className="mb-6 flex items-center justify-between">
+        {/* 필터 */}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-4">
+          <LocationSelect />
+          <SortBySelector />
+          <FilterPopover type={EGatheringType.QUICK} />
         </div>
 
-        {/* 모임 목록 */}
-        <QuickGatheringCardList />
+        {/* 모임 만들기 버튼 */}
+        <CreateGatheringButton type="quick" />
       </div>
+
+      {/* 모임 목록 */}
+      <QuickGatheringCardList />
     </>
   );
 }

@@ -28,7 +28,7 @@ export default function SortBySelector() {
   return (
     <Select value={selectedSort} onValueChange={handleSortChange}>
       <SelectTrigger className="cursor-pointer">
-        <SortingArrows className="size-4" />
+        <SortingArrows className="hidden size-4 sm:block" />
         <SelectValue placeholder="최신순" />
       </SelectTrigger>
       <SelectContent>

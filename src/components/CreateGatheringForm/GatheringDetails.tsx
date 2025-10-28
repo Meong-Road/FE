@@ -53,7 +53,11 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
                 반려견 동반 여부
               </Form.Label>
               <Form.Control>
-                <Form.Radio options={PET_REQUIRED_OPTIONS} {...field} />
+                <Form.Radio
+                  className="max-h-10"
+                  options={PET_REQUIRED_OPTIONS}
+                  {...field}
+                />
               </Form.Control>
               <Form.Message />
             </Form.Item>

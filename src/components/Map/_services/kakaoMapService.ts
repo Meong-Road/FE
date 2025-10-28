@@ -1,6 +1,22 @@
 import { LocationType } from "@/lib/types/location";
 
 export const kakaoMapService = {
+  waitForKakaoMapLoad(): Promise<void> {
+    return new Promise((resolve) => {
+      if (window.kakao?.maps?.load) {
+        window.kakao.maps.load(resolve);
+        return;
+      }
+
+      const interval = setInterval(() => {
+        if (window.kakao?.maps?.load) {
+          clearInterval(interval);
+          window.kakao.maps.load(resolve);
+        }
+      }, 100);
+    });
+  },
+
   mapPlaces(
     data: kakao.maps.services.PlaceType[],
   ): kakao.maps.services.PlaceType[] {
@@ -165,41 +181,39 @@ export const kakaoMapService = {
     location: LocationType;
   }> {
     return new Promise((resolve) => {
-      window.kakao.maps.load(() => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-          const map = this.createMap(container, locPosition);
-          const marker = this.createMarker(map, locPosition);
+        const map = this.createMap(container, locPosition);
+        const marker = this.createMarker(map, locPosition);
 
-          const place = await this.reverseGeocode(locPosition);
+        const place = await this.reverseGeocode(locPosition);
 
-          this.bindMapClick(map, async (latlng) => {
-            marker.setPosition(latlng);
+        this.bindMapClick(map, async (latlng) => {
+          marker.setPosition(latlng);
 
-            const clickedPlace = await this.reverseGeocode(latlng);
+          const clickedPlace = await this.reverseGeocode(latlng);
 
-            const newLocation: LocationType = {
-              district: clickedPlace.address,
-              latlng: {
-                lat: latlng.getLat(),
-                lng: latlng.getLng(),
-              },
-            };
-
-            onMapClick(newLocation);
-          });
-
-          resolve({
-            map,
-            marker,
-            location: {
-              district: place.address,
-              latlng: { lat, lng },
+          const newLocation: LocationType = {
+            district: clickedPlace.address,
+            latlng: {
+              lat: latlng.getLat(),
+              lng: latlng.getLng(),
             },
-          });
+          };
+
+          onMapClick(newLocation);
+        });
+
+        resolve({
+          map,
+          marker,
+          location: {
+            district: place.address,
+            latlng: { lat, lng },
+          },
         });
       });
     });

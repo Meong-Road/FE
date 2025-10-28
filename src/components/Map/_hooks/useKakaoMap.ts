@@ -19,6 +19,8 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
       if (!mapRef.current || map.current) return;
 
       try {
+        await kakaoMapService.waitForKakaoMapLoad();
+
         const {
           map: m,
           marker: mk,

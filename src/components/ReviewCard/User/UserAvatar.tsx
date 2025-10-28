@@ -17,8 +17,7 @@ export function UserAvatar({ className, image }: ReviewCardUserAvatarProps) {
         alt="profile"
         fill
         sizes="100px"
-        className="object-cover"
-        renderFallback={() => <ProfileDefault />}
+        renderFallback={() => <ProfileDefault className="size-full" />}
       />
     </div>
   );

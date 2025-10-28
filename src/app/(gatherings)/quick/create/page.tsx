@@ -16,6 +16,7 @@ import {
   CreateQuickGatheringType,
   EGatheringType,
 } from "@/lib/types/gatherings";
+import { storageUtils } from "@/lib/utils/storage";
 import { isQuickGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function QuickCreatePage() {
@@ -61,10 +62,19 @@ export default function QuickCreatePage() {
         registrationEnd: `${data.registrationEnd}:00`,
       };
 
-      postGatheringMutation.mutate(apiData);
+      postGatheringMutation.mutate(apiData, {
+        onSuccess: (data) => {
+          if (!data.success) throw new Error();
+
+          storageUtils.removeItem("gathering-draft-quick");
+          toast.success("번개 모임 생성에 성공했습니다");
+          router.push(`${PATH.QUICK}/${data.result.id}`);
+        },
+        onError: () => toast.error("번개 모임 생성에 실패했습니다"),
+      });
     } catch (error) {
       console.error("오류가 발생했습니다", error);
-      toast.error("오류가 발생했습니다");
+      toast.error("번개 모임 생성 중 오류가 발생했습니다");
     }
   };
 

@@ -16,6 +16,7 @@ import {
   CreateRegularGatheringType,
   EGatheringType,
 } from "@/lib/types/gatherings";
+import { storageUtils } from "@/lib/utils/storage";
 import { isRegularGatheringForm } from "@/lib/utils/typeGuard";
 
 export default function RegularCreatePage() {
@@ -61,10 +62,19 @@ export default function RegularCreatePage() {
         registrationEnd: `${data.registrationEnd}T23:59:59`,
       };
 
-      postGatheringMutation.mutate(apiData);
+      postGatheringMutation.mutate(apiData, {
+        onSuccess: (data) => {
+          if (!data.success) throw new Error();
+
+          storageUtils.removeItem("gathering-draft-regular");
+          toast.success("정기 모임 생성에 성공했습니다");
+          router.push(`${PATH.REGULAR}/${data.result.id}`);
+        },
+        onError: () => toast.error("정기 모임 생성에 실패했습니다"),
+      });
     } catch (error) {
       console.error("오류가 발생했습니다", error);
-      toast.error("오류가 발생했습니다");
+      toast.error("정기 모임 생성 중 오류가 발생했습니다");
     }
   };
 

@@ -4,6 +4,8 @@ import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
+  DeleteGatheringReq,
+  DeleteGatheringRes,
   DeleteJoinGatheringReq,
   DeleteJoinGatheringRes,
   DeleteLikeReq,
@@ -33,6 +35,8 @@ import {
   PostLikeReq,
   PostLikeRes,
 } from "./types/gatherings";
+import { ImageUploadRes } from "./types/pets";
+// TODO : 이미지 업로드 타입을 common 타입으로 변경 논의
 
 export const gatheringApi = {
   // 정기 모임 목록 조회
@@ -107,6 +111,13 @@ export const gatheringApi = {
       `${API_ENDPOINTS.GATHERING}/${id}/leave`,
     );
   },
+
+  // DELETE /meong-road/gatherings/{gatheringId} - 모임 취소
+  cancelGathering: ({ id }: DeleteGatheringReq) => {
+    return customFetch.delete<DeleteGatheringRes>(
+      `${API_ENDPOINTS.GATHERING}/${id}`,
+    );
+  },
   // 내가 찜한 모임 목록 조회
   getMyBookmarkedGatherings: ({
     type,
@@ -128,7 +139,12 @@ export const gatheringApi = {
     const formData = new FormData();
     formData.append("file", file);
 
-    return customFetch.post(`${API_ENDPOINTS.GATHERING}`, { body: formData });
+    return customFetch.post<ImageUploadRes>(
+      `${API_ENDPOINTS.GATHERING}/image/upload`,
+      {
+        body: formData,
+      },
+    );
   },
   postGathering: (data: PostGatheringReq) => {
     return customFetch.post<PostGatheringRes>(`${API_ENDPOINTS.GATHERING}`, {

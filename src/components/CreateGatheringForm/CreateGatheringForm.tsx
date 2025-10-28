@@ -58,6 +58,7 @@ export default function CreateGatheringForm({
         <GatheringActions
           onCancel={onCancel}
           form={form as UseFormReturn<GatheringFormSchema>}
+          type={type}
         />
       </div>
     </Form>

@@ -65,3 +65,9 @@ export const checkIsClosedGatheringState = (state: EGatheringState) => {
     EGatheringState.CANCELED, // 취소된 모임
   ].includes(state);
 };
+
+export const checkIsCanceledGatheringState = (state: EGatheringState) => {
+  return [
+    EGatheringState.CANCELED, // 취소된 모임
+  ].includes(state);
+};

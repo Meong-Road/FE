@@ -10,8 +10,10 @@ import {
   RegularGatheringFormSchema,
 } from "./schemas";
 
+type GatheringFormData = QuickGatheringFormSchema | RegularGatheringFormSchema;
+
 interface UseGatheringAutoSaveOptions {
-  form: UseFormReturn<QuickGatheringFormSchema | RegularGatheringFormSchema>;
+  form: UseFormReturn<GatheringFormData>;
   type: "quick" | "regular";
   enabled?: boolean;
 }
@@ -22,13 +24,15 @@ export function useGatheringAutoSave({
   enabled,
 }: UseGatheringAutoSaveOptions) {
   const hasRestoredRef = useRef(false);
-  const skipSaveRef = useRef(true); // 복원 직후 자동저장 막기
+  const skipSaveRef = useRef(true); // 복원 직후 자동저장 제한
+  const previousDateRef = useRef<GatheringFormData | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
 
     hasRestoredRef.current = false;
     skipSaveRef.current = true;
+    previousDateRef.current = null;
 
     const storageKey = `gathering-draft-${type}`;
     const savedData = storageUtils.getItem(storageKey);
@@ -69,16 +73,36 @@ export function useGatheringAutoSave({
 
   const debouncedFormData = useDebounce(formData, { delay: 1000, enabled });
 
+  // 데이터가 살제로 변경되었는지 확인하는 함수
+  const hasDataChanged = (
+    current: GatheringFormData,
+    previous: GatheringFormData | null,
+  ) => {
+    if (!previous) return true;
+
+    // 이미지 필드는 제외하고 비교
+    const { image: currentImage, ...currentWithoutImage } = current;
+    const { image: previousImage, ...previousWithoutImage } = previous;
+
+    return (
+      JSON.stringify(currentWithoutImage) !==
+      JSON.stringify(previousWithoutImage)
+    );
+  };
+
   useEffect(() => {
     if (!enabled) return;
     if (skipSaveRef.current) return; // 복원 직후에는 저장 금지
 
-    const hasContent = Object.values(debouncedFormData).some((value) => {
+    if (!hasDataChanged(debouncedFormData, previousDateRef.current)) return;
+
+    const { image, ...dataToSave } = debouncedFormData;
+
+    const hasContent = Object.values(dataToSave).some((value) => {
       if (typeof value === "string") return value.trim() !== "";
       if (typeof value === "boolean") return true;
       if (typeof value === "number") return value > 0;
       if (Array.isArray(value)) return value.length > 0;
-      if (value instanceof File) return true;
       if (typeof value === "object" && value !== null)
         return Object.values(value).some((v) => v !== null && v !== undefined);
       return value !== null && value !== undefined;
@@ -86,13 +110,15 @@ export function useGatheringAutoSave({
 
     if (hasContent) {
       const storageKey = `gathering-draft-${type}`;
-      storageUtils.setItem(storageKey, debouncedFormData);
+      storageUtils.setItem(storageKey, dataToSave);
+      previousDateRef.current = debouncedFormData;
     }
   }, [debouncedFormData, enabled, type]);
 
   const clearDraft = () => {
     const storageKey = `gathering-draft-${type}`;
     storageUtils.removeItem(storageKey);
+    previousDateRef.current = null;
   };
 
   return { clearDraft };

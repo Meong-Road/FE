@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface GatheringCardTitleSkeletonProps {
   className?: string;
@@ -7,5 +8,11 @@ interface GatheringCardTitleSkeletonProps {
 export function GatheringCardTitleSkeleton({
   className,
 }: GatheringCardTitleSkeletonProps) {
-  return <Skeleton fontSize="xl" className={className} />;
+  return (
+    <Skeleton
+      fontSize="lg"
+      tabletFontSize="xl"
+      className={cn("w-40", className)}
+    />
+  );
 }

@@ -3,9 +3,15 @@ import { cn } from "@/lib/utils";
 interface TextareaProps {
   className?: string;
   placeholder: string;
+  maxLength?: number;
 }
 
-export function Textarea({ className, placeholder, ...props }: TextareaProps) {
+export function Textarea({
+  className,
+  placeholder,
+  maxLength,
+  ...props
+}: TextareaProps) {
   return (
     <textarea
       className={cn(
@@ -16,8 +22,9 @@ export function Textarea({ className, placeholder, ...props }: TextareaProps) {
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
-      {...props}
+      maxLength={maxLength}
       placeholder={placeholder}
+      {...props}
     />
   );
 }

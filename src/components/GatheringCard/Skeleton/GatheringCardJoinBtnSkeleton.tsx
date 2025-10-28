@@ -10,5 +10,5 @@ interface GatheringCardJoinBtnSkeletonProps {
 export function GatheringCardJoinBtnSkeleton({
   className,
 }: GatheringCardJoinBtnSkeletonProps) {
-  return <Skeleton className={cn("h-11 w-30 rounded-[10px]", className)} />;
+  return <Skeleton className={cn("h-10 w-30 rounded-[10px]", className)} />;
 }

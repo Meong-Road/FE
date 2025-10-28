@@ -21,7 +21,6 @@ import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
-import { GatheringCardReviewBtn } from "./GatheringCardReviewBtn";
 
 enum EJoinButtonType {
   JOIN = "join",
@@ -112,7 +111,7 @@ export function GatheringCardJoinBtn() {
     } catch (error) {
       console.error(error);
       toast.error(
-        `[${gathering.name}] 모임을 ${MESSAGE[mode]} 중 오류가 발생했어요`,
+        `[${gathering.name}] 모임 ${MESSAGE[mode]} 중 오류가 발생했어요`,
       );
     }
   };

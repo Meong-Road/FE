@@ -46,19 +46,19 @@ export default function QuickCreatePage() {
           imageUrl = response.result.imageUrl;
         }
       } else {
-        imageUrl = data.image;
+        imageUrl = data.image || null;
       }
 
       const apiData: CreateQuickGatheringType = {
         type: EGatheringType.QUICK,
         name: data.name,
         description: data.description,
-        dateTime: `${data.dateTime}:00.00Z`,
+        dateTime: `${data.dateTime}:00`,
         location: data.location,
         capacity: parseInt(data.capacity, 10),
         image: imageUrl,
         isPetRequired: data.isPetRequired,
-        registrationEnd: `${data.registrationEnd}:00.00Z`,
+        registrationEnd: `${data.registrationEnd}:00`,
       };
 
       postGatheringMutation.mutate(apiData);

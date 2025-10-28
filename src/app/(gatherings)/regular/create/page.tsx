@@ -46,7 +46,7 @@ export default function RegularCreatePage() {
           imageUrl = response.result.imageUrl;
         }
       } else {
-        imageUrl = data.image;
+        imageUrl = data.image || null;
       }
 
       const apiData: CreateRegularGatheringType = {
@@ -58,7 +58,7 @@ export default function RegularCreatePage() {
         capacity: parseInt(data.capacity, 10),
         image: imageUrl,
         isPetRequired: data.isPetRequired,
-        registrationEnd: `${data.registrationEnd}T23:59:59.999Z`,
+        registrationEnd: `${data.registrationEnd}T23:59:59`,
       };
 
       postGatheringMutation.mutate(apiData);

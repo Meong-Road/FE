@@ -83,7 +83,6 @@ export default function QuickCreatePage() {
       <h1 className="mb-13 text-3xl font-semibold text-gray-900">
         번개 모임 만들기
       </h1>
-      {/* 이미지, 모임 이름, 모임 설명 section */}
       <CreateGatheringForm
         type={EGatheringType.QUICK}
         onCancel={handleCancel}

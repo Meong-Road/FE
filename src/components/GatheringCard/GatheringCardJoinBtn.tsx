@@ -11,20 +11,15 @@ import {
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
 import { GATHERING_STATE_MESSAGE } from "@/lib/constants/gathering";
 import { PATH } from "@/lib/constants/path";
-import {
-  EGatheringState,
-  EGatheringType,
-  GatheringType,
-} from "@/lib/types/gatherings";
-import { cn } from "@/lib/utils";
+import { EGatheringState, GatheringType } from "@/lib/types/gatherings";
 import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
+import { hasLastConsonantLetter } from "@/lib/utils/string";
 import { useAuthRequiredModalStore } from "@/store/modalStore";
 
-import { Button, buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
-import { GatheringCardReviewBtn } from "./GatheringCardReviewBtn";
 
 enum EJoinButtonType {
   JOIN = "join",
@@ -36,96 +31,42 @@ const MESSAGE: Record<EJoinButtonType, string> = {
   [EJoinButtonType.CANCEL]: "참여 취소",
 };
 
-const IS_AVAILABLE: Record<
-  EGatheringState,
-  { join: boolean; cancel: boolean }
-> = {
-  [EGatheringState.REGISTRATION_END_PASSED]: {
-    join: false,
-    cancel: false,
-  },
-  [EGatheringState.FIXED_GATHERING]: {
-    join: true,
-    cancel: false,
-  },
-  [EGatheringState.CAPACITY_FULL]: {
-    join: false,
-    cancel: false,
-  },
-  [EGatheringState.CANCELED]: {
-    join: false,
-    cancel: false,
-  },
-  [EGatheringState.PET_REQUIRED]: {
-    join: false,
-    cancel: true,
-  },
-  [EGatheringState.AUTH_REQUIRED]: {
-    join: false,
-    cancel: false,
-  },
-  [EGatheringState.GENERAL]: {
-    join: true,
-    cancel: true,
-  },
-};
+const JOIN_AVAILABLE_SET = new Set([
+  EGatheringState.FIXED_GATHERING,
+  EGatheringState.GENERAL,
+]);
 
-interface GatheringCardJoinBtnProps {
-  gathering: GatheringType;
-}
+const CANCEL_AVAILABLE_SET = new Set([
+  EGatheringState.PET_REQUIRED,
+  EGatheringState.GENERAL,
+]);
 
-export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
-  const { user, state } = useGatheringStateContext();
+export function GatheringCardJoinBtn() {
+  const { gathering, user, state } = useGatheringStateContext();
   const { openModal } = useAuthRequiredModalStore();
   const isClosedGatheringState = checkIsClosedGatheringState(state);
 
-  // 유저가 없거나 로딩 중이면 쿼리 실행 안 함
   const {
     data: isParticipated,
     isPending: isGettingParticipating,
     isError: isGettingParticipatingError,
   } = useGetIsParticipating({
     id: gathering.id,
-    enabled: !isClosedGatheringState,
+    enabled: !!user && !isClosedGatheringState,
   });
 
   const { mutateAsync: join, isPending: isJoinPending } = useJoinGathering();
   const { mutateAsync: cancelJoin, isPending: isCancelPending } =
     useCancelJoinGathering();
 
-  if (isClosedGatheringState)
-    return (
-      <div
-        className={cn(
-          buttonVariants({ variant: "gray", size: "xl" }),
-          "cursor-not-allowed",
-        )}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
-        모집마감
-      </div>
-    );
-
-  if (user && isGettingParticipating) return <GatheringCardSkeleton.JoinBtn />;
-  if (user && isGettingParticipatingError)
+  if (user && !isClosedGatheringState && isGettingParticipating)
+    return <GatheringCardSkeleton.JoinBtn />;
+  if (user && !isClosedGatheringState && isGettingParticipatingError)
     return (
       <div className="flex h-11 w-30 items-center justify-center rounded-[10px] bg-slate-50">
         에러
       </div>
     );
-
-  // REGULAR + FIXED_GATHERING + 참여한 모임 → ReviewBtn 렌더링
-  const shouldShowReviewBtn =
-    gathering.type === EGatheringType.REGULAR &&
-    state === EGatheringState.FIXED_GATHERING &&
-    isParticipated === true;
-
-  if (shouldShowReviewBtn) {
-    return <GatheringCardReviewBtn gathering={gathering} />;
-  }
 
   const isMutationPending = isJoinPending || isCancelPending;
   const mode = isParticipated ? EJoinButtonType.CANCEL : EJoinButtonType.JOIN;
@@ -152,9 +93,10 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
   };
 
   const isJoinDisabled =
-    mode === EJoinButtonType.JOIN && !IS_AVAILABLE[state].join;
+    mode === EJoinButtonType.JOIN && !JOIN_AVAILABLE_SET.has(state);
   const isCancelDisabled =
-    mode === EJoinButtonType.CANCEL && !IS_AVAILABLE[state].cancel;
+    mode === EJoinButtonType.CANCEL && !CANCEL_AVAILABLE_SET.has(state);
+
   const button = (
     <Button
       size="xl"
@@ -171,7 +113,11 @@ export function GatheringCardJoinBtn({ gathering }: GatheringCardJoinBtnProps) {
       <Tooltip>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent>
-          {GATHERING_STATE_MESSAGE[state]}은 {MESSAGE[mode]}할 수 없어요
+          {GATHERING_STATE_MESSAGE[state]}
+          {hasLastConsonantLetter(GATHERING_STATE_MESSAGE[state])
+            ? "은"
+            : "는"}{" "}
+          {MESSAGE[mode]}할 수 없어요
         </TooltipContent>
       </Tooltip>
     );

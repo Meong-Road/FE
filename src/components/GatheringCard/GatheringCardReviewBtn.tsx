@@ -2,21 +2,16 @@
 
 import { MouseEvent } from "react";
 
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import { useGetUserReviewByGathering } from "@/hooks/queries/reviews";
-import { GatheringType } from "@/lib/types/gatherings";
 import { useReviewInfoModalStore } from "@/store/modalStore";
 
 import { Button } from "../ui/button";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
-interface GatheringCardReviewBtnProps {
-  gathering: GatheringType;
-}
-
-export function GatheringCardReviewBtn({
-  gathering,
-}: GatheringCardReviewBtnProps) {
+export function GatheringCardReviewBtn() {
+  const { gathering } = useGatheringStateContext();
   const { openModal } = useReviewInfoModalStore();
 
   // 사용자가 작성한 리뷰 조회
@@ -42,7 +37,12 @@ export function GatheringCardReviewBtn({
 
   // 리뷰 버튼 표시 (작성하기 or 수정하기)
   return (
-    <Button size="xl" variant="default" onClick={handleReviewClick}>
+    <Button
+      size="lg"
+      variant="default"
+      onClick={handleReviewClick}
+      className="sm:h-10 sm:rounded-[10px] sm:px-8 sm:py-3 sm:text-base sm:font-semibold"
+    >
       {userReview ? "리뷰 수정하기" : "리뷰 작성하기"}
     </Button>
   );

@@ -59,12 +59,12 @@ export function ImageUpload({
   const containerClass =
     variant === "gathering"
       ? "flex h-full w-full items-center justify-center overflow-hidden"
-      : "flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300";
+      : "relative flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300";
 
   const imageProps =
     variant === "gathering"
       ? { width: 456, height: 357, className: "object-cover w-full h-full" }
-      : { width: 150, height: 150 };
+      : { fill: true, sizes: "150px" };
 
   return (
     <div className={wrapperClass}>

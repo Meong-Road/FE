@@ -33,7 +33,7 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
   return (
     <Popover>
       <PopoverTrigger className={cn("cursor-pointer")}>
-        <Filter className="size-4" />
+        <Filter className="hidden size-4 sm:block" />
         상세 필터
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-8 p-6" align="start">

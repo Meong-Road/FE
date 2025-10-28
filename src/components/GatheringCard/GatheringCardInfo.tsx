@@ -29,7 +29,12 @@ export function GatheringCardInfo({ className }: GatheringCardInfoProps) {
   const { gathering } = useGatheringStateContext();
 
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
+    <div
+      className={cn(
+        "flex flex-row flex-wrap items-center gap-x-2 gap-y-1",
+        className,
+      )}
+    >
       <TextWrapper>
         <Title>위치</Title>
         <Content>{gathering.location}</Content>

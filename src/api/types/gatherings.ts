@@ -50,6 +50,10 @@ export type PostJoinGatheringRes = Response<string>;
 export type DeleteJoinGatheringReq = Pick<GatheringType, "id">;
 export type DeleteJoinGatheringRes = Response<string>;
 
+// Delete /meong-road/gatherings/{gatheringId} - 모임 취소
+export type DeleteGatheringReq = Pick<GatheringType, "id">;
+export type DeleteGatheringRes = Response<string>;
+
 export type GetMyBookmarkedGatheringsReq = BookmarkType;
 export type GetMyBookmarkedGatheringsRes = Response<
   PaginatedRes<GatheringType>

@@ -8,6 +8,7 @@ import {
   useCancelJoinGathering,
   useJoinGathering,
 } from "@/hooks/queries/gatherings";
+import { useCancelGathering } from "@/hooks/queries/gatherings/useCancelGathering";
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
 import { GATHERING_STATE_MESSAGE } from "@/lib/constants/gathering";
 import { PATH } from "@/lib/constants/path";
@@ -28,45 +29,54 @@ import { GatheringCardReviewBtn } from "./GatheringCardReviewBtn";
 
 enum EJoinButtonType {
   JOIN = "join",
-  CANCEL = "cancel",
+  CANCEL_JOIN = "cancelJoin",
+  CANCEL_GATHERING = "cancelGathering",
 }
 
 const MESSAGE: Record<EJoinButtonType, string> = {
   [EJoinButtonType.JOIN]: "참여",
-  [EJoinButtonType.CANCEL]: "참여 취소",
+  [EJoinButtonType.CANCEL_JOIN]: "참여 취소",
+  [EJoinButtonType.CANCEL_GATHERING]: "개설 취소",
 };
 
 const IS_AVAILABLE: Record<
   EGatheringState,
-  { join: boolean; cancel: boolean }
+  { join: boolean; cancel: boolean; cancelGathering: boolean }
 > = {
   [EGatheringState.REGISTRATION_END_PASSED]: {
     join: false,
     cancel: false,
+    cancelGathering: false,
   },
   [EGatheringState.FIXED_GATHERING]: {
     join: true,
     cancel: false,
+    cancelGathering: false,
   },
   [EGatheringState.CAPACITY_FULL]: {
     join: false,
     cancel: false,
+    cancelGathering: false,
   },
   [EGatheringState.CANCELED]: {
     join: false,
     cancel: false,
+    cancelGathering: false,
   },
   [EGatheringState.PET_REQUIRED]: {
     join: false,
     cancel: true,
+    cancelGathering: false,
   },
   [EGatheringState.AUTH_REQUIRED]: {
     join: false,
     cancel: false,
+    cancelGathering: false,
   },
   [EGatheringState.GENERAL]: {
     join: true,
     cancel: true,
+    cancelGathering: true,
   },
 };
 
@@ -88,7 +98,8 @@ export function GatheringCardJoinBtn() {
   const { mutateAsync: join, isPending: isJoinPending } = useJoinGathering();
   const { mutateAsync: cancelJoin, isPending: isCancelPending } =
     useCancelJoinGathering();
-
+  const { mutateAsync: cancelGathering, isPending: isCancelGatheringPending } =
+    useCancelGathering();
   if (isClosedGatheringState)
     return (
       <div
@@ -113,18 +124,28 @@ export function GatheringCardJoinBtn() {
       </div>
     );
 
-  // REGULAR + FIXED_GATHERING + 참여한 모임 → ReviewBtn 렌더링
+  // REGULAR + FIXED_GATHERING + 참여한 모임 + 호스트가 아니면 ReviewBtn 렌더링
   const shouldShowReviewBtn =
     gathering.type === EGatheringType.REGULAR &&
     state === EGatheringState.FIXED_GATHERING &&
-    isParticipated === true;
+    isParticipated === true &&
+    user?.id !== gathering.hostId;
 
   if (shouldShowReviewBtn) {
-    return <GatheringCardReviewBtn gathering={gathering} />;
+    return <GatheringCardReviewBtn />;
   }
 
-  const isMutationPending = isJoinPending || isCancelPending;
-  const mode = isParticipated ? EJoinButtonType.CANCEL : EJoinButtonType.JOIN;
+  //1. 호스트면 무조건 참여했으므로 cancelGatheringBtn 렌더링
+  //2. 참여하지 않은 모임이면 joinBtn 렌더링
+  //3. 참여한 모임이면 cancelJoinBtn 렌더링
+  const mode =
+    user?.id === gathering.hostId
+      ? EJoinButtonType.CANCEL_GATHERING
+      : isParticipated
+        ? EJoinButtonType.CANCEL_JOIN
+        : EJoinButtonType.JOIN;
+  const isMutationPending =
+    isJoinPending || isCancelPending || isCancelGatheringPending;
 
   const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -135,14 +156,18 @@ export function GatheringCardJoinBtn() {
     }
 
     try {
-      if (isParticipated) await cancelJoin({ id: gathering.id });
-      else await join({ id: gathering.id });
-
-      toast.success(`[${gathering.name}] 모임에 ${MESSAGE[mode]}했어요`);
+      if (mode === EJoinButtonType.CANCEL_JOIN) {
+        await cancelJoin({ id: gathering.id });
+      } else if (mode === EJoinButtonType.CANCEL_GATHERING) {
+        await cancelGathering({ id: gathering.id });
+      } else if (mode === EJoinButtonType.JOIN) {
+        await join({ id: gathering.id });
+      }
+      toast.success(`[${gathering.name}] 모임을 ${MESSAGE[mode]}했어요`);
     } catch (error) {
       console.error(error);
       toast.error(
-        `[${gathering.name}] 모임에 ${MESSAGE[mode]} 중 오류가 발생했어요`,
+        `[${gathering.name}] 모임을 ${MESSAGE[mode]} 하는 중 오류가 발생했어요`,
       );
     }
   };
@@ -150,13 +175,27 @@ export function GatheringCardJoinBtn() {
   const isJoinDisabled =
     mode === EJoinButtonType.JOIN && !IS_AVAILABLE[state].join;
   const isCancelDisabled =
-    mode === EJoinButtonType.CANCEL && !IS_AVAILABLE[state].cancel;
+    mode === EJoinButtonType.CANCEL_JOIN && !IS_AVAILABLE[state].cancel;
+  const isCancelGatheringDisabled =
+    mode === EJoinButtonType.CANCEL_GATHERING &&
+    !IS_AVAILABLE[state].cancelGathering;
   const button = (
     <Button
       size="xl"
-      variant={mode === EJoinButtonType.JOIN ? "default" : "outline"}
+      variant={
+        mode === EJoinButtonType.JOIN
+          ? "default"
+          : mode === EJoinButtonType.CANCEL_JOIN
+            ? "outline"
+            : "destructive"
+      }
       onClick={handleButtonClick}
-      disabled={isMutationPending || isJoinDisabled || isCancelDisabled}
+      disabled={
+        isMutationPending ||
+        isJoinDisabled ||
+        isCancelDisabled ||
+        isCancelGatheringDisabled
+      }
     >
       {MESSAGE[mode]}하기
     </Button>

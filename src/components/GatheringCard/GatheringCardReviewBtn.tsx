@@ -2,21 +2,16 @@
 
 import { MouseEvent } from "react";
 
+import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import { useGetUserReviewByGathering } from "@/hooks/queries/reviews";
-import { GatheringType } from "@/lib/types/gatherings";
 import { useReviewInfoModalStore } from "@/store/modalStore";
 
 import { Button } from "../ui/button";
 
 import GatheringCardSkeleton from "./Skeleton/GatheringCardSkeleton";
 
-interface GatheringCardReviewBtnProps {
-  gathering: GatheringType;
-}
-
-export function GatheringCardReviewBtn({
-  gathering,
-}: GatheringCardReviewBtnProps) {
+export function GatheringCardReviewBtn() {
+  const { gathering } = useGatheringStateContext();
   const { openModal } = useReviewInfoModalStore();
 
   // 사용자가 작성한 리뷰 조회

@@ -37,7 +37,7 @@ export default function GatheringCardItem({
               <GatheringCard.People />
               <GatheringCard.Info />
             </div>
-            <GatheringCard.JoinBtn gathering={gathering} />
+            <GatheringCard.JoinBtn />
           </div>
         </div>
       </div>

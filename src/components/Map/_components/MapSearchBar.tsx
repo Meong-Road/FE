@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Search } from "lucide-react";
 
 import { Form } from "@/components/Form";
@@ -5,12 +6,11 @@ import { Form } from "@/components/Form";
 import { usePlaceSearch } from "../_hooks/usePlaceSearch";
 
 interface Props {
-  input: string;
-  setInput: (value: string) => void;
   onSearch: (results: kakao.maps.services.PlaceType[]) => void;
 }
 
-export default function MapSearchBar({ input, setInput, onSearch }: Props) {
+export default function MapSearchBar({ onSearch }: Props) {
+  const [input, setInput] = useState("");
   const { placeSearch } = usePlaceSearch();
 
   const handleSearch = async () => {

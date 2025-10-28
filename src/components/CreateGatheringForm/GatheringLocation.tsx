@@ -5,7 +5,6 @@ import MapView from "@/components/Map/_components/MapView";
 import { LocationType } from "@/lib/types/location"; // type 협의 필요
 
 export default function GatheringLocation() {
-  const [input, setInput] = useState("");
   const [places, setPlaces] = useState<kakao.maps.services.PlaceType[] | []>(
     [],
   );
@@ -20,7 +19,7 @@ export default function GatheringLocation() {
 
   return (
     <section>
-      <MapSearchBar input={input} setInput={setInput} onSearch={setPlaces} />
+      <MapSearchBar onSearch={setPlaces} />
       <MapView place={top} setLocation={setLocation} />
 
       {/* temp */}

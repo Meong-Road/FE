@@ -1,4 +1,96 @@
+import { LocationType } from "@/lib/types/location";
+
 export const kakaoMapService = {
+  mapPlaces(
+    data: kakao.maps.services.PlaceType[],
+  ): kakao.maps.services.PlaceType[] {
+    return data.map((place) => ({
+      address_name: place.address_name,
+      place_name: place.place_name,
+      road_address_name: place.road_address_name,
+      x: place.x,
+      y: place.y,
+    }));
+  },
+
+  /**
+   * 키워드로 장소 검색
+   * @param keyword 검색할 키워드
+   * @param ps 장소 검색 서비스 인스턴스
+   * @returns 검색 결과 어레이
+   */
+  searchPlaces(
+    keyword: string,
+    ps: kakao.maps.services.Places,
+  ): Promise<kakao.maps.services.PlaceType[]> {
+    return new Promise((resolve) => {
+      ps.keywordSearch(keyword, (data, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          resolve(
+            this.mapPlaces(
+              data as unknown as kakao.maps.services.PlaceType[], // ?
+            ),
+          );
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  },
+
+  reverseGeocode(
+    latlng: kakao.maps.LatLng,
+  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> {
+    return new Promise((resolve) => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+
+      geocoder.coord2Address(
+        latlng.getLng(),
+        latlng.getLat(),
+        (result, status) => {
+          if (
+            status === window.kakao.maps.services.Status.OK &&
+            result.length > 0
+          ) {
+            const item = result[0];
+            resolve({
+              address: item.address?.address_name ?? "",
+              road_address: item.road_address?.address_name ?? "",
+              x: latlng.getLng().toString(),
+              y: latlng.getLat().toString(),
+            });
+          } else {
+            resolve({
+              address: "",
+              road_address: "",
+              x: latlng.getLng().toString(),
+              y: latlng.getLat().toString(),
+            });
+          }
+        },
+      );
+    });
+  },
+
+  updateToCurrLocation(
+    map: kakao.maps.Map,
+    marker: kakao.maps.Marker,
+  ): Promise<LocationType> {
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const locPosition = new window.kakao.maps.LatLng(lat, lng);
+
+        map.setCenter(locPosition);
+        marker.setPosition(locPosition);
+
+        const place = await this.reverseGeocode(locPosition);
+        resolve({ district: place.address, latlng: { lat, lng } });
+      });
+    });
+  },
+
   /**
    * 초기 카카오 지도 생성
    * @param container 지도를 렌더링할 HTML 요소
@@ -43,91 +135,73 @@ export const kakaoMapService = {
     });
   },
 
-  initializeMap(
-    container: HTMLDivElement,
-    center: kakao.maps.LatLng,
-    onMapClick: (latlng: kakao.maps.LatLng) => void,
+  moveMarkerToPlace(
+    map: kakao.maps.Map,
+    marker: kakao.maps.Marker | null,
+    place: kakao.maps.services.PlaceType,
+    setLocation: (loc: LocationType) => void,
   ) {
-    const map = this.createMap(container, center);
-    const marker = this.createMarker(map, center);
-    this.bindMapClick(map, onMapClick);
+    const latlng = new window.kakao.maps.LatLng(
+      Number(place.y),
+      Number(place.x),
+    );
+    if (!marker) return;
 
-    return { map, marker };
-  },
+    marker.setPosition(latlng);
+    map.setCenter(latlng);
 
-  mapKakaoPlaces(
-    data: kakao.maps.services.PlaceType[],
-  ): kakao.maps.services.PlaceType[] {
-    return data.map((place) => ({
-      address_name: place.address_name,
-      place_name: place.place_name,
-      road_address_name: place.road_address_name,
-      x: place.x,
-      y: place.y,
-    }));
-  },
-
-  /**
-   * 키워드로 장소 검색
-   * @param keyword 검색할 키워드
-   * @param ps 장소 검색 서비스 인스턴스
-   * @returns 검색 결과 어레이
-   */
-  searchAddr(
-    keyword: string,
-    ps: kakao.maps.services.Places,
-  ): Promise<kakao.maps.services.PlaceType[]> {
-    return new Promise((resolve) => {
-      ps.keywordSearch(keyword, (data, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          resolve(
-            this.mapKakaoPlaces(
-              data as unknown as kakao.maps.services.PlaceType[], // ?
-            ),
-          );
-        } else {
-          resolve([]);
-        }
-      });
+    setLocation({
+      district: place.address_name,
+      latlng: { lat: Number(place.y), lng: Number(place.x) },
     });
   },
 
-  /**
-   * 좌표를 주소로
-   * @param latlng 주소로 변환할 좌표
-   * @returns 도로명/지번 주소 오브젝트
-   */
-  reverseGeocode(
-    latlng: kakao.maps.LatLng,
-  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> {
+  initMapWithCurrLocation(
+    container: HTMLDivElement,
+    onMapClick: (loc: LocationType) => void,
+  ): Promise<{
+    map: kakao.maps.Map;
+    marker: kakao.maps.Marker;
+    location: LocationType;
+  }> {
     return new Promise((resolve) => {
-      const geocoder = new window.kakao.maps.services.Geocoder();
+      window.kakao.maps.load(() => {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-      geocoder.coord2Address(
-        latlng.getLng(),
-        latlng.getLat(),
-        (result, status) => {
-          if (
-            status === window.kakao.maps.services.Status.OK &&
-            result.length > 0
-          ) {
-            const item = result[0];
-            resolve({
-              address: item.address?.address_name ?? "",
-              road_address: item.road_address?.address_name ?? "",
-              x: latlng.getLng().toString(),
-              y: latlng.getLat().toString(),
-            });
-          } else {
-            resolve({
-              address: "",
-              road_address: "",
-              x: latlng.getLng().toString(),
-              y: latlng.getLat().toString(),
-            });
-          }
-        },
-      );
+          const map = this.createMap(container, locPosition);
+          const marker = this.createMarker(map, locPosition);
+
+          const place = await this.reverseGeocode(locPosition);
+
+          this.bindMapClick(map, async (latlng) => {
+            marker.setPosition(latlng);
+
+            const clickedPlace = await this.reverseGeocode(latlng);
+
+            const newLocation: LocationType = {
+              district: clickedPlace.address,
+              latlng: {
+                lat: latlng.getLat(),
+                lng: latlng.getLng(),
+              },
+            };
+
+            onMapClick(newLocation);
+          });
+
+          resolve({
+            map,
+            marker,
+            location: {
+              district: place.address,
+              latlng: { lat, lng },
+            },
+          });
+        });
+      });
     });
   },
 };

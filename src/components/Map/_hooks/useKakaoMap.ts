@@ -15,88 +15,57 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
   const marker = useRef<kakao.maps.Marker | null>(null);
 
   useEffect(() => {
-    if (!mapRef.current || map.current) return;
+    const initMap = async () => {
+      if (!mapRef.current || map.current) return;
 
-    window.kakao.maps.load(() => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      try {
+        const {
+          map: m,
+          marker: mk,
+          location,
+        } = await kakaoMapService.initMapWithCurrLocation(
+          mapRef.current,
+          setLocation,
+        );
 
-        kakaoMapService.reverseGeocode(locPosition).then((place) => {
-          setLocation({
-            district: place.address,
-            latlng: { lat, lng },
-          });
-        });
+        map.current = m;
+        marker.current = mk;
+        setLocation(location);
+      } catch (error) {
+        console.log("지도 초기화 실패:", error);
+      }
+    };
 
-        const onMapClick = (latlng: kakao.maps.LatLng) => {
-          if (!marker.current) return;
-
-          marker.current.setPosition(latlng);
-
-          kakaoMapService.reverseGeocode(latlng).then((place) => {
-            // console.log("ReverseGeocodePlace:", place);
-            setLocation({
-              district: place.address,
-              latlng: { lat: latlng.getLat(), lng: latlng.getLng() },
-            });
-          });
-        };
-
-        const { map: initialMap, marker: initialMarker } =
-          kakaoMapService.initializeMap(
-            mapRef.current!,
-            locPosition,
-            onMapClick,
-          );
-
-        map.current = initialMap;
-        marker.current = initialMarker;
-      });
-    });
+    initMap();
   }, [mapRef, setLocation]);
 
   useEffect(() => {
     if (!place || !map.current) return;
 
-    const latlng = new window.kakao.maps.LatLng(
-      Number(place.y),
-      Number(place.x),
-    );
-
-    if (!marker.current) {
-      marker.current = kakaoMapService.createMarker(map.current, latlng);
-    } else {
-      marker.current.setPosition(latlng);
+    try {
+      kakaoMapService.moveMarkerToPlace(
+        map.current,
+        marker.current,
+        place,
+        setLocation,
+      );
+    } catch (error) {
+      console.error("마커 이동 실패:", error);
     }
-
-    map.current.setCenter(latlng);
-
-    setLocation({
-      district: place.address_name,
-      latlng: { lat: Number(place.y), lng: Number(place.x) },
-    });
   }, [place, setLocation]);
 
-  const resetMap = () => {
+  const resetMap = async () => {
     if (!map.current || !marker.current) return;
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const locPosition = new window.kakao.maps.LatLng(lat, lng);
-
-      map.current!.setCenter(locPosition);
-      marker.current!.setPosition(locPosition);
-
-      kakaoMapService.reverseGeocode(locPosition).then((place) => {
-        setLocation({
-          district: place.address,
-          latlng: { lat, lng },
-        });
-      });
-    });
+    try {
+      const loc = await kakaoMapService.updateToCurrLocation(
+        map.current,
+        marker.current,
+      );
+      setLocation(loc);
+    } catch (error) {
+      console.log("위치 reset 실패:", error);
+    }
   };
 
   return { resetMap };

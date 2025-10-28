@@ -12,11 +12,7 @@ import { useCancelGathering } from "@/hooks/queries/gatherings/useCancelGatherin
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
 import { GATHERING_STATE_MESSAGE } from "@/lib/constants/gathering";
 import { PATH } from "@/lib/constants/path";
-import {
-  EGatheringState,
-  EGatheringType,
-  GatheringType,
-} from "@/lib/types/gatherings";
+import { EGatheringState, EGatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 import { useAuthRequiredModalStore } from "@/store/modalStore";

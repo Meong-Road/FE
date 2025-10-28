@@ -19,7 +19,7 @@ export function GatheringCardImage({ className }: GatheringCardImageProps) {
   return (
     <div
       className={cn(
-        "relative flex aspect-video w-full flex-shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-[#DDD] sm:size-[188px]",
+        "relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-[#DDD]",
         className,
       )}
     >

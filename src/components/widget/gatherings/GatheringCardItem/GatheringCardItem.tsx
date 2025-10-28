@@ -20,7 +20,7 @@ export default function GatheringCardItem({
   const content = (
     <GatheringCard gathering={gathering} as={as} className="overflow-hidden">
       <div className="flex h-full flex-col items-center sm:flex-row sm:gap-6">
-        <GatheringCard.Image className="max-sm:rounded-none" />
+        <GatheringCard.Image className="aspect-video w-full max-sm:rounded-none sm:size-[188px]" />
         <div className="flex h-full w-full flex-grow flex-col justify-between gap-y-1.5 max-sm:p-6 sm:gap-y-11 sm:py-2">
           <div className="flex items-start justify-between gap-x-2">
             <div className="flex flex-col gap-y-4">

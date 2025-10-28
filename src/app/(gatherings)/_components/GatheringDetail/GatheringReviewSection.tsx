@@ -43,7 +43,7 @@ function GatheringReviewList() {
 
   return (
     <>
-      <ReviewCard className="mb-8 border border-[#ddd] px-12 py-10">
+      <ReviewCard className="mb-8 border border-[#ddd] px-7 py-7">
         {reviews.map((review, idx) => (
           <>
             <div key={`review-${review.id}`} className="flex flex-col gap-y-6">
@@ -100,7 +100,7 @@ function GatheringReviewList() {
 export default function GatheringReviewSection() {
   return (
     <section>
-      <div className="mb-6 text-2xl font-semibold">모임 리뷰 모아보기</div>
+      <div className="mb-2 ml-2 text-lg font-semibold">리뷰</div>
       <GatheringReviewList />
     </section>
   );

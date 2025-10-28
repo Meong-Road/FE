@@ -1,7 +1,7 @@
 import { cva, VariantProps } from "class-variance-authority";
 
 const badgeVariants = cva(
-  "flex h-8 items-center gap-1 rounded-full px-3 text-sm font-semibold [&_svg]:size-6",
+  "flex h-8 items-center gap-1 rounded-full pl-2 pr-3 text-sm font-semibold [&_svg]:size-6",
   {
     variants: {
       variant: {
@@ -17,7 +17,7 @@ const badgeVariants = cva(
       {
         variant: "primary",
         outline: true,
-        class: "border-primary",
+        class: "border-primary/60",
       },
       {
         variant: "gray",

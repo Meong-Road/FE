@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Person from "@/assets/images/profile.svg";
 import { Form } from "@/components/Form";

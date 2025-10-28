@@ -28,6 +28,7 @@ export default function JoinedSection() {
               href={PATH.DETAIL(gathering.id, gathering.type)}
               gathering={gathering}
               as="li"
+              isReviewCard
             />
           )}
           renderSkeleton={() => <GatheringCardItemSkeleton />}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { PATH } from "@/lib/constants/path";
@@ -16,7 +17,6 @@ interface CreateGatheringButtonProps {
 export function CreateGatheringButton({
   type,
   className,
-  children = "+ 모임 만들기",
 }: CreateGatheringButtonProps) {
   const router = useRouter();
 
@@ -29,9 +29,14 @@ export function CreateGatheringButton({
   return (
     <Button
       onClick={handleCreateClick}
-      className={cn(buttonVariants({ size: "xl" }), className)}
+      className={cn(
+        buttonVariants({ size: "xl" }),
+        "right-4 bottom-4 z-50 max-sm:fixed",
+        className,
+      )}
     >
-      {children}
+      <Plus className="size-4 stroke-white" />
+      모임 만들기
     </Button>
   );
 }

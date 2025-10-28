@@ -11,22 +11,20 @@ import RegularGatheringCardList from "./_components/RegularGatheringCardList";
 export default function RegularGatheringListPage() {
   return (
     <>
-      <div>
-        <div className="mb-6 flex items-center justify-between">
-          {/* 필터 */}
-          <div className="flex items-center gap-4">
-            <LocationSelect />
-            <SortBySelector />
-            <FilterPopover type={EGatheringType.REGULAR} />
-          </div>
-
-          {/* 모임 만들기 버튼 */}
-          <CreateGatheringButton type="regular" />
+      <div className="mb-6 flex items-center justify-between">
+        {/* 필터 */}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-4">
+          <LocationSelect />
+          <SortBySelector />
+          <FilterPopover type={EGatheringType.REGULAR} />
         </div>
 
-        {/* 모임 목록 */}
-        <RegularGatheringCardList />
+        {/* 모임 만들기 버튼 */}
+        <CreateGatheringButton type="regular" />
       </div>
+
+      {/* 모임 목록 */}
+      <RegularGatheringCardList />
     </>
   );
 }

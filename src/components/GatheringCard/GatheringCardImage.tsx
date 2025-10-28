@@ -1,5 +1,6 @@
 import Dog from "@/assets/images/dog.svg";
 import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
+import { cn } from "@/lib/utils";
 import {
   checkIsCanceledGatheringState,
   checkIsClosedGatheringState,
@@ -7,19 +8,26 @@ import {
 
 import ImageWithFallback from "../common/ImageWithFallback";
 
-export function GatheringCardImage() {
+interface GatheringCardImageProps {
+  className?: string;
+}
+export function GatheringCardImage({ className }: GatheringCardImageProps) {
   const { gathering, state } = useGatheringStateContext();
   const isClosedGathering = checkIsClosedGatheringState(state);
   const isCanceledGathering = checkIsCanceledGatheringState(state);
 
   return (
-    <div className="relative flex size-[188px] items-center justify-center overflow-hidden rounded-3xl">
+    <div
+      className={cn(
+        "relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-[#DDD]",
+        className,
+      )}
+    >
       {isClosedGathering && (
-        <div className="absolute inset-0 z-[5] flex items-center justify-center bg-black/60">
-          <span className="text-base font-bold text-white">
-            {isCanceledGathering
-              ? "모임이 취소되었어요"
-              : "모집이 마감되었어요"}
+        <div className="absolute inset-0 z-[1] flex items-center justify-center bg-black/60">
+          <span className="text-center font-bold text-white sm:text-base">
+            모임이 <br className="sm:hidden" />
+            {isCanceledGathering ? "취소" : "마감"}되었어요
           </span>
         </div>
       )}
@@ -29,7 +37,7 @@ export function GatheringCardImage() {
         fill
         sizes="188px"
         className="object-cover"
-        renderFallback={() => <Dog className="size-28" />}
+        renderFallback={() => <Dog className="size-20 sm:size-28" />}
       />
     </div>
   );

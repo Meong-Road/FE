@@ -16,7 +16,12 @@ export default function WritableReviewSection() {
     <InfiniteScroll
       {...infiniteQueryResult}
       render={(gathering) => (
-        <GatheringCardItem key={gathering.id} gathering={gathering} as="li" />
+        <GatheringCardItem
+          key={gathering.id}
+          gathering={gathering}
+          as="li"
+          isReviewCard
+        />
       )}
       renderSkeleton={() => <GatheringCardItemSkeleton />}
       renderOnEmpty={() => (

@@ -14,7 +14,6 @@ export function Textarea({ className, placeholder, ...props }: TextareaProps) {
         "transition-[border-color, ring-color] duration-300",
         "focus-visible:border-ring focus-visible:ring-primary focus-visible:ring-[1px]",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-        "wrap-hard",
         className,
       )}
       {...props}

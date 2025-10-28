@@ -1,5 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
-export function GatheringCardPeopleSkeleton() {
-  return <Skeleton fontSize="sm" className="mb-2.5 w-14" />;
+interface GatheringCardPeopleSkeletonProps {
+  className?: string;
+}
+export function GatheringCardPeopleSkeleton({
+  className,
+}: GatheringCardPeopleSkeletonProps) {
+  return <Skeleton fontSize="sm" className={cn("w-14", className)} />;
 }

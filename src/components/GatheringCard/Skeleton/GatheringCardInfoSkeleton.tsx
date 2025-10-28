@@ -18,7 +18,7 @@ function BarSkeleton() {
 
 export function GatheringCardInfoSkeleton() {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1">
       {/* 위치 */}
       <TextWrapperSkeleton>
         <TitleSkeleton />

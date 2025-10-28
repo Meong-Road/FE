@@ -20,7 +20,7 @@ export default function GatheringCardSkeleton({
   children,
 }: GatheringCardSkeletonProps) {
   return (
-    <Skeleton className={cn("relative rounded-4xl p-6", className)}>
+    <Skeleton className={cn("relative rounded-3xl sm:p-6", className)}>
       {children}
     </Skeleton>
   );
@@ -35,3 +35,4 @@ GatheringCardSkeleton.People = GatheringCardPeopleSkeleton;
 GatheringCardSkeleton.Info = GatheringCardInfoSkeleton;
 GatheringCardSkeleton.LikeBtn = GatheringCardLikeBtnSkeleton;
 GatheringCardSkeleton.JoinBtn = GatheringCardJoinBtnSkeleton;
+GatheringCardSkeleton.ReviewBtn = GatheringCardJoinBtnSkeleton;

@@ -1,7 +1,7 @@
 "use client";
 
 import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/components/common/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { ReviewList } from "@/components/widget/reviews";
 import { useGetReviews } from "@/hooks/queries/reviews";

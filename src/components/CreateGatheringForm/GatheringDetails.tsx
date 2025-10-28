@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Popover,
   PopoverContent,
@@ -8,7 +7,7 @@ import { format, isValid, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 
-import { PET_REQUIRED_OPTIONS } from "@/lib/constants/petRequired";
+import { PET_REQUIRED_OPTIONS } from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
 import { formatDateToISOString } from "@/lib/utils/dateTime";
 

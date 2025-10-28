@@ -1,19 +1,29 @@
 "use client";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Filter from "@/assets/icons/filter.svg";
+import { Radio } from "@/components/Form/FormRadio";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { DAY_MAP_KR, DAY_OF_WEEK } from "@/lib/constants/date";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
+import {
+  EIsClosed,
+  IS_CLOSED_OPTIONS,
+  LOCATION_OPTIONS,
+  PET_REQUIRED_OPTIONS,
+  SORT_OPTIONS,
+} from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
 
 import ClosedCheckbox from "./ClosedCheckbox";
+import DayPicker from "./DayPicker";
 
 interface FilterPopoverProps {
   type: EGatheringType;
@@ -29,9 +39,24 @@ function FilterPopoverTitle({ title }: FilterPopoverTitleProps) {
 
 export default function FilterPopover({ type }: FilterPopoverProps) {
   const [date, setDate] = useState<DateRange>();
-  const [dayOfWeek, setDayOfWeek] = useState<string[]>([]);
-  const [isClosed, setIsClosed] = useState(false);
-  const [dateRange, setDateRange] = useState<DateRange>();
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { isPetRequired, isClosed, dayOfWeek } = useSearchParamsState({
+    location: LOCATION_OPTIONS[0].id,
+    sort: SORT_OPTIONS[0].id,
+    isPetRequired: PET_REQUIRED_OPTIONS[0].id,
+    isClosed: IS_CLOSED_OPTIONS[0].id,
+    dayOfWeek: "[]",
+  });
+
+  const handleFilterChange = (key: string, value: unknown) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(key, String(value));
+    params.set("page", "0"); // 필터 변경 시 첫 페이지로
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <Popover>
@@ -40,7 +65,23 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
         상세 필터
       </PopoverTrigger>
       <PopoverContent className="flex w-80 flex-col gap-10 p-6" align="start">
-        <ClosedCheckbox />
+        <ClosedCheckbox
+          checked={isClosed === EIsClosed.HIDE_CLOSED}
+          onCheckedChange={(checked) => handleFilterChange("isClosed", checked)}
+        />
+
+        <div className="flex flex-col gap-2">
+          <FilterPopoverTitle title="반려견" />
+          <Radio
+            className="flex flex-col gap-2 text-sm"
+            name="isPetRequired"
+            options={PET_REQUIRED_OPTIONS}
+            value={isPetRequired}
+            onChange={(option) => {
+              handleFilterChange("isPetRequired", option.value);
+            }}
+          />
+        </div>
 
         {type === EGatheringType.QUICK && (
           <div className="flex flex-col gap-2">
@@ -57,29 +98,12 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
         {type === EGatheringType.REGULAR && (
           <div className="flex flex-col gap-2">
             <FilterPopoverTitle title="모임 가능한 요일" />
-            <div className="grid grid-cols-7 gap-1.5">
-              {DAY_OF_WEEK.map((day) => (
-                <div key={day} className="flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    id={day}
-                    className="hidden"
-                    onClick={() => setDayOfWeek([...dayOfWeek, day])}
-                  />
-                  <label
-                    htmlFor={day}
-                    className={cn(
-                      "flex w-full items-center justify-center rounded-lg p-2",
-                      dayOfWeek.includes(day)
-                        ? "bg-primary font-medium text-white"
-                        : "bg-[#EEEEEE]",
-                    )}
-                  >
-                    {DAY_MAP_KR[day]}
-                  </label>
-                </div>
-              ))}
-            </div>
+            <DayPicker
+              value={JSON.parse(dayOfWeek)}
+              onChange={(dayOfWeek) =>
+                handleFilterChange("dayOfWeek", JSON.stringify(dayOfWeek))
+              }
+            />
           </div>
         )}
       </PopoverContent>

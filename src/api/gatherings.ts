@@ -42,14 +42,28 @@ export const gatheringApi = {
   // 정기 모임 목록 조회
   getRegularGatherings: (params: GetRegularGatheringsReq) => {
     return customFetch.get<GetRegularGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(
+        { ...params },
+        {
+          arrayFormat: "comma",
+          skipNulls: true,
+          // filter: (_prefix, value) => (value === undefined ? undefined : value),
+        },
+      )}`,
       { skipAuth: true },
     );
   },
   // 번개 모임 목록 조회
   getQuickGatherings: (params: GetQuickGatheringsReq) => {
     return customFetch.get<GetQuickGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(
+        { ...params },
+        {
+          arrayFormat: "comma",
+          skipNulls: true,
+          filter: (_prefix, value) => (value === undefined ? undefined : value),
+        },
+      )}`,
       { skipAuth: true },
     );
   },
@@ -133,14 +147,33 @@ export const gatheringApi = {
     sort = ["createdAt", "desc"],
   }: GetMyBookmarkedGatheringsReq) => {
     return customFetch.get<GetMyBookmarkedGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify(
+        { type, page, size, sort },
+        {
+          arrayFormat: "comma",
+          skipNulls: true,
+          filter: (_prefix, value) => (value === undefined ? undefined : value),
+        },
+      )}`,
     );
   },
   getParticipants: ({ id, page, size, sort }: GetParticipantsReq) => {
     return customFetch.get<GetParticipantsRes>(
+<<<<<<< HEAD
       `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
       // TODO: 백엔드 수정 완료 시 주석 제거
       // { skipAuth: true },
+=======
+      `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify(
+        { page, size, sort },
+        {
+          arrayFormat: "comma",
+          skipNulls: true,
+          filter: (_prefix, value) => (value === undefined ? undefined : value),
+        },
+      )}`,
+      { skipAuth: true },
+>>>>>>> 3f1f64a ([FEAT] 상세 필터 기능 구현)
     );
   },
   uploadGatheringImage: async ({ file }: GatheringImageUploadReq) => {

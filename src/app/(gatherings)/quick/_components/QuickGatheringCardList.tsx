@@ -6,19 +6,23 @@ import GatheringCardItem from "@/components/widget/gatherings/GatheringCardItem/
 import GatheringCardItemSkeleton from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItemSkeleton";
 import { useGetInfiniteQuickGatherings } from "@/hooks/queries/gatherings/useGetInfiniteQuickGatherings";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
-import { SEOUL_ALL } from "@/lib/constants/location";
-import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
+import {
+  DEFAULT_LIST_OPTIONS,
+  DEFAULT_OPTION_PARAMS,
+} from "@/lib/constants/option";
 import { PATH } from "@/lib/constants/path";
 
 export default function QuickGatheringCardList() {
-  const { location } = useSearchParamsState({
-    location: SEOUL_ALL,
-  });
+  const props = useSearchParamsState(
+    DEFAULT_OPTION_PARAMS as Record<string, string>,
+  );
 
-  const infiniteQueryResult = useGetInfiniteQuickGatherings({
+  const optionParams = {
     ...DEFAULT_LIST_OPTIONS,
-    location: location === SEOUL_ALL ? undefined : location,
-  });
+    ...props,
+  };
+
+  const infiniteQueryResult = useGetInfiniteQuickGatherings(optionParams);
 
   return (
     <InfiniteScroll

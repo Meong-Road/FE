@@ -8,7 +8,7 @@ import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { QUERY_KEYS } from "../queryKey";
 
 export function useGetInfiniteRegularGatherings(
-  options: PaginationOptions & GatheringFilter = DEFAULT_LIST_OPTIONS,
+  options: PaginationOptions & Partial<GatheringFilter> = DEFAULT_LIST_OPTIONS,
 ) {
   return useInfiniteQuery(getInfiniteRegularGatheringsOptions(options));
 }

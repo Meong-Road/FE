@@ -4,6 +4,7 @@ import {
 } from "@/hooks/gathering/schemas";
 
 import { SEOUL_DISTRICTS } from "../constants/location";
+import { ESort, SORT_OPTIONS_MAP } from "../constants/option";
 import {
   GatheringType,
   QuickGatheringType,
@@ -40,4 +41,8 @@ export function isRegularGatheringForm(
   data: QuickGatheringFormSchema | RegularGatheringFormSchema,
 ): data is RegularGatheringFormSchema {
   return "days" in data;
+}
+
+export function isSortOptionKey(sort: string): sort is ESort {
+  return Object.keys(SORT_OPTIONS_MAP).includes(sort);
 }

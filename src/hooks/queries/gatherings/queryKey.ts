@@ -17,9 +17,9 @@ export const GATHERINGS_QUERY_KEYS = {
   lists: () => [...GATHERINGS_QUERY_KEYS.all(), "list"] as const,
   list: (listType: EType, options: PaginationOptions) =>
     [...GATHERINGS_QUERY_KEYS.lists(), listType, options] as const,
-  regularList: (options: PaginationOptions & GatheringFilter) =>
+  regularList: (options: PaginationOptions & Partial<GatheringFilter>) =>
     [...GATHERINGS_QUERY_KEYS.list(EType.REGULAR, options)] as const,
-  quickList: (options: PaginationOptions & GatheringFilter) =>
+  quickList: (options: PaginationOptions & Partial<GatheringFilter>) =>
     [...GATHERINGS_QUERY_KEYS.list(EType.QUICK, options)] as const,
   myGatheringList: (options: PaginationOptions, status?: GatheringStatus) =>
     [...GATHERINGS_QUERY_KEYS.list(EType.MY, options), status] as const,

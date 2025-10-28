@@ -72,6 +72,14 @@ export function GatheringCardInfo({ className }: GatheringCardInfoProps) {
           </TextWrapper>
         </>
       )}
+      {gathering.isPetRequired && (
+        <>
+          <Bar />
+          <TextWrapper>
+            <Title>반려견 필수</Title>
+          </TextWrapper>
+        </>
+      )}
     </div>
   );
 }

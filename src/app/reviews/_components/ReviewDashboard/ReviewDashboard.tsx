@@ -18,7 +18,7 @@ export default function ReviewDashboard({
     processReviewDashboardData(DashboardInfo);
 
   return (
-    <div className="bg-primary-50 border-primary-300 flex w-full flex-col items-center gap-8 rounded-2xl border px-6 py-8 sm:flex-row sm:gap-16 sm:rounded-3xl sm:px-12 sm:py-10">
+    <div className="bg-primary-50 border-primary-200 flex w-full flex-col items-center gap-8 rounded-2xl border px-6 py-8 sm:flex-row sm:gap-16 sm:rounded-3xl sm:px-12 sm:py-10">
       {/* 왼쪽: 평균 점수 */}
       <div className="flex flex-col items-center gap-3">
         <div className="flex items-end gap-1.5">

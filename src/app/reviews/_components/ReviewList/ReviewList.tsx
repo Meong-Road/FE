@@ -20,7 +20,7 @@ export default function ReviewList({ reviews }: ReviewListProps) {
             />
 
             {/* 리뷰 콘텐츠 */}
-            <div className="relative flex w-full flex-1 flex-col gap-3 p-5 sm:gap-5 sm:p-0 sm:py-2">
+            <div className="relative flex w-full flex-1 flex-col gap-3 p-6 sm:gap-5 sm:p-0 sm:py-2">
               {/* 프로필 (사용자 정보, 별점, 날짜) */}
               <ReviewCard.Profile
                 user={review.user}

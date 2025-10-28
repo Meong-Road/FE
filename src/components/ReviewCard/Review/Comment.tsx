@@ -14,9 +14,10 @@ export function Comment({ children }: ReviewCardCommentProps) {
 
   useLayoutEffect(() => {
     if (textRef.current) {
+      // 잘린 상태 확인 하는 법: 일단 접고, 스크롤 높이 > 클라이언트 높이 인지 확인
+      setIsExpanded(false);
+
       requestAnimationFrame(() => {
-        // 잘린 상태 확인 하는 법: 일단 접고, 스크롤 높이 > 클라이언트 높이 인지 확인
-        setIsExpanded(false);
         setShowButton(
           textRef.current!.scrollHeight > textRef.current!.clientHeight,
         );

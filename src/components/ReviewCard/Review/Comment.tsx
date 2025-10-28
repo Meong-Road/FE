@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -12,24 +12,24 @@ export function Comment({ children }: ReviewCardCommentProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (textRef.current) {
-      // 텍스트가 1줄을 초과하는지 체크
-      const isTruncated =
-        (!isExpanded &&
-          textRef.current.scrollHeight > textRef.current.clientHeight) ||
-        (isExpanded &&
-          textRef.current.scrollHeight === textRef.current.clientHeight);
-      setShowButton(isTruncated);
+      requestAnimationFrame(() => {
+        // 잘린 상태 확인 하는 법: 일단 접고, 스크롤 높이 > 클라이언트 높이 인지 확인
+        setIsExpanded(false);
+        setShowButton(
+          textRef.current!.scrollHeight > textRef.current!.clientHeight,
+        );
+      });
     }
-  }, [children, textRef.current?.scrollHeight, textRef.current?.clientHeight]);
+  }, [children]);
 
   return (
-    <div className="flex flex-col items-start gap-2 sm:flex-row">
+    <div className="flex flex-col items-start justify-between gap-2 sm:flex-row">
       <p
         ref={textRef}
         className={cn(
-          "text-base leading-relaxed break-all text-zinc-700 transition-all duration-300 ease-in-out sm:text-base",
+          "text-base leading-relaxed break-all whitespace-pre-wrap text-zinc-700 transition-all duration-300 ease-in-out sm:text-base",
           !isExpanded && "line-clamp-2 sm:line-clamp-1",
           showButton && "mb-3 sm:mb-0",
         )}

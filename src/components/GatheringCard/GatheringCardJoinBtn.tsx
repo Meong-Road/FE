@@ -70,31 +70,15 @@ export function GatheringCardJoinBtn() {
   const { mutateAsync: cancelGathering, isPending: isCancelGatheringPending } =
     useCancelGathering();
 
-  if (isClosedGatheringState) {
-    return (
-      <Button size="xl" variant="gray" disabled>
-        모집마감
-      </Button>
-    );
-  }
-
-  if (user && isGettingParticipating) return <GatheringCardSkeleton.JoinBtn />;
-  if (user && isGettingParticipatingError) {
+  if (user && !isClosedGatheringState && isGettingParticipating)
+    return <GatheringCardSkeleton.JoinBtn />;
+  if (user && !isClosedGatheringState && isGettingParticipatingError) {
     return (
       <div className="flex h-11 w-30 items-center justify-center rounded-[10px] bg-slate-50">
         에러
       </div>
     );
   }
-
-  //리뷰 버튼 조건: REGULAR + FIXED_GATHERING + 참여중 + 비호스트
-  const shouldShowReviewBtn =
-    gathering.type === EGatheringType.REGULAR &&
-    state === EGatheringState.FIXED_GATHERING &&
-    isParticipated === true &&
-    user?.id !== gathering.hostId;
-
-  if (shouldShowReviewBtn) return <GatheringCardReviewBtn />;
 
   //호스트면 무조건 개설 취소, 참여자면 참여 취소, 비참여자면 참여 버튼
   const mode: EJoinButtonType =

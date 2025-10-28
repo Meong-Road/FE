@@ -141,25 +141,23 @@ export function GatheringCardJoinBtn() {
     mode === EJoinButtonType.CANCEL_GATHERING &&
     !CANCEL_GATHERING_AVAILABLE_SET.has(state);
 
-  const disabled =
-    isMutationPending ||
-    isJoinDisabled ||
-    isCancelDisabled ||
-    isCancelGatheringDisabled;
-
-  const variant =
-    mode === EJoinButtonType.JOIN
-      ? "default"
-      : mode === EJoinButtonType.CANCEL
-        ? "outline"
-        : "destructive";
-
   const button = (
     <Button
       size="xl"
-      variant={variant}
+      variant={
+        mode === EJoinButtonType.JOIN
+          ? "default"
+          : mode === EJoinButtonType.CANCEL
+            ? "outline"
+            : "destructive"
+      }
       onClick={handleButtonClick}
-      disabled={disabled}
+      disabled={
+        isMutationPending ||
+        isJoinDisabled ||
+        isCancelDisabled ||
+        isCancelGatheringDisabled
+      }
     >
       {MESSAGE[mode]}하기
     </Button>

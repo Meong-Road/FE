@@ -15,19 +15,22 @@ export default function GatheringBasicInfo() {
       <Form.Field
         name="image"
         render={({ field: { onChange, value } }) => (
-          <Form.Item className="bg-card flex h-[357px] w-[456px] flex-col justify-center rounded-xl border-1 border-[#bbb]">
-            <Form.Control>
+          <Form.Item className="bg-card flex h-[357px] w-[456px] flex-col overflow-hidden rounded-xl border-1 border-[#bbb]">
+            <Form.Control className="h-full w-full">
               <Form.ImageUpload
                 onChange={onChange}
                 value={value as File | null}
                 existingImageUrl={currentImage as string}
+                variant="gathering"
               >
-                <Dog className="w-20" />
+                <div className="justfiy-center flex flex-col items-center gap-5">
+                  <Dog className="w-20" />
+                  <Form.Label className="text-center text-sm text-gray-600">
+                    모임의 대표사진을 등록해주세요
+                  </Form.Label>
+                </div>
               </Form.ImageUpload>
             </Form.Control>
-            <Form.Label className="flex justify-center">
-              모임의 대표사진을 등록해주세요
-            </Form.Label>
           </Form.Item>
         )}
       />

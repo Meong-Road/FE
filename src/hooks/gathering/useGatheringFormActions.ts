@@ -88,7 +88,7 @@ export default function useGatheringFormActions({
         draftKey = "gathering-draft-regular";
         redirectPath = `${PATH.REGULAR}`;
       } else {
-        throw new Error("INVALID_FORM_DATA_TYPE");
+        throw new Error("유효하지 않은 데이터 타입입니다");
       }
 
       postGatheringMutation.mutate(apiData, {

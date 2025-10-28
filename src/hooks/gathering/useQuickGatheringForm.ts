@@ -13,7 +13,7 @@ export function useQuickGatheringForm() {
     defaultValues: {
       ...baseDefaultValues,
       dateTime: "",
-      registrationEnd: undefined,
+      registrationEnd: "",
     },
     mode: "onChange",
   });

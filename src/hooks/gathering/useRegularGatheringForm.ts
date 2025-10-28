@@ -11,6 +11,7 @@ export function useRegularGatheringForm() {
     defaultValues: {
       ...baseDefaultValues,
       days: [],
+      registrationEnd: "",
     },
     mode: "onChange",
   });

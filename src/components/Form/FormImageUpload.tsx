@@ -13,6 +13,7 @@ interface FormImageUploadProps {
   onChange: (file: File | null) => void;
   value?: File | null;
   existingImageUrl?: string | null;
+  variant?: "profile" | "gathering";
 }
 
 export function ImageUpload({
@@ -21,6 +22,7 @@ export function ImageUpload({
   children,
   onChange,
   existingImageUrl,
+  variant = "profile",
 }: FormImageUploadProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -49,9 +51,26 @@ export function ImageUpload({
     };
   }, [previewUrl]);
 
+  const wrapperClass =
+    variant === "gathering"
+      ? "h-full w-full"
+      : "flex flex-col items-center gap-3";
+
+  const containerClass =
+    variant === "gathering"
+      ? "flex h-full w-full items-center justify-center overflow-hidden"
+      : "relative flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300";
+
+  const imageProps =
+    variant === "gathering"
+      ? { width: 456, height: 357, className: "object-cover w-full h-full" }
+      : { fill: true, sizes: "150px" };
+
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="group relative">
+    <div className={wrapperClass}>
+      <div
+        className={`group relative ${variant === "gathering" ? "h-full w-full" : ""}`}
+      >
         <input
           type="file"
           id={id}
@@ -59,13 +78,15 @@ export function ImageUpload({
           onChange={handleFileChange}
           accept="image/*"
         />
-        <label htmlFor={id} className="relative cursor-pointer">
-          <div className="relative flex h-37.5 w-37.5 items-center justify-center overflow-hidden rounded-full border-2 border-gray-200 transition-colors hover:border-gray-300">
+        <label
+          htmlFor={id}
+          className={`relative cursor-pointer ${variant === "gathering" ? "block h-full w-full" : ""}`}
+        >
+          <div className={containerClass}>
             <ImageWithFallback
               src={currentImageUrl || null}
               alt="업로드 사진 미리보기"
-              fill
-              sizes="150px"
+              {...imageProps}
               renderFallback={() => children}
             />
           </div>

@@ -2,7 +2,14 @@
 import { http, HttpResponse } from "msw";
 
 import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
-import { EGatheringType } from "@/lib/types/gatherings";
+import {
+  CreateGatheringType,
+  DayOfWeek,
+  EGatheringType,
+  GatheringType,
+  QuickGatheringType,
+  RegularGatheringType,
+} from "@/lib/types/gatherings";
 
 import { createPaginatedRes } from "../data/common";
 import {
@@ -411,5 +418,78 @@ export const gatheringsHandlers = [
       result: { isLiked: false },
       errorCode: null,
     });
+  }),
+  //================= 모임 생성 ================================
+  http.post(`${FULL_API_ENDPOINTS.GATHERING}`, async (req) => {
+    try {
+      const body = (await req.request.json()) as CreateGatheringType;
+
+      const maxId = Math.max(
+        ...REGULAR_GATHERINGS.map((g) => g.id),
+        ...QUICK_GATHERINGS.map((g) => g.id),
+      );
+      const newId = maxId + 1;
+
+      const hostId = Number(mockCurrentUser.id);
+
+      const baseGathering = {
+        id: newId,
+        name: body.name,
+        description: body.description || "",
+        registrationEnd: body.registrationEnd,
+        location: body.location,
+        participantCount: 0,
+        capacity: body.capacity,
+        image: body.image,
+        isPetRequired: body.isPetRequired,
+        isParticipating: false,
+        canceledAt: null,
+        hostId,
+      };
+
+      let newGathering: GatheringType;
+
+      if (body.type === EGatheringType.QUICK) {
+        newGathering = {
+          ...baseGathering,
+          type: EGatheringType.QUICK,
+          dateTime: body.dateTime,
+        } as QuickGatheringType;
+
+        QUICK_GATHERINGS.push(newGathering as QuickGatheringType);
+      } else if (body.type === EGatheringType.REGULAR) {
+        newGathering = {
+          ...baseGathering,
+          type: EGatheringType.REGULAR,
+          days: body.days as DayOfWeek[],
+        } as RegularGatheringType;
+
+        REGULAR_GATHERINGS.push(newGathering as RegularGatheringType);
+      } else {
+        return HttpResponse.json({
+          success: false,
+          code: 400,
+          message: "잘못된 모임 타입입니다",
+          result: null,
+          errorCode: "INVALID_GATHERING_TYPE",
+        });
+      }
+
+      return HttpResponse.json({
+        success: true,
+        code: 200,
+        message: "모임이 성공적으로 생성되었습니다",
+        result: newGathering,
+        errorCode: null,
+      });
+    } catch {
+      return HttpResponse.json({
+        success: false,
+        code: 400,
+        message: "요청 데이터를 처리할 수 없습니다",
+        result: null,
+        errorCode: "INVALID_REQUEST_DATA",
+      });
+    }
   }),
 ];

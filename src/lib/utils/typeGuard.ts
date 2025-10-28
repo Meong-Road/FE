@@ -33,7 +33,7 @@ export const isLocationParamType = (
 export function isQuickGatheringForm(
   data: QuickGatheringFormSchema | RegularGatheringFormSchema,
 ): data is QuickGatheringFormSchema {
-  return "dataTime" in data;
+  return "dateTime" in data;
 }
 
 export function isRegularGatheringForm(

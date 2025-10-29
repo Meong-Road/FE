@@ -1,6 +1,9 @@
 import { LocationType } from "@/lib/types/location";
 
 export const kakaoMapService = {
+  /**
+   * 카카오맵 SDK 로드
+   */
   waitForKakaoMapLoad(): Promise<void> {
     return new Promise((resolve) => {
       if (window.kakao?.maps?.load) {
@@ -17,6 +20,11 @@ export const kakaoMapService = {
     });
   },
 
+  /**
+   * 카카오맵 데이터를 필요한 필드만 추출해 매핑
+   * @param data 카카오맵 검색 결과
+   * @returns 필터링된 데이터 어레이
+   */
   mapPlaces(
     data: kakao.maps.services.PlaceType[],
   ): kakao.maps.services.PlaceType[] {
@@ -54,6 +62,11 @@ export const kakaoMapService = {
     });
   },
 
+  /**
+   * 좌표를 주소로 변환합니다
+   * @param latlng 변환할 좌표
+   * @returns 주소 정보 오브젝트
+   */
   reverseGeocode(
     latlng: kakao.maps.LatLng,
   ): Promise<kakao.maps.services.ReverseGeocodePlaceType> {
@@ -88,6 +101,12 @@ export const kakaoMapService = {
     });
   },
 
+  /**
+   * 유저의 현재 위치로 맵과 마커를 이동시키고 위치 정보를 리턴
+   * @param map 맵 인스턴스
+   * @param marker 마커 인스턴스
+   * @returns 현재 위치 정보
+   */
   updateToCurrLocation(
     map: kakao.maps.Map,
     marker: kakao.maps.Marker,
@@ -108,9 +127,10 @@ export const kakaoMapService = {
   },
 
   /**
-   * 초기 카카오 지도 생성
-   * @param container 지도를 렌더링할 HTML 요소
-   * @returns 지도 인스턴스
+   * 초기 카카오맵 생성
+   * @param container 맵을 렌더링할 HTML 요소
+   * @param center 중심 좌표
+   * @returns 맵 인스턴스
    */
   createMap(container: HTMLDivElement, center: kakao.maps.LatLng) {
     return new window.kakao.maps.Map(container, { center, level: 3 });
@@ -118,7 +138,7 @@ export const kakaoMapService = {
 
   /**
    * 지정한 위치에 마커 생성
-   * @param map 마커를 표시할 지도 인스턴스
+   * @param map 마커를 표시할 맵 인스턴스
    * @param position 마커 좌표
    * @returns 마커 인스턴스
    */
@@ -137,8 +157,8 @@ export const kakaoMapService = {
   },
 
   /**
-   * 지도 클릭 시 좌표를 callback으로 전달하는 이벤트 바인딩
-   * @param map 이벤트를 바인딩할 지도 인스턴스
+   * 맵 클릭 시 좌표를 callback으로 전달하는 이벤트 바인딩
+   * @param map 이벤트를 바인딩할 맵 인스턴스
    * @param callback 클릭한 좌표를 처리할 함수
    */
   bindMapClick(
@@ -151,6 +171,14 @@ export const kakaoMapService = {
     });
   },
 
+  /**
+   * 클릭한 장소로 맵을 이동시키고 location 갱신
+   * @param map 맵 인스턴스
+   * @param marker 마커 인스턴스
+   * @param place 이동할 장소
+   * @param setLocation 위치 상태 갱신하는 함수
+   * @returns
+   */
   moveMarkerToPlace(
     map: kakao.maps.Map,
     marker: kakao.maps.Marker | null,
@@ -172,6 +200,12 @@ export const kakaoMapService = {
     });
   },
 
+  /**
+   * 현재 위치 기준으로 맵과 마커 초기화
+   * @param container 맵을 렌더링할 HTML 요소
+   * @param onMapClick 맵 클릭 시 실행할 콜백
+   * @returns 맵, 마커, 위치 정보
+   */
   initMapWithCurrLocation(
     container: HTMLDivElement,
     onMapClick: (loc: LocationType) => void,

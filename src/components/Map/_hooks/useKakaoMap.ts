@@ -52,7 +52,7 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
         setLocation,
       );
     } catch (error) {
-      console.error("마커 이동 실패:", error);
+      console.log("마커 이동 실패:", error);
     }
   }, [place, setLocation]);
 

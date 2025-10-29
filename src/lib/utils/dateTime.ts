@@ -113,6 +113,34 @@ export const formatDateToISOString = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
+/**
+ * 주어진 날짜시간에서 지정된 시간을 빼서 새로운 날짜시간을 반환합니다.
+ * 시간이 음수가 되면 이전 날로 넘어갑니다.
+ * @param dateTime - ISO 문자열 형태의 날짜시간 (예: "2024-01-15T18:00")
+ * @param hoursToSubtract - 빼고자 하는 시간 (기본값: 3)
+ * @returns 새로운 날짜시간 ISO 문자열
+ */
+export const subtractHoursFromDateTime = (
+  dateTime: string,
+  hoursToSubtract: number = 3,
+) => {
+  const [date, time] = dateTime.split("T");
+  const [hours, minutes] = time.split(":");
+
+  let newHours = parseInt(hours) - hoursToSubtract;
+  let newDate = date;
+
+  if (newHours < 0) {
+    newHours += 24;
+    const currentDate = new Date(date);
+    currentDate.setDate(currentDate.getDate() - 1);
+    newDate = currentDate.toISOString().split("T")[0];
+  }
+
+  const newTime = `${String(newHours).padStart(2, "0")}:${minutes}:00`;
+  return `${newDate}T${newTime}`;
+};
+
 export const checkIsBefore = (
   date: Date | string,
   dateToCompare: Date | string = new Date(),

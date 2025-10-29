@@ -25,7 +25,7 @@ interface GatheringDetailsProps {
 export default function GatheringDetails({ type }: GatheringDetailsProps) {
   return (
     <section className="flex flex-col gap-13">
-      <div className="flex justify-between gap-29">
+      <div className="flex flex-col gap-13 md:gap-20 lg:flex-row">
         {/* 모임 날짜 */}
         <GatheringDateTimeField type={type} />
 
@@ -99,7 +99,7 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
         />
       </div>
 
-      <div className="flex justify-between gap-29">
+      <div className="flex flex-col gap-13 md:gap-20 lg:flex-row">
         {/* 반려견 동반 여부 */}
         <Form.Field
           name="isPetRequired"
@@ -110,7 +110,7 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
               </Form.Label>
               <Form.Control>
                 <Form.Radio
-                  className="max-h-10"
+                  className="max-h-10 text-sm md:text-base"
                   options={PET_REQUIRED_OPTIONS}
                   {...field}
                 />

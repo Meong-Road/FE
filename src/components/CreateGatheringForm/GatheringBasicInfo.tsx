@@ -10,12 +10,12 @@ export default function GatheringBasicInfo() {
   const currentImage = form.watch("image");
 
   return (
-    <section className="flex gap-6">
+    <section className="flex flex-col gap-6 md:flex-row">
       {/* 모임 대표사진 */}
       <Form.Field
         name="image"
         render={({ field: { onChange, value } }) => (
-          <Form.Item className="bg-card flex h-[357px] w-[456px] flex-col overflow-hidden rounded-xl border-1 border-[#bbb]">
+          <Form.Item className="bg-card flex aspect-[456/357] w-full flex-1 flex-col overflow-hidden rounded-xl border-1 border-[#bbb]">
             <Form.Control className="h-full w-full">
               <Form.ImageUpload
                 onChange={onChange}

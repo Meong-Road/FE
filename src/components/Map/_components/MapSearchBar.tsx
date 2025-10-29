@@ -18,25 +18,30 @@ export default function MapSearchBar({ onSelect }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debouncedInput = useDebounce(input, { delay: 500 });
 
+  const handleSearch = async (query: string) => {
+    if (!query.trim()) return;
+
+    const ps = new window.kakao.maps.services.Places();
+    const results = await kakaoMapService.searchPlaces(query, ps);
+
+    setPlaces(results || []);
+    setOpen(true);
+  };
+
   useEffect(() => {
-    if (!debouncedInput.trim()) return;
-
-    const searchPlaces = async () => {
-      const ps = new window.kakao.maps.services.Places();
-      const results = await kakaoMapService.searchPlaces(debouncedInput, ps);
-
-      setPlaces(results || []);
-      setOpen(true);
-    };
-
-    searchPlaces();
+    if (debouncedInput.trim()) {
+      handleSearch(debouncedInput);
+    }
   }, [debouncedInput]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
+        !dropdownRef.current.contains(target) &&
+        !(target instanceof HTMLElement && target.closest("input"))
       ) {
         setOpen(false);
       }
@@ -52,6 +57,12 @@ export default function MapSearchBar({ onSelect }: Props) {
     setOpen(false);
   };
 
+  const handleFocus = () => {
+    if (!open && debouncedInput.trim()) {
+      handleSearch(debouncedInput);
+    }
+  };
+
   return (
     <div className="mb-4 flex gap-2">
       <Form.Label className="text-lg font-semibold whitespace-nowrap" required>
@@ -65,6 +76,7 @@ export default function MapSearchBar({ onSelect }: Props) {
           className="w-full rounded-xl bg-[#edf4fb] px-4 py-2 pr-10"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onFocus={handleFocus}
         />
         <Search
           className="absolute top-1/2 right-4 -translate-y-1/2 text-[#737373]"

@@ -36,7 +36,7 @@ export function useQuickGatheringForm() {
       newDate = currentDate.toISOString().split("T")[0];
     }
 
-    const newTime = `${String(newHours).padStart(2, "0")}:${minutes}`;
+    const newTime = `${String(newHours).padStart(2, "0")}:${minutes}:00`;
     const registrationEnd = `${newDate}T${newTime}`;
 
     form.setValue("registrationEnd", registrationEnd);

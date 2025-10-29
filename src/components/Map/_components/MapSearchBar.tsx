@@ -93,7 +93,7 @@ export default function MapSearchBar({ onSelect }: Props) {
                 <div
                   key={place.id}
                   onClick={() => handleSelect(place)}
-                  className="px-4 py-2"
+                  className="px-4 py-2 hover:bg-[#FFE59E]"
                 >
                   <div>{place.place_name}</div>
                   <div className="text-[#737373]">{place.address_name}</div>

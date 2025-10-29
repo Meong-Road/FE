@@ -51,7 +51,7 @@ export default function GatheringReviewList({
             <div key={`review-${review.id}`} className="flex flex-col gap-y-6">
               <ReviewCard.Profile
                 user={review.user}
-                score={3}
+                score={review.score}
                 date={review.createdAt}
               />
               <ReviewCard.Comment>{review.comment}</ReviewCard.Comment>

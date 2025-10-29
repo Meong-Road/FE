@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import { Form } from "@/components/Form";
 import { useDebounce } from "@/hooks/useDebounce";
 
-import { usePlaceSearch } from "../_hooks/usePlaceSearch";
+import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
   onSelect: (place: kakao.maps.services.PlaceType) => void;
@@ -17,13 +17,14 @@ export default function MapSearchBar({ onSelect }: Props) {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debouncedInput = useDebounce(input, { delay: 500 });
-  const { placeSearch } = usePlaceSearch();
 
   useEffect(() => {
     if (!debouncedInput.trim()) return;
 
     const searchPlaces = async () => {
-      const results = await placeSearch(debouncedInput);
+      const ps = new window.kakao.maps.services.Places();
+      const results = await kakaoMapService.searchPlaces(debouncedInput, ps);
+
       setPlaces(results || []);
       setOpen(true);
     };
@@ -87,7 +88,7 @@ export default function MapSearchBar({ onSelect }: Props) {
                 </div>
               ))
             ) : (
-              <div className="px-4 py-2 text-[#737373]">검색 결과 없음</div>
+              <div className="px-4 py-2 text-[#737373]">검색 결과가 없어요</div>
             )}
           </div>
         )}

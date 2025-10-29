@@ -17,6 +17,7 @@ const skeletonVariants = cva(
         base: "h-6",
         lg: "h-7",
         xl: "h-7",
+        "2xl": "h-8",
         none: "",
       },
       tabletFontSize: {
@@ -25,6 +26,7 @@ const skeletonVariants = cva(
         base: "sm:h-6",
         lg: "sm:h-7",
         xl: "sm:h-7",
+        "2xl": "sm:h-8",
         none: "",
       },
       desktopFontSize: {
@@ -33,6 +35,7 @@ const skeletonVariants = cva(
         base: "md:h-6",
         lg: "md:h-7",
         xl: "md:h-7",
+        "2xl": "md:h-8",
         none: "",
       },
     },

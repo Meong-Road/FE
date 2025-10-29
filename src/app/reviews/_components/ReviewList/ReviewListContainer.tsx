@@ -25,7 +25,7 @@ export default function ReviewListContainer() {
     ...DEFAULT_LIST_OPTIONS,
   });
 
-  if (isPending) {
+  if (1) {
     return <ReviewCardSkeletonList count={3} />;
   }
 

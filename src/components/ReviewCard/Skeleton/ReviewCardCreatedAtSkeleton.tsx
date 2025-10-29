@@ -1,9 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 function ReviewCardCreatedAtSkeleton() {
-  return (
-    <Skeleton fontSize="xs" tabletFontSize="sm" className="flex-shrink-0" />
-  );
+  return <Skeleton className="h-3 w-16 flex-shrink-0 sm:h-4" />;
 }
 
 export default ReviewCardCreatedAtSkeleton;

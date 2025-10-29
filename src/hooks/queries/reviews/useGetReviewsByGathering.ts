@@ -24,6 +24,6 @@ export function useGetReviewsByGathering({
     ),
     queryFn: () =>
       REVIEW_API.getReviewsByGathering({ size, page, sort, ...params }),
-    select: (data) => data.result?.content,
+    select: (data) => data.result,
   });
 }

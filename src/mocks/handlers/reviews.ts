@@ -99,18 +99,27 @@ export const reviewsHandlers = [
   }),
 
   // GET /meong-road/reviews/gatherings/:id - 특정 모임의 리뷰 목록 조회
-  http.get(`${FULL_API_ENDPOINTS.REVIEW}/gatherings/:id`, () => {
+  http.get(`${FULL_API_ENDPOINTS.REVIEW}/gatherings/:id`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page") ?? 0);
+    const size = Number(url.searchParams.get("size") ?? 10);
+
+    const start = page * size;
+    const end = start + size;
+    const paginated = mockReviews.slice(start, end);
+    const totalPages = Math.ceil(mockReviews.length / size);
+
     return HttpResponse.json({
       success: true,
       code: 0,
       message: "string",
       result: {
-        content: mockReviews,
-        page: 0,
-        size: 10,
-        totalElements: 100,
-        totalPages: 10,
-        last: false,
+        content: paginated,
+        page,
+        size,
+        totalElements: mockReviews.length,
+        totalPages,
+        last: page === totalPages,
       },
       errorCode: "string",
     });

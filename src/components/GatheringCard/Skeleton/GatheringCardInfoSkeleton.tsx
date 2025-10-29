@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 function TextWrapperSkeleton({ children }: { children: React.ReactNode }) {
   return <div className="flex items-center gap-1.5">{children}</div>;
@@ -16,9 +17,20 @@ function BarSkeleton() {
   return <Skeleton className="h-2 w-0.5" />;
 }
 
-export function GatheringCardInfoSkeleton() {
+interface GatheringCardInfoSkeletonProps {
+  className?: string;
+}
+
+export function GatheringCardInfoSkeleton({
+  className,
+}: GatheringCardInfoSkeletonProps) {
   return (
-    <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1">
+    <div
+      className={cn(
+        "flex flex-row flex-wrap items-center gap-x-2 gap-y-1",
+        className,
+      )}
+    >
       {/* 위치 */}
       <TextWrapperSkeleton>
         <TitleSkeleton />

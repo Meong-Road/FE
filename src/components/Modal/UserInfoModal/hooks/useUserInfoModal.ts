@@ -39,7 +39,7 @@ export function useUserInfoModal({
         image: null,
       });
     }
-  }, [form, isEditMode]);
+  }, [form, isEditMode, type]);
 
   useEffect(() => {
     if (initialData) {

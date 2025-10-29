@@ -54,7 +54,7 @@ export function useReviewInfoModal({
         comment: "",
       });
     }
-  }, [form, isEditMode]);
+  }, [form, isEditMode, modalType]);
 
   useEffect(() => {
     if (initialData) {

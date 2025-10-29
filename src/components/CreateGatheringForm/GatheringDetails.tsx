@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { format } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 
@@ -42,11 +42,31 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
                   <PopoverTrigger asChild>
                     <Button
                       variant="gray"
-                      className="hover:bg-primary/10 active:border-primary w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
+                      className="active:border-primary w-full rounded-xl bg-[#edf4fb] px-4 py-2.5 hover:bg-[#e6f0f8]"
                       disabled={type === EGatheringType.QUICK}
                     >
                       {field.value ? (
-                        format(field.value, "PPP", { locale: ko })
+                        (() => {
+                          if (type === EGatheringType.QUICK) {
+                            // 번개 모임: 3시간 전 시간 표시
+                            const date =
+                              typeof field.value === "string"
+                                ? parseISO(field.value)
+                                : field.value;
+                            return isValid(date)
+                              ? format(date, "PPP p", { locale: ko }) // 날짜 + 시간 표시
+                              : "마감 날짜를 선택해주세요";
+                          } else {
+                            // 정기 모임: 날짜만 표시
+                            const date =
+                              typeof field.value === "string"
+                                ? parseISO(field.value)
+                                : field.value;
+                            return isValid(date)
+                              ? format(date, "PPP", { locale: ko })
+                              : "마감 날짜를 선택해주세요";
+                          }
+                        })()
                       ) : (
                         <span className="text-muted-foreground">
                           마감 날짜를 선택해주세요

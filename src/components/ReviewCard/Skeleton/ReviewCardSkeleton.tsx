@@ -16,7 +16,7 @@ export function ReviewCardSkeleton({ className }: ReviewCardSkeletonProps) {
     >
       <div className="flex w-full flex-col gap-0 sm:flex-row sm:gap-6">
         {/* 모임 이미지 */}
-        <Skeleton className="h-[188px] w-full flex-shrink-0 rounded-t-3xl bg-gray-200 sm:h-[188px] sm:w-[188px] sm:rounded-3xl" />
+        <Skeleton className="aspect-video w-full flex-shrink-0 rounded-t-3xl bg-gray-200 sm:aspect-square sm:size-[188px] sm:rounded-3xl" />
 
         {/* 리뷰 콘텐츠 */}
         <div className="relative flex w-full flex-1 flex-col gap-3 p-5 sm:gap-5 sm:p-0 sm:py-2">

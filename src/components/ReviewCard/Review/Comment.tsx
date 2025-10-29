@@ -57,7 +57,7 @@ export function Comment({ children }: ReviewCardCommentProps) {
   }, []);
 
   return (
-    <div className="relative flex flex-col items-start justify-between gap-2 sm:flex-row">
+    <div className="flex flex-col items-start justify-between gap-2 sm:flex-row">
       <p
         ref={textRef}
         className={cn(
@@ -80,7 +80,7 @@ export function Comment({ children }: ReviewCardCommentProps) {
           aria-expanded={isExpanded}
           onClick={() => setIsExpanded((v) => !v)}
           className={cn(
-            "inline-flex items-center justify-center self-center rounded-full px-1.5 py-0.5 text-zinc-400 transition-[opacity,color,background-color] duration-200 hover:text-zinc-600 sm:self-end",
+            "absolute bottom-1.5 inline-flex items-center justify-center self-center rounded-full px-1.5 py-0.5 text-zinc-400 transition-[opacity,color,background-color] duration-200 hover:text-zinc-600 sm:static sm:self-end",
             "opacity-80 hover:opacity-100",
           )}
         >

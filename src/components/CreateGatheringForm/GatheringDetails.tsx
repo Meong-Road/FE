@@ -1,9 +1,20 @@
 import React from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
 
 import { PET_REQUIRED_OPTIONS } from "@/lib/constants/petRequired";
 import { EGatheringType } from "@/lib/types/gatherings";
+import { formatDateToISOString } from "@/lib/utils/dateTime";
 
 import { Form } from "../Form";
+import { Button } from "../ui/button";
+import { Calendar } from "../ui/calendar";
 
 import GatheringDateTimeField from "./GatheringDateTimeField";
 
@@ -27,15 +38,40 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
                 마감 날짜
               </Form.Label>
               <Form.Control>
-                <Form.Input
-                  type={
-                    type === EGatheringType.QUICK ? "datetime-local" : "date"
-                  }
-                  placeholder="마감 날짜를 선택해주세요"
-                  className="w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
-                  disabled={type === EGatheringType.QUICK}
-                  {...field}
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="gray"
+                      className="hover:bg-primary/10 active:border-primary w-full rounded-xl bg-[#edf4fb] px-4 py-2.5"
+                      disabled={type === EGatheringType.QUICK}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP", { locale: ko })
+                      ) : (
+                        <span className="text-muted-foreground">
+                          마감 날짜를 선택해주세요
+                        </span>
+                      )}
+                      <CalendarIcon className="h-4 w-4" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="z-[999] w-auto bg-white p-0"
+                    align="center"
+                  >
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={(date) => {
+                        field.onChange(date ? formatDateToISOString(date) : "");
+                      }}
+                      disabled={(date) =>
+                        date < new Date() || date < new Date("1900-01-01")
+                      }
+                      autoFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </Form.Control>
               <Form.Message />
             </Form.Item>

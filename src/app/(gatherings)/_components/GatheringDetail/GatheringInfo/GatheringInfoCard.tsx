@@ -13,7 +13,7 @@ export default function GatheringInfoCard() {
   return (
     <div
       className={cn(
-        "relative flex-grow rounded-4xl border border-[#ddd] bg-white px-7 py-7 max-lg:pb-12 lg:py-6",
+        "relative flex-grow rounded-4xl border border-[#ddd] bg-white px-7 py-7 pb-12",
       )}
     >
       <div className="flex items-start justify-between">

@@ -5,7 +5,7 @@ import { useGetMyPets } from "@/hooks/queries/pets/useGetMyPets";
 import { GatheringType } from "@/lib/types/gatherings";
 import { getGatheringState } from "@/lib/utils/gathering";
 
-import GatheringInfoCard from "./GatheringInfoCard";
+import GatheringInfoCard from "./GatheringInfo/GatheringInfoCard";
 
 interface GatheringInfoSectionProps {
   gathering: GatheringType;

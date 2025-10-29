@@ -200,13 +200,13 @@ export default function PetInfoModal() {
             name="birthYear"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label required>생일</Form.Label>
+                <Form.Label required>출생 연도</Form.Label>
                 <Form.Control>
                   <Modal.DateSelect
                     name="birthYear"
-                    htmlFor="birthYear"
+                    id="birthYear"
                     value={field.value}
-                    onChange={field.onChange}
+                    onValueChange={(value) => field.onChange(value)}
                   />
                 </Form.Control>
                 <Form.Message />
@@ -222,9 +222,9 @@ export default function PetInfoModal() {
                 <Form.Control>
                   <Modal.BreedSelect
                     name="breed"
-                    htmlFor="breed"
+                    id="breed"
                     value={field.value}
-                    onChange={field.onChange}
+                    onValueChange={(value) => field.onChange(value)}
                   />
                 </Form.Control>
                 <Form.Message />

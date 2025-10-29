@@ -10,7 +10,7 @@ export const transformPetToFormData = (pet: PetType): PetInfoFormSchema => ({
   gender: pet?.gender,
   birthYear: pet?.birthYear,
   breed: pet?.breed,
-  neuter: pet?.neuter ? "true" : "false",
+  neuter: pet?.neuter ? "true" : pet?.neuter === false ? "false" : undefined,
   petType: "dog",
 });
 

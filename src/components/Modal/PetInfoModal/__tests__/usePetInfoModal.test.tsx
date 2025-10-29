@@ -297,7 +297,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       });
     });
 
-    it("neuter가 null일 때 false로 변환되는지 테스트", async () => {
+    it("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
       const mockData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({
@@ -314,7 +314,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         image: "",
         breed: "골든 리트리버",
         gender: "MALE",
-        neuter: "false",
+        neuter: undefined,
         petType: "dog",
       });
     });

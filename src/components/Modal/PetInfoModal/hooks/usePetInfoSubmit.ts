@@ -33,7 +33,7 @@ export function usePetInfoSubmit({
         gender: values.gender!,
         birthYear: values.birthYear!,
         breed: values.breed!,
-        neuter: values.neuter!,
+        neuter: values.neuter ?? undefined,
         petType: values.petType!,
         image: null,
       };
@@ -59,7 +59,12 @@ export function usePetInfoSubmit({
         gender: petFormData.gender,
         birthYear: petFormData.birthYear,
         breed: petFormData.breed,
-        neuter: petFormData.neuter === "true",
+        neuter:
+          petFormData.neuter === "true"
+            ? true
+            : petFormData.neuter === "false"
+              ? false
+              : undefined,
         petType: petFormData.petType,
         image: imageUrl === null ? "" : (imageUrl ?? null),
       };

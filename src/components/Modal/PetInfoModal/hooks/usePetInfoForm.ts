@@ -10,7 +10,7 @@ const PetInfoFormSchema = z.object({
     .min(1, "반려동물 이름을 입력해주세요.")
     .max(10, "이름은 10자 이하로 입력해 주세요."),
   gender: z.enum(["MALE", "FEMALE"]),
-  neuter: z.enum(["true", "false"]), // optional로 변경
+  neuter: z.enum(["true", "false"]).optional(),
   birthYear: z
     .string()
     .trim()
@@ -20,7 +20,7 @@ const PetInfoFormSchema = z.object({
     .string()
     .trim()
     .min(1, "견종을 선택해주세요.")
-    .max(10, "견종은 10자 이하로 입력해 주세요."),
+    .max(20, "견종은 20자 이하로 입력해 주세요."),
   petType: z.literal("dog"),
 });
 

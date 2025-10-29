@@ -12,7 +12,7 @@ export const useGetMyPets = ({ enabled = true }: UseGetMyPetsProps = {}) => {
   return useQuery({
     queryKey: QUERY_KEYS.pets.myPets(),
     queryFn: () => petsApi.getMyPetInfo(),
-    select: (data) => data.result,
+    select: (data) => data.result?.sort((a, b) => a.id - b.id),
     retry: false,
     enabled,
   });

@@ -1,4 +1,4 @@
-export const dogBreeds = [
+export const DOG_BREEDS: readonly string[] = [
   "골든 리트리버",
   "그레이하운드",
   "그레이트 덴",
@@ -109,3 +109,8 @@ export const dogBreeds = [
   "화이트 스위스 셰퍼드",
   "휘펫",
 ];
+
+export const DOG_BREEDS_OPTIONS = DOG_BREEDS.map((breed) => ({
+  label: breed,
+  value: breed,
+}));

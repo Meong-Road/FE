@@ -13,7 +13,7 @@ on:
       - main
 
 jobs:
-  # 1) PR 열릴 때는 테스트만 수행
+  # 1) PR 열릴 때: 테스트 + 빌드 검증
   Test:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -32,10 +32,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Lint check
+        run: pnpm run lint --if-present
+
+      - name: Type check
+        run: pnpm run typecheck --if-present
+
       - name: Run tests
         run: pnpm run test
 
-  # 2) main에 머지될 때는 테스트 + 배포
+      - name: Build (for validation)
+        run: pnpm run build
+
+
+  # 2) main에 머지(push) 시: 테스트 + 빌드 + 운영 배포
   Deploy-Production:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest

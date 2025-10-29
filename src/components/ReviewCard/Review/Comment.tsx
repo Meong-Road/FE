@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -12,12 +12,11 @@ export function Comment({ children }: ReviewCardCommentProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
 
-  // 현재 브레이크포인트에 맞는 "접힌 줄 수" (Tailwind sm 기준)
-  const getClampLines = () =>
-    window.matchMedia("(min-width: 640px)").matches ? 1 : 2;
-
   // 접힌 기준으로만 오버플로우 계산
-  const measureCollapsedOverflow = () => {
+  const measureCollapsedOverflow = useCallback(() => {
+    // 현재 브레이크포인트에 맞는 "접힌 줄 수" (Tailwind sm 기준)
+    const clampLines = window.matchMedia("(min-width: 640px)").matches ? 1 : 2;
+
     const el = textRef.current;
     if (!el) return;
 
@@ -25,20 +24,19 @@ export function Comment({ children }: ReviewCardCommentProps) {
     const lineHeight = parseFloat(styles.lineHeight || "0");
     if (!lineHeight) return;
 
-    const clampLines = getClampLines();
     const collapsedHeight = lineHeight * clampLines;
 
     // scrollHeight = 전체 컨텐츠 높이(클램프 무시)
     const fullHeight = el.scrollHeight;
 
     setHasOverflow(fullHeight > collapsedHeight);
-  };
+  }, [textRef]);
 
   // 1) children 바뀌면: 접고 → 다음 프레임에 측정
   useLayoutEffect(() => {
     setIsExpanded(false);
     requestAnimationFrame(measureCollapsedOverflow);
-  }, [children]);
+  }, [children, measureCollapsedOverflow]);
 
   // 2) 리사이즈: 펼침 유지, 오버플로만 재측정
   useLayoutEffect(() => {
@@ -54,7 +52,7 @@ export function Comment({ children }: ReviewCardCommentProps) {
     requestAnimationFrame(measureCollapsedOverflow);
 
     return () => ro.disconnect();
-  }, []);
+  }, [measureCollapsedOverflow]);
 
   return (
     <div className="flex flex-col items-start justify-between gap-2 sm:flex-row">

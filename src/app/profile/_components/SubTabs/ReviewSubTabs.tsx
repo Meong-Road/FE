@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Tab } from "@/components/Tab";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";

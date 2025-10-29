@@ -38,6 +38,7 @@ export function Checkbox({
             name={name}
             id={option.id}
             className="peer sr-only"
+            checked={value.includes(option.value)}
             onChange={(e) => handleChange(option.value, e.target.checked)}
           />
           <label

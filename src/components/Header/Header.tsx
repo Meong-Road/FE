@@ -42,7 +42,7 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "bg-background/70 fixed top-0 left-0 z-999 flex h-16 w-full items-center justify-center backdrop-blur-lg select-none sm:h-22",
+        "bg-background/70 fixed top-0 left-0 z-49 flex h-16 w-full items-center justify-center backdrop-blur-lg select-none sm:h-22",
         className,
       )}
     >

@@ -29,12 +29,26 @@ export const kakaoMapService = {
     data: kakao.maps.services.PlaceType[],
   ): kakao.maps.services.PlaceType[] {
     return data.map((place) => ({
+      id: place.id,
       address_name: place.address_name,
       place_name: place.place_name,
       road_address_name: place.road_address_name,
       x: place.x,
       y: place.y,
     }));
+  },
+
+  formatLocation(location: LocationType): string {
+    const parts = location.district.split(" ");
+    const district = parts[1]?.includes("구") ? parts[1] : "기타";
+
+    return JSON.stringify({
+      district,
+      latlng: {
+        lat: location.latlng.lat,
+        lng: location.latlng.lng,
+      },
+    });
   },
 
   /**

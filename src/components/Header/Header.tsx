@@ -52,14 +52,14 @@ export default function Header({ className }: { className?: string }) {
         </Link>
 
         {/* Desktop Menu */}
-        <DesktopOnly className="w-full items-center justify-between sm:ml-2 md:ml-4">
+        <DesktopOnly className="ml-4 w-full items-center justify-between">
           <ul className="flex items-center sm:gap-1 md:gap-2">
             {HEADER_ITEMS.map((item) => (
               <li key={item.name}>
                 <Link
                   href={item.href}
                   className={cn(
-                    "py-2.5 font-medium text-[#8B8B8B] sm:px-2 md:px-4",
+                    "py-2.5 font-medium whitespace-nowrap text-[#8B8B8B] sm:px-2 md:px-4",
                     isActive(item.href) && "text-primary font-bold",
                   )}
                 >

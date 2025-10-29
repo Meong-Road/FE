@@ -9,7 +9,7 @@ export function AuthButtons() {
   const router = useRouter();
 
   return (
-    <div className="flex items-center gap-2 text-[#8B8B8B]">
+    <div className="flex items-center text-[#8B8B8B] md:gap-2">
       <Button
         variant="ghost"
         size="sm"
@@ -18,7 +18,7 @@ export function AuthButtons() {
       >
         로그인
       </Button>
-      <div className="h-2.5 w-px bg-gray-300" />
+      <div className="h-2.5 w-px bg-gray-300 max-md:hidden" />
       <Button
         variant="ghost"
         size="sm"

@@ -9,7 +9,7 @@ export function AuthButtons() {
   const router = useRouter();
 
   return (
-    <div className="flex items-center gap-2 text-[#8B8B8B]">
+    <div className="flex items-center gap-1 text-[#8B8B8B]">
       <Button
         variant="ghost"
         size="sm"

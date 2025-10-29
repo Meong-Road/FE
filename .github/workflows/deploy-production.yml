@@ -7,17 +7,18 @@ env:
 on:
   pull_request:
     branches:
-      - main # dev → main PR 열릴 때
+      - main
   push:
     branches:
-      - main # 머지되어 main에 push될 때
+      - main
 
 jobs:
-  Deploy-Production:
+  # 1) PR 열릴 때: 테스트 + 빌드 검증
+  Test:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Github Repository 파일 가져오기
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -28,20 +29,46 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
-      - name: 의존성(라이브러리) 설치
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run Tests
+      - name: Run tests
         run: pnpm run test
 
-      - name: Vercel CLI 설치
+      - name: Build (for validation)
+        run: pnpm run build
+
+
+  # 2) main에 머지(push) 시: 테스트 + 빌드 + 운영 배포
+  Deploy-Production:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm run test
+
+      - name: Install Vercel CLI
         run: pnpm add -g vercel@latest
 
-      - name: Vercel 환경 정보 가져오기
+      - name: Pull Vercel environment info
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: 프로젝트 빌드
+      - name: Build project
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Vercel에 프로젝트 배포
+      - name: Deploy to Production
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

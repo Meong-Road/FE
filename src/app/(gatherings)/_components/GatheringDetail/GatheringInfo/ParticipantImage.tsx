@@ -10,7 +10,7 @@ export default function ParticipantImage({
   participant,
 }: ParticipantImageProps) {
   return (
-    <div className="relative size-7 overflow-hidden rounded-full">
+    <div className="relative size-7 overflow-hidden rounded-full border border-[#DDDDDD]">
       <ImageWithFallback
         src={participant.image}
         alt={participant.name}
@@ -18,7 +18,7 @@ export default function ParticipantImage({
         sizes="28px"
         className="object-cover"
         renderFallback={() => (
-          <ProfileSvg className="size-7 rounded-full border border-[#DDDDDD] bg-white" />
+          <ProfileSvg className="size-7 rounded-full bg-white" />
         )}
       />
     </div>

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 
+import { DesktopOnly, MobileOnly } from "@/components/common";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { PATH } from "@/lib/constants/path";
 import { cn } from "@/lib/utils";
@@ -27,16 +28,29 @@ export function CreateGatheringButton({
     router.push(path);
   };
   return (
-    <Button
-      onClick={handleCreateClick}
-      className={cn(
-        buttonVariants({ size: "xl" }),
-        "right-4 bottom-4 z-50 max-sm:fixed",
-        className,
-      )}
-    >
-      <Plus className="size-4 stroke-white" />
-      모임 만들기
-    </Button>
+    <div>
+      <MobileOnly>
+        <Button
+          onClick={handleCreateClick}
+          className={cn(
+            buttonVariants({ size: "xl" }),
+            "fixed right-4 bottom-4 z-10 h-14 w-14 rounded-full",
+            className,
+          )}
+        >
+          <Plus className="size-4 stroke-white" />
+        </Button>
+      </MobileOnly>
+
+      <DesktopOnly>
+        <Button
+          onClick={handleCreateClick}
+          className={cn(buttonVariants({ size: "xl" }), className)}
+        >
+          <Plus className="size-4 stroke-white" />
+          <span>모임 만들기</span>
+        </Button>
+      </DesktopOnly>
+    </div>
   );
 }

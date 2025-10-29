@@ -15,6 +15,7 @@ export function Textarea({
   return (
     <textarea
       className={cn(
+        "text-sm sm:text-base",
         "resize-none",
         "outline-none",
         "transition-[border-color, ring-color] duration-300",

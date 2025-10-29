@@ -59,7 +59,7 @@ export default function useGatheringFormActions({
           type: EGatheringType.QUICK,
           name: data.name,
           description: data.description,
-          dateTime: `${data.dateTime}:00`,
+          dateTime: data.dateTime,
           location: data.location,
           capacity: parseInt(data.capacity, 10),
           image: imageUrl,

@@ -7,7 +7,7 @@ import { Input as BaseInput } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 type Props = Omit<React.ComponentProps<typeof BaseInput>, "type"> & {
-  type: "text" | "email" | "password" | "date" | "number" | "datetime-local";
+  type: "text" | "email" | "password" | "number";
 };
 
 function ShowPasswordButton({

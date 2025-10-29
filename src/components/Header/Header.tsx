@@ -42,7 +42,7 @@ export default function Header({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "bg-background/70 fixed top-0 left-0 z-10 flex h-16 w-full items-center justify-center backdrop-blur-lg select-none sm:h-22",
+        "bg-background/70 fixed top-0 left-0 z-49 flex h-16 w-full items-center justify-center backdrop-blur-lg select-none sm:h-22",
         className,
       )}
     >
@@ -53,13 +53,13 @@ export default function Header({ className }: { className?: string }) {
 
         {/* Desktop Menu */}
         <DesktopOnly className="ml-4 w-full items-center justify-between">
-          <ul className="flex items-center gap-2">
+          <ul className="flex items-center sm:gap-1 md:gap-2">
             {HEADER_ITEMS.map((item) => (
               <li key={item.name}>
                 <Link
                   href={item.href}
                   className={cn(
-                    "px-4 py-2.5 font-medium text-[#8B8B8B]",
+                    "py-2.5 font-medium whitespace-nowrap text-[#8B8B8B] sm:px-2 md:px-4",
                     isActive(item.href) && "text-primary font-bold",
                   )}
                 >

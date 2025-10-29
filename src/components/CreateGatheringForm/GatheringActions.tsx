@@ -25,12 +25,12 @@ export default function GatheringActions({
   const gatheringType = type === EGatheringType.QUICK ? "번개" : "정기";
 
   return (
-    <section className="mx-auto mt-27 flex w-1/2 items-center justify-center gap-6">
+    <section className="mx-auto mt-12.5 flex w-1/2 items-center justify-center gap-6 sm:mt-27">
       <Button
         type="button"
         onClick={onCancel}
         className={cn(
-          "h-12 flex-1",
+          "h-12 min-w-32 flex-1",
           "border-primary border bg-white",
           "rounded-2xl",
           "text-primary text-base font-semibold md:text-lg",

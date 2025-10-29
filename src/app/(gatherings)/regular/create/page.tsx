@@ -18,7 +18,7 @@ export default function RegularCreatePage() {
 
   return (
     <div>
-      <h1 className="mb-13 text-3xl font-semibold text-gray-900">
+      <h1 className="mb-6 text-lg font-semibold text-gray-900 sm:mb-13 sm:text-3xl">
         정기 모임 만들기
       </h1>
       <CreateGatheringForm

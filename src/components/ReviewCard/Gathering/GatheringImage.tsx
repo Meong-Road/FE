@@ -18,7 +18,7 @@ export function GatheringImage({
       href={PATH.DETAIL(gatheringId, EGatheringType.REGULAR)}
       className="sm:size-fit"
     >
-      <div className="group/image relative flex h-[188px] w-full flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-t-3xl bg-gray-200 transition-opacity sm:w-[188px] sm:rounded-3xl">
+      <div className="group/image relative flex aspect-video w-full flex-shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-t-3xl bg-gray-200 transition-opacity sm:aspect-square sm:size-[188px] sm:rounded-3xl">
         <ImageWithFallback
           src={image}
           alt="gathering image"

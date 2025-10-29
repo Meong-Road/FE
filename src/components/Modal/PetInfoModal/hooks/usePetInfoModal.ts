@@ -39,7 +39,7 @@ export function usePetInfoModal({
         petType: "dog",
       });
     }
-  }, [form, isEditMode]);
+  }, [form, isEditMode, type]);
 
   useEffect(() => {
     if (initialData) {

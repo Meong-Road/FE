@@ -19,29 +19,49 @@ declare global {
         getLng(): number;
       }
 
-      class LatLngBounds {
-        extend(latlng: LatLng): void;
-      }
-
       class Map {
         constructor(container: HTMLElement, options: unknown);
-        setBounds(bounds: LatLngBounds): void;
+        setCenter(latlng: LatLng): void;
+      }
+
+      class Size {
+        constructor(width: number, height: number);
+      }
+
+      class Point {
+        constructor(x: number, y: number);
+      }
+
+      class MarkerImage {
+        constructor(src: string, size: Size, options?: object);
       }
 
       class Marker {
-        constructor(options: { map: Map; position: LatLng });
+        constructor(options: {
+          map: Map;
+          position: LatLng;
+          image?: MarkerImage;
+        });
         setMap(map: Map | null): void;
+        setPosition(position: LatLng): void;
       }
 
       namespace services {
         enum Status {
           OK = "OK",
-          ERROR = "ERROR",
         }
 
-        interface PlaceSearchRes {
+        interface PlaceType {
           address_name: string;
           place_name: string;
+          road_address_name: string;
+          x: string;
+          y: string;
+        }
+
+        interface ReverseGeocodePlaceType {
+          address: string;
+          road_address: string;
           x: string;
           y: string;
         }
@@ -49,7 +69,7 @@ declare global {
         class Places {
           keywordSearch(
             keyword: string,
-            callback: (data: PlaceSearchRes[], status: Status) => void,
+            callback: (data: PlaceType[], status: Status) => void,
           ): void;
         }
 

@@ -2,6 +2,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ReviewCardGatheringImage() {
   return (
-    <Skeleton className="flex h-[188px] w-full flex-shrink-0 items-center justify-center rounded-t-3xl sm:w-[188px] sm:rounded-3xl" />
+    <Skeleton className="aspect-video w-full flex-shrink-0 rounded-t-3xl bg-gray-200 sm:aspect-square sm:size-[188px] sm:rounded-3xl" />
   );
 }

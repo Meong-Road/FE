@@ -1,9 +1,9 @@
 "use client";
 
-import ReviewList from "@/app/reviews/_components/ReviewList/ReviewList";
 import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
 import { Pagination } from "@/components/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
+import { ReviewList } from "@/components/widget/reviews";
 import { useGetMyReviews } from "@/hooks/queries/reviews";
 
 export default function WrittenReviewSection() {

@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ReviewCardUserNameSkeleton() {
-  return <Skeleton fontSize="sm" />;
+  return <Skeleton className="h-5 w-20" />;
 }

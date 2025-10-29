@@ -1,4 +1,4 @@
-import { ReviewCardSkeleton } from "./ReviewCardSkeleton";
+import ReviewCardSkeletonItem from "./ReviewCardSkeletonItem";
 
 interface ReviewCardSkeletonListProps {
   count?: number;
@@ -10,7 +10,7 @@ export function ReviewCardSkeletonList({
   return (
     <ol className="space-y-3 sm:space-y-4">
       {Array.from({ length: count }, (_, i) => (
-        <ReviewCardSkeleton key={i} />
+        <ReviewCardSkeletonItem key={i} />
       ))}
     </ol>
   );

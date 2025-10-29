@@ -3,13 +3,12 @@
 import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
 import { Pagination } from "@/components/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
+import { ReviewList } from "@/components/widget/reviews";
 import { useGetReviews } from "@/hooks/queries/reviews";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { SEOUL_ALL } from "@/lib/constants/location";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { parseLocationParam } from "@/lib/utils/param";
-
-import ReviewList from "./ReviewList";
 
 export default function ReviewListContainer() {
   const Params = useSearchParamsState({ location: SEOUL_ALL, page: "0" });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 
 import { Form } from "@/components/Form";
@@ -12,22 +12,44 @@ interface Props {
 
 export default function MapSearchBar({ onSelect }: Props) {
   const [input, setInput] = useState("");
-  const debouncedInput = useDebounce(input, { delay: 2000 });
+  const [places, setPlaces] = useState<kakao.maps.services.PlaceType[]>([]);
+  const [open, setOpen] = useState(false);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const debouncedInput = useDebounce(input, { delay: 500 });
   const { placeSearch } = usePlaceSearch();
 
   useEffect(() => {
-    console.log("키워드 변경:", debouncedInput);
-
     if (!debouncedInput.trim()) return;
 
     const searchPlaces = async () => {
       const results = await placeSearch(debouncedInput);
-      console.log("결과:", results);
+      setPlaces(results || []);
+      setOpen(true);
     };
 
     searchPlaces();
   }, [debouncedInput]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const handleSelect = (place: kakao.maps.services.PlaceType) => {
+    onSelect(place);
+    setInput("");
+    setOpen(false);
+  };
 
   return (
     <div className="mb-4 flex gap-2">
@@ -43,12 +65,32 @@ export default function MapSearchBar({ onSelect }: Props) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button
+        <Search
           className="absolute top-1/2 right-4 -translate-y-1/2 text-[#737373]"
-          // onClick={handleSearch}
-        >
-          <Search size={20} />
-        </button>
+          size={20}
+        />
+
+        {open && (
+          <div
+            ref={dropdownRef}
+            className="absolute z-2 mt-2 max-h-80 min-w-full overflow-y-auto rounded-xl border bg-white shadow-md"
+          >
+            {places.length > 0 ? (
+              places.map((place) => (
+                <div
+                  key={place.id}
+                  onClick={() => handleSelect(place)}
+                  className="px-4 py-2"
+                >
+                  <div>{place.place_name}</div>
+                  <div className="text-[#737373]">{place.address_name}</div>
+                </div>
+              ))
+            ) : (
+              <div className="px-4 py-2 text-[#737373]">검색 결과 없음</div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

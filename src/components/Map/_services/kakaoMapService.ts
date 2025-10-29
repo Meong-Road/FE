@@ -29,6 +29,7 @@ export const kakaoMapService = {
     data: kakao.maps.services.PlaceType[],
   ): kakao.maps.services.PlaceType[] {
     return data.map((place) => ({
+      id: place.id,
       address_name: place.address_name,
       place_name: place.place_name,
       road_address_name: place.road_address_name,

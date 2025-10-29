@@ -1,26 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
 import { Form } from "@/components/Form";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import { usePlaceSearch } from "../_hooks/usePlaceSearch";
 
 interface Props {
-  onSearch: (results: kakao.maps.services.PlaceType[]) => void;
+  onSelect: (place: kakao.maps.services.PlaceType) => void;
 }
 
-export default function MapSearchBar({ onSearch }: Props) {
+export default function MapSearchBar({ onSelect }: Props) {
   const [input, setInput] = useState("");
+  const debouncedInput = useDebounce(input, { delay: 2000 });
+
   const { placeSearch } = usePlaceSearch();
 
-  const handleSearch = async () => {
-    const results = await placeSearch(input);
-    console.log("MapSearchBar:", results);
+  useEffect(() => {
+    console.log("키워드 변경:", debouncedInput);
 
-    if (results) {
-      onSearch(results);
-    }
-  };
+    if (!debouncedInput.trim()) return;
+
+    const searchPlaces = async () => {
+      const results = await placeSearch(debouncedInput);
+      console.log("결과:", results);
+    };
+
+    searchPlaces();
+  }, [debouncedInput]);
 
   return (
     <div className="mb-4 flex gap-2">
@@ -38,7 +45,7 @@ export default function MapSearchBar({ onSearch }: Props) {
         />
         <button
           className="absolute top-1/2 right-4 -translate-y-1/2 text-[#737373]"
-          onClick={handleSearch}
+          // onClick={handleSearch}
         >
           <Search size={20} />
         </button>

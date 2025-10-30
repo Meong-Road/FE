@@ -9,6 +9,7 @@ import { isQuickGathering } from "@/lib/utils/typeGuard";
 
 import GatheringInfoSection from "../../_components/GatheringDetail/GatheringInfoSection";
 import GatheringIntroductionSection from "../../_components/GatheringDetail/GatheringIntroductionSection";
+import GatheringLocationSection from "../../_components/GatheringDetail/GatheringLocationSection";
 import GatheringInfoSectionSkeleton from "../../_components/GatheringDetail/Skeleton/GatheringInfoSectionSkeleton";
 import GatheringIntroductionSectionSkeleton from "../../_components/GatheringDetail/Skeleton/GatheringIntroductionSectionSkeleton";
 
@@ -41,9 +42,13 @@ function QuickGatheringDetailPageContent() {
     return;
   }
 
+  const TEST_PAYLOAD =
+    '{"district":"중구","latlng":{"lat":37.56537362367231,"lng":126.97878849882052}}';
+
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
+      <GatheringLocationSection locationPayload={TEST_PAYLOAD} />
       <GatheringIntroductionSection description={gathering.description} />
     </>
   );

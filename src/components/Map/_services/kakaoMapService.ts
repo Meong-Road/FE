@@ -312,4 +312,28 @@ export const kakaoMapService = {
       );
     });
   },
+
+  createStaticMap(
+    container: HTMLDivElement,
+    payload: string,
+  ): Promise<{ map: kakao.maps.Map; marker: kakao.maps.Marker }> {
+    return new Promise(async (resolve) => {
+      const parsed = JSON.parse(payload);
+      const { lat, lng } = parsed.latlng;
+
+      await this.waitForKakaoMapLoad();
+
+      const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      const mapOption = {
+        center: locPosition,
+        level: 3,
+        draggable: false,
+      };
+
+      const map = new window.kakao.maps.Map(container, mapOption);
+      const marker = this.createMarker(map, locPosition);
+
+      resolve({ map, marker });
+    });
+  },
 };

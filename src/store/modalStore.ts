@@ -85,10 +85,46 @@ export const useAuthRequiredModalStore = create<AuthRequiredModalStoreProps>(
   }),
 );
 
+interface ConfirmModalStoreProps {
+  isOpen: boolean;
+  text: string;
+  title: string;
+  description: string;
+  openModal: (
+    text: "참여" | "참여 취소" | "개설 취소",
+    title: string,
+    description: string,
+    onConfirm?: () => Promise<void> | void,
+  ) => void;
+  closeModal: () => void;
+  onConfirm?: () => Promise<void> | void;
+}
+export const useConfirmModalStore = create<ConfirmModalStoreProps>((set) => ({
+  isOpen: false,
+  text: "",
+  title: "",
+  description: "",
+  onConfirm: () => {
+    return;
+  },
+  openModal: (text, title, description, onConfirm) =>
+    set({ isOpen: true, text, title, description, onConfirm }),
+  closeModal: () =>
+    set({
+      isOpen: false,
+      text: "",
+      title: "",
+      description: "",
+      onConfirm: () => {
+        return;
+      },
+    }),
+}));
 // 모든 모달을 닫는 통합 함수
 export const closeAllModals = () => {
   usePetInfoModalStore.getState().closeModal();
   useUserInfoModalStore.getState().closeModal();
   useReviewInfoModalStore.getState().closeModal();
   useAuthRequiredModalStore.getState().closeModal();
+  useConfirmModalStore.getState().closeModal();
 };

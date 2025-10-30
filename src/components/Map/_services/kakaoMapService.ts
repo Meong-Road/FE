@@ -229,41 +229,76 @@ export const kakaoMapService = {
     location: LocationType;
   }> {
     return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      const defaultLat = 37.5665;
+      const defaultLng = 126.978;
 
-        const map = this.createMap(container, locPosition);
-        const marker = this.createMarker(map, locPosition);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-        const place = await this.reverseGeocode(locPosition);
+          const map = this.createMap(container, locPosition);
+          const marker = this.createMarker(map, locPosition);
 
-        this.bindMapClick(map, async (latlng) => {
-          marker.setPosition(latlng);
+          const place = await this.reverseGeocode(locPosition);
 
-          const clickedPlace = await this.reverseGeocode(latlng);
+          this.bindMapClick(map, async (latlng) => {
+            marker.setPosition(latlng);
 
-          const newLocation: LocationType = {
-            district: clickedPlace.address,
-            latlng: {
-              lat: latlng.getLat(),
-              lng: latlng.getLng(),
+            const clickedPlace = await this.reverseGeocode(latlng);
+
+            const newLocation: LocationType = {
+              district: clickedPlace.address,
+              latlng: {
+                lat: latlng.getLat(),
+                lng: latlng.getLng(),
+              },
+            };
+
+            onMapClick(newLocation);
+          });
+
+          resolve({
+            map,
+            marker,
+            location: {
+              district: place.address,
+              latlng: { lat, lng },
             },
-          };
+          });
+        },
+        async (error) => {
+          console.log("위치 정보를 가져올 수 없습니다:", error);
 
-          onMapClick(newLocation);
-        });
+          const locPosition = new window.kakao.maps.LatLng(
+            defaultLat,
+            defaultLng,
+          );
+          const map = this.createMap(container, locPosition);
+          const marker = this.createMarker(map, locPosition);
+          const place = await this.reverseGeocode(locPosition);
 
-        resolve({
-          map,
-          marker,
-          location: {
-            district: place.address,
-            latlng: { lat, lng },
-          },
-        });
-      });
+          this.bindMapClick(map, async (latlng) => {
+            marker.setPosition(latlng);
+            const clickedPlace = await this.reverseGeocode(latlng);
+            const newLocation: LocationType = {
+              district: clickedPlace.address,
+              latlng: { lat: latlng.getLat(), lng: latlng.getLng() },
+            };
+            onMapClick(newLocation);
+          });
+
+          resolve({
+            map,
+            marker,
+            location: {
+              district: place.address,
+              latlng: { lat: defaultLat, lng: defaultLng },
+            },
+          });
+        },
+      );
     });
   },
 };

@@ -125,6 +125,25 @@ export const kakaoMapService = {
     map: kakao.maps.Map,
     marker: kakao.maps.Marker,
   ): Promise<LocationType> {
+    const DEFAULT_LOCATION = new window.kakao.maps.LatLng(
+      37.566826,
+      126.9786567,
+    );
+
+    const move = async (latlng: kakao.maps.LatLng): Promise<LocationType> => {
+      map.setCenter(latlng);
+      marker.setPosition(latlng);
+
+      const place = await this.reverseGeocode(latlng);
+      return {
+        district: place.address,
+        latlng: {
+          lat: latlng.getLat(),
+          lng: latlng.getLng(),
+        },
+      };
+    };
+
     return new Promise((resolve) => {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -132,11 +151,8 @@ export const kakaoMapService = {
           const lng = position.coords.longitude;
           const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-          map.setCenter(locPosition);
-          marker.setPosition(locPosition);
-
-          const place = await this.reverseGeocode(locPosition);
-          resolve({ district: place.address, latlng: { lat, lng } });
+          const location = await move(locPosition);
+          resolve(location);
         },
         async (error) => {
           console.log(
@@ -144,20 +160,8 @@ export const kakaoMapService = {
             error,
           );
 
-          const defaultLat = 37.5665;
-          const defaultLng = 126.978;
-          const locPosition = new window.kakao.maps.LatLng(
-            defaultLat,
-            defaultLng,
-          );
-          map.setCenter(locPosition);
-          marker.setPosition(locPosition);
-
-          const place = await this.reverseGeocode(locPosition);
-          resolve({
-            district: place.address,
-            latlng: { lat: defaultLat, lng: defaultLng },
-          });
+          const location = await move(DEFAULT_LOCATION);
+          resolve(location);
         },
       );
     });
@@ -251,75 +255,54 @@ export const kakaoMapService = {
     marker: kakao.maps.Marker;
     location: LocationType;
   }> {
-    return new Promise((resolve) => {
-      const defaultLat = 37.5665;
-      const defaultLng = 126.978;
+    const DEFAULT_LOCATION = new window.kakao.maps.LatLng(
+      37.566826,
+      126.9786567,
+    );
 
+    const setupMap = async (latlng: kakao.maps.LatLng) => {
+      const map = this.createMap(container, latlng);
+      const marker = this.createMarker(map, latlng);
+      const place = await this.reverseGeocode(latlng);
+
+      this.bindMapClick(map, async (clickedLatLng) => {
+        marker.setPosition(clickedLatLng);
+        const clickedPlace = await this.reverseGeocode(clickedLatLng);
+
+        onMapClick({
+          district: clickedPlace.address,
+          latlng: {
+            lat: clickedLatLng.getLat(),
+            lng: clickedLatLng.getLng(),
+          },
+        });
+      });
+
+      return {
+        map,
+        marker,
+        location: {
+          district: place.address,
+          latlng: { lat: latlng.getLat(), lng: latlng.getLng() },
+        },
+      };
+    };
+
+    return new Promise((resolve) => {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
           const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-          const map = this.createMap(container, locPosition);
-          const marker = this.createMarker(map, locPosition);
-
-          const place = await this.reverseGeocode(locPosition);
-
-          this.bindMapClick(map, async (latlng) => {
-            marker.setPosition(latlng);
-
-            const clickedPlace = await this.reverseGeocode(latlng);
-
-            const newLocation: LocationType = {
-              district: clickedPlace.address,
-              latlng: {
-                lat: latlng.getLat(),
-                lng: latlng.getLng(),
-              },
-            };
-
-            onMapClick(newLocation);
-          });
-
-          resolve({
-            map,
-            marker,
-            location: {
-              district: place.address,
-              latlng: { lat, lng },
-            },
-          });
+          const result = await setupMap(locPosition);
+          resolve(result);
         },
         async (error) => {
           console.log("위치 정보를 가져올 수 없습니다:", error);
 
-          const locPosition = new window.kakao.maps.LatLng(
-            defaultLat,
-            defaultLng,
-          );
-          const map = this.createMap(container, locPosition);
-          const marker = this.createMarker(map, locPosition);
-          const place = await this.reverseGeocode(locPosition);
-
-          this.bindMapClick(map, async (latlng) => {
-            marker.setPosition(latlng);
-            const clickedPlace = await this.reverseGeocode(latlng);
-            const newLocation: LocationType = {
-              district: clickedPlace.address,
-              latlng: { lat: latlng.getLat(), lng: latlng.getLng() },
-            };
-            onMapClick(newLocation);
-          });
-
-          resolve({
-            map,
-            marker,
-            location: {
-              district: place.address,
-              latlng: { lat: defaultLat, lng: defaultLng },
-            },
-          });
+          const result = await setupMap(DEFAULT_LOCATION);
+          resolve(result);
         },
       );
     });

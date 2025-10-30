@@ -1,3 +1,4 @@
+"use client";
 import { EmptyState, ErrorState } from "@/components/common";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import GatheringCardItem from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItem";

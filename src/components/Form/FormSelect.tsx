@@ -1,7 +1,6 @@
 "use client";
 
-import { ChevronDownIcon } from "lucide-react";
-
+import ChevronDownIcon from "@/assets/icons/arrow-down.svg";
 import {
   Select as ShadcnSelect,
   SelectContent,

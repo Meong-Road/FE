@@ -1,14 +1,10 @@
 import React from "react";
-import { useFormContext } from "react-hook-form";
 
 import Dog from "@/assets/images/dog.svg";
 
 import { Form } from "../Form";
 
 export default function GatheringBasicInfo() {
-  const form = useFormContext();
-  const currentImage = form.watch("image");
-
   return (
     <section className="flex flex-col gap-6 md:flex-row">
       {/* 모임 대표사진 */}
@@ -20,7 +16,6 @@ export default function GatheringBasicInfo() {
               <Form.ImageUpload
                 onChange={onChange}
                 value={value as File | null}
-                existingImageUrl={currentImage as string}
                 variant="gathering"
               >
                 <div className="justfiy-center flex flex-col items-center gap-5">

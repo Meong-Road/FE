@@ -23,10 +23,12 @@ export function usePetInfoModal({
     return transformPetToFormData(petData);
   }, [shouldFetchPet, petData, isEditMode]);
 
-  const form = usePetInfoForm();
+  const form = usePetInfoForm(initialData ?? undefined);
 
   const watchedValues = form.watch();
 
+  // add 모드일 때는 항상 빈 폼으로 리셋
+  // (type이 변경될 때 form 인스턴스는 재생성되지 않으므로)
   useEffect(() => {
     if (!isEditMode) {
       form.reset({
@@ -41,6 +43,8 @@ export function usePetInfoModal({
     }
   }, [form, isEditMode, type]);
 
+  // initialData가 비동기로 로드되면 form을 해당 값으로 리셋
+  // (edit 모드일 때만 실행)
   useEffect(() => {
     if (initialData) {
       form.reset(initialData);

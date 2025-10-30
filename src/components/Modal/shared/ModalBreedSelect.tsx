@@ -1,30 +1,30 @@
 import React from "react";
 
-import { dogBreeds } from "../../../lib/constants/dogBreed";
+import { DOG_BREEDS_OPTIONS } from "../../../lib/constants/dogBreed";
 import { Form } from "../../Form";
 
 interface ModalBreedSelectProps {
   name: string;
-  htmlFor?: string;
+  id?: string;
   value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onValueChange?: (value: string) => void;
 }
 
 export function ModalBreedSelect({
   name,
-  htmlFor,
+  id,
   value,
-  onChange,
+  onValueChange,
 }: ModalBreedSelectProps) {
   return (
     <div className="flex w-full flex-col">
       <Form.Select
-        id={htmlFor}
-        placeholder="견종을 선택해주세요"
+        id={id}
         name={name}
-        options={dogBreeds}
+        placeholder="견종을 선택해주세요"
+        options={DOG_BREEDS_OPTIONS}
         value={value}
-        onChange={onChange}
+        onValueChange={onValueChange}
         className="bg-accent flex-1 rounded-lg px-4 py-2.5"
       />
     </div>

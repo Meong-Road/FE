@@ -149,6 +149,8 @@ export const kakaoMapService = {
     return new Promise((resolve) => {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
+          toast.success("위치가 내 현재 위치로 변경되었습니다");
+
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
           const locPosition = new window.kakao.maps.LatLng(lat, lng);

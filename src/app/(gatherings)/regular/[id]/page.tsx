@@ -45,13 +45,10 @@ function RegularGatheringDetailPageContent() {
     return;
   }
 
-  const TEST_PAYLOAD =
-    '{"district":"중구","latlng":{"lat":37.56537362367231,"lng":126.97878849882052}}';
-
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
-      <GatheringLocationSection locationPayload={TEST_PAYLOAD} />
+      <GatheringLocationSection locationPayload={gathering.location} />
       <GatheringIntroductionSection description={gathering.description} />
       <GatheringReviewSection />
     </>

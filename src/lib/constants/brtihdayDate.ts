@@ -3,7 +3,4 @@ export const YEARS: readonly number[] = [
   2023, 2024, 2025,
 ] as const;
 
-export const YEARS_OPTIONS = YEARS.map((year) => ({
-  label: year.toString(),
-  value: year.toString(),
-}));
+export const YEARS_OPTIONS = YEARS.map((year) => year.toString());

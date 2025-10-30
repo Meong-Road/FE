@@ -1,5 +1,6 @@
 "use client";
 
+import { TabContent } from "@/components/motionWrappers";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { REVIEW_SUB_TABS } from "@/lib/constants/profile";
 
@@ -16,13 +17,13 @@ export default function ReviewSection() {
   return (
     <div>
       <ReviewSubTabs />
-      <div className="mt-6">
+      <TabContent tabKey={reviewTab} className="mt-6">
         {reviewTab === REVIEW_SUB_TABS.WRITABLE.value ? (
           <WritableReviewSection />
         ) : (
           <WrittenReviewSection />
         )}
-      </div>
+      </TabContent>
     </div>
   );
 }

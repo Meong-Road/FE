@@ -180,7 +180,7 @@ export default function PetInfoModal() {
             name="neuter"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label required>중성화 여부</Form.Label>
+                <Form.Label>중성화 여부</Form.Label>
                 <Form.Control>
                   <Form.Radio
                     ref={field.ref}

@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { useEffect, useMemo, useRef } from "react";
+import { UseFormReturn, useWatch } from "react-hook-form";
 
 import { storageUtils } from "@/lib/utils/storage";
 
@@ -68,10 +68,22 @@ export function useGatheringAutoSave({
     }
   }, [enabled, form, type]);
 
-  const { watch } = form;
-  const formData = watch();
-
-  const debouncedFormData = useDebounce(formData, { delay: 1000, enabled });
+  // 필요한 필드만 useWatch로 관찰
+  const watched = useWatch({
+    control: form.control,
+    name: [
+      "capacity",
+      "dateTime",
+      "days",
+      "description",
+      "isPetRequired",
+      "location",
+      "name",
+      "registrationEnd",
+    ],
+  });
+  const signature = useMemo(() => JSON.stringify(watched), [watched]);
+  const debouncedSignature = useDebounce(signature, { delay: 1000, enabled });
 
   // 데이터가 살제로 변경되었는지 확인하는 함수
   const hasDataChanged = (
@@ -94,9 +106,12 @@ export function useGatheringAutoSave({
     if (!enabled) return;
     if (skipSaveRef.current) return; // 복원 직후에는 저장 금지
 
-    if (!hasDataChanged(debouncedFormData, previousDateRef.current)) return;
+    // 최신 값을 읽어 비교하고 저장
+    const current = form.getValues();
 
-    const { image, ...dataToSave } = debouncedFormData;
+    if (!hasDataChanged(current, previousDateRef.current)) return;
+
+    const { image, ...dataToSave } = current;
 
     const hasContent = Object.values(dataToSave).some((value) => {
       if (typeof value === "string") return value.trim() !== "";
@@ -111,9 +126,9 @@ export function useGatheringAutoSave({
     if (hasContent) {
       const storageKey = `gathering-draft-${type}`;
       storageUtils.setItem(storageKey, dataToSave);
-      previousDateRef.current = debouncedFormData;
+      previousDateRef.current = current;
     }
-  }, [debouncedFormData, enabled, type]);
+  }, [debouncedSignature, enabled, form, type]);
 
   const clearDraft = () => {
     const storageKey = `gathering-draft-${type}`;

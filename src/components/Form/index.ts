@@ -1,5 +1,7 @@
 import { Form as BaseForm } from "./Form";
+import { FormBreedSelect } from "./FormBreedSelect";
 import { Checkbox } from "./FormCheckbox";
+import { FormComboboxSelect } from "./FormComboboxSelect";
 import { Control } from "./FormControl";
 import { Description } from "./FormDescription";
 import { DuplicateCheckButton } from "./FormDuplicateCheckButton";
@@ -18,6 +20,7 @@ import { SocialButtons } from "./FormSocialButtons";
 import { SubmitButton } from "./FormSubmitButton";
 import { Textarea } from "./FormTextarea";
 import { Title } from "./FormTitle";
+import { FormYearSelect } from "./FormYearSelect";
 
 export const Form = Object.assign(BaseForm, {
   Field,
@@ -33,6 +36,9 @@ export const Form = Object.assign(BaseForm, {
   LoginLink,
   SignupLink,
   Select,
+  ComboboxSelect: FormComboboxSelect,
+  BreedSelect: FormBreedSelect,
+  YearSelect: FormYearSelect,
   ImageUpload,
   Radio,
   RatingInput,

@@ -19,7 +19,7 @@ export default function ReviewInfoModal() {
   const {
     form,
     isPending: isReviewPending,
-    hasChanges,
+    isDirty,
   } = useReviewInfoModal({
     modalType,
     reviewId,
@@ -129,7 +129,7 @@ export default function ReviewInfoModal() {
               isReviewPending ||
               isSubmitting ||
               !form.formState.isValid ||
-              !hasChanges
+              (modalType === "edit-review" && !isDirty)
             }
             label={modalType === "add-review" ? "작성하기" : "수정하기"}
           />

@@ -27,6 +27,9 @@ export default function ReviewSubTabs() {
   const handleTabChange = (reviewTab: string | boolean) => {
     router.push(
       `${PATH.MY_PROFILE}?tab=${currentTab.tab}&reviewTab=${String(reviewTab)}`,
+      {
+        scroll: false,
+      },
     );
   };
 

@@ -37,7 +37,7 @@ export default function PetInfoModal() {
   const {
     form,
     isPending: isPetPending,
-    hasChanges,
+    isDirty,
   } = usePetInfoModal({ type: type || "add-pet", petId });
   const currentImage = form.watch("image");
 
@@ -180,7 +180,7 @@ export default function PetInfoModal() {
             name="neuter"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label required>중성화 여부</Form.Label>
+                <Form.Label>중성화 여부</Form.Label>
                 <Form.Control>
                   <Form.Radio
                     ref={field.ref}
@@ -197,16 +197,16 @@ export default function PetInfoModal() {
           />
 
           <Form.Field
-            name="birthYear"
+            name="breed"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label required>생일</Form.Label>
+                <Form.Label required>견종</Form.Label>
                 <Form.Control>
-                  <Modal.DateSelect
-                    name="birthYear"
-                    htmlFor="birthYear"
+                  <Form.BreedSelect
+                    id="breed"
+                    name="breed"
                     value={field.value}
-                    onChange={field.onChange}
+                    onValueChange={(value) => field.onChange(value)}
                   />
                 </Form.Control>
                 <Form.Message />
@@ -215,16 +215,16 @@ export default function PetInfoModal() {
           />
 
           <Form.Field
-            name="breed"
+            name="birthYear"
             render={({ field }) => (
               <Form.Item>
-                <Form.Label required>견종</Form.Label>
+                <Form.Label required>출생 연도</Form.Label>
                 <Form.Control>
-                  <Modal.BreedSelect
-                    name="breed"
-                    htmlFor="breed"
+                  <Form.YearSelect
+                    id="birthYear"
+                    name="birthYear"
                     value={field.value}
-                    onChange={field.onChange}
+                    onValueChange={(value) => field.onChange(value)}
                   />
                 </Form.Control>
                 <Form.Message />
@@ -238,7 +238,7 @@ export default function PetInfoModal() {
               isPetPending ||
               isSubmitting ||
               !form.formState.isValid ||
-              (type === "edit-pet" && !hasChanges)
+              (type === "edit-pet" && !isDirty)
             }
             label={type === "edit-pet" ? "수정하기" : "등록하기"}
           />

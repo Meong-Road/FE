@@ -15,7 +15,10 @@ import { PATH } from "@/lib/constants/path";
 import { EGatheringState } from "@/lib/types/gatherings";
 import { checkIsClosedGatheringState } from "@/lib/utils/gathering";
 import { hasLastConsonantLetter } from "@/lib/utils/string";
-import { useAuthRequiredModalStore } from "@/store/modalStore";
+import {
+  useAuthRequiredModalStore,
+  useConfirmModalStore,
+} from "@/store/modalStore";
 
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -28,10 +31,29 @@ enum EJoinButtonType {
   CANCEL_GATHERING = "cancelGathering",
 }
 
-const MESSAGE: Record<EJoinButtonType, string> = {
-  [EJoinButtonType.JOIN]: "참여",
-  [EJoinButtonType.CANCEL]: "참여 취소",
-  [EJoinButtonType.CANCEL_GATHERING]: "개설 취소",
+const MESSAGE: Record<
+  EJoinButtonType,
+  {
+    text: "참여" | "참여 취소" | "개설 취소";
+    confirmTitle: string;
+    confirmDescription: string;
+  }
+> = {
+  [EJoinButtonType.JOIN]: {
+    text: "참여",
+    confirmTitle: "모임에 참여하시겠어요?",
+    confirmDescription: "개설이 확정된 모임은 취소할 수 없어요.",
+  },
+  [EJoinButtonType.CANCEL]: {
+    text: "참여 취소",
+    confirmTitle: "정말 참여를 취소하시겠어요?",
+    confirmDescription: "정원이 가득 차면 다시 참여할 수 없어요.",
+  },
+  [EJoinButtonType.CANCEL_GATHERING]: {
+    text: "개설 취소",
+    confirmTitle: "모임 개설을 취소하시겠어요?",
+    confirmDescription: "개설이 취소된 모임은 되돌릴 수 없어요.",
+  },
 };
 
 const JOIN_AVAILABLE_SET = new Set<EGatheringState>([
@@ -50,7 +72,8 @@ const CANCEL_GATHERING_AVAILABLE_SET = new Set<EGatheringState>([
 
 export function GatheringCardJoinBtn() {
   const { gathering, user, state } = useGatheringStateContext();
-  const { openModal } = useAuthRequiredModalStore();
+  const { openModal: openAuthRequiredModal } = useAuthRequiredModalStore();
+  const { openModal: openConfirmModal } = useConfirmModalStore();
 
   const isClosedGatheringState = checkIsClosedGatheringState(state);
 
@@ -90,15 +113,7 @@ export function GatheringCardJoinBtn() {
   const isMutationPending =
     isJoinPending || isCancelPending || isCancelGatheringPending;
 
-  const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!user) {
-      openModal(PATH.SIGNIN);
-      return;
-    }
-
+  const handleConfirm = async () => {
     try {
       if (mode === EJoinButtonType.CANCEL_GATHERING) {
         await cancelGathering({ id: gathering.id });
@@ -107,13 +122,30 @@ export function GatheringCardJoinBtn() {
       } else {
         await join({ id: gathering.id });
       }
-      toast.success(`[${gathering.name}] 모임을 ${MESSAGE[mode]}했어요`);
+      toast.success(`[${gathering.name}] 모임을 ${MESSAGE[mode].text}했어요`);
     } catch (error) {
       console.error(error);
       toast.error(
-        `[${gathering.name}] 모임 ${MESSAGE[mode]} 중 오류가 발생했어요`,
+        `[${gathering.name}] 모임 ${MESSAGE[mode].text} 중 오류가 발생했어요`,
       );
     }
+  };
+
+  const handleButtonClick = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      openAuthRequiredModal(PATH.SIGNIN);
+      return;
+    }
+
+    openConfirmModal(
+      MESSAGE[mode].text,
+      MESSAGE[mode].confirmTitle,
+      MESSAGE[mode].confirmDescription,
+      handleConfirm,
+    );
   };
 
   const isJoinDisabled =
@@ -142,7 +174,7 @@ export function GatheringCardJoinBtn() {
         isCancelGatheringDisabled
       }
     >
-      {MESSAGE[mode]}하기
+      {MESSAGE[mode].text}하기
     </Button>
   );
 
@@ -153,7 +185,7 @@ export function GatheringCardJoinBtn() {
       <Tooltip>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent>
-          {stateMsg} {particle} {MESSAGE[mode]}할 수 없어요
+          {stateMsg} {particle} {MESSAGE[mode].text}할 수 없어요
         </TooltipContent>
       </Tooltip>
     );

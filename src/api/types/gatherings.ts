@@ -1,6 +1,7 @@
 import {
   BookmarkType,
   CreateGatheringType,
+  GatheringImageResult,
   GatheringType,
   ParticipantsType,
   QuickGatheringType,
@@ -64,3 +65,6 @@ export type GetParticipantsRes = Response<PaginatedRes<ParticipantsType>>;
 
 export type PostGatheringReq = CreateGatheringType;
 export type PostGatheringRes = Response<GatheringType>;
+
+export type GatheringImageUploadReq = { file: File };
+export type GatheringImageUploadRes = Response<GatheringImageResult>;

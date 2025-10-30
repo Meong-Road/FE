@@ -9,6 +9,7 @@ import { isRegularGathering } from "@/lib/utils/typeGuard";
 
 import GatheringInfoSection from "../../_components/GatheringDetail/GatheringInfoSection";
 import GatheringIntroductionSection from "../../_components/GatheringDetail/GatheringIntroductionSection";
+import GatheringLocationSection from "../../_components/GatheringDetail/GatheringLocationSection";
 import GatheringReviewSection from "../../_components/GatheringDetail/GatheringReviewSection";
 import GatheringInfoSectionSkeleton from "../../_components/GatheringDetail/Skeleton/GatheringInfoSectionSkeleton";
 import GatheringIntroductionSectionSkeleton from "../../_components/GatheringDetail/Skeleton/GatheringIntroductionSectionSkeleton";
@@ -47,6 +48,7 @@ function RegularGatheringDetailPageContent() {
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
+      <GatheringLocationSection locationPayload={gathering.location} />
       <GatheringIntroductionSection description={gathering.description} />
       <GatheringReviewSection />
     </>

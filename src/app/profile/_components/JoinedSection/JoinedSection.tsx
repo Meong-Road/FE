@@ -33,13 +33,10 @@ export default function JoinedSection() {
           )}
           renderSkeleton={() => <GatheringCardItemSkeleton />}
           renderOnEmpty={() => (
-            <EmptyState message="아직 참석한 모임이 없어요" minHeight="200px" />
+            <EmptyState message="아직 참석한 모임이 없어요" />
           )}
           renderOnError={() => (
-            <ErrorState
-              message="참석한 모임을 불러오는 중 오류가 발생했어요"
-              minHeight="200px"
-            />
+            <ErrorState message="참석한 모임을 불러오는 중 오류가 발생했어요" />
           )}
         />
       </ListContainer>

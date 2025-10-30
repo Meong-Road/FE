@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 
 import { useGetReview } from "@/hooks/queries/reviews";
-import { hasReviewFormChanges } from "@/lib/utils/review";
 
 import {
   ReviewInfoFormSchema,
@@ -35,7 +34,7 @@ export function useReviewInfoModal({
   );
 
   const form = useReviewInfoForm();
-  const watchedValues = form.watch();
+  // 폼 상태는 RHF의 isDirty로 관리
 
   // 초기값 설정
   const initialData = useMemo<Partial<ReviewInfoFormSchema> | null>(() => {
@@ -62,20 +61,10 @@ export function useReviewInfoModal({
     }
   }, [initialData, form]);
 
-  const hasChanges = useMemo(() => {
-    if (!isEditMode) return true;
-    if (!initialData) return false;
-
-    return hasReviewFormChanges(
-      watchedValues as ReviewInfoUpdateSchema,
-      initialData,
-    );
-  }, [isEditMode, initialData, watchedValues]);
-
   return {
     form,
     isPending: shouldFetchReview ? isReviewPending : false,
     initialData,
-    hasChanges,
+    isDirty: form.formState.isDirty,
   };
 }

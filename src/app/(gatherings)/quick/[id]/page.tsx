@@ -9,6 +9,7 @@ import { isQuickGathering } from "@/lib/utils/typeGuard";
 
 import GatheringInfoSection from "../../_components/GatheringDetail/GatheringInfoSection";
 import GatheringIntroductionSection from "../../_components/GatheringDetail/GatheringIntroductionSection";
+import GatheringLocationSection from "../../_components/GatheringDetail/GatheringLocationSection";
 import GatheringInfoSectionSkeleton from "../../_components/GatheringDetail/Skeleton/GatheringInfoSectionSkeleton";
 import GatheringIntroductionSectionSkeleton from "../../_components/GatheringDetail/Skeleton/GatheringIntroductionSectionSkeleton";
 
@@ -44,6 +45,7 @@ function QuickGatheringDetailPageContent() {
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
+      <GatheringLocationSection locationPayload={gathering.location} />
       <GatheringIntroductionSection description={gathering.description} />
     </>
   );

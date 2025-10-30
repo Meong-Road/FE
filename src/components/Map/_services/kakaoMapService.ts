@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import { LocationType } from "@/lib/types/location";
 
 export const kakaoMapService = {
@@ -125,18 +127,44 @@ export const kakaoMapService = {
     map: kakao.maps.Map,
     marker: kakao.maps.Marker,
   ): Promise<LocationType> {
+    const DEFAULT_LOCATION = new window.kakao.maps.LatLng(
+      37.566826,
+      126.9786567,
+    );
+
+    const move = async (latlng: kakao.maps.LatLng): Promise<LocationType> => {
+      map.setCenter(latlng);
+      marker.setPosition(latlng);
+
+      const place = await this.reverseGeocode(latlng);
+      return {
+        district: place.address,
+        latlng: {
+          lat: latlng.getLat(),
+          lng: latlng.getLng(),
+        },
+      };
+    };
+
     return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          toast.success("위치가 내 현재 위치로 변경되었습니다");
 
-        map.setCenter(locPosition);
-        marker.setPosition(locPosition);
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-        const place = await this.reverseGeocode(locPosition);
-        resolve({ district: place.address, latlng: { lat, lng } });
-      });
+          const location = await move(locPosition);
+          resolve(location);
+        },
+        async (error) => {
+          toast.error("현재 위치를 가져올 수 없어 기본 위치로 이동합니다");
+
+          const location = await move(DEFAULT_LOCATION);
+          resolve(location);
+        },
+      );
     });
   },
 
@@ -208,6 +236,8 @@ export const kakaoMapService = {
     marker.setPosition(latlng);
     map.setCenter(latlng);
 
+    toast.success("위치가 변경되었습니다");
+
     setLocation({
       district: place.address_name,
       latlng: { lat: Number(place.y), lng: Number(place.x) },
@@ -228,42 +258,82 @@ export const kakaoMapService = {
     marker: kakao.maps.Marker;
     location: LocationType;
   }> {
-    return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const locPosition = new window.kakao.maps.LatLng(lat, lng);
+    const DEFAULT_LOCATION = new window.kakao.maps.LatLng(
+      37.566826,
+      126.9786567,
+    );
 
-        const map = this.createMap(container, locPosition);
-        const marker = this.createMarker(map, locPosition);
+    const setupMap = async (latlng: kakao.maps.LatLng) => {
+      const map = this.createMap(container, latlng);
+      const marker = this.createMarker(map, latlng);
+      const place = await this.reverseGeocode(latlng);
 
-        const place = await this.reverseGeocode(locPosition);
+      this.bindMapClick(map, async (clickedLatLng) => {
+        marker.setPosition(clickedLatLng);
+        const clickedPlace = await this.reverseGeocode(clickedLatLng);
 
-        this.bindMapClick(map, async (latlng) => {
-          marker.setPosition(latlng);
+        toast.success("위치가 변경되었습니다");
 
-          const clickedPlace = await this.reverseGeocode(latlng);
-
-          const newLocation: LocationType = {
-            district: clickedPlace.address,
-            latlng: {
-              lat: latlng.getLat(),
-              lng: latlng.getLng(),
-            },
-          };
-
-          onMapClick(newLocation);
-        });
-
-        resolve({
-          map,
-          marker,
-          location: {
-            district: place.address,
-            latlng: { lat, lng },
+        onMapClick({
+          district: clickedPlace.address,
+          latlng: {
+            lat: clickedLatLng.getLat(),
+            lng: clickedLatLng.getLng(),
           },
         });
       });
+
+      return {
+        map,
+        marker,
+        location: {
+          district: place.address,
+          latlng: { lat: latlng.getLat(), lng: latlng.getLng() },
+        },
+      };
+    };
+
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const locPosition = new window.kakao.maps.LatLng(lat, lng);
+
+          const result = await setupMap(locPosition);
+          resolve(result);
+        },
+        async (error) => {
+          toast.error("현재 위치를 가져올 수 없습니다");
+
+          const result = await setupMap(DEFAULT_LOCATION);
+          resolve(result);
+        },
+      );
+    });
+  },
+
+  createStaticMap(
+    container: HTMLDivElement,
+    payload: string,
+  ): Promise<{ map: kakao.maps.Map; marker: kakao.maps.Marker }> {
+    return new Promise(async (resolve) => {
+      const parsed = JSON.parse(payload);
+      const { lat, lng } = parsed.latlng;
+
+      await this.waitForKakaoMapLoad();
+
+      const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      const mapOption = {
+        center: locPosition,
+        level: 3,
+        draggable: false,
+      };
+
+      const map = new window.kakao.maps.Map(container, mapOption);
+      const marker = this.createMarker(map, locPosition);
+
+      resolve({ map, marker });
     });
   },
 };

@@ -6,5 +6,5 @@ export interface PetType {
   petType: "dog";
   breed: string;
   gender: "MALE" | "FEMALE";
-  neuter: boolean;
+  neuter: boolean | null | undefined;
 }

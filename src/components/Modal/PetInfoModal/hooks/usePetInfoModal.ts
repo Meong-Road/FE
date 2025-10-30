@@ -2,9 +2,9 @@ import { useEffect, useMemo } from "react";
 
 import type { PetInfoModalProps } from "@/components/Modal/PetInfoModal/types/petInfoModal";
 import { useGetPet } from "@/hooks/queries/pets";
-import { hasPetFormChanges, transformPetToFormData } from "@/lib/utils/pet";
+import { transformPetToFormData } from "@/lib/utils/pet";
 
-import { PetInfoUpdateSchema, usePetInfoForm } from "./usePetInfoForm";
+import { usePetInfoForm } from "./usePetInfoForm";
 
 export function usePetInfoModal({
   type,
@@ -48,18 +48,10 @@ export function usePetInfoModal({
     }
   }, [form, isEditMode, type]);
 
-  const hasChanges = useMemo(() => {
-    if (!isEditMode) return true;
-    if (!initialData) return false;
-
-    const watchedValues = form.watch();
-    return hasPetFormChanges(initialData, watchedValues as PetInfoUpdateSchema);
-  }, [isEditMode, initialData, form.watch]);
-
   return {
     form,
     isPending: shouldFetchPet ? isPetPending : false,
     initialData,
-    hasChanges,
+    isDirty: form.formState.isDirty,
   };
 }

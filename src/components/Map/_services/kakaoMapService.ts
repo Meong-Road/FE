@@ -126,17 +126,40 @@ export const kakaoMapService = {
     marker: kakao.maps.Marker,
   ): Promise<LocationType> {
     return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        const locPosition = new window.kakao.maps.LatLng(lat, lng);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const locPosition = new window.kakao.maps.LatLng(lat, lng);
 
-        map.setCenter(locPosition);
-        marker.setPosition(locPosition);
+          map.setCenter(locPosition);
+          marker.setPosition(locPosition);
 
-        const place = await this.reverseGeocode(locPosition);
-        resolve({ district: place.address, latlng: { lat, lng } });
-      });
+          const place = await this.reverseGeocode(locPosition);
+          resolve({ district: place.address, latlng: { lat, lng } });
+        },
+        async (error) => {
+          console.log(
+            "현재 위치를 가져올 수 없어 기본 위치로 이동합니다:",
+            error,
+          );
+
+          const defaultLat = 37.5665;
+          const defaultLng = 126.978;
+          const locPosition = new window.kakao.maps.LatLng(
+            defaultLat,
+            defaultLng,
+          );
+          map.setCenter(locPosition);
+          marker.setPosition(locPosition);
+
+          const place = await this.reverseGeocode(locPosition);
+          resolve({
+            district: place.address,
+            latlng: { lat: defaultLat, lng: defaultLng },
+          });
+        },
+      );
     });
   },
 

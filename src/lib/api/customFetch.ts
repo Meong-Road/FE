@@ -49,21 +49,26 @@ async function request<T>(
   }
 
   // 3. 요청 실행
-  const response = await fetch(url, {
-    ...rest,
-    headers: finalHeaders,
-  });
+  try {
+    const response = await fetch(url, {
+      ...rest,
+      headers: finalHeaders,
+    });
 
-  // 4. 응답 처리 or 에러 Throw
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new ApiError(
-      response.status,
-      error.message || `HTTP Error ${response.status}`,
-    );
+    // 4. 응답 처리 or 에러 Throw
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new ApiError(
+        response.status,
+        error.message || `HTTP Error ${response.status}`,
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-
-  return response.json();
 }
 
 // HTTP 메서드별 헬퍼

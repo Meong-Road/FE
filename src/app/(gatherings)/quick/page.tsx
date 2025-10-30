@@ -14,10 +14,10 @@ import { EGatheringType } from "@/lib/types/gatherings";
 
 import QuickGatheringCardList from "./_components/QuickGatheringCardList";
 
+export const dynamic = "force-dynamic";
+
 export default async function QuickGatheringListPage() {
   const queryClient = new QueryClient();
-
-  // 실시간 업데이트가 필요한 대시보드 데이터
   await queryClient.prefetchInfiniteQuery(
     getInfiniteQuickGatheringsOptions(DEFAULT_LIST_OPTIONS),
   );

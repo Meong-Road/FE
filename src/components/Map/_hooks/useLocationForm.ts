@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { kakaoMapService } from "../_services/kakaoMapService";
-
 export function useLocationForm(
   location: kakao.maps.services.ReverseGeocodePlaceType | null,
 ) {
@@ -11,7 +9,7 @@ export function useLocationForm(
   useEffect(() => {
     if (!location) return;
 
-    const formatted = kakaoMapService.formatLocation(location);
+    const formatted = JSON.stringify(location);
     form.setValue("location", formatted);
 
     console.log("location:", location);

@@ -38,21 +38,6 @@ export const kakaoMapService = {
     }));
   },
 
-  // 필요하지 않을 듯
-  formatLocation(
-    location: kakao.maps.services.ReverseGeocodePlaceType,
-  ): string {
-    return JSON.stringify({
-      address_name: location.address_name,
-      region_1depth_name: location.region_1depth_name,
-      region_2depth_name: location.region_2depth_name,
-      latlng: {
-        lat: location.latlng.lat,
-        lng: location.latlng.lng,
-      },
-    });
-  },
-
   /**
    * 키워드로 장소 검색
    * @param keyword 검색할 키워드
@@ -324,7 +309,7 @@ export const kakaoMapService = {
         try {
           return JSON.parse(payload);
         } catch {
-          console.log("이상한 데이터", payload);
+          console.log("목업 모임들 핸들링 (위치 정보가 없는)", payload);
           return {
             district: payload,
             latlng: { lat: 37.566826, lng: 126.9786567 },

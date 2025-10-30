@@ -10,16 +10,11 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-interface Option {
-  label: string;
-  value: string;
-}
-
 interface SelectProps {
   id?: string;
   name: string;
   placeholder?: string;
-  options: Option[];
+  options: string[];
   className?: string;
   value?: string;
   disabled?: boolean;
@@ -57,8 +52,8 @@ export function Select({
       </SelectTrigger>
       <SelectContent>
         {options.map((opt) => (
-          <SelectItem key={opt.value} value={opt.value}>
-            {opt.label}
+          <SelectItem key={opt} value={opt}>
+            {opt}
           </SelectItem>
         ))}
       </SelectContent>

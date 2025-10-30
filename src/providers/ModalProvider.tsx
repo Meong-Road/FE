@@ -2,6 +2,7 @@
 
 import {
   AuthRequiredModal,
+  ConfirmModal,
   PetInfoModal,
   ReviewInfoModal,
   UserInfoModal,
@@ -14,6 +15,7 @@ export default function ModalProvider() {
       <PetInfoModal />
       <UserInfoModal />
       <ReviewInfoModal />
+      <ConfirmModal />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 
+import { ScaleIn } from "@/components/motionWrappers";
 import { cn } from "@/lib/utils";
 
 interface ModalProps {
@@ -34,14 +35,11 @@ export function Modal({ className, children }: ModalProps) {
 
   return createPortal(
     <div className="fixed inset-0 z-49 flex items-center justify-center bg-black/60 p-4 backdrop-blur-[2px] duration-300">
-      <div
-        className={cn(
-          "bg-card relative flex max-h-[85vh] min-h-[10vh] w-full max-w-screen-sm flex-col gap-2 overflow-hidden rounded-3xl pt-12 pb-6 shadow-xl duration-300 select-none sm:rounded-4xl",
-          className,
-        )}
-      >
-        {children}
-      </div>
+      <ScaleIn className={cn("w-full max-w-screen-sm", className)}>
+        <div className="bg-card relative flex max-h-[85vh] min-h-[10vh] w-full flex-col gap-2 overflow-hidden rounded-3xl pt-12 pb-6 shadow-xl duration-300 select-none sm:rounded-4xl">
+          {children}
+        </div>
+      </ScaleIn>
     </div>,
     modalRoot,
   );

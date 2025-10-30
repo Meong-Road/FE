@@ -18,26 +18,28 @@ export default function AuthRequiredModal() {
   if (!isOpen) return null;
 
   return (
-    <Modal className="h-auto w-[400px]">
+    <Modal className="h-auto max-w-[400px]">
       <Modal.Content>
-        <p>로그인이 필요한 서비스입니다.</p>
-        <div className="mt-10 flex justify-center gap-3">
+        <p className="text-center text-lg font-semibold">
+          로그인이 필요한 서비스입니다.
+        </p>
+        <div className="mt-10 mb-2 flex w-full justify-center gap-2 gap-y-3 px-8 sm:gap-3 sm:px-12">
           <Button
             onClick={() => {
               closeModal();
               onClose?.();
             }}
-            className="h-10 w-full"
-            variant="outline"
+            className="h-10 w-1/2"
+            variant="gray"
           >
-            취소
+            이전으로
           </Button>
           <Button
             onClick={handleConfirm}
-            className="h-10 w-full"
+            className="h-10 w-1/2"
             variant="default"
           >
-            확인
+            로그인
           </Button>
         </div>
       </Modal.Content>

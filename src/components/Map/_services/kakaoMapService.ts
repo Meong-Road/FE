@@ -236,6 +236,8 @@ export const kakaoMapService = {
     marker.setPosition(latlng);
     map.setCenter(latlng);
 
+    toast.success("위치가 변경되었습니다");
+
     setLocation({
       district: place.address_name,
       latlng: { lat: Number(place.y), lng: Number(place.x) },

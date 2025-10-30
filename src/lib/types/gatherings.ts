@@ -88,3 +88,10 @@ export interface CreateRegularGatheringType extends CommonCreateGatheringType {
 export type CreateGatheringType =
   | CreateQuickGatheringType
   | CreateRegularGatheringType;
+
+export interface GatheringImageResult {
+  imageUrl: string;
+  originalFilename: string;
+  fileSize: number;
+  contentType: string;
+}

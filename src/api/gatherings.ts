@@ -10,6 +10,8 @@ import {
   DeleteJoinGatheringRes,
   DeleteLikeReq,
   DeleteLikeRes,
+  GatheringImageUploadReq,
+  GatheringImageUploadRes,
   GetGatheringReq,
   GetGatheringRes,
   GetIsLikedReq,
@@ -35,8 +37,6 @@ import {
   PostLikeReq,
   PostLikeRes,
 } from "./types/gatherings";
-import { ImageUploadRes } from "./types/pets";
-// TODO : 이미지 업로드 타입을 common 타입으로 변경 논의
 
 export const gatheringApi = {
   // 정기 모임 목록 조회
@@ -134,11 +134,11 @@ export const gatheringApi = {
       `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
-  uploadGatheringImage: async (file: File) => {
+  uploadGatheringImage: async ({ file }: GatheringImageUploadReq) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    return customFetch.post<ImageUploadRes>(
+    return customFetch.post<GatheringImageUploadRes>(
       `${API_ENDPOINTS.GATHERING}/image/upload`,
       {
         body: formData,

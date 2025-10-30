@@ -54,7 +54,8 @@ export function ImageUpload({
 
   useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (previewUrl && previewUrl.startsWith("blob:"))
+        URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 

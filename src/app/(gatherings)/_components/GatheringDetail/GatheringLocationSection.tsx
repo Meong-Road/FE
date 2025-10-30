@@ -6,7 +6,7 @@ import { kakaoMapService } from "@/components/Map/_services/kakaoMapService";
 import { Card } from "@/components/ui/card";
 
 interface GatheringLocationSectionProps {
-  locationPayload: string; // '{"district":"중구","latlng":{"lat":37.5653736,"lng":126.9787885}}'
+  locationPayload: string;
 }
 
 export default function GatheringLocationSection({

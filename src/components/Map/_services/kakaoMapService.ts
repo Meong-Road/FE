@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import { LocationType } from "@/lib/types/location";
 
 export const kakaoMapService = {
@@ -155,10 +157,7 @@ export const kakaoMapService = {
           resolve(location);
         },
         async (error) => {
-          console.log(
-            "현재 위치를 가져올 수 없어 기본 위치로 이동합니다:",
-            error,
-          );
+          toast.error("현재 위치를 가져올 수 없어 기본 위치로 이동합니다");
 
           const location = await move(DEFAULT_LOCATION);
           resolve(location);
@@ -269,6 +268,8 @@ export const kakaoMapService = {
         marker.setPosition(clickedLatLng);
         const clickedPlace = await this.reverseGeocode(clickedLatLng);
 
+        toast.success("위치가 변경되었습니다");
+
         onMapClick({
           district: clickedPlace.address,
           latlng: {
@@ -299,7 +300,7 @@ export const kakaoMapService = {
           resolve(result);
         },
         async (error) => {
-          console.log("위치 정보를 가져올 수 없습니다:", error);
+          toast.error("현재 위치를 가져올 수 없습니다");
 
           const result = await setupMap(DEFAULT_LOCATION);
           resolve(result);

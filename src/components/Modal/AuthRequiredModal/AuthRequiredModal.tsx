@@ -20,7 +20,9 @@ export default function AuthRequiredModal() {
   return (
     <Modal className="h-auto max-w-[400px]">
       <Modal.Content>
-        <p className="text-center text-base">로그인이 필요한 서비스입니다.</p>
+        <p className="text-center text-lg font-semibold">
+          로그인이 필요한 서비스입니다.
+        </p>
         <div className="mt-10 mb-2 flex w-full justify-center gap-2 gap-y-3 px-8 sm:gap-3 sm:px-12">
           <Button
             onClick={() => {

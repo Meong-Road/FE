@@ -134,7 +134,6 @@ export const gatheringApi = {
       `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
-  // TODO : 모임 이미지 업로드 API
   uploadGatheringImage: async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);

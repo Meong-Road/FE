@@ -30,12 +30,19 @@ export function ImageUpload({
     const file = e.target.files?.[0] || null;
     onChange?.(file);
 
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    } else {
+    if (!file) {
       setPreviewUrl(null);
+      return;
     }
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = () => {
+      const base64Image =
+        typeof fileReader.result === "string" ? fileReader.result : null;
+      setPreviewUrl(base64Image);
+    };
   };
 
   const handleRemoveImage = (): void => {

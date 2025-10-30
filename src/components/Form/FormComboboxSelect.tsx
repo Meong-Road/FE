@@ -15,6 +15,7 @@ interface FormComboboxSelectProps {
   name: string;
   value?: string;
   placeholder?: string;
+  searchPlaceholder?: string;
   onValueChange?: (value: string) => void;
   options: readonly string[];
   maxItems?: number;
@@ -26,6 +27,7 @@ export function FormComboboxSelect({
   name,
   value,
   placeholder = "선택해주세요",
+  searchPlaceholder = "검색하여 선택...",
   onValueChange,
   options,
   maxItems = 20,
@@ -103,7 +105,7 @@ export function FormComboboxSelect({
                   setOpen(false);
                 }
               }}
-              placeholder="검색하여 선택..."
+              placeholder={searchPlaceholder}
               className="bg-accent w-full rounded-md px-3 py-2 text-sm outline-hidden"
             />
           </div>

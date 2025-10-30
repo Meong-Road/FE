@@ -38,6 +38,19 @@ export default function useGatheringFormActions({
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
     try {
+      // 위치가 서울 지역인지 확인
+      try {
+        const parsed = JSON.parse(data.location);
+
+        if (parsed.region_1depth_name !== "서울") {
+          toast.error("모임은 서울 지역이어야 합니다");
+          return;
+        }
+      } catch {
+        toast.error("위치 정보가 올바르지 않습니다");
+        return;
+      }
+
       let imageUrl: string | null = null;
 
       if (data.image instanceof File) {

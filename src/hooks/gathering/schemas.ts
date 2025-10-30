@@ -9,19 +9,7 @@ export const BaseGatheringFormSchema = z.object({
     .optional(),
   name: z.string().min(1, "모임 이름을 입력해주세요"),
   description: z.string().optional(),
-  location: z.string().refine(
-    (val) => {
-      try {
-        const parsed = JSON.parse(val);
-        return parsed.region_1depth_name === "서울";
-      } catch {
-        return false;
-      }
-    },
-    {
-      message: "모임은 서울 지역이어야 합니다",
-    },
-  ),
+  location: z.string(),
   isPetRequired: z.boolean(),
   capacity: z
     .string()

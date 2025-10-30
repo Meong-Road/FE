@@ -1,4 +1,11 @@
-export const years = [
-  2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
-  2023, 2024, 2025,
-];
+export const CURRENT_YEAR = new Date().getFullYear();
+
+// 현재 연도부터 과거 20년전까지(총 21개) 선택 가능
+export const YEARS: readonly number[] = Array.from(
+  { length: 21 },
+  (_, i) => CURRENT_YEAR - i,
+);
+
+export const YEARS_OPTIONS: readonly string[] = YEARS.map((year) =>
+  String(year),
+);

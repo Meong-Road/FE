@@ -1,3 +1,6 @@
+"use client";
+
+import { TabContent } from "@/components/motionWrappers";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { PROFILE_TABS } from "@/lib/constants/profile";
 
@@ -9,16 +12,20 @@ import ReviewSection from "./ReviewSection/ReviewSection";
 export function ProfileTabContent() {
   const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });
 
-  switch (tab) {
-    case PROFILE_TABS.JOINED.value:
-      return <JoinedSection />;
-    case PROFILE_TABS.CREATED.value:
-      return <CreatedSection />;
-    case PROFILE_TABS.REVIEWS.value:
-      return <ReviewSection />;
-    case PROFILE_TABS.PETS.value:
-      return <PetCardSection />;
-    default:
-      return <JoinedSection />;
-  }
+  const renderContent = () => {
+    switch (tab) {
+      case PROFILE_TABS.JOINED.value:
+        return <JoinedSection />;
+      case PROFILE_TABS.CREATED.value:
+        return <CreatedSection />;
+      case PROFILE_TABS.REVIEWS.value:
+        return <ReviewSection />;
+      case PROFILE_TABS.PETS.value:
+        return <PetCardSection />;
+      default:
+        return <JoinedSection />;
+    }
+  };
+
+  return <TabContent tabKey={tab}>{renderContent()}</TabContent>;
 }

@@ -1,4 +1,4 @@
-export const dogBreeds = [
+export const DOG_BREEDS_OPTIONS: readonly string[] = [
   "골든 리트리버",
   "그레이하운드",
   "그레이트 덴",

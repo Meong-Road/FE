@@ -30,8 +30,6 @@ export function useUserInfoModal({
 
   const form = useUserInfoForm();
 
-  const watchedValues = form.watch();
-
   useEffect(() => {
     if (!isEditMode) {
       form.reset({
@@ -47,32 +45,10 @@ export function useUserInfoModal({
     }
   }, [initialData, form]);
 
-  const hasChanges = useMemo(() => {
-    if (!isEditMode) return true;
-    if (!initialData) return false;
-
-    return hasUserFormChanges(
-      watchedValues as UserInfoUpdateSchema,
-      initialData,
-    );
-  }, [isEditMode, initialData, watchedValues]);
-
   return {
     form,
     isPending: shouldFetchUser ? isUserPending : false,
     initialData,
-    hasChanges,
+    isDirty: form.formState.isDirty,
   };
-}
-
-// 사용자 폼 변경사항 체크 함수
-function hasUserFormChanges(
-  currentValues: UserInfoUpdateSchema,
-  initialData: UserInfoUpdateSchema,
-): boolean {
-  return (
-    currentValues.nickName !== initialData.nickName ||
-    currentValues.image !== initialData.image ||
-    currentValues.isPetInfoSubmitted !== initialData.isPetInfoSubmitted
-  );
 }

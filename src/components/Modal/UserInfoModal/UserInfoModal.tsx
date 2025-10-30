@@ -18,7 +18,7 @@ export default function UserInfoModal() {
   const {
     form,
     isPending: isUserPending,
-    hasChanges,
+    isDirty,
     initialData,
   } = useUserInfoModal({ type: type || "edit-user", userId: userId || 0 });
   const currentImage = form.watch("image");
@@ -100,7 +100,7 @@ export default function UserInfoModal() {
               isUserPending ||
               isSubmitting ||
               !form.formState.isValid ||
-              (type === "edit-user" && !hasChanges)
+              (type === "edit-user" && !isDirty)
             }
             label="수정하기"
           />

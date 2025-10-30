@@ -30,17 +30,10 @@ export default function ReviewListContainer() {
   }
 
   if (!reviews || isError)
-    return (
-      <ErrorState message="리뷰를 불러오는데 실패했습니다." minHeight="200px" />
-    );
+    return <ErrorState message="리뷰를 불러오는데 실패했습니다." />;
 
   if (location && reviews.content.length === 0) {
-    return (
-      <EmptyState
-        message={`${location}에 등록된 리뷰가 없어요`}
-        minHeight="300px"
-      />
-    );
+    return <EmptyState message={`${location}에 등록된 리뷰가 없어요`} />;
   }
 
   return (

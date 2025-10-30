@@ -67,18 +67,10 @@ export default function PetCardSection() {
 
   //임시 주석처리
   if (isPending)
-    return (
-      <LoadingState
-        message="반려견 정보를 불러오고 있어요..."
-        minHeight="200px"
-      />
-    );
+    return <LoadingState message="반려견 정보를 불러오고 있어요..." />;
   if (!pets || isError)
     return (
-      <ErrorState
-        message="등록한 반려견 정보를 불러오는데 실패했습니다."
-        minHeight="200px"
-      />
+      <ErrorState message="등록한 반려견 정보를 불러오는데 실패했습니다." />
     );
 
   return (

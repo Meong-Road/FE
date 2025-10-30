@@ -150,8 +150,8 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
   });
 
-  describe("hasChanges 함수 테스트", () => {
-    it("edit-pet 타입 모달에서 초기 상태일 때 변경사항이 false인지 테스트", async () => {
+  describe("isDirty 상태 테스트", () => {
+    it("edit-pet 타입 모달에서 초기 상태일 때 isDirty가 false인지 테스트", async () => {
       const mockInitialPetData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({
@@ -162,11 +162,10 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       const { result } = renderHookWithType("edit-pet", 1);
 
-      const hasChanges = result.current.hasChanges;
-      expect(hasChanges).toBe(false);
+      expect(result.current.isDirty).toBe(false);
     });
 
-    it("edit-pet 타입 모달에서 변경사항이 없을 때 false를 반환하는지 테스트", async () => {
+    it("edit-pet 타입 모달에서 변경사항이 없을 때 isDirty가 false인지 테스트", async () => {
       const mockInitialPetData = createMockPetInfoResponse({ neuter: null });
 
       mockGetPet.mockReturnValue({
@@ -177,20 +176,17 @@ describe("usePetInfoModal Hook 테스트", () => {
 
       const { result } = renderHookWithType("edit-pet", 1);
 
-      const hasChanges = result.current.hasChanges;
-      expect(hasChanges).toBe(false);
+      expect(result.current.isDirty).toBe(false);
     });
 
-    it("first-login 타입 모달에서 hasChanges가 true인지 테스트", () => {
+    it("first-login 타입 모달에서 isDirty가 false인지 테스트(초기 상태)", () => {
       const { result } = renderHookWithType("first-login");
-
-      expect(result.current.hasChanges).toBe(true);
+      expect(result.current.isDirty).toBe(false);
     });
 
-    it("add-pet 타입 모달에서 hasChanges가 true인지 테스트", () => {
+    it("add-pet 타입 모달에서 isDirty가 false인지 테스트(초기 상태)", () => {
       const { result } = renderHookWithType("add-pet");
-
-      expect(result.current.hasChanges).toBe(true);
+      expect(result.current.isDirty).toBe(false);
     });
   });
 
@@ -202,7 +198,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       // 훅이 정상적으로 반환되는지 확인
       expect(result.current.form).toBeDefined();
       expect(result.current.isPending).toBe(false);
-      expect(result.current.hasChanges).toBe(true);
+      expect(result.current.isDirty).toBe(false);
     });
 
     it("add-pet 타입일 때 usePostPet 훅이 올바르게 설정되는지 테스트", () => {
@@ -211,7 +207,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       // 훅이 정상적으로 반환되는지 확인
       expect(result.current.form).toBeDefined();
       expect(result.current.isPending).toBe(false);
-      expect(result.current.hasChanges).toBe(true);
+      expect(result.current.isDirty).toBe(false);
     });
 
     it("edit-pet 타입일 때 usePutPet 훅이 올바르게 설정되는지 테스트", () => {
@@ -228,7 +224,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       // 훅이 정상적으로 반환되는지 확인
       expect(result.current.form).toBeDefined();
       expect(result.current.isPending).toBe(false);
-      expect(result.current.hasChanges).toBeDefined();
+      expect(result.current.isDirty).toBeDefined();
       expect(result.current.initialData).toBeDefined();
     });
   });
@@ -297,7 +293,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       });
     });
 
-    it("neuter가 null일 때 false로 변환되는지 테스트", async () => {
+    it("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
       const mockData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({
@@ -314,7 +310,7 @@ describe("usePetInfoModal Hook 테스트", () => {
         image: "",
         breed: "골든 리트리버",
         gender: "MALE",
-        neuter: "false",
+        neuter: undefined,
         petType: "dog",
       });
     });

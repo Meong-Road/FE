@@ -172,7 +172,11 @@ export const kakaoMapService = {
    * @returns 맵 인스턴스
    */
   createMap(container: HTMLDivElement, center: kakao.maps.LatLng) {
-    return new window.kakao.maps.Map(container, { center, level: 3 });
+    return new window.kakao.maps.Map(container, {
+      center,
+      level: 3,
+      keyboardShortcuts: true,
+    });
   },
 
   /**
@@ -326,10 +330,37 @@ export const kakaoMapService = {
         center: locPosition,
         level: 3,
         draggable: false,
+        scrollWheel: false,
+        disableDoubleClick: true,
       };
 
       const map = new window.kakao.maps.Map(container, mapOption);
       const marker = this.createMarker(map, locPosition);
+
+      const location = await this.reverseGeocode(locPosition);
+      const address = location.address_name;
+
+      const overlayContent = `
+        <div style="
+          background-color: #FFE59E;
+          padding: 8px 12px;
+          border-radius: 12px;
+          color: #FF8400;
+          font-weight: 500;
+          font-size: 14px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+
+        ">
+          ${address}
+        </div>
+      `;
+      const customOverlay = new kakao.maps.CustomOverlay({
+        position: locPosition,
+        content: overlayContent,
+        yAnchor: 1.8,
+      });
+
+      customOverlay.setMap(map);
 
       resolve({ map, marker });
     });

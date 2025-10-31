@@ -50,9 +50,9 @@ export const REVIEW_SUB_TAB_LIST = [
  * 참여한 모임 서브탭 정보
  */
 export const JOINED_SUB_TABS = {
-  PENDING: {
+  RECRUITING: {
     label: "개설 예정",
-    value: "pending",
+    value: "recruiting",
   },
   CONFIRMED: {
     label: "개설 확정",
@@ -62,26 +62,26 @@ export const JOINED_SUB_TABS = {
     label: "개설 취소",
     value: "canceled",
   },
-  CLOSED: {
+  COMPLETED: {
     label: "마감된 모임",
-    value: "closed",
+    value: "completed",
   },
 } as const;
 
 export const JOINED_SUB_TAB_LIST = [
-  JOINED_SUB_TABS.PENDING,
+  JOINED_SUB_TABS.RECRUITING,
   JOINED_SUB_TABS.CONFIRMED,
   JOINED_SUB_TABS.CANCELED,
-  JOINED_SUB_TABS.CLOSED,
+  JOINED_SUB_TABS.COMPLETED,
 ];
 
 /**
  * 만든 모임 서브탭 정보
  */
 export const CREATED_SUB_TABS = {
-  PENDING: {
+  RECRUITING: {
     label: "개설 예정",
-    value: "pending",
+    value: "recruiting",
   },
   CONFIRMED: {
     label: "개설 확정",
@@ -91,15 +91,15 @@ export const CREATED_SUB_TABS = {
     label: "개설 취소",
     value: "canceled",
   },
-  CLOSED: {
+  COMPLETED: {
     label: "마감된 모임",
-    value: "closed",
+    value: "completed",
   },
 } as const;
 
 export const CREATED_SUB_TAB_LIST = [
-  CREATED_SUB_TABS.PENDING,
+  CREATED_SUB_TABS.RECRUITING,
   CREATED_SUB_TABS.CONFIRMED,
   CREATED_SUB_TABS.CANCELED,
-  CREATED_SUB_TABS.CLOSED,
+  CREATED_SUB_TABS.COMPLETED,
 ];

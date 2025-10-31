@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -40,13 +39,6 @@ export default function PetInfoModal() {
     isDirty,
   } = usePetInfoModal({ type: type || "add-pet", petId });
   const currentImage = form.watch("image");
-
-  // 모달이 닫힐 때 form 리셋 (다음 열릴 때 깨끗한 상태 보장)
-  useEffect(() => {
-    if (!isOpen) {
-      form.reset();
-    }
-  }, [isOpen, form]);
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({
     type: type || "add-pet",

@@ -22,23 +22,26 @@ export function usePetInfoModal({
     return transformPetToFormData(petData);
   }, [shouldFetchPet, petData]);
 
-  const form = usePetInfoForm(initialData ?? undefined);
+  // 항상 빈 폼으로 시작 (defaultValues만 사용)
+  const form = usePetInfoForm();
 
-  // initialData가 비동기로 로드되면 form을 해당 값으로 리셋
-  // (edit 모드일 때만 실행)
+  // edit 모드일 때만 initialData로 폼 업데이트
   useEffect(() => {
-    if (initialData) {
+    if (isEditMode && initialData) {
       form.reset(initialData);
+    } else if (!isEditMode) {
+      // add 모드일 때는 명시적으로 빈 값으로 리셋
+      form.reset({
+        image: null,
+        name: "",
+        gender: undefined,
+        neuter: undefined,
+        birthYear: "",
+        breed: "",
+        petType: "dog",
+      });
     }
-  }, [initialData, form]);
-
-  // add 모드일 때는 항상 빈 폼으로 리셋
-  // (type이 변경될 때 form 인스턴스는 재생성되지 않으므로)
-  useEffect(() => {
-    if (!isEditMode) {
-      form.reset();
-    }
-  }, [form, isEditMode, type]);
+  }, [isEditMode, initialData, form]);
 
   return {
     form,

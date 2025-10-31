@@ -4,8 +4,8 @@ export const kakaoMapService = {
   /**
    * 카카오맵 SDK 로드
    */
-  waitForKakaoMapLoad(): Promise<void> {
-    return new Promise((resolve) => {
+  waitForKakaoMapLoad: async (): Promise<void> => {
+    return new Promise<void>((resolve) => {
       if (window.kakao?.maps?.load) {
         window.kakao.maps.load(resolve);
         return;
@@ -25,18 +25,17 @@ export const kakaoMapService = {
    * @param data 카카오맵 검색 결과
    * @returns 필터링된 데이터 어레이
    */
-  mapPlaces(
+  mapPlaces: (
     data: kakao.maps.services.PlaceType[],
-  ): kakao.maps.services.PlaceType[] {
-    return data.map((place) => ({
+  ): kakao.maps.services.PlaceType[] =>
+    data.map((place) => ({
       id: place.id,
       address_name: place.address_name,
       place_name: place.place_name,
       road_address_name: place.road_address_name,
       x: place.x,
       y: place.y,
-    }));
-  },
+    })),
 
   /**
    * 키워드로 장소 검색
@@ -44,15 +43,15 @@ export const kakaoMapService = {
    * @param ps 장소 검색 서비스 인스턴스
    * @returns 검색 결과 어레이
    */
-  searchPlaces(
+  searchPlaces: async (
     keyword: string,
     ps: kakao.maps.services.Places,
-  ): Promise<kakao.maps.services.PlaceType[]> {
+  ): Promise<kakao.maps.services.PlaceType[]> => {
     return new Promise((resolve) => {
       ps.keywordSearch(keyword, (data, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
           resolve(
-            this.mapPlaces(
+            kakaoMapService.mapPlaces(
               data as unknown as kakao.maps.services.PlaceType[], // ?
             ),
           );
@@ -68,9 +67,9 @@ export const kakaoMapService = {
    * @param latlng 변환할 좌표
    * @returns 주소 정보 오브젝트
    */
-  reverseGeocode(
+  reverseGeocode: async (
     latlng: kakao.maps.LatLng,
-  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> {
+  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> => {
     return new Promise((resolve) => {
       const geocoder = new window.kakao.maps.services.Geocoder();
 
@@ -115,10 +114,10 @@ export const kakaoMapService = {
    * @param marker 마커 인스턴스
    * @returns 현재 위치 정보
    */
-  updateToCurrLocation(
+  updateToCurrLocation: async (
     map: kakao.maps.Map,
     marker: kakao.maps.Marker,
-  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> {
+  ): Promise<kakao.maps.services.ReverseGeocodePlaceType> => {
     const DEFAULT_LOCATION = new window.kakao.maps.LatLng(
       37.566826,
       126.9786567,
@@ -130,7 +129,7 @@ export const kakaoMapService = {
       map.setCenter(latlng);
       marker.setPosition(latlng);
 
-      const place = await this.reverseGeocode(latlng);
+      const place = await kakaoMapService.reverseGeocode(latlng);
 
       return {
         address_name: place.address_name,
@@ -171,7 +170,7 @@ export const kakaoMapService = {
    * @param center 중심 좌표
    * @returns 맵 인스턴스
    */
-  createMap(container: HTMLDivElement, center: kakao.maps.LatLng) {
+  createMap: (container: HTMLDivElement, center: kakao.maps.LatLng) => {
     return new window.kakao.maps.Map(container, {
       center,
       level: 3,
@@ -185,7 +184,7 @@ export const kakaoMapService = {
    * @param position 마커 좌표
    * @returns 마커 인스턴스
    */
-  createMarker(map: kakao.maps.Map, position: kakao.maps.LatLng) {
+  createMarker: (map: kakao.maps.Map, position: kakao.maps.LatLng) => {
     const imageSrc = "/map-marker.svg"; // public 폴더 안에 있어야 한다고 합니다
     const imageSize = new kakao.maps.Size(24, 24);
     const imageOption = { offset: new kakao.maps.Point(12, 24) };
@@ -204,10 +203,10 @@ export const kakaoMapService = {
    * @param map 이벤트를 바인딩할 맵 인스턴스
    * @param callback 클릭한 좌표를 처리할 함수
    */
-  bindMapClick(
+  bindMapClick: (
     map: kakao.maps.Map,
     callback: (latlng: kakao.maps.LatLng) => void,
-  ) {
+  ) => {
     window.kakao.maps.event.addListener(map, "click", (e: unknown) => {
       const event = e as { latLng: kakao.maps.LatLng };
       callback(event.latLng);
@@ -222,17 +221,18 @@ export const kakaoMapService = {
    * @param setLocation 위치 상태 갱신하는 함수
    * @returns
    */
-  moveMarkerToPlace(
+  moveMarkerToPlace: (
     map: kakao.maps.Map,
     marker: kakao.maps.Marker | null,
     place: kakao.maps.services.PlaceType,
     setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void,
-  ) {
+  ) => {
+    if (!marker) return;
+
     const latlng = new window.kakao.maps.LatLng(
       Number(place.y),
       Number(place.x),
     );
-    if (!marker) return;
 
     marker.setPosition(latlng);
     map.setCenter(latlng);
@@ -253,27 +253,30 @@ export const kakaoMapService = {
    * @param onMapClick 맵 클릭 시 실행할 콜백
    * @returns 맵, 마커, 위치 정보
    */
-  initMapWithCurrLocation(
+  initMapWithCurrLocation: async (
     container: HTMLDivElement,
     onMapClick: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void,
   ): Promise<{
     map: kakao.maps.Map;
     marker: kakao.maps.Marker;
     location: kakao.maps.services.ReverseGeocodePlaceType;
-  }> {
+  }> => {
+    await kakaoMapService.waitForKakaoMapLoad();
+
     const DEFAULT_LOCATION = new window.kakao.maps.LatLng(
       37.566826,
       126.9786567,
     );
 
     const setupMap = async (latlng: kakao.maps.LatLng) => {
-      const map = this.createMap(container, latlng);
-      const marker = this.createMarker(map, latlng);
-      const place = await this.reverseGeocode(latlng);
+      const map = kakaoMapService.createMap(container, latlng);
+      const marker = kakaoMapService.createMarker(map, latlng);
+      const place = await kakaoMapService.reverseGeocode(latlng);
 
-      this.bindMapClick(map, async (clickedLatLng) => {
+      kakaoMapService.bindMapClick(map, async (clickedLatLng) => {
         marker.setPosition(clickedLatLng);
-        const clickedPlace = await this.reverseGeocode(clickedLatLng);
+        const clickedPlace =
+          await kakaoMapService.reverseGeocode(clickedLatLng);
 
         toast.success("위치가 변경되었습니다");
 
@@ -303,10 +306,10 @@ export const kakaoMapService = {
     });
   },
 
-  createStaticMap(
+  createStaticMap: async (
     container: HTMLDivElement,
     payload: string,
-  ): Promise<{ map: kakao.maps.Map; marker: kakao.maps.Marker }> {
+  ): Promise<{ map: kakao.maps.Map; marker: kakao.maps.Marker }> => {
     return new Promise(async (resolve) => {
       // const parsed = JSON.parse(payload);
       const parsed = (() => {
@@ -323,7 +326,7 @@ export const kakaoMapService = {
 
       const { lat, lng } = parsed.latlng;
 
-      await this.waitForKakaoMapLoad();
+      await kakaoMapService.waitForKakaoMapLoad();
 
       const locPosition = new window.kakao.maps.LatLng(lat, lng);
       const mapOption = {
@@ -335,9 +338,9 @@ export const kakaoMapService = {
       };
 
       const map = new window.kakao.maps.Map(container, mapOption);
-      const marker = this.createMarker(map, locPosition);
+      const marker = kakaoMapService.createMarker(map, locPosition);
 
-      const location = await this.reverseGeocode(locPosition);
+      const location = await kakaoMapService.reverseGeocode(locPosition);
       const address = location.address_name;
 
       const overlayContent = `

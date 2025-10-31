@@ -12,6 +12,7 @@ export function useSkipPetInfo() {
     mutationFn: () => userApi.updatePetInfoSubmitted(),
 
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pets.myPets() });
       // isPetInfoSubmitted가 true로 변경되었으므로 user 정보 갱신
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
     },

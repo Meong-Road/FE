@@ -15,6 +15,7 @@ import {
 
 import { usePostGathering } from "../queries/gatherings/usePostGathering";
 import { useUploadGatheringImage } from "../queries/imageUpload";
+import { useGetMyPets } from "../queries/pets";
 
 import {
   QuickGatheringFormSchema,
@@ -31,6 +32,7 @@ export default function useGatheringFormActions({
   const router = useRouter();
   const postGatheringMutation = usePostGathering();
   const uploadImageMutation = useUploadGatheringImage();
+  const { data: myPets } = useGetMyPets();
 
   const handleCancel = () => router.back();
 
@@ -38,6 +40,14 @@ export default function useGatheringFormActions({
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
     try {
+      // 모임 주체좌가 반려견 동반 필수 모임을 생성하려고 하는지 확인
+      if (data.isPetRequired && (!myPets || myPets.length === 0)) {
+        toast.error(
+          "반려견이 함께 해야하는 모임은 주최자의 반려견 정보가 필요합니다",
+        );
+        return;
+      }
+
       // 위치가 서울 지역인지 확인
       try {
         const parsed = JSON.parse(data.location);

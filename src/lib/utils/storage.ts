@@ -81,5 +81,3 @@ export const tokenStorage = {
     return JSON.parse(atob(token.split(".")[1])) as T;
   },
 };
-
-// 데이터 지속성 훅

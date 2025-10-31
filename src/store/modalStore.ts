@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { create } from "zustand";
 
 type PetInfoModalType = "first-login" | "add-pet" | "edit-pet" | null;
@@ -128,3 +129,27 @@ export const closeAllModals = () => {
   useAuthRequiredModalStore.getState().closeModal();
   useConfirmModalStore.getState().closeModal();
 };
+
+interface ModalStoreProps {
+  isOpen: boolean;
+  title: string;
+  content: string | ReactNode;
+  onClose?: () => void;
+  openModal: (props: {
+    title: string;
+    content: string | ReactNode;
+    onClose?: () => void;
+  }) => void;
+  closeModal: () => void;
+}
+
+export const useModalStore = create<ModalStoreProps>((set) => ({
+  isOpen: false,
+  title: "",
+  content: "",
+  onClose: undefined,
+  openModal: ({ title, content, onClose }) =>
+    set({ isOpen: true, title, content, onClose }),
+  closeModal: () =>
+    set({ isOpen: false, title: "", content: "", onClose: undefined }),
+}));

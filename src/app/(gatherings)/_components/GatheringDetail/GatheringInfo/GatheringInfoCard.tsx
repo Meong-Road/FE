@@ -1,14 +1,12 @@
 import { GatheringCard } from "@/components/GatheringCard";
 import ProgressBar from "@/components/ProgressBar";
 import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
-import { useGet4Participants } from "@/hooks/queries/gatherings/useGet4Participants";
 import { cn } from "@/lib/utils";
 
-import ParticipantImage from "./ParticipantImage";
+import ParticipantsSummary from "./Participants/ParticipantsSummary";
 
 export default function GatheringInfoCard() {
   const { gathering } = useGatheringStateContext();
-  const { data: participants } = useGet4Participants({ id: gathering.id });
 
   return (
     <div
@@ -32,24 +30,7 @@ export default function GatheringInfoCard() {
       </div>
       <div className="mb-6 border border-dashed border-[#E5E7EB]"></div>
       <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="font-semibold">
-            참여자 {gathering.participantCount}명
-          </div>
-          <div className="flex h-7 space-x-[-10px]">
-            {participants?.reverse().map((participant) => (
-              <ParticipantImage
-                key={`participant-image-${participant.id}`}
-                participant={participant}
-              />
-            ))}
-            {gathering.participantCount > 4 && (
-              <div className="bg-secondary text-primary z-10 flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold">
-                +{gathering.participantCount - 4}
-              </div>
-            )}
-          </div>
-        </div>
+        <ParticipantsSummary />
         {gathering.participantCount > 5 && <GatheringCard.ConfirmedBadge />}
       </div>
       <ProgressBar

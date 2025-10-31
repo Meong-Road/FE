@@ -77,7 +77,7 @@ export default function useGatheringFormActions({
           capacity: parseInt(data.capacity, 10),
           image: imageUrl,
           isPetRequired: data.isPetRequired,
-          registrationEnd: `${data.registrationEnd}:00`,
+          registrationEnd: data.registrationEnd,
         };
         successMessage = "번개 모임 생성에 성공했습니다";
         draftKey = "gathering-draft-quick";

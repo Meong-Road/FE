@@ -9,7 +9,7 @@ import {
   getRegistrationDeadlineInfo,
   getTimeAgo,
   subtractHoursFromDateTime,
-} from "./dateTime";
+} from "../../../lib/utils/dateTime";
 
 describe("dateTime", () => {
   beforeEach(() => {

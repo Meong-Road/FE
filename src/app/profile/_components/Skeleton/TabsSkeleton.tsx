@@ -9,7 +9,6 @@ export function TabsSkeleton() {
             key={i}
             className="relative flex h-10 w-28 items-center justify-center text-sm sm:h-15 sm:w-40 sm:text-xl"
           >
-            {/* Tab Label: text-sm sm:text-xl font-semibold */}
             <Skeleton className="h-[14px] w-20 sm:h-5 sm:w-28" />
           </li>
         ))}

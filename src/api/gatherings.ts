@@ -83,9 +83,10 @@ export const gatheringApi = {
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
+    status,
   }: GetMyGatheringsReq) => {
     return customFetch.get<GetMyGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/my?${qs.stringify({ page, size, sort, status }, { arrayFormat: "comma" })}`,
     );
   },
   // GET /meong-road/gatherings/joined - 참석한 모임 목록 조회
@@ -93,9 +94,10 @@ export const gatheringApi = {
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
+    status,
   }: GetJoinedGatheringsReq) => {
     return customFetch.get<GetJoinedGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort, status }, { arrayFormat: "comma" })}`,
     );
   },
   // 모임 참여 조회

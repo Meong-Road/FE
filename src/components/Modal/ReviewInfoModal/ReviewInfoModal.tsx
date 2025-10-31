@@ -22,6 +22,7 @@ export default function ReviewInfoModal() {
   } = useReviewInfoModal({
     modalType,
     reviewId,
+    isOpen,
   });
 
   // Store에서 읽은 값으로 props 구성

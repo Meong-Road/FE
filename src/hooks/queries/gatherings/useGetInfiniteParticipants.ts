@@ -3,25 +3,25 @@ import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import { gatheringApi } from "@/api/gatherings";
 import { PaginationOptions } from "@/api/types/common";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
+import { GatheringType } from "@/lib/types/gatherings";
 
 import { QUERY_KEYS } from "../queryKey";
 
-export function useGetInfiniteRegularGatherings(
+export function useGetInfiniteParticipants(
+  id: GatheringType["id"],
   options: PaginationOptions = DEFAULT_LIST_OPTIONS,
 ) {
-  return useInfiniteQuery(getInfiniteRegularGatheringsOptions(options));
+  return useInfiniteQuery(getInfiniteParticipants(id, options));
 }
 
-export const getInfiniteRegularGatheringsOptions = (
+export const getInfiniteParticipants = (
+  id: GatheringType["id"],
   options: PaginationOptions = DEFAULT_LIST_OPTIONS,
 ) => {
   return infiniteQueryOptions({
-    queryKey: QUERY_KEYS.gatherings.regularList(options),
+    queryKey: QUERY_KEYS.gatherings.participantList({ id }, options),
     queryFn: ({ pageParam }) => {
-      return gatheringApi.getRegularGatherings({
-        page: pageParam,
-        ...options,
-      });
+      return gatheringApi.getParticipants({ id, page: pageParam, ...options });
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>

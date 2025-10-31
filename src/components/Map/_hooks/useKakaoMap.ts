@@ -1,13 +1,11 @@
 import { useEffect, useRef } from "react";
 
-import { LocationType } from "@/lib/types/location";
-
 import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
   mapRef: React.RefObject<HTMLDivElement | null>;
   place: kakao.maps.services.PlaceType | null;
-  setLocation: (loc: LocationType) => void;
+  setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void;
 }
 
 export default function useKakaoMap({ mapRef, place, setLocation }: Props) {

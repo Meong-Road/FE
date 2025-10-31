@@ -86,6 +86,7 @@ export function usePetInfoSubmit({
           await createPetMutation.mutateAsync(petPayload);
           toast.success("반려동물 정보가 등록되었습니다.");
           onClose();
+
           if (type === "first-login") {
             await updateMyInfoMutation.mutateAsync({
               isPetInfoSubmitted: true,

@@ -15,6 +15,7 @@ import {
 
 import { usePostGathering } from "../queries/gatherings/usePostGathering";
 import { useUploadGatheringImage } from "../queries/imageUpload";
+import { useGetMyPets } from "../queries/pets";
 
 import {
   QuickGatheringFormSchema,
@@ -31,6 +32,7 @@ export default function useGatheringFormActions({
   const router = useRouter();
   const postGatheringMutation = usePostGathering();
   const uploadImageMutation = useUploadGatheringImage();
+  const { data: myPets } = useGetMyPets();
 
   const handleCancel = () => router.back();
 
@@ -38,6 +40,27 @@ export default function useGatheringFormActions({
     data: QuickGatheringFormSchema | RegularGatheringFormSchema,
   ) => {
     try {
+      // 모임 주최좌가 반려견 동반 필수 모임을 생성하려고 하는지 확인
+      if (data.isPetRequired && (!myPets || myPets.length === 0)) {
+        toast.error(
+          "반려견이 함께 해야하는 모임은 주최자의 반려견 정보가 필요합니다",
+        );
+        return;
+      }
+
+      // 위치가 서울 지역인지 확인
+      try {
+        const parsed = JSON.parse(data.location);
+
+        if (parsed.region_1depth_name !== "서울") {
+          toast.error("모임은 서울 지역이어야 합니다");
+          return;
+        }
+      } catch {
+        toast.error("위치 정보가 올바르지 않습니다");
+        return;
+      }
+
       let imageUrl: string | null = null;
 
       if (data.image instanceof File) {
@@ -64,7 +87,7 @@ export default function useGatheringFormActions({
           capacity: parseInt(data.capacity, 10),
           image: imageUrl,
           isPetRequired: data.isPetRequired,
-          registrationEnd: `${data.registrationEnd}:00`,
+          registrationEnd: data.registrationEnd,
         };
         successMessage = "번개 모임 생성에 성공했습니다";
         draftKey = "gathering-draft-quick";

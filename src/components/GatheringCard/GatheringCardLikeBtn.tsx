@@ -54,10 +54,14 @@ export function GatheringCardLikeBtn({ className }: GatheringCardLikeBtnProps) {
     try {
       if (isLiked) await cancelLike();
       else await like();
-      toast.success(`[${gathering.name}] 모임을 찜했어요`);
+      toast.success(
+        `[${gathering.name}] 모임을 ${isLiked ? "찜 해제" : "찜"}했어요`,
+      );
     } catch (error) {
       console.error(error);
-      toast.error(`[${gathering.name}] 모임을 찜하는 중 오류가 발생했어요`);
+      toast.error(
+        `[${gathering.name}] 모임을 ${isLiked ? "찜 해제" : "찜"}하는 중 오류가 발생했어요`,
+      );
     }
   };
 

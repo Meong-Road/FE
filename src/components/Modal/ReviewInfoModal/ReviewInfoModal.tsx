@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { toast } from "sonner";
 
 import { Form } from "@/components/Form";
@@ -24,17 +23,6 @@ export default function ReviewInfoModal() {
     modalType,
     reviewId,
   });
-
-  // 모달이 열릴 때마다 form 리셋
-  useEffect(() => {
-    if (isOpen && modalType === "add-review") {
-      // add 모드인 경우 빈 폼으로 리셋
-      form.reset({
-        score: undefined,
-        comment: "",
-      });
-    }
-  }, [isOpen, modalType, form]);
 
   // Store에서 읽은 값으로 props 구성
   const submitProps =

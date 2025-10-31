@@ -37,7 +37,23 @@ export function GatheringCardInfo({ className }: GatheringCardInfoProps) {
     >
       <TextWrapper>
         <Title>위치</Title>
-        <Content>{gathering.location}</Content>
+        <Content>
+          <Content>
+            {(() => {
+              try {
+                const location = JSON.parse(gathering.location);
+
+                return (
+                  location.region_2depth_name ||
+                  location.district || // 이미 district로 들어간 것들이 있어서 임시로 넣었습니다
+                  "위치 정보 없음"
+                );
+              } catch (error) {
+                return "위치 정보 오류";
+              }
+            })()}
+          </Content>
+        </Content>
       </TextWrapper>
       {isRegularGathering(gathering) ? (
         <>

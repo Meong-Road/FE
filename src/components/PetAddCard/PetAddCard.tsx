@@ -24,7 +24,7 @@ export function PetAddCard({ children, className }: PetAddCardProps) {
   return (
     <Card
       onClick={handleClick}
-      className={`group border-border bg-background hover:bg-card relative cursor-pointer overflow-hidden border-2 opacity-75 transition-all select-none hover:opacity-100 hover:shadow-md ${className || ""}`}
+      className={`group border-border bg-background hover:bg-card relative cursor-pointer overflow-hidden rounded-3xl border-2 opacity-75 transition-all select-none hover:opacity-100 hover:shadow-md ${className || ""}`}
     >
       <CardContent className="px-0 py-5">{children}</CardContent>
     </Card>

@@ -22,7 +22,7 @@ export default function ConfirmModal() {
               closeModal();
             }}
             className="h-10 w-1/2"
-            variant="gray"
+            variant="outline"
           >
             닫기
           </Button>
@@ -32,13 +32,7 @@ export default function ConfirmModal() {
               onConfirm?.();
             }}
             className="h-10 w-1/2"
-            variant={
-              text === "개설 취소"
-                ? "destructive"
-                : text === "참여 취소"
-                  ? "outline"
-                  : "default"
-            }
+            variant="default"
           >
             {text}
           </Button>

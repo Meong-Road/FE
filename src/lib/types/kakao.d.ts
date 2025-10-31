@@ -61,10 +61,13 @@ declare global {
         }
 
         interface ReverseGeocodePlaceType {
-          address: string;
-          road_address: string;
-          x: string;
-          y: string;
+          address_name: string;
+          region_1depth_name: string;
+          region_2depth_name: string;
+          latlng: {
+            lat: number;
+            lng: number;
+          };
         }
 
         class Places {
@@ -80,8 +83,15 @@ declare global {
             y: number,
             callback: (
               result: {
-                address?: { address_name: string };
-                road_address?: { address_name: string };
+                address?: {
+                  address_name: string;
+                  region_1depth_name: string;
+                  region_2depth_name: string;
+                  region_3depth_name: string;
+                  mountain_yn: string;
+                  main_address_no: string;
+                  sub_address_no: string;
+                };
               }[],
               status: Status,
             ) => void,

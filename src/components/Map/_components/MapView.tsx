@@ -3,13 +3,12 @@
 import { useRef } from "react";
 
 import ResetLocationIcon from "@/assets/icons/reset-location.svg";
-import { LocationType } from "@/lib/types/location";
 
 import useKakaoMap from "../_hooks/useKakaoMap";
 
 interface Props {
   place: kakao.maps.services.PlaceType | null;
-  setLocation: (loc: LocationType) => void;
+  setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void;
 }
 
 export default function MapView({ place, setLocation }: Props) {

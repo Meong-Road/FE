@@ -3,10 +3,12 @@ import {
   checkIsBefore,
   formatDate,
   formatDateShort,
+  formatDateToISOString,
   formatDays,
   getHoursBefore,
   getRegistrationDeadlineInfo,
   getTimeAgo,
+  subtractHoursFromDateTime,
 } from "./dateTime";
 
 describe("dateTime", () => {
@@ -198,6 +200,88 @@ describe("dateTime", () => {
       const days = ["MON", "WED", "FRI"];
       const result = formatDays(days);
       expect(result).toBe("월, 수, 금");
+    });
+  });
+
+  describe("formatDateToISOString", () => {
+    test("Date 객체를 YYYY-MM-DD 형식의 문자열로 변환해야 한다", () => {
+      const date = new Date();
+      const result = formatDateToISOString(date);
+      expect(result).toBe("2025-10-01");
+    });
+
+    test("월과 일이 한 자리수일 때 0으로 채워져야 한다", () => {
+      const date = new Date("2025-01-01T10:00:00");
+      const result = formatDateToISOString(date);
+      expect(result).toBe("2025-01-01");
+    });
+
+    test("다양한 날짜에 대해 올바른 형식을 반환해야 한다", () => {
+      const testCases = [
+        { date: new Date("2024-01-01T10:00:00"), expected: "2024-01-01" },
+        { date: new Date("2025-12-24T00:00:00"), expected: "2025-12-24" },
+        { date: new Date("2026-03-16T12:30:45"), expected: "2026-03-16" },
+      ];
+
+      testCases.forEach(({ date, expected }) => {
+        expect(formatDateToISOString(date)).toBe(expected);
+      });
+    });
+  });
+
+  describe("subtractHoursFromDateTime", () => {
+    test("기본값 3시간을 빼야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2025-10-01T07:00:00");
+    });
+
+    test("지정된 시간만큼 빼야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime, 5);
+      expect(result).toBe("2025-10-01T05:00:00");
+    });
+
+    test("시간이 음수가 되면 이전 날로 넘어가야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime, 11);
+      expect(result).toBe("2025-09-30T23:00:00");
+    });
+
+    test("정확히 24시간을 빼면 하루 전으로 넘어가야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime, 24);
+      expect(result).toBe("2025-09-30T10:00:00");
+    });
+
+    test("분 정보를 유지해야 한다", () => {
+      const dateTime = "2025-10-01T10:30";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2025-10-01T07:30:00");
+    });
+
+    test("월이 바뀌는 경우를 처리해야 한다", () => {
+      const dateTime = "2025-10-01T01:00";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2025-09-30T22:00:00");
+    });
+
+    test("해가 바뀌는 경우를 처리해야 한다", () => {
+      const dateTime = "2025-01-01T01:00";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2024-12-31T22:00:00");
+    });
+
+    test("다양한 시간과 분 조합을 처리해야 한다", () => {
+      const testCases = [
+        { dateTime: "2025-01-01T01:21", expected: "2024-12-31T22:21:00" },
+        { dateTime: "2025-10-01T10:48", expected: "2025-10-01T07:48:00" },
+        { dateTime: "2025-12-25T00:30", expected: "2025-12-24T21:30:00" },
+      ];
+
+      testCases.forEach(({ dateTime, expected }) => {
+        expect(subtractHoursFromDateTime(dateTime)).toBe(expected);
+      });
     });
   });
 });

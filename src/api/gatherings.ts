@@ -137,7 +137,8 @@ export const gatheringApi = {
   getParticipants: ({ id, page, size, sort }: GetParticipantsReq) => {
     return customFetch.get<GetParticipantsRes>(
       `${API_ENDPOINTS.GATHERING}/${id}/participants?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
-      { skipAuth: true },
+      // TODO: 백엔드 수정 완료 시 주석 제거
+      // { skipAuth: true },
     );
   },
   uploadGatheringImage: async ({ file }: GatheringImageUploadReq) => {

@@ -13,7 +13,12 @@ function ParticipantsSummary() {
   const handleClick = () => {
     openModal({
       title: "참여자 목록",
-      content: <ParticipantImageList gatheringId={gathering.id} />,
+      content: (
+        <ParticipantImageList
+          gatheringId={gathering.id}
+          participantCount={gathering.participantCount}
+        />
+      ),
     });
   };
 

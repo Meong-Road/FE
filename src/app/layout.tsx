@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { Toaster } from "sonner";
 
+import Modal from "@/components/common/Modal";
 import { Header } from "@/components/Header";
 import { initMocks } from "@/mocks";
 import AuthGuardProvider from "@/providers/AuthGuardProvider";
@@ -49,6 +50,7 @@ export default function RootLayout({
               </div>
             </AuthGuardProvider>
             <div id="modal-root"></div>
+            <Modal />
             <ModalProvider />
             <Toaster />
           </QueryProvider>

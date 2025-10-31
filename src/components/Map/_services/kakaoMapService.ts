@@ -172,7 +172,11 @@ export const kakaoMapService = {
    * @returns 맵 인스턴스
    */
   createMap(container: HTMLDivElement, center: kakao.maps.LatLng) {
-    return new window.kakao.maps.Map(container, { center, level: 3 });
+    return new window.kakao.maps.Map(container, {
+      center,
+      level: 3,
+      keyboardShortcuts: true,
+    });
   },
 
   /**
@@ -326,10 +330,23 @@ export const kakaoMapService = {
         center: locPosition,
         level: 3,
         draggable: false,
+        scrollWheel: false,
+        disableDoubleClick: true,
       };
 
       const map = new window.kakao.maps.Map(container, mapOption);
       const marker = this.createMarker(map, locPosition);
+
+      const iwContent = '<div style="padding:5px;">Hello World!</div>';
+      const iwPosition = locPosition;
+      const iwRemoveable = true;
+
+      const infoWindow = new kakao.maps.InfoWindow({
+        map: map,
+        position: iwPosition,
+        content: iwContent,
+        removable: iwRemoveable,
+      });
 
       resolve({ map, marker });
     });

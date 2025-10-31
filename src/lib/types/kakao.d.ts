@@ -46,6 +46,17 @@ declare global {
         setPosition(position: LatLng): void;
       }
 
+      class InfoWindow {
+        constructor(options: {
+          map: Map;
+          position: LatLng;
+          content: string;
+          removable: boolean;
+        });
+        open(map: Map, marker: Marker): void;
+        close(): void;
+      }
+
       namespace services {
         enum Status {
           OK = "OK",

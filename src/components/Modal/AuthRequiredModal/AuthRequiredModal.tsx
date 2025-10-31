@@ -30,7 +30,7 @@ export default function AuthRequiredModal() {
               onClose?.();
             }}
             className="h-10 w-1/2"
-            variant="gray"
+            variant="outline"
           >
             이전으로
           </Button>

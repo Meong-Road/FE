@@ -8,7 +8,6 @@ import { subtractHoursFromDateTime } from "@/lib/utils/dateTime";
 
 import { baseDefaultValues, QuickGatheringFormSchema } from "./schemas";
 
-// TODO : 시간과 분을 입력하지 않았을 때 오류 메시지 출력
 export function useQuickGatheringForm() {
   const form = useForm<QuickGatheringFormSchema>({
     resolver: zodResolver(QuickGatheringFormSchema),

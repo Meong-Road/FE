@@ -37,7 +37,7 @@ export default function PetInfoModal() {
     form,
     isPending: isPetPending,
     isDirty,
-  } = usePetInfoModal({ type: type || "add-pet", petId });
+  } = usePetInfoModal({ type: type || "add-pet", petId, isOpen });
   const currentImage = form.watch("image");
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({

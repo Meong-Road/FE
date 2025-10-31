@@ -45,3 +45,61 @@ export const REVIEW_SUB_TAB_LIST = [
   REVIEW_SUB_TABS.WRITABLE,
   REVIEW_SUB_TABS.WRITTEN,
 ];
+
+/**
+ * 참여한 모임 서브탭 정보
+ */
+export const JOINED_SUB_TABS = {
+  PENDING: {
+    label: "개설 예정",
+    value: "pending",
+  },
+  CONFIRMED: {
+    label: "개설 확정",
+    value: "confirmed",
+  },
+  CANCELED: {
+    label: "개설 취소",
+    value: "canceled",
+  },
+  CLOSED: {
+    label: "마감된 모임",
+    value: "closed",
+  },
+} as const;
+
+export const JOINED_SUB_TAB_LIST = [
+  JOINED_SUB_TABS.PENDING,
+  JOINED_SUB_TABS.CONFIRMED,
+  JOINED_SUB_TABS.CANCELED,
+  JOINED_SUB_TABS.CLOSED,
+];
+
+/**
+ * 만든 모임 서브탭 정보
+ */
+export const CREATED_SUB_TABS = {
+  PENDING: {
+    label: "개설 예정",
+    value: "pending",
+  },
+  CONFIRMED: {
+    label: "개설 확정",
+    value: "confirmed",
+  },
+  CANCELED: {
+    label: "개설 취소",
+    value: "canceled",
+  },
+  CLOSED: {
+    label: "마감된 모임",
+    value: "closed",
+  },
+} as const;
+
+export const CREATED_SUB_TAB_LIST = [
+  CREATED_SUB_TABS.PENDING,
+  CREATED_SUB_TABS.CONFIRMED,
+  CREATED_SUB_TABS.CANCELED,
+  CREATED_SUB_TABS.CLOSED,
+];

@@ -7,6 +7,7 @@ import { ReviewInfoFormSchema, useReviewInfoForm } from "./useReviewInfoForm";
 interface UseReviewInfoModalProps {
   modalType: "add-review" | "edit-review" | null;
   reviewId?: number;
+  isOpen: boolean;
 }
 
 /**
@@ -17,6 +18,7 @@ interface UseReviewInfoModalProps {
 export function useReviewInfoModal({
   modalType,
   reviewId,
+  isOpen,
 }: UseReviewInfoModalProps) {
   const isEditMode = modalType === "edit-review";
   const shouldFetchReview = isEditMode && !!reviewId;
@@ -52,7 +54,7 @@ export function useReviewInfoModal({
         comment: "",
       });
     }
-  }, [isEditMode, initialData, form]);
+  }, [isEditMode, initialData, form, isOpen]);
 
   return {
     form,

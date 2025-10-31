@@ -1,4 +1,5 @@
 import { PaginationOptions } from "@/api/types/common";
+import { GatheringStatus } from "@/api/types/gatherings";
 import { EGatheringType, GatheringType } from "@/lib/types/gatherings";
 
 export enum EType {
@@ -20,10 +21,10 @@ export const GATHERINGS_QUERY_KEYS = {
     [...GATHERINGS_QUERY_KEYS.list(EType.REGULAR, options)] as const,
   quickList: (options: PaginationOptions) =>
     [...GATHERINGS_QUERY_KEYS.list(EType.QUICK, options)] as const,
-  myGatheringList: (options: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.list(EType.MY, options)] as const,
-  joinedGatheringList: (options: PaginationOptions) =>
-    [...GATHERINGS_QUERY_KEYS.list(EType.JOINED, options)] as const,
+  myGatheringList: (options: PaginationOptions, status?: GatheringStatus) =>
+    [...GATHERINGS_QUERY_KEYS.list(EType.MY, options), status] as const,
+  joinedGatheringList: (options: PaginationOptions, status?: GatheringStatus) =>
+    [...GATHERINGS_QUERY_KEYS.list(EType.JOINED, options), status] as const,
   bookmarkedList: (type: EGatheringType, options: PaginationOptions) =>
     [...GATHERINGS_QUERY_KEYS.list(EType.BOOKMARKED, options), type] as const,
   // 모임 참여자

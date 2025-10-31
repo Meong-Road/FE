@@ -46,6 +46,16 @@ declare global {
         setPosition(position: LatLng): void;
       }
 
+      class CustomOverlay {
+        constructor(options: {
+          position: LatLng;
+          content: string;
+          yAnchor: number;
+        });
+
+        setMap(map: Map): void;
+      }
+
       namespace services {
         enum Status {
           OK = "OK",

@@ -34,9 +34,19 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
           name="registrationEnd"
           render={({ field }) => (
             <Form.Item className="flex-1">
-              <Form.Label required className="text-lg font-semibold">
-                마감 날짜
-              </Form.Label>
+              {type === EGatheringType.REGULAR ? (
+                <Form.Label required className="text-lg font-semibold">
+                  마감 날짜
+                </Form.Label>
+              ) : (
+                <Form.Label>
+                  마감 날짜
+                  <span className="text-accent-foreground text-sm">
+                    모임 일시를 정하면 마감 시간이 자동으로 정해져요
+                  </span>
+                </Form.Label>
+              )}
+
               <Form.Control>
                 <Popover>
                   <PopoverTrigger asChild>

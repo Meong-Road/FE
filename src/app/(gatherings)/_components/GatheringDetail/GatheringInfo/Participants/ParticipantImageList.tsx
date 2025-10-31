@@ -38,7 +38,7 @@ function ParticipantImageList({
         <Link
           key={`participant-${participant.userId}`}
           href={PATH.PROFILE(participant.userId)}
-          className="flex items-center gap-4 py-2"
+          className="flex items-center gap-4 bg-white py-2 hover:brightness-95"
           onClick={() => closeModal()}
         >
           <ParticipantImage participant={participant.user} size="md" />

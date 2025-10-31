@@ -51,10 +51,20 @@ declare global {
           map: Map;
           position: LatLng;
           content: string;
-          removable: boolean;
+          removable?: boolean;
         });
         open(map: Map, marker: Marker): void;
         close(): void;
+      }
+
+      class CustomOverlay {
+        constructor(options: {
+          position: LatLng;
+          content: string;
+          yAnchor: number;
+        });
+
+        setMap(map: Map): void;
       }
 
       namespace services {

@@ -36,18 +36,7 @@ export function usePetInfoModal({
   // (type이 변경될 때 form 인스턴스는 재생성되지 않으므로)
   useEffect(() => {
     if (!isEditMode) {
-      form.reset(
-        {
-          name: "",
-          birthYear: "",
-          image: null,
-          breed: "",
-          gender: undefined,
-          neuter: undefined,
-          petType: "dog",
-        },
-        { keepDefaultValues: false },
-      );
+      form.reset();
     }
   }, [form, isEditMode, type]);
 

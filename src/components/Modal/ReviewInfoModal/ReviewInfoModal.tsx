@@ -25,16 +25,12 @@ export default function ReviewInfoModal() {
     reviewId,
   });
 
-  // 모달이 열릴 때마다 form 리셋
+  // 모달이 닫힐 때 form 리셋 (다음 열릴 때 깨끗한 상태 보장)
   useEffect(() => {
-    if (isOpen && modalType === "add-review") {
-      // add 모드인 경우 빈 폼으로 리셋
-      form.reset({
-        score: undefined,
-        comment: "",
-      });
+    if (!isOpen) {
+      form.reset();
     }
-  }, [isOpen, modalType, form]);
+  }, [isOpen, form]);
 
   // Store에서 읽은 값으로 props 구성
   const submitProps =

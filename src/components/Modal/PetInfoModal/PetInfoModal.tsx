@@ -44,18 +44,7 @@ export default function PetInfoModal() {
   // 모달이 닫힐 때 form 리셋 (다음 열릴 때 깨끗한 상태 보장)
   useEffect(() => {
     if (!isOpen) {
-      form.reset(
-        {
-          name: "",
-          birthYear: "",
-          image: null,
-          breed: "",
-          gender: undefined,
-          neuter: undefined,
-          petType: "dog",
-        },
-        { keepDefaultValues: false },
-      );
+      form.reset();
     }
   }, [isOpen, form]);
 

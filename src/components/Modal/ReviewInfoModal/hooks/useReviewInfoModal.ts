@@ -44,10 +44,7 @@ export function useReviewInfoModal({
 
   useEffect(() => {
     if (!isEditMode) {
-      form.reset({
-        score: undefined,
-        comment: "",
-      });
+      form.reset();
     }
   }, [form, isEditMode, modalType]);
 

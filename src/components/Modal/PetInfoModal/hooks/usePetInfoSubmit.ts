@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { ImageUploadRes } from "@/api/types/pets";
 import { useUploadPetImage } from "@/hooks/queries/imageUpload";
 import { usePostPet, usePutPet } from "@/hooks/queries/pets";
-import { useUpdateMyInfo } from "@/hooks/queries/user";
 import { PATH } from "@/lib/constants/path";
 
 import { PetInfoModalProps } from "../types/petInfoModal";
@@ -19,7 +18,6 @@ export function usePetInfoSubmit({
   const router = useRouter();
 
   const createPetMutation = usePostPet();
-  const updateMyInfoMutation = useUpdateMyInfo(); // first-login 시 isPetInfoSubmitted true로 수정
   const updatePetMutation = usePutPet();
   const uploadImageMutation = useUploadPetImage();
 
@@ -86,10 +84,8 @@ export function usePetInfoSubmit({
           await createPetMutation.mutateAsync(petPayload);
           toast.success("반려동물 정보가 등록되었습니다.");
           onClose();
+
           if (type === "first-login") {
-            await updateMyInfoMutation.mutateAsync({
-              isPetInfoSubmitted: true,
-            });
             router.push(PATH.REGULAR);
           }
         } catch (error) {

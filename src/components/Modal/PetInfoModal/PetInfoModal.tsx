@@ -41,21 +41,23 @@ export default function PetInfoModal() {
   } = usePetInfoModal({ type: type || "add-pet", petId });
   const currentImage = form.watch("image");
 
-  // 모달이 열릴 때마다 form 리셋
+  // 모달이 닫힐 때 form 리셋 (다음 열릴 때 깨끗한 상태 보장)
   useEffect(() => {
-    if (isOpen && (type === "first-login" || type === "add-pet")) {
-      // add 모드인 경우 빈 폼으로 리셋
-      form.reset({
-        name: "",
-        birthYear: "",
-        image: null,
-        breed: "",
-        gender: undefined,
-        neuter: undefined,
-        petType: "dog",
-      });
+    if (!isOpen) {
+      form.reset(
+        {
+          name: "",
+          birthYear: "",
+          image: null,
+          breed: "",
+          gender: undefined,
+          neuter: undefined,
+          petType: "dog",
+        },
+        { keepDefaultValues: false },
+      );
     }
-  }, [isOpen, type, form]);
+  }, [isOpen, form]);
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({
     type: type || "add-pet",

@@ -2,11 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { useGetReview } from "@/hooks/queries/reviews";
 
-import {
-  ReviewInfoFormSchema,
-  ReviewInfoUpdateSchema,
-  useReviewInfoForm,
-} from "./useReviewInfoForm";
+import { ReviewInfoFormSchema, useReviewInfoForm } from "./useReviewInfoForm";
 
 interface UseReviewInfoModalProps {
   modalType: "add-review" | "edit-review" | null;

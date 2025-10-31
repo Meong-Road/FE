@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react";
 import type { UserInfoModalProps } from "@/components/Modal/UserInfoModal/types/userInfoModal";
 import { useGetMyInfo } from "@/hooks/queries/user/useGetMyInfo";
 
-import { UserInfoUpdateSchema, useUserInfoForm } from "./useUserInfoForm";
+import { useUserInfoForm } from "./useUserInfoForm";
 
 export function useUserInfoModal({
   type,

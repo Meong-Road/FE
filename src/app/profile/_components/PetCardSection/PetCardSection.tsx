@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  ErrorState,
-  ListContainer,
-  LoadingState,
-  SectionWrapper,
-} from "@/components/common";
+import { ErrorState, ListContainer, SectionWrapper } from "@/components/common";
 import { PetAddCard } from "@/components/PetAddCard";
 import { PetCard } from "@/components/PetCard";
+import { PetCardSkeletonList } from "@/components/PetCard/Skeleton";
 import { useGetMyPets } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
 import { processPetInfo } from "@/lib/utils/pet";
@@ -65,13 +61,19 @@ const PetList = ({ pets }: { pets: PetType[] }) => {
 export default function PetCardSection() {
   const { data: pets, isPending, isError } = useGetMyPets();
 
-  //임시 주석처리
-  if (isPending)
-    return <LoadingState message="반려견 정보를 불러오고 있어요..." />;
-  if (!pets || isError)
+  if (isPending) {
+    return (
+      <SectionWrapper>
+        <PetCardSkeletonList count={3} />
+      </SectionWrapper>
+    );
+  }
+
+  if (isError || !pets) {
     return (
       <ErrorState message="등록한 반려견 정보를 불러오는데 실패했습니다." />
     );
+  }
 
   return (
     <SectionWrapper>

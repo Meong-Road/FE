@@ -10,18 +10,18 @@ import CreatedStatusSection from "./CreatedStatusSection";
 
 export default function CreatedSection() {
   const { createdTab } = useSearchParamsState({
-    createdTab: CREATED_SUB_TABS.PENDING.value,
+    createdTab: CREATED_SUB_TABS.RECRUITING.value,
   });
 
   const getStatusForTab = (tab: string) => {
     switch (tab) {
-      case CREATED_SUB_TABS.PENDING.value:
+      case CREATED_SUB_TABS.RECRUITING.value:
         return "RECRUITING" as const;
       case CREATED_SUB_TABS.CONFIRMED.value:
         return "CONFIRMED" as const;
       case CREATED_SUB_TABS.CANCELED.value:
         return "CANCELED" as const;
-      case CREATED_SUB_TABS.CLOSED.value:
+      case CREATED_SUB_TABS.COMPLETED.value:
         return "COMPLETED" as const;
       default:
         return "RECRUITING" as const;

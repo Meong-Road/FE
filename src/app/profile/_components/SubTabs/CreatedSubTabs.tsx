@@ -21,7 +21,7 @@ export default function CreatedSubTabs() {
   const router = useRouter();
   const currentTab = useSearchParamsState({
     tab: PROFILE_TABS.CREATED.value,
-    createdTab: CREATED_SUB_TABS.PENDING.value,
+    createdTab: CREATED_SUB_TABS.RECRUITING.value,
   });
 
   const handleTabChange = (createdTab: string | boolean) => {

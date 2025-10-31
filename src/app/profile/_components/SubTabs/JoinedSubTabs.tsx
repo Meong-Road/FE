@@ -21,7 +21,7 @@ export default function JoinedSubTabs() {
   const router = useRouter();
   const currentTab = useSearchParamsState({
     tab: PROFILE_TABS.JOINED.value,
-    joinedTab: JOINED_SUB_TABS.PENDING.value,
+    joinedTab: JOINED_SUB_TABS.RECRUITING.value,
   });
 
   const handleTabChange = (joinedTab: string | boolean) => {

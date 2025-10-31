@@ -10,18 +10,18 @@ import JoinedStatusSection from "./JoinedStatusSection";
 
 export default function JoinedSection() {
   const { joinedTab } = useSearchParamsState({
-    joinedTab: JOINED_SUB_TABS.PENDING.value,
+    joinedTab: JOINED_SUB_TABS.RECRUITING.value,
   });
 
   const getStatusForTab = (tab: string) => {
     switch (tab) {
-      case JOINED_SUB_TABS.PENDING.value:
+      case JOINED_SUB_TABS.RECRUITING.value:
         return "RECRUITING" as const;
       case JOINED_SUB_TABS.CONFIRMED.value:
         return "CONFIRMED" as const;
       case JOINED_SUB_TABS.CANCELED.value:
         return "CANCELED" as const;
-      case JOINED_SUB_TABS.CLOSED.value:
+      case JOINED_SUB_TABS.COMPLETED.value:
         return "COMPLETED" as const;
       default:
         return "RECRUITING" as const;

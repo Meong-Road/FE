@@ -4,7 +4,8 @@ import { Search } from "lucide-react";
 import { Form } from "@/components/Form";
 import { useDebounce } from "@/hooks/useDebounce";
 
-import { kakaoMapService } from "../_services/kakaoMapService";
+import { useOutsideClick } from "../_hooks/useOutsideClick";
+import { usePlaceSearch } from "../_hooks/usePlaceSearch";
 
 interface Props {
   onSelect: (place: kakao.maps.services.SearchedPlaceType) => void;
@@ -12,46 +13,22 @@ interface Props {
 
 export default function MapSearchBar({ onSelect }: Props) {
   const [input, setInput] = useState("");
-  const [places, setPlaces] = useState<kakao.maps.services.SearchedPlaceType[]>(
-    [],
-  );
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debouncedInput = useDebounce(input, { delay: 500 });
-
-  const handleSearch = async (query: string) => {
-    if (!query.trim()) return;
-
-    const ps = new window.kakao.maps.services.Places();
-    const results = await kakaoMapService.searchPlaces(query, ps);
-
-    setPlaces(results || []);
-    setOpen(true);
-  };
+  const { results, search } = usePlaceSearch();
 
   useEffect(() => {
     if (debouncedInput.trim()) {
-      handleSearch(debouncedInput);
+      search(debouncedInput);
+      setOpen(true);
+    } else {
+      setOpen(false);
     }
-  }, [debouncedInput]);
+  }, [debouncedInput, search]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target) &&
-        !(target instanceof HTMLElement && target.closest("input"))
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+  useOutsideClick(dropdownRef, () => setOpen(false));
 
   const handleSelect = (place: kakao.maps.services.SearchedPlaceType) => {
     onSelect(place);
@@ -61,7 +38,7 @@ export default function MapSearchBar({ onSelect }: Props) {
 
   const handleFocus = () => {
     if (!open && debouncedInput.trim()) {
-      handleSearch(debouncedInput);
+      setOpen(true);
     }
   };
 
@@ -90,15 +67,15 @@ export default function MapSearchBar({ onSelect }: Props) {
             ref={dropdownRef}
             className="absolute z-2 mt-2 max-h-80 min-w-full overflow-y-auto rounded-xl border bg-white shadow-md"
           >
-            {places.length > 0 ? (
-              places.map((place) => (
+            {results.length > 0 ? (
+              results.map((result) => (
                 <div
-                  key={place.id}
-                  onClick={() => handleSelect(place)}
+                  key={result.id}
+                  onClick={() => handleSelect(result)}
                   className="cursor-pointer px-4 py-2 hover:bg-[#FFE59E]"
                 >
-                  <div>{place.place_name}</div>
-                  <div className="text-[#737373]">{place.address_name}</div>
+                  <div>{result.place_name}</div>
+                  <div className="text-[#737373]">{result.address_name}</div>
                 </div>
               ))
             ) : (

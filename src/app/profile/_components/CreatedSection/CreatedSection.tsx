@@ -31,8 +31,8 @@ export default function CreatedSection() {
   return (
     <div>
       <CreatedSubTabs />
-      <TabContent tabKey={createdTab} className="mt-6">
-        <CreatedStatusSection status={getStatusForTab(createdTab)} />
+      <TabContent tabKey={createdTab as string} className="mt-6">
+        <CreatedStatusSection status={getStatusForTab(createdTab as string)} />
       </TabContent>
     </div>
   );

@@ -17,7 +17,7 @@ export default function ReviewSection() {
   return (
     <div>
       <ReviewSubTabs />
-      <TabContent tabKey={reviewTab} className="mt-6">
+      <TabContent tabKey={reviewTab as string} className="mt-6">
         {reviewTab === REVIEW_SUB_TABS.WRITABLE.value ? (
           <WritableReviewSection />
         ) : (

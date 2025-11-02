@@ -31,8 +31,8 @@ export default function JoinedSection() {
   return (
     <div>
       <JoinedSubTabs />
-      <TabContent tabKey={joinedTab} className="mt-6">
-        <JoinedStatusSection status={getStatusForTab(joinedTab)} />
+      <TabContent tabKey={joinedTab as string} className="mt-6">
+        <JoinedStatusSection status={getStatusForTab(joinedTab as string)} />
       </TabContent>
     </div>
   );

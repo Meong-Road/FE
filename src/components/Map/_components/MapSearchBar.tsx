@@ -22,12 +22,13 @@ export default function MapSearchBar({ onSelect }: Props) {
   const { results, search } = usePlaceSearch();
 
   useEffect(() => {
-    if (debouncedInput.trim()) {
-      search(debouncedInput);
-      setOpen(true);
-    } else {
+    if (!debouncedInput.trim()) {
       setOpen(false);
+      return;
     }
+
+    search(debouncedInput);
+    setOpen(true);
   }, [debouncedInput, search]);
 
   useOutsideClick(dropdownRef, () => setOpen(false));
@@ -50,7 +51,7 @@ export default function MapSearchBar({ onSelect }: Props) {
         모임 위치
       </Form.Label>
 
-      <div className="relative w-full">
+      <div ref={dropdownRef} className="relative w-full">
         <Form.Input
           type="text"
           placeholder="지번, 도로명, 건물명으로 검색"

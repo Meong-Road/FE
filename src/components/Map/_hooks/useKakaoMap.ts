@@ -17,18 +17,14 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
       if (!mapRef.current || map.current) return;
 
       try {
-        const {
-          map: m,
-          marker: mk,
-          location,
-        } = await kakaoMapService.initMapWithCurrLocation(
-          mapRef.current,
-          setLocation,
-        );
+        const { map: m, marker: mk } =
+          await kakaoMapService.initMapWithCurrLocation(
+            mapRef.current,
+            setLocation,
+          );
 
         map.current = m;
         marker.current = mk;
-        setLocation(location);
       } catch (error) {
         console.log("지도 초기화 실패:", error);
       }

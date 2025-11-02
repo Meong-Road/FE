@@ -1,7 +1,14 @@
+import {
+  KakaoLatLng,
+  KakaoMap,
+  KakaoMarker,
+  KakaoSearchedPlaceType,
+} from "../types/kakao";
+
 /**
  * 기본 좌표 (서울시청) 리턴
  */
-export const getDefaultLatLng = (): kakao.maps.LatLng => {
+export const getDefaultLatLng = (): KakaoLatLng => {
   return new window.kakao.maps.LatLng(37.566826, 126.9786567);
 };
 
@@ -46,8 +53,8 @@ export const parseLocationPayload = (
  * 카카오맵 오브젝트에서 필요한 필드만 필터링 -> 매핑
  */
 export const mapPlaces = (
-  data: kakao.maps.services.SearchedPlaceType[],
-): kakao.maps.services.SearchedPlaceType[] => {
+  data: KakaoSearchedPlaceType[],
+): KakaoSearchedPlaceType[] => {
   return data.map((place) => ({
     id: place.id,
     address_name: place.address_name,
@@ -62,9 +69,9 @@ export const mapPlaces = (
  * 마커와 맵 이동
  */
 export const moveMapAndMarker = (
-  map: kakao.maps.Map,
-  marker: kakao.maps.Marker,
-  latlng: kakao.maps.LatLng,
+  map: KakaoMap,
+  marker: KakaoMarker,
+  latlng: KakaoLatLng,
 ): void => {
   map.setCenter(latlng);
   marker.setPosition(latlng);

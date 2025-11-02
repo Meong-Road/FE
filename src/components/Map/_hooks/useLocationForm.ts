@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-export function useLocationForm(
-  location: kakao.maps.services.ReverseGeocodePlaceType | null,
-) {
+import { KakaoReverseGeocodePlaceType } from "@/lib/types/kakao";
+
+export function useLocationForm(location: KakaoReverseGeocodePlaceType | null) {
   const form = useFormContext();
 
   useEffect(() => {

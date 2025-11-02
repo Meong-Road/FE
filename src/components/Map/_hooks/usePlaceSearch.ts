@@ -1,11 +1,11 @@
 import { useCallback, useState } from "react";
 
+import { KakaoSearchedPlaceType } from "@/lib/types/kakao";
+
 import { kakaoMapService } from "../_services/kakaoMapService";
 
 export function usePlaceSearch() {
-  const [results, setResults] = useState<
-    kakao.maps.services.SearchedPlaceType[]
-  >([]);
+  const [results, setResults] = useState<KakaoSearchedPlaceType[]>([]);
 
   const search = useCallback(async (keyword: string) => {
     if (!keyword.trim()) return;

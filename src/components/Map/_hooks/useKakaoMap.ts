@@ -1,16 +1,23 @@
 import { useEffect, useRef } from "react";
 
+import {
+  KakaoMap,
+  KakaoMarker,
+  KakaoReverseGeocodePlaceType,
+  KakaoSearchedPlaceType,
+} from "@/lib/types/kakao";
+
 import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
   mapRef: React.RefObject<HTMLDivElement | null>;
-  place: kakao.maps.services.SearchedPlaceType | null;
-  setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void;
+  place: KakaoSearchedPlaceType | null;
+  setLocation: (loc: KakaoReverseGeocodePlaceType) => void;
 }
 
 export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
-  const map = useRef<kakao.maps.Map | null>(null);
-  const marker = useRef<kakao.maps.Marker | null>(null);
+  const map = useRef<KakaoMap | null>(null);
+  const marker = useRef<KakaoMarker | null>(null);
 
   useEffect(() => {
     const initMap = async () => {

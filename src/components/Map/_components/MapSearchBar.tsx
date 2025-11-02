@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 
 import { Form } from "@/components/Form";
 import { useDebounce } from "@/hooks/useDebounce";
+import { KakaoSearchedPlaceType } from "@/lib/types/kakao";
 
 import { useOutsideClick } from "../_hooks/useOutsideClick";
 import { usePlaceSearch } from "../_hooks/usePlaceSearch";
@@ -10,7 +11,7 @@ import { usePlaceSearch } from "../_hooks/usePlaceSearch";
 import { MapSearchList } from "./MapSearchList";
 
 interface Props {
-  onSelect: (place: kakao.maps.services.SearchedPlaceType) => void;
+  onSelect: (place: KakaoSearchedPlaceType) => void;
 }
 
 export default function MapSearchBar({ onSelect }: Props) {
@@ -33,7 +34,7 @@ export default function MapSearchBar({ onSelect }: Props) {
 
   useOutsideClick(dropdownRef, () => setOpen(false));
 
-  const handleSelect = (place: kakao.maps.services.SearchedPlaceType) => {
+  const handleSelect = (place: KakaoSearchedPlaceType) => {
     onSelect(place);
     setInput("");
     setOpen(false);

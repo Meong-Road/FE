@@ -1,6 +1,8 @@
+import { KakaoSearchedPlaceType } from "@/lib/types/kakao";
+
 interface Props {
-  results: kakao.maps.services.SearchedPlaceType[];
-  onSelect: (place: kakao.maps.services.SearchedPlaceType) => void;
+  results: KakaoSearchedPlaceType[];
+  onSelect: (place: KakaoSearchedPlaceType) => void;
   showNoResult?: boolean;
 }
 

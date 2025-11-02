@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://52.79.131.132:8050/meong-road/:path*",
+        destination: "https://api.meong-road.site:8050/meong-road/:path*",
       },
     ];
   },

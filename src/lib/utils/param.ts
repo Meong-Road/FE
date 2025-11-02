@@ -78,6 +78,5 @@ export function parseGatheringFilterParam(
         `${params.endDate}T23:59:59`;
     }
   }
-  console.log(params, record);
   return record;
 }

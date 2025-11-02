@@ -11,8 +11,5 @@ export function useLocationForm(location: KakaoReverseGeocodePlaceType | null) {
 
     const formatted = JSON.stringify(location);
     form.setValue("location", formatted);
-
-    console.log("location:", location);
-    console.log("백엔드 payload:", formatted);
   }, [location]);
 }

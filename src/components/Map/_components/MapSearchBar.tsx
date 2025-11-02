@@ -7,6 +7,8 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useOutsideClick } from "../_hooks/useOutsideClick";
 import { usePlaceSearch } from "../_hooks/usePlaceSearch";
 
+import { MapSearchList } from "./MapSearchList";
+
 interface Props {
   onSelect: (place: kakao.maps.services.SearchedPlaceType) => void;
 }
@@ -62,27 +64,7 @@ export default function MapSearchBar({ onSelect }: Props) {
           size={20}
         />
 
-        {open && (
-          <div
-            ref={dropdownRef}
-            className="absolute z-2 mt-2 max-h-80 min-w-full overflow-y-auto rounded-xl border bg-white shadow-md"
-          >
-            {results.length > 0 ? (
-              results.map((result) => (
-                <div
-                  key={result.id}
-                  onClick={() => handleSelect(result)}
-                  className="cursor-pointer px-4 py-2 hover:bg-[#FFE59E]"
-                >
-                  <div>{result.place_name}</div>
-                  <div className="text-[#737373]">{result.address_name}</div>
-                </div>
-              ))
-            ) : (
-              <div className="px-4 py-2 text-[#737373]">검색 결과가 없어요</div>
-            )}
-          </div>
-        )}
+        {open && <MapSearchList results={results} onSelect={handleSelect} />}
       </div>
     </div>
   );

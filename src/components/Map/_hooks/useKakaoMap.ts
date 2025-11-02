@@ -4,7 +4,7 @@ import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
   mapRef: React.RefObject<HTMLDivElement | null>;
-  place: kakao.maps.services.PlaceType | null;
+  place: kakao.maps.services.SearchedPlaceType | null;
   setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void;
 }
 
@@ -35,10 +35,10 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
     };
 
     initMap();
-  }, [mapRef, setLocation]);
+  }, [setLocation]);
 
   useEffect(() => {
-    if (!place || !map.current) return;
+    if (!place || !map.current || !marker.current) return;
 
     try {
       kakaoMapService.moveMarkerToPlace(
@@ -56,11 +56,11 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
     if (!map.current || !marker.current) return;
 
     try {
-      const loc = await kakaoMapService.updateToCurrLocation(
+      const location = await kakaoMapService.updateToCurrLocation(
         map.current,
         marker.current,
       );
-      setLocation(loc);
+      setLocation(location);
     } catch (error) {
       console.log("위치 reset 실패:", error);
     }

@@ -7,7 +7,7 @@ import ResetLocationIcon from "@/assets/icons/reset-location.svg";
 import useKakaoMap from "../_hooks/useKakaoMap";
 
 interface Props {
-  place: kakao.maps.services.PlaceType | null;
+  place: kakao.maps.services.SearchedPlaceType | null;
   setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void;
 }
 

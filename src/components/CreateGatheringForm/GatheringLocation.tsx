@@ -7,7 +7,7 @@ import { useLocationForm } from "../Map/_hooks/useLocationForm";
 
 export default function GatheringLocation() {
   const [selectedPlace, setSelectedPlace] =
-    useState<kakao.maps.services.PlaceType | null>(null);
+    useState<kakao.maps.services.SearchedPlaceType | null>(null);
   const [location, setLocation] =
     useState<kakao.maps.services.ReverseGeocodePlaceType | null>(null);
 

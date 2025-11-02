@@ -7,12 +7,14 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
-  onSelect: (place: kakao.maps.services.PlaceType) => void;
+  onSelect: (place: kakao.maps.services.SearchedPlaceType) => void;
 }
 
 export default function MapSearchBar({ onSelect }: Props) {
   const [input, setInput] = useState("");
-  const [places, setPlaces] = useState<kakao.maps.services.PlaceType[]>([]);
+  const [places, setPlaces] = useState<kakao.maps.services.SearchedPlaceType[]>(
+    [],
+  );
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +53,7 @@ export default function MapSearchBar({ onSelect }: Props) {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const handleSelect = (place: kakao.maps.services.PlaceType) => {
+  const handleSelect = (place: kakao.maps.services.SearchedPlaceType) => {
     onSelect(place);
     setInput("");
     setOpen(false);

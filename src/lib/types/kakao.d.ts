@@ -61,7 +61,7 @@ declare global {
           OK = "OK",
         }
 
-        interface PlaceType {
+        interface SearchedPlaceType {
           id: string;
           address_name: string;
           place_name: string;
@@ -83,7 +83,7 @@ declare global {
         class Places {
           keywordSearch(
             keyword: string,
-            callback: (data: PlaceType[], status: Status) => void,
+            callback: (data: SearchedPlaceType[], status: Status) => void,
           ): void;
         }
 
@@ -110,10 +110,16 @@ declare global {
       }
 
       namespace event {
+        interface MapClickEvent {
+          latLng: kakao.maps.LatLng;
+        }
+
+        type MapClickHandler = (event: MapClickEvent) => void;
+
         function addListener(
-          target: unknown,
+          map: kakao.maps.Map,
           type: string,
-          handler: (...args: unknown[]) => void,
+          handler: MapClickHandler,
         ): void;
       }
     }

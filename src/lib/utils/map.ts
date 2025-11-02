@@ -1,10 +1,7 @@
-import { kakaoMapService } from "@/components/Map/_services/kakaoMapService";
-
 /**
  * 기본 좌표 (서울시청) 리턴
  */
-export const getDefaultLatLng = async (): Promise<kakao.maps.LatLng> => {
-  await kakaoMapService.waitForKakaoMapLoad();
+export const getDefaultLatLng = (): kakao.maps.LatLng => {
   return new window.kakao.maps.LatLng(37.566826, 126.9786567);
 };
 
@@ -26,8 +23,8 @@ export const parseLocationPayload = (
     if ("district" in parsed) {
       return {
         address_name: parsed.district ?? "",
-        region_1depth_name: "",
-        region_2depth_name: "",
+        region_1depth_name: "서울",
+        region_2depth_name: parsed.district ?? "",
         latlng: parsed.latlng ?? { lat: 37.566826, lng: 126.9786567 },
       };
     }
@@ -37,9 +34,9 @@ export const parseLocationPayload = (
   } catch {
     // 구구버전: 위치 정보 없음
     return {
-      address_name: "",
-      region_1depth_name: "",
-      region_2depth_name: "",
+      address_name: "서울 중구 태평로1가 31",
+      region_1depth_name: "서울",
+      region_2depth_name: "중구",
       latlng: { lat: 37.566826, lng: 126.9786567 },
     };
   }
@@ -49,8 +46,8 @@ export const parseLocationPayload = (
  * 카카오맵 오브젝트에서 필요한 필드만 필터링 -> 매핑
  */
 export const mapPlaces = (
-  data: kakao.maps.services.PlaceType[],
-): kakao.maps.services.PlaceType[] => {
+  data: kakao.maps.services.SearchedPlaceType[],
+): kakao.maps.services.SearchedPlaceType[] => {
   return data.map((place) => ({
     id: place.id,
     address_name: place.address_name,

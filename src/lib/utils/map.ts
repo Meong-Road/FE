@@ -59,7 +59,6 @@ export const mapPlaces = (
     id: place.id,
     address_name: place.address_name,
     place_name: place.place_name,
-    road_address_name: place.road_address_name,
     x: place.x,
     y: place.y,
   }));

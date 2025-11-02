@@ -2,13 +2,14 @@ import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 import { gatheringApi } from "@/api/gatherings";
 import { PaginationOptions } from "@/api/types/common";
-import { GatheringFilter } from "@/api/types/gatherings";
+import { QuickGatheringFilters } from "@/api/types/gatherings";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 
 import { QUERY_KEYS } from "../queryKey";
 
 export function useGetInfiniteQuickGatherings(
-  options: PaginationOptions & Partial<GatheringFilter> = DEFAULT_LIST_OPTIONS,
+  options: PaginationOptions &
+    Partial<QuickGatheringFilters> = DEFAULT_LIST_OPTIONS,
 ) {
   return useInfiniteQuery(getInfiniteQuickGatheringsOptions(options));
 }

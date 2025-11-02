@@ -1,7 +1,6 @@
 import { PaginationReq } from "@/api/types/common";
 
 import { LocationType } from "../types/reviews";
-import { getGatheringOptionParams } from "../utils/param";
 
 export const DEFAULT_LIST_OPTIONS: Pick<PaginationReq, "size" | "sort"> = {
   size: 12,
@@ -46,57 +45,57 @@ export const LOCATION_OPTIONS = Object.entries(LOCATION_OPTIONS_MAP).map(
   }),
 );
 
-export enum ESort {
+export enum ESortBy {
   CREATED_AT = "CREATED_AT",
   REGISTRATION_END = "REGISTRATION_END",
 }
 
 export type SortOptionValue = [string, "asc" | "desc"];
 
-export type SortOption = {
-  id: ESort;
+export type SortByOption = {
+  id: ESortBy;
   value: SortOptionValue;
   label: string;
 };
 
 export const SORT_OPTIONS_MAP: Record<
-  ESort,
+  ESortBy,
   { value: SortOptionValue; label: string }
 > = {
-  [ESort.CREATED_AT]: { value: ["createdAt", "desc"], label: "최신순" },
-  [ESort.REGISTRATION_END]: {
+  [ESortBy.CREATED_AT]: { value: ["createdAt", "desc"], label: "최신순" },
+  [ESortBy.REGISTRATION_END]: {
     value: ["registrationEnd", "asc"],
     label: "마감 임박",
   },
 };
 
-export const SORT_OPTIONS: SortOption[] = [
+export const SORT_OPTIONS: SortByOption[] = [
   {
-    id: ESort.CREATED_AT,
-    ...SORT_OPTIONS_MAP[ESort.CREATED_AT],
+    id: ESortBy.CREATED_AT,
+    ...SORT_OPTIONS_MAP[ESortBy.CREATED_AT],
   },
   {
-    id: ESort.REGISTRATION_END,
-    ...SORT_OPTIONS_MAP[ESort.REGISTRATION_END],
+    id: ESortBy.REGISTRATION_END,
+    ...SORT_OPTIONS_MAP[ESortBy.REGISTRATION_END],
   },
 ];
 
 export enum EPetRequired {
   OPTIONAL = "OPTIONAL",
-  REQUIRED = "REQUIRED",
+  NOT_REQUIRED = "NOT_REQUIRED",
 }
 
 export const PET_REQUIRED_OPTIONS_MAP: Record<
   EPetRequired,
-  { value?: string; label: string }
+  { value?: boolean; label: string }
 > = {
   [EPetRequired.OPTIONAL]: {
-    value: "false",
-    label: "반려견 없이 참여하고 싶어요",
-  },
-  [EPetRequired.REQUIRED]: {
     value: undefined,
     label: "함께 산책할 반려견이 있어요",
+  },
+  [EPetRequired.NOT_REQUIRED]: {
+    value: false,
+    label: "반려견 없이 참여하고 싶어요",
   },
 };
 
@@ -106,8 +105,8 @@ export const PET_REQUIRED_OPTIONS = [
     ...PET_REQUIRED_OPTIONS_MAP[EPetRequired.OPTIONAL],
   },
   {
-    id: EPetRequired.REQUIRED,
-    ...PET_REQUIRED_OPTIONS_MAP[EPetRequired.REQUIRED],
+    id: EPetRequired.NOT_REQUIRED,
+    ...PET_REQUIRED_OPTIONS_MAP[EPetRequired.NOT_REQUIRED],
   },
 ];
 
@@ -118,14 +117,14 @@ export enum EIsClosed {
 
 export const IS_CLOSED_OPTIONS_MAP: Record<
   EIsClosed,
-  { value?: string; label: string }
+  { value?: boolean; label: string }
 > = {
   [EIsClosed.SHOW_CLOSED]: {
     value: undefined,
     label: "모임 마감된 모임도 표시",
   },
   [EIsClosed.HIDE_CLOSED]: {
-    value: "true",
+    value: true,
     label: "모임 마감된 모임은 보지 않기",
   },
 };
@@ -140,11 +139,3 @@ export const IS_CLOSED_OPTIONS = [
     ...IS_CLOSED_OPTIONS_MAP[EIsClosed.HIDE_CLOSED],
   },
 ];
-
-export const DEFAULT_OPTION_PARAMS = getGatheringOptionParams({
-  location: LOCATION_OPTIONS[0].id,
-  sort: SORT_OPTIONS[0].id,
-  isPetRequired: PET_REQUIRED_OPTIONS[0].id,
-  isClosed: IS_CLOSED_OPTIONS[0].id,
-  dayOfWeek: "[]",
-});

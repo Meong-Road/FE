@@ -1,10 +1,4 @@
 import {
-  EIsClosed,
-  EPetRequired,
-  ESort,
-  SortOptionValue,
-} from "@/lib/constants/option";
-import {
   BookmarkType,
   CreateGatheringType,
   GatheringImageResult,
@@ -17,27 +11,29 @@ import { LocationType } from "@/lib/types/reviews";
 
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
-export interface GatheringFilterParams {
-  location: LocationType;
-  sort: ESort;
-  isClosed: EIsClosed;
-  isPetRequired: EPetRequired;
-  dayOfWeek: string;
-}
-export interface GatheringFilter {
-  location: string;
-  sort: SortOptionValue;
-  isClosed: string;
-  isPetRequired: string;
-  dayOfWeek: string[];
+export interface CommonGatheringFilters {
+  location?: LocationType | null;
+  hostId?: number | null;
+  isClosed?: boolean | null;
+  isPetRequired?: boolean | null;
 }
 
-export type GetRegularGatheringsReq = PaginationReq & Partial<GatheringFilter>;
+export interface RegularGatheringFilters extends CommonGatheringFilters {
+  dayOfWeek?: string[] | null;
+}
+export interface QuickGatheringFilters extends CommonGatheringFilters {
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
+export type GetRegularGatheringsReq = PaginationReq &
+  Partial<RegularGatheringFilters>;
 export type GetRegularGatheringsRes = Response<
   PaginatedRes<RegularGatheringType>
 >;
 
-export type GetQuickGatheringsReq = PaginationReq & Partial<GatheringFilter>;
+export type GetQuickGatheringsReq = PaginationReq &
+  Partial<QuickGatheringFilters>;
 export type GetQuickGatheringsRes = Response<PaginatedRes<QuickGatheringType>>;
 
 export type GetGatheringReq = Pick<GatheringType, "id">;

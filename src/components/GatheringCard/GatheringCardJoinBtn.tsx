@@ -185,7 +185,8 @@ export function GatheringCardJoinBtn() {
       <Tooltip>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent>
-          {stateMsg} {particle} {MESSAGE[mode].text}할 수 없어요
+          {stateMsg}
+          {particle} {MESSAGE[mode].text}할 수 없어요
         </TooltipContent>
       </Tooltip>
     );

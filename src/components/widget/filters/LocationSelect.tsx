@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
-import { SEOUL_ALL, SEOUL_DISTRICTS_WITH_ALL } from "@/lib/constants/location";
+import { LOCATION_OPTIONS } from "@/lib/constants/option";
 
 interface LocationSelectProps {
   onLocationChange?: (location: string) => void;
@@ -22,7 +22,7 @@ export function LocationSelect({ onLocationChange }: LocationSelectProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { location } = useSearchParamsState({
-    location: SEOUL_ALL,
+    location: LOCATION_OPTIONS[0].id,
   });
 
   const handleLocationChange = (location: string) => {
@@ -41,9 +41,9 @@ export function LocationSelect({ onLocationChange }: LocationSelectProps) {
         <ChevronDownIcon className="size-6" />
       </SelectTrigger>
       <SelectContent className="max-h-[300px] overflow-y-auto">
-        {SEOUL_DISTRICTS_WITH_ALL.map((district) => (
-          <SelectItem key={district} value={district}>
-            {district}
+        {LOCATION_OPTIONS.map((option) => (
+          <SelectItem key={option.id} value={option.id}>
+            {option.label}
           </SelectItem>
         ))}
       </SelectContent>

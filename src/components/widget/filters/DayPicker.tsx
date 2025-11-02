@@ -7,7 +7,7 @@ interface DayPickerProps {
 }
 
 function DayPicker({ value, onChange }: DayPickerProps) {
-  const isSelectedDay = (day: string) => value.includes(day);
+  const isSelectedDay = (day: string) => value?.includes(day);
 
   return (
     <div className="grid grid-cols-7 gap-1.5">

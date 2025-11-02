@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -15,12 +15,11 @@ import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import {
   EIsClosed,
   IS_CLOSED_OPTIONS,
-  LOCATION_OPTIONS,
   PET_REQUIRED_OPTIONS,
-  SORT_OPTIONS,
 } from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
 import { cn } from "@/lib/utils";
+import { formatDateToISOString } from "@/lib/utils/dateTime";
 
 import ClosedCheckbox from "./ClosedCheckbox";
 import DayPicker from "./DayPicker";
@@ -38,25 +37,53 @@ function FilterPopoverTitle({ title }: FilterPopoverTitleProps) {
 }
 
 export default function FilterPopover({ type }: FilterPopoverProps) {
-  const [date, setDate] = useState<DateRange>();
+  const { isPetRequired, isClosed, dayOfWeek, startDate, endDate } =
+    useSearchParamsState({
+      isPetRequired: PET_REQUIRED_OPTIONS[0].id,
+      isClosed: IS_CLOSED_OPTIONS[0].id,
+    });
+
+  const [date, setDate] = useState<DateRange>({
+    from: startDate ? new Date(startDate) : undefined,
+    to: endDate ? new Date(endDate) : undefined,
+  });
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { isPetRequired, isClosed, dayOfWeek } = useSearchParamsState({
-    location: LOCATION_OPTIONS[0].id,
-    sort: SORT_OPTIONS[0].id,
-    isPetRequired: PET_REQUIRED_OPTIONS[0].id,
-    isClosed: IS_CLOSED_OPTIONS[0].id,
-    dayOfWeek: "[]",
-  });
 
-  const handleFilterChange = (key: string, value: unknown) => {
+  const handleFilterChange = (
+    param: { key: string; value?: unknown } | { key: string; value: unknown }[],
+  ) => {
+    const setParam = (key: string, value: unknown) => {
+      if (value) {
+        params.set(key, String(value));
+        params.set("page", "0"); // 필터 변경 시 첫 페이지로
+      }
+    };
+
     const params = new URLSearchParams(searchParams.toString());
-    params.set(key, String(value));
-    params.set("page", "0"); // 필터 변경 시 첫 페이지로
+    if (Array.isArray(param)) {
+      param.forEach(({ key, value }) => setParam(key, value));
+    } else {
+      setParam(param.key, param.value);
+    }
     router.push(`${pathname}?${params.toString()}`);
   };
+
+  useEffect(() => {
+    handleFilterChange([
+      {
+        key: "startDate",
+        value: date.from ? `${formatDateToISOString(date.from)}` : undefined,
+      },
+      {
+        key: "endDate",
+        value: date.to ? `${formatDateToISOString(date.to)}` : undefined,
+      },
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date]);
 
   return (
     <Popover>
@@ -66,8 +93,13 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
       </PopoverTrigger>
       <PopoverContent className="flex w-80 flex-col gap-10 p-6" align="start">
         <ClosedCheckbox
-          checked={isClosed === EIsClosed.HIDE_CLOSED}
-          onCheckedChange={(checked) => handleFilterChange("isClosed", checked)}
+          checked={isClosed === EIsClosed.SHOW_CLOSED}
+          onCheckedChange={(checked) =>
+            handleFilterChange({
+              key: "isClosed",
+              value: checked ? EIsClosed.SHOW_CLOSED : EIsClosed.HIDE_CLOSED,
+            })
+          }
         />
 
         <div className="flex flex-col gap-2">
@@ -78,7 +110,7 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
             options={PET_REQUIRED_OPTIONS}
             value={isPetRequired}
             onChange={(option) => {
-              handleFilterChange("isPetRequired", option.value);
+              handleFilterChange({ key: "isPetRequired", value: option.id });
             }}
           />
         </div>
@@ -91,6 +123,7 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
               onSelect={setDate}
               mode="range"
               className="w-full"
+              required
             />
           </div>
         )}
@@ -99,9 +132,12 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
           <div className="flex flex-col gap-2">
             <FilterPopoverTitle title="모임 가능한 요일" />
             <DayPicker
-              value={JSON.parse(dayOfWeek)}
+              value={dayOfWeek ? JSON.parse(dayOfWeek) : []}
               onChange={(dayOfWeek) =>
-                handleFilterChange("dayOfWeek", JSON.stringify(dayOfWeek))
+                handleFilterChange({
+                  key: "dayOfWeek",
+                  value: JSON.stringify(dayOfWeek),
+                })
               }
             />
           </div>

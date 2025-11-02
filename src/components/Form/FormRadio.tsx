@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface RadioOption {
   id: string;
-  value?: string;
+  value?: string | boolean;
   label: string;
 }
 
@@ -30,7 +30,7 @@ export const Radio = React.forwardRef<HTMLInputElement, FormRadioProps>(
     return (
       <div className={cn("flex w-full gap-2.5", className)} {...rest}>
         {options.map((option, index) => {
-          const isChecked = value === option.value;
+          const isChecked = value === option.id;
           const inputRef = index === 0 ? ref : undefined;
 
           return (
@@ -49,7 +49,7 @@ export const Radio = React.forwardRef<HTMLInputElement, FormRadioProps>(
                 id={option.id}
                 type="radio"
                 name={name}
-                value={option.value?.toString() ?? ""}
+                value={option.id}
                 checked={isChecked}
                 onBlur={onBlur}
                 onChange={() => handleChange(option)}

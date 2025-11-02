@@ -1,7 +1,9 @@
 import { cva, VariantProps } from "class-variance-authority";
 
+import { cn } from "@/lib/utils";
+
 const badgeVariants = cva(
-  "flex h-8 items-center gap-1 rounded-full pl-2 pr-3 text-sm font-semibold [&_svg]:size-6",
+  "flex h-8 items-center gap-1 rounded-full px-3 text-sm font-semibold [&_svg]:size-6",
   {
     variants: {
       variant: {
@@ -43,9 +45,19 @@ const badgeVariants = cva(
 );
 
 interface BadgeProps extends VariantProps<typeof badgeVariants> {
+  className?: string;
   children: React.ReactNode;
 }
 
-export default function Badge({ children, variant, outline }: BadgeProps) {
-  return <div className={badgeVariants({ variant, outline })}>{children}</div>;
+export default function Badge({
+  className,
+  children,
+  variant,
+  outline,
+}: BadgeProps) {
+  return (
+    <div className={cn(badgeVariants({ variant, outline }), className)}>
+      {children}
+    </div>
+  );
 }

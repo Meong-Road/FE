@@ -14,20 +14,18 @@ import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { SORT_OPTIONS } from "@/lib/constants/option";
 
 interface SortBySelectorProps {
-  onSortChange?: (sort: string) => void;
+  onSortChange?: (value: string) => void;
 }
 export default function SortBySelector({ onSortChange }: SortBySelectorProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { sort } = useSearchParamsState({
-    sort: SORT_OPTIONS[0].id,
-  });
+  const { sort } = useSearchParamsState();
 
-  const handleSortChange = (sort: string) => {
-    onSortChange?.(sort);
+  const handleSortChange = (value: string) => {
+    onSortChange?.(value);
     const params = new URLSearchParams(searchParams.toString());
-    params.set("sort", sort);
+    params.set("sort", value);
     params.set("page", "0"); // 정렬 기준 변경 시 첫 페이지로
 
     router.push(`${pathname}?${params.toString()}`);

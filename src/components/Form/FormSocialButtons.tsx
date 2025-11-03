@@ -50,7 +50,7 @@ export function SocialButtons({
    * @param provider - 소셜 로그인 제공자
    */
   const handleOAuthLogin = (provider: "google" | "kakao") => {
-    const callbackUrl = getOAuthCallbackUrl();
+    const callbackUrl = getOAuthCallbackUrl(provider);
 
     // state에 provider와 redirect 정보 포함 (CSRF 방지 + 추가 정보 전달)
     const state = JSON.stringify({

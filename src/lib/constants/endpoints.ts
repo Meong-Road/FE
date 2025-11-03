@@ -13,7 +13,6 @@
  */
 const getApiConfig = () => {
   // 모든 환경에서 백엔드 API 직접 호출
-  // (HttpOnly 쿠키가 정상 작동하려면 프록시 사용 하면 안됨)
   return {
     BASE_URL: "https://api.meong-road.site:8050",
     PREFIX: "/meong-road",

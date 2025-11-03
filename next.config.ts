@@ -20,7 +20,6 @@ const nextConfig: NextConfig = {
 
   // API 프록시 설정
   // HttpOnly 쿠키를 사용하므로 프록시 비활성화
-  // (프록시를 사용하면 쿠키 도메인 불일치로 인증 실패)
   async rewrites() {
     return [];
   },

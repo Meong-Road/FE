@@ -12,20 +12,10 @@
  * SameSite 쿠키가 정상 동작하며, CORS 설정만 필요합니다.
  */
 const getApiConfig = () => {
-  // 프로덕션 환경: 백엔드 API 직접 호출
-  if (process.env.NODE_ENV === "production") {
-    console.log("🚀 프로덕션 환경: 백엔드 직접 호출");
-    return {
-      BASE_URL: "https://api.meong-road.site:8050",
-      PREFIX: "/meong-road",
-    };
-  }
-
-  // 로컬 개발 환경: 프록시 사용 (CORS 우회)
-  console.log("🛠️ 로컬 개발 환경: 프록시 사용");
+  // 모든 환경에서 백엔드 API 직접 호출
   return {
-    BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
-    PREFIX: "/api",
+    BASE_URL: "https://api.meong-road.site:8050",
+    PREFIX: "/meong-road",
   };
 };
 

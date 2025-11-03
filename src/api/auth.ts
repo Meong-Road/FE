@@ -9,6 +9,8 @@ import {
   PostSigninRes,
   PostSignupReq,
   PostSignupRes,
+  PostSocialLoginReq,
+  PostSocialLoginRes,
 } from "./types/auth";
 
 export const authApi = {
@@ -46,5 +48,28 @@ export const authApi = {
 
   getMyInfo: async (): Promise<GetUserRes> => {
     return await customFetch.get(`${API_ENDPOINTS.USER}/my`);
+  },
+
+  /**
+   * OAuth 소셜 로그인 API
+   *
+   * 프론트엔드가 Google/Kakao로부터 받은 인증 코드를 백엔드로 전송합니다.
+   * 백엔드는 이 코드로 소셜 제공자에게 토큰을 요청하고, 사용자 정보를 반환합니다.
+   *
+   * @param payload - provider와 인증 코드
+   * @returns 로그인 응답 (토큰, 사용자 정보)
+   */
+  socialLogin: async (
+    payload: PostSocialLoginReq,
+  ): Promise<PostSocialLoginRes> => {
+    const endpoint =
+      payload.provider === "google"
+        ? API_ENDPOINTS.OAUTH.GOOGLE
+        : API_ENDPOINTS.OAUTH.KAKAO;
+
+    return await customFetch.post<PostSocialLoginRes>(endpoint, {
+      body: JSON.stringify({ code: payload.code }),
+      skipAuth: true,
+    });
   },
 };

@@ -1,19 +1,19 @@
 // src/hooks/auth/useAuth.ts
 import { useGetMyInfo } from "@/hooks/queries/user";
-import { tokenStorage } from "@/lib/utils/storage";
 
 /**
- * 전역 인증 상태 훅
- * - 사용자 정보 조회 및 로딩 상태 반환
+ * 전역 인증 상태 훅 (HttpOnly 쿠키 기반)
+ *
+ * - HttpOnly + Secure 쿠키로 인증 관리
+ * - 백엔드가 자동으로 쿠키 설정/검증
+ * - 프론트엔드는 /user/my API 호출로 인증 상태 확인
+ *
+ * @returns 사용자 정보 및 로딩 상태
  */
 export function useAuth() {
-  // 나중에 쿠키로 관리하면
-  // customFetch에 credentials: 'include' 추가하고, 토큰 체크 로직 삭제
-  const hasToken = !!tokenStorage.getAccess();
-
-  const { data: user, ...props } = useGetMyInfo({
-    enabled: hasToken, // 토큰이 있을 때만 사용자 정보 조회 -> 쿠키 전환시 삭제
-  });
+  // 쿠키 기반 인증: 항상 사용자 정보 조회 시도
+  // 쿠키가 없으면 백엔드가 401 에러 반환
+  const { data: user, ...props } = useGetMyInfo();
 
   return { user, ...props };
 }

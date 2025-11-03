@@ -4,17 +4,20 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 interface UseSearchParamsStateOptions {
-  [key: string]: string;
+  [key: string]: string | undefined;
 }
 
-export function useSearchParamsState(defaults: UseSearchParamsStateOptions) {
+export function useSearchParamsState(
+  defaults: UseSearchParamsStateOptions = {},
+) {
   const searchParams = useSearchParams();
 
   return useMemo(() => {
-    const result: Record<string, string> = {};
+    const result: Record<string, string | undefined> = defaults;
 
-    for (const [key, defaultValue] of Object.entries(defaults)) {
-      result[key] = searchParams.get(key) ?? defaultValue;
+    for (const key of searchParams.keys()) {
+      const param = searchParams.get(key);
+      if (param) result[key] = param;
     }
 
     return result;

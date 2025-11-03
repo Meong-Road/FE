@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation";
 
 import { EmptyState, ErrorState, LoadingState } from "@/components/common";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/components/common/Pagination";
 import { ReviewCard } from "@/components/ReviewCard";
 import { useGetReviewsByGathering } from "@/hooks/queries/reviews";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
@@ -47,8 +47,8 @@ export default function GatheringReviewList({
         className={cn("mb-8 border border-[#ddd] px-12 py-10", className)}
       >
         {reviews.map((review, idx) => (
-          <>
-            <div key={`review-${review.id}`} className="flex flex-col gap-y-6">
+          <div key={`review-${review.id}`}>
+            <div className="flex flex-col gap-y-6">
               <ReviewCard.Profile
                 user={review.user}
                 score={review.score}
@@ -59,7 +59,7 @@ export default function GatheringReviewList({
             {idx !== reviews.length - 1 && (
               <ReviewCard.Divider className="my-6" />
             )}
-          </>
+          </div>
         ))}
       </ReviewCard>
       <Pagination

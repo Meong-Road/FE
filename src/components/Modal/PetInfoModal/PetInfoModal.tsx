@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -38,24 +37,8 @@ export default function PetInfoModal() {
     form,
     isPending: isPetPending,
     isDirty,
-  } = usePetInfoModal({ type: type || "add-pet", petId });
+  } = usePetInfoModal({ type: type || "add-pet", petId, isOpen });
   const currentImage = form.watch("image");
-
-  // 모달이 열릴 때마다 form 리셋
-  useEffect(() => {
-    if (isOpen && (type === "first-login" || type === "add-pet")) {
-      // add 모드인 경우 빈 폼으로 리셋
-      form.reset({
-        name: "",
-        birthYear: "",
-        image: null,
-        breed: "",
-        gender: undefined,
-        neuter: undefined,
-        petType: "dog",
-      });
-    }
-  }, [isOpen, type, form]);
 
   const { handleSubmit, isSubmitting } = usePetInfoSubmit({
     type: type || "add-pet",

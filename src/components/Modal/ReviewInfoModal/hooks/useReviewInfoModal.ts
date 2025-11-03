@@ -2,15 +2,12 @@ import { useEffect, useMemo } from "react";
 
 import { useGetReview } from "@/hooks/queries/reviews";
 
-import {
-  ReviewInfoFormSchema,
-  ReviewInfoUpdateSchema,
-  useReviewInfoForm,
-} from "./useReviewInfoForm";
+import { ReviewInfoFormSchema, useReviewInfoForm } from "./useReviewInfoForm";
 
 interface UseReviewInfoModalProps {
   modalType: "add-review" | "edit-review" | null;
   reviewId?: number;
+  isOpen: boolean;
 }
 
 /**
@@ -21,6 +18,7 @@ interface UseReviewInfoModalProps {
 export function useReviewInfoModal({
   modalType,
   reviewId,
+  isOpen,
 }: UseReviewInfoModalProps) {
   const isEditMode = modalType === "edit-review";
   const shouldFetchReview = isEditMode && !!reviewId;
@@ -34,7 +32,6 @@ export function useReviewInfoModal({
   );
 
   const form = useReviewInfoForm();
-  // 폼 상태는 RHF의 isDirty로 관리
 
   // 초기값 설정
   const initialData = useMemo<Partial<ReviewInfoFormSchema> | null>(() => {
@@ -46,20 +43,18 @@ export function useReviewInfoModal({
     };
   }, [shouldFetchReview, reviewData]);
 
+  // edit 모드일 때만 initialData로 폼 업데이트
   useEffect(() => {
-    if (!isEditMode) {
+    if (isEditMode && initialData) {
+      form.reset(initialData);
+    } else if (!isEditMode) {
+      // add 모드일 때는 명시적으로 빈 값으로 리셋
       form.reset({
         score: undefined,
         comment: "",
       });
     }
-  }, [form, isEditMode, modalType]);
-
-  useEffect(() => {
-    if (initialData) {
-      form.reset(initialData);
-    }
-  }, [initialData, form]);
+  }, [isEditMode, initialData, form, isOpen]);
 
   return {
     form,

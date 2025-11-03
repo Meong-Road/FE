@@ -9,16 +9,7 @@ export interface PostSignupReq {
   password: string;
 }
 
-export interface PostSignupRes {
-  success: boolean;
-  code: number;
-  message: string;
-  result: {
-    token: string;
-    user: UserType;
-    message: string;
-  };
-}
+export type PostSignupRes = Response<UserType>;
 
 // Signin
 export interface PostSigninReq {
@@ -26,16 +17,7 @@ export interface PostSigninReq {
   password: string;
 }
 
-export interface PostSigninRes {
-  success: boolean;
-  code: number;
-  message: string;
-  result: {
-    token: string;
-    refreshToken: string;
-    user: UserType;
-  };
-}
+export type PostSigninRes = Response<UserType>;
 
 // Duplicate Check
 export interface GetEmailDuplicateCheckReq {
@@ -52,3 +34,24 @@ export type PostNicknameDuplicateCheckRes = Response<boolean>;
 
 // Get User Info
 export type GetUserRes = Response<UserType>;
+
+// OAuth Social Login
+export type SocialProvider = "google" | "kakao";
+
+export interface PostSocialLoginReq {
+  provider: SocialProvider;
+  code: string; // OAuth 인증 코드
+  redirectUri: string; // OAuth 콜백 URL
+}
+
+export interface PostSocialLoginRes {
+  success: boolean;
+  code: number;
+  message: string;
+  result: {
+    token: string;
+    refreshToken: string;
+    isPetInfoSubmitted: boolean;
+    user: UserType;
+  };
+}

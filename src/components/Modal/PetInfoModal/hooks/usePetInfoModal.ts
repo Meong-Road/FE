@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from "react";
 
-import type { PetInfoModalProps } from "@/components/Modal/PetInfoModal/types/petInfoModal";
 import { useGetPet } from "@/hooks/queries/pets";
 import { transformPetToFormData } from "@/lib/utils/pet";
 
 import { usePetInfoForm } from "./usePetInfoForm";
 
-export function usePetInfoModal({
-  type,
-  petId,
-}: Pick<PetInfoModalProps, "type" | "petId">) {
+interface UsePetInfoModalProps {
+  type: "first-login" | "add-pet" | "edit-pet";
+  petId?: number;
+  isOpen: boolean;
+}
+
+export function usePetInfoModal({ type, petId, isOpen }: UsePetInfoModalProps) {
   const isEditMode = type === "edit-pet";
   const shouldFetchPet = isEditMode && !!petId;
 
@@ -22,31 +24,26 @@ export function usePetInfoModal({
     return transformPetToFormData(petData);
   }, [shouldFetchPet, petData]);
 
-  const form = usePetInfoForm(initialData ?? undefined);
+  // 항상 빈 폼으로 시작 (defaultValues만 사용)
+  const form = usePetInfoForm();
 
-  // initialData가 비동기로 로드되면 form을 해당 값으로 리셋
-  // (edit 모드일 때만 실행)
+  // edit 모드일 때만 initialData로 폼 업데이트
   useEffect(() => {
-    if (initialData) {
+    if (isEditMode && initialData) {
       form.reset(initialData);
-    }
-  }, [initialData, form]);
-
-  // add 모드일 때는 항상 빈 폼으로 리셋
-  // (type이 변경될 때 form 인스턴스는 재생성되지 않으므로)
-  useEffect(() => {
-    if (!isEditMode) {
+    } else if (!isEditMode) {
+      // add 모드일 때는 명시적으로 빈 값으로 리셋
       form.reset({
-        name: "",
-        birthYear: "",
         image: null,
-        breed: "",
+        name: "",
         gender: undefined,
         neuter: undefined,
+        birthYear: "",
+        breed: "",
         petType: "dog",
       });
     }
-  }, [form, isEditMode, type]);
+  }, [isEditMode, initialData, form, isOpen]);
 
   return {
     form,

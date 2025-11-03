@@ -1,45 +1,39 @@
 "use client";
 
-import {
-  EmptyState,
-  ErrorState,
-  ListContainer,
-  SectionWrapper,
-} from "@/components/common";
-import InfiniteScroll from "@/components/InfiniteScroll";
-import GatheringCardItem from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItem";
-import GatheringCardItemSkeleton from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItemSkeleton";
-import { useGetInfiniteJoinedGatherings } from "@/hooks/queries/gatherings";
-import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
-import { PATH } from "@/lib/constants/path";
+import { TabContent } from "@/components/motionWrappers";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
+import { JOINED_SUB_TABS } from "@/lib/constants/profile";
+
+import JoinedSubTabs from "../SubTabs/JoinedSubTabs";
+
+import JoinedStatusSection from "./JoinedStatusSection";
 
 export default function JoinedSection() {
-  const infiniteQueryResult =
-    useGetInfiniteJoinedGatherings(DEFAULT_LIST_OPTIONS);
+  const { joinedTab } = useSearchParamsState({
+    joinedTab: JOINED_SUB_TABS.RECRUITING.value,
+  });
+
+  const getStatusForTab = (tab: string) => {
+    switch (tab) {
+      case JOINED_SUB_TABS.RECRUITING.value:
+        return "RECRUITING" as const;
+      case JOINED_SUB_TABS.CONFIRMED.value:
+        return "CONFIRMED" as const;
+      case JOINED_SUB_TABS.CANCELED.value:
+        return "CANCELED" as const;
+      case JOINED_SUB_TABS.COMPLETED.value:
+        return "COMPLETED" as const;
+      default:
+        return "RECRUITING" as const;
+    }
+  };
 
   return (
-    <SectionWrapper>
-      <ListContainer>
-        <InfiniteScroll
-          {...infiniteQueryResult}
-          render={(gathering) => (
-            <GatheringCardItem
-              key={gathering.id}
-              href={PATH.DETAIL(gathering.id, gathering.type)}
-              gathering={gathering}
-              as="li"
-              isReviewCard
-            />
-          )}
-          renderSkeleton={() => <GatheringCardItemSkeleton />}
-          renderOnEmpty={() => (
-            <EmptyState message="아직 참석한 모임이 없어요" />
-          )}
-          renderOnError={() => (
-            <ErrorState message="참석한 모임을 불러오는 중 오류가 발생했어요" />
-          )}
-        />
-      </ListContainer>
-    </SectionWrapper>
+    <div>
+      <JoinedSubTabs />
+      <TabContent tabKey={joinedTab as string} className="mt-6">
+        <JoinedStatusSection status={getStatusForTab(joinedTab as string)} />
+      </TabContent>
+    </div>
   );
 }

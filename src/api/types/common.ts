@@ -1,3 +1,5 @@
+import { SortOptionValue } from "@/lib/constants/option";
+
 export type Response<T> = SuccessResponse<T> | ErrorResponse;
 
 interface SuccessResponse<T> {
@@ -28,7 +30,7 @@ export interface PaginatedRes<T> {
 export interface PaginationReq {
   page: number;
   size: number;
-  sort: string[];
+  sort: SortOptionValue;
 }
 
 export type PaginationOptions = Omit<PaginationReq, "page">;

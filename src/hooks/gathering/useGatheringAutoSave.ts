@@ -93,8 +93,10 @@ export function useGatheringAutoSave({
     if (!previous) return true;
 
     // 이미지 필드는 제외하고 비교
-    const { image: currentImage, ...currentWithoutImage } = current;
-    const { image: previousImage, ...previousWithoutImage } = previous;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { image: _currentImage, ...currentWithoutImage } = current;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { image: _previousImage, ...previousWithoutImage } = previous;
 
     return (
       JSON.stringify(currentWithoutImage) !==
@@ -111,7 +113,8 @@ export function useGatheringAutoSave({
 
     if (!hasDataChanged(current, previousDateRef.current)) return;
 
-    const { image, ...dataToSave } = current;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { image: _image, ...dataToSave } = current;
 
     const hasContent = Object.values(dataToSave).some((value) => {
       if (typeof value === "string") return value.trim() !== "";

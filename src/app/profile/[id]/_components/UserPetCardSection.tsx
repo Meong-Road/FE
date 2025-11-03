@@ -1,6 +1,11 @@
 "use client";
 
-import { ErrorState, ListContainer, SectionWrapper } from "@/components/common";
+import {
+  EmptyState,
+  ErrorState,
+  ListContainer,
+  SectionWrapper,
+} from "@/components/common";
 import { PetCard } from "@/components/PetCard";
 import { PetCardSkeletonList } from "@/components/PetCard/Skeleton";
 import { useGetPetsByUserId } from "@/hooks/queries/pets";
@@ -78,6 +83,10 @@ export default function UserPetCardSection({
 
   if (isError || !pets) {
     return <ErrorState message="반려견 정보를 불러오는데 실패했습니다." />;
+  }
+
+  if (pets.length === 0) {
+    return <EmptyState message="등록된 반려견이 없어요" />;
   }
 
   return (

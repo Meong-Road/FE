@@ -71,9 +71,15 @@ function OAuthCallbackContent() {
 
     setIsProcessing(true);
 
+    // OAuth 콜백 URL 생성 (백엔드에 전달할 redirectUri)
+    const callbackUrl =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/signin/callback`
+        : "/signin/callback";
+
     // 백엔드 API에 인증 코드 전송
     socialLogin(
-      { provider, code },
+      { provider, code, redirectUri: callbackUrl },
       {
         onSuccess: (res) => {
           toast.success("로그인에 성공했습니다.");

@@ -26,6 +26,7 @@ export default function GatheringCardItem({
             <div className="flex flex-col gap-y-4">
               <div className="flex flex-row justify-start gap-x-2">
                 <GatheringCard.DeadlineBadge />
+                {gathering.isPetRequired && <GatheringCard.DogRequiredBadge />}
                 {gathering.participantCount >= 5 && (
                   <GatheringCard.ConfirmedBadge />
                 )}

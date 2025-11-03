@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import REVIEW_API from "@/api/reviews";
+import { SortOptionValue } from "@/lib/constants/option";
 
 import { QUERY_KEYS } from "../queryKey";
 
 export function useGetInfiniteReviewableGatherings(
   size = 10,
-  sort = ["createdAt", "desc"],
+  sort: SortOptionValue = ["createdAt", "desc"],
 ) {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.reviews.reviewableGatherings({ size, sort }),

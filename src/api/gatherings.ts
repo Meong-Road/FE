@@ -42,14 +42,20 @@ export const gatheringApi = {
   // 정기 모임 목록 조회
   getRegularGatherings: (params: GetRegularGatheringsReq) => {
     return customFetch.get<GetRegularGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(params, {
+        arrayFormat: "repeat",
+        skipNulls: true,
+      })}`,
       { skipAuth: true },
     );
   },
   // 번개 모임 목록 조회
   getQuickGatherings: (params: GetQuickGatheringsReq) => {
     return customFetch.get<GetQuickGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(params, {
+        arrayFormat: "repeat",
+        skipNulls: true,
+      })}`,
       { skipAuth: true },
     );
   },
@@ -133,7 +139,13 @@ export const gatheringApi = {
     sort = ["createdAt", "desc"],
   }: GetMyBookmarkedGatheringsReq) => {
     return customFetch.get<GetMyBookmarkedGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify(
+        { type, page, size, sort },
+        {
+          arrayFormat: "comma",
+          skipNulls: true,
+        },
+      )}`,
     );
   },
   getParticipants: ({ id, page, size, sort }: GetParticipantsReq) => {

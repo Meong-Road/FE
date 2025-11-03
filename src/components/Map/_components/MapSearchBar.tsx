@@ -3,55 +3,38 @@ import { Search } from "lucide-react";
 
 import { Form } from "@/components/Form";
 import { useDebounce } from "@/hooks/useDebounce";
+import { KakaoSearchedPlaceType } from "@/lib/types/kakao";
 
-import { kakaoMapService } from "../_services/kakaoMapService";
+import { useOutsideClick } from "../_hooks/useOutsideClick";
+import { usePlaceSearch } from "../_hooks/usePlaceSearch";
+
+import { MapSearchList } from "./MapSearchList";
 
 interface Props {
-  onSelect: (place: kakao.maps.services.PlaceType) => void;
+  onSelect: (place: KakaoSearchedPlaceType) => void;
 }
 
 export default function MapSearchBar({ onSelect }: Props) {
   const [input, setInput] = useState("");
-  const [places, setPlaces] = useState<kakao.maps.services.PlaceType[]>([]);
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debouncedInput = useDebounce(input, { delay: 500 });
-
-  const handleSearch = async (query: string) => {
-    if (!query.trim()) return;
-
-    const ps = new window.kakao.maps.services.Places();
-    const results = await kakaoMapService.searchPlaces(query, ps);
-
-    setPlaces(results || []);
-    setOpen(true);
-  };
+  const { results, search } = usePlaceSearch();
 
   useEffect(() => {
-    if (debouncedInput.trim()) {
-      handleSearch(debouncedInput);
+    if (!debouncedInput.trim()) {
+      setOpen(false);
+      return;
     }
-  }, [debouncedInput]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
+    search(debouncedInput);
+    setOpen(true);
+  }, [debouncedInput, search]);
 
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target) &&
-        !(target instanceof HTMLElement && target.closest("input"))
-      ) {
-        setOpen(false);
-      }
-    };
+  useOutsideClick(dropdownRef, () => setOpen(false));
 
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
-
-  const handleSelect = (place: kakao.maps.services.PlaceType) => {
+  const handleSelect = (place: KakaoSearchedPlaceType) => {
     onSelect(place);
     setInput("");
     setOpen(false);
@@ -59,7 +42,7 @@ export default function MapSearchBar({ onSelect }: Props) {
 
   const handleFocus = () => {
     if (!open && debouncedInput.trim()) {
-      handleSearch(debouncedInput);
+      setOpen(true);
     }
   };
 
@@ -69,7 +52,7 @@ export default function MapSearchBar({ onSelect }: Props) {
         모임 위치
       </Form.Label>
 
-      <div className="relative w-full">
+      <div ref={dropdownRef} className="relative w-full">
         <Form.Input
           type="text"
           placeholder="지번, 도로명, 건물명으로 검색"
@@ -83,27 +66,7 @@ export default function MapSearchBar({ onSelect }: Props) {
           size={20}
         />
 
-        {open && (
-          <div
-            ref={dropdownRef}
-            className="absolute z-2 mt-2 max-h-80 min-w-full overflow-y-auto rounded-xl border bg-white shadow-md"
-          >
-            {places.length > 0 ? (
-              places.map((place) => (
-                <div
-                  key={place.id}
-                  onClick={() => handleSelect(place)}
-                  className="cursor-pointer px-4 py-2 hover:bg-[#FFE59E]"
-                >
-                  <div>{place.place_name}</div>
-                  <div className="text-[#737373]">{place.address_name}</div>
-                </div>
-              ))
-            ) : (
-              <div className="px-4 py-2 text-[#737373]">검색 결과가 없어요</div>
-            )}
-          </div>
-        )}
+        {open && <MapSearchList results={results} onSelect={handleSelect} />}
       </div>
     </div>
   );

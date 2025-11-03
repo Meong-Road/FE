@@ -7,15 +7,33 @@ import {
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gatherings";
+import { LocationType } from "@/lib/types/reviews";
 
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
-export type GetRegularGatheringsReq = PaginationReq;
+export interface CommonGatheringFilters {
+  location?: LocationType | null;
+  hostId?: number | null;
+  isClosed?: boolean | null;
+  isPetRequired?: boolean | null;
+}
+
+export interface RegularGatheringFilters extends CommonGatheringFilters {
+  dayOfWeek?: string[] | null;
+}
+export interface QuickGatheringFilters extends CommonGatheringFilters {
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
+export type GetRegularGatheringsReq = PaginationReq &
+  Partial<RegularGatheringFilters>;
 export type GetRegularGatheringsRes = Response<
   PaginatedRes<RegularGatheringType>
 >;
 
-export type GetQuickGatheringsReq = PaginationReq;
+export type GetQuickGatheringsReq = PaginationReq &
+  Partial<QuickGatheringFilters>;
 export type GetQuickGatheringsRes = Response<PaginatedRes<QuickGatheringType>>;
 
 export type GetGatheringReq = Pick<GatheringType, "id">;

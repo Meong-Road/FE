@@ -10,32 +10,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SEOUL_ALL, SEOUL_DISTRICTS_WITH_ALL } from "@/lib/constants/location";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
+import { LOCATION_OPTIONS } from "@/lib/constants/option";
 
-export function LocationSelect() {
+interface LocationSelectProps {
+  onLocationChange?: (location: string) => void;
+}
+
+export function LocationSelect({ onLocationChange }: LocationSelectProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const selectedLocation = searchParams.get("location") || undefined;
+  const { location } = useSearchParamsState({
+    location: LOCATION_OPTIONS[0].id,
+  });
 
   const handleLocationChange = (location: string) => {
+    onLocationChange?.(location);
+
     const params = new URLSearchParams(searchParams.toString());
     params.set("location", location);
     params.set("page", "0"); // 지역 변경 시 첫 페이지로
-
     router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
-    <Select value={selectedLocation} onValueChange={handleLocationChange}>
+    <Select value={location} onValueChange={handleLocationChange}>
       <SelectTrigger className="w-30">
-        <SelectValue placeholder={selectedLocation || SEOUL_ALL} />
+        <SelectValue placeholder={location} />
         <ChevronDownIcon className="size-6" />
       </SelectTrigger>
       <SelectContent className="max-h-[300px] overflow-y-auto">
-        {SEOUL_DISTRICTS_WITH_ALL.map((district) => (
-          <SelectItem key={district} value={district}>
-            {district}
+        {LOCATION_OPTIONS.map((option) => (
+          <SelectItem key={option.id} value={option.id}>
+            {option.label}
           </SelectItem>
         ))}
       </SelectContent>

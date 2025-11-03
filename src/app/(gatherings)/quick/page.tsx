@@ -11,15 +11,31 @@ import { CreateGatheringButton } from "@/components/widget/gatherings/CreateGath
 import { getInfiniteQuickGatheringsOptions } from "@/hooks/queries/gatherings/useGetInfiniteQuickGatherings";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
+import { parseGatheringFilterParam } from "@/lib/utils/param";
 
 import QuickGatheringCardList from "./_components/QuickGatheringCardList";
 
 export const dynamic = "force-dynamic";
 
-export default async function QuickGatheringListPage() {
+export default async function QuickGatheringListPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    page?: string;
+    sort?: string;
+    location?: string;
+    isClosed?: string;
+    isPetRequired?: string;
+    startDate?: string;
+    endDate?: string;
+  }>;
+}) {
   const queryClient = new QueryClient();
   await queryClient.prefetchInfiniteQuery(
-    getInfiniteQuickGatheringsOptions(DEFAULT_LIST_OPTIONS),
+    getInfiniteQuickGatheringsOptions({
+      ...DEFAULT_LIST_OPTIONS,
+      ...parseGatheringFilterParam(await searchParams, false),
+    }),
   );
 
   return (

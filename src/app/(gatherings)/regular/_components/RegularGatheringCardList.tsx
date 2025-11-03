@@ -4,12 +4,18 @@ import InfiniteScroll from "@/components/InfiniteScroll";
 import GatheringCardItem from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItem";
 import GatheringCardItemSkeleton from "@/components/widget/gatherings/GatheringCardItem/GatheringCardItemSkeleton";
 import { useGetInfiniteRegularGatherings } from "@/hooks/queries/gatherings";
+import { useSearchParamsState } from "@/hooks/useSearchParamsState";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { PATH } from "@/lib/constants/path";
+import { parseGatheringFilterParam } from "@/lib/utils/param";
 
 export default function RegularGatheringCardList() {
-  const infiniteQueryResult =
-    useGetInfiniteRegularGatherings(DEFAULT_LIST_OPTIONS);
+  const params = useSearchParamsState();
+
+  const infiniteQueryResult = useGetInfiniteRegularGatherings({
+    ...DEFAULT_LIST_OPTIONS,
+    ...parseGatheringFilterParam(params, true),
+  });
 
   return (
     <InfiniteScroll

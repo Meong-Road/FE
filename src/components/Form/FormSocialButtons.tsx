@@ -39,18 +39,19 @@ export function SocialButtons({
    *
    * Flow:
    * 1. 프론트엔드 → Google/Kakao OAuth 인증 페이지로 직접 리다이렉트
-   *    (redirect_uri는 프론트엔드 콜백 URL: /signin/callback)
+   *    (redirect_uri는 프론트엔드 콜백 URL: /auth/callback)
    * 2. 사용자 로그인 및 권한 승인
-   * 3. Google/Kakao → 프론트엔드 콜백 (/signin/callback?code=xxx)
+   * 3. Google/Kakao → 프론트엔드 콜백 (/auth/callback?code=xxx)
    * 4. 프론트엔드가 인증 코드(code) 추출
-   * 5. 프론트엔드 → 백엔드 API (POST /auth/{platform})
+   * 5. 프론트엔드 → 백엔드 API (GET /auth/{platform}?code=xxx&redirectUri=xxx)
    * 6. 백엔드가 토큰과 사용자 정보 반환
    * 7. 프론트엔드가 토큰 저장 및 메인 페이지로 이동
    *
    * @param provider - 소셜 로그인 제공자
    */
   const handleOAuthLogin = (provider: "google" | "kakao") => {
-    const callbackUrl = getOAuthCallbackUrl(provider);
+    // 프론트엔드 콜백 URL (Google/Kakao가 여기로 code를 보냄)
+    const callbackUrl = getOAuthCallbackUrl();
 
     // state에 provider와 redirect 정보 포함 (CSRF 방지 + 추가 정보 전달)
     const state = JSON.stringify({

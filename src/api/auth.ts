@@ -31,6 +31,10 @@ export const authApi = {
     );
   },
 
+  signout: async (): Promise<void> => {
+    return await customFetch.post<void>(`${API_ENDPOINTS.AUTH}/logout`);
+  },
+
   checkEmailDuplicate: async (email: string): Promise<boolean> => {
     const response = await customFetch.get<GetEmailDuplicateCheckRes>(
       `${API_ENDPOINTS.USER}/exists?email=${encodeURIComponent(email)}`,

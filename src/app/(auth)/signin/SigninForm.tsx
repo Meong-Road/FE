@@ -23,7 +23,7 @@ export default function SigninForm() {
       onSuccess: (res) => {
         toast.success("로그인에 성공했습니다.");
 
-        if (res.success && !res.result.isPetInfoSubmitted) {
+        if (res.success && !res.result.user.isPetInfoSubmitted) {
           setModalData("first-login");
           openModal();
           return;

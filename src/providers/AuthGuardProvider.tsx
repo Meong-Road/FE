@@ -30,23 +30,23 @@ export default function AuthGuardProvider({
 }: AuthGuardProviderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isLoading } = useAuth();
+  const { user, isPending } = useAuth();
   const { openModal } = useAuthRequiredModalStore();
 
   useEffect(() => {
     // 로딩 중이거나 인증이 필요하지 않은 경로면 무시
-    if (isLoading || !isProtectedRoute(pathname)) {
+    if (isPending || !isProtectedRoute(pathname)) {
       return;
     }
 
-    // 인증되지 않은 경우 로그인 페이지로 리다이렉트
+    // 인증되지 않은 경우 로그인 요청 모달 띄우기
     if (!user) {
       const redirectUrl = `${PATH.SIGNIN}?redirect=${encodeURIComponent(pathname)}`;
       openModal(redirectUrl, () => {
         router.back();
       });
     }
-  }, [pathname, isLoading, user, router, openModal]);
+  }, [pathname, isPending, user, router, openModal]);
 
   return <>{children}</>;
 }

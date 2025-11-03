@@ -36,8 +36,8 @@ function OAuthCallbackContent() {
     // 중복 실행 방지
     if (isProcessing) return;
 
-    const code = decodeURIComponent(searchParams.get("code") || "");
-    const state = decodeURIComponent(searchParams.get("state") || "");
+    const code = searchParams.get("code");
+    const state = searchParams.get("state");
     const error = searchParams.get("error");
     const errorDescription = searchParams.get("error_description");
 
@@ -61,7 +61,7 @@ function OAuthCallbackContent() {
 
     if (state) {
       try {
-        const stateData = JSON.parse(state);
+        const stateData = JSON.parse(decodeURIComponent(state));
         provider = stateData.provider || "google";
         redirectUrl = stateData.redirect || null;
       } catch (e) {
@@ -75,7 +75,9 @@ function OAuthCallbackContent() {
     const callbackUrl =
       typeof window !== "undefined"
         ? window.location.origin + window.location.pathname
-        : "http://localhost:3000/signin/callback";
+        : process.env.NEXT_PUBLIC_SITE_URL
+          ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+          : "http://localhost:3000/signin/callback";
 
     // 백엔드 API에 인증 코드와 redirectUri 전송
     socialLoginMutation(
@@ -95,7 +97,7 @@ function OAuthCallbackContent() {
           router.replace(redirectUrl || PATH.REGULAR);
         },
         onError: (error: Error) => {
-          toast.error(`로그인 실패: ${error.message}`);
+          toast.error(`소셜 로그인 실패: ${error.message}`);
           router.replace(PATH.SIGNIN);
         },
       },

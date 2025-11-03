@@ -58,7 +58,7 @@ async function request<T>(
 
     return response.json();
   } catch (error) {
-    console.error(error);
+    // ApiError는 이미 로깅되었거나 상위에서 처리할 것이므로 여기서는 그냥 throw
     throw error;
   }
 }

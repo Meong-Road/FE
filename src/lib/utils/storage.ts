@@ -1,8 +1,6 @@
 type StorageType = "localStorage" | "sessionStorage";
 
 // 스토리지 유틸리티
-
-// 기본 스토리지 유틸리티
 export const storageUtils = {
   setItem<T>(key: string, value: T, storageType: StorageType = "localStorage") {
     const storage =

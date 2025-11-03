@@ -87,5 +87,3 @@ export const tokenStorage = {
     );
   },
 };
-
-// 데이터 지속성 훅

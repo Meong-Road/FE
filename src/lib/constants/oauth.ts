@@ -20,18 +20,18 @@ export const OAUTH_CONFIG = {
 } as const;
 
 /**
- * 현재 환경의 OAuth 콜백 URL 생성
+ * OAuth Provider별 콜백 URL 반환
  *
- * @returns 절대 경로 OAuth 콜백 URL
+ * Google/Kakao 개발자 콘솔에 등록된 백엔드 redirect URI를 반환합니다.
+ * OAuth 제공자는 이 URL로 인증 코드를 전달합니다.
+ *
+ * @param provider - 소셜 로그인 제공자 (google | kakao)
+ * @returns 백엔드 OAuth 콜백 URL
  */
-export function getOAuthCallbackUrl(): string {
-  if (typeof window === "undefined") {
-    // 서버 사이드에서는 환경 변수 사용
-    return `${process.env.NEXT_PUBLIC_SITE_URL}/signin/callback`;
-  }
-
-  // 클라이언트 사이드에서는 현재 origin 사용
-  return `${window.location.origin}/signin/callback`;
+export function getOAuthCallbackUrl(provider: "google" | "kakao"): string {
+  return provider === "google"
+    ? "https://api.meong-road.site:8050/meong-road/auth/google"
+    : "https://api.meong-road.site:8050/meong-road/auth/kakao";
 }
 
 /**

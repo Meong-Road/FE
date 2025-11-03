@@ -9,16 +9,16 @@ jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(),
 }));
 
-describe("useLocationForm 훅 테스트", () => {
-  const mockSetValue = jest.fn();
+const mockSetValue = jest.fn();
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    (useFormContext as jest.Mock).mockReturnValue({
-      setValue: mockSetValue,
-    });
+beforeEach(() => {
+  jest.clearAllMocks();
+  (useFormContext as jest.Mock).mockReturnValue({
+    setValue: mockSetValue,
   });
+});
 
+describe("useLocationForm 훅 테스트", () => {
   test("location이 null인 경우 setValue가 호출되지 않아야 한다", () => {
     renderHook(() => useLocationForm(null));
 

@@ -1,11 +1,3 @@
-interface KaKaoMapNamespace {
-  load(callback: () => void): void;
-}
-
-interface KakaoNamespace {
-  maps: typeof kakao.maps & KaKaoMapNamespace;
-}
-
 declare global {
   interface Window {
     kakao: KakaoNamespace;
@@ -13,6 +5,8 @@ declare global {
 
   namespace kakao {
     namespace maps {
+      function load(callback: () => void): void;
+
       class LatLng {
         constructor(lat: number, lng: number);
         getLat(): number;
@@ -61,11 +55,10 @@ declare global {
           OK = "OK",
         }
 
-        interface PlaceType {
+        interface SearchedPlaceType {
           id: string;
           address_name: string;
           place_name: string;
-          road_address_name: string;
           x: string;
           y: string;
         }
@@ -83,7 +76,7 @@ declare global {
         class Places {
           keywordSearch(
             keyword: string,
-            callback: (data: PlaceType[], status: Status) => void,
+            callback: (data: SearchedPlaceType[], status: Status) => void,
           ): void;
         }
 
@@ -110,14 +103,40 @@ declare global {
       }
 
       namespace event {
+        interface MapClickEvent {
+          latLng: kakao.maps.LatLng;
+        }
+
+        type MapClickHandler = (event: MapClickEvent) => void;
+
         function addListener(
-          target: unknown,
+          map: kakao.maps.Map,
           type: string,
-          handler: (...args: unknown[]) => void,
+          handler: MapClickHandler,
         ): void;
       }
     }
   }
 }
+
+export type KakaoLatLng = kakao.maps.LatLng;
+export type KakaoMap = kakao.maps.Map;
+export type KakaoSize = kakao.maps.Size;
+export type KakaoPoint = kakao.maps.Point;
+export type KakaoMarkerImage = kakao.maps.MarkerImage;
+export type KakaoMarker = kakao.maps.Marker;
+export type KakaoCustomOverlay = kakao.maps.CustomOverlay;
+
+export type KakaoStatus = kakao.maps.services.Status;
+export type KakaoSearchedPlaceType = kakao.maps.services.SearchedPlaceType;
+export type KakaoReverseGeocodePlaceType =
+  kakao.maps.services.ReverseGeocodePlaceType;
+export type KakaoPlaces = kakao.maps.services.Places;
+export type KakaoGeocoder = kakao.maps.services.Geocoder;
+
+export type KakaoMapClickEvent = kakao.maps.event.MapClickEvent;
+export type KakaoMapClickHandler = kakao.maps.event.MapClickHandler;
+
+export type KakaoNamespace = typeof window.kakao;
 
 export {};

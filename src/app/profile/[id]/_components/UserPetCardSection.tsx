@@ -1,11 +1,9 @@
 "use client";
 
 import { ErrorState, ListContainer, SectionWrapper } from "@/components/common";
-import { PetAddCard } from "@/components/PetAddCard";
 import { PetCard } from "@/components/PetCard";
 import { PetCardSkeletonList } from "@/components/PetCard/Skeleton";
-import { useAuth } from "@/hooks/auth";
-import { useGetMyPets } from "@/hooks/queries/pets";
+import { useGetPetsByUserId } from "@/hooks/queries/pets";
 import { PetType } from "@/lib/types/pets";
 import { processPetInfo } from "@/lib/utils/pet";
 
@@ -33,16 +31,6 @@ const PetCardItem = ({
   );
 };
 
-const PetAddCardItem = () => {
-  return (
-    <PetAddCard>
-      <PetAddCard.Icon />
-      <PetAddCard.Title>반려견 추가</PetAddCard.Title>
-      <PetAddCard.Description>새 반려견을 추가해보세요</PetAddCard.Description>
-    </PetAddCard>
-  );
-};
-
 const PetList = ({
   pets,
   petOwnerId,
@@ -50,12 +38,13 @@ const PetList = ({
   pets: PetType[];
   petOwnerId: number;
 }) => {
-  if (pets.length === 0)
+  if (pets.length === 0) {
     return (
-      <ListContainer className="sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        <PetAddCardItem />
-      </ListContainer>
+      <div className="py-8 text-center text-gray-500">
+        등록된 반려견이 없습니다.
+      </div>
     );
+  }
 
   return (
     <ListContainer className="sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
@@ -66,14 +55,18 @@ const PetList = ({
           petOwnerId={petOwnerId}
         />
       ))}
-      <PetAddCardItem />
     </ListContainer>
   );
 };
 
-export default function PetCardSection() {
-  const { user } = useAuth();
-  const { data: pets, isPending, isError } = useGetMyPets();
+interface UserPetCardSectionProps {
+  userId: number;
+}
+
+export default function UserPetCardSection({
+  userId,
+}: UserPetCardSectionProps) {
+  const { data: pets, isPending, isError } = useGetPetsByUserId(userId);
 
   if (isPending) {
     return (
@@ -83,15 +76,13 @@ export default function PetCardSection() {
     );
   }
 
-  if (isError || !pets || !user) {
-    return (
-      <ErrorState message="등록한 반려견 정보를 불러오는데 실패했습니다." />
-    );
+  if (isError || !pets) {
+    return <ErrorState message="반려견 정보를 불러오는데 실패했습니다." />;
   }
 
   return (
     <SectionWrapper>
-      <PetList pets={pets} petOwnerId={user.id} />
+      <PetList pets={pets} petOwnerId={userId} />
     </SectionWrapper>
   );
 }

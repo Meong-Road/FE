@@ -30,6 +30,12 @@ export interface ReviewFilters {
 export type GetMyReviewsReq = PaginationReq;
 export type GetMyReviewsRes = Response<PaginatedRes<ReviewType>>;
 
+// GET /meong-road/reviews/users/{userId} - 특정 사용자 리뷰 목록 조회
+export interface GetReviewsByUserIdReq extends PaginationReq {
+  userId: number;
+}
+export type GetReviewsByUserIdRes = Response<PaginatedRes<ReviewType>>;
+
 // GET /meong-road/reviews/{reviewId} - 리뷰 상세 조회
 export interface GetReviewReq {
   reviewId: number;

@@ -7,6 +7,7 @@ export { useGetReviewCheck } from "./useGetReviewCheck";
 export { useGetReviewDashboard } from "./useGetReviewDashboard";
 export { useGetReviews } from "./useGetReviews";
 export { useGetReviewsByGathering } from "./useGetReviewsByGathering";
+export { useGetReviewsByUserId } from "./useGetReviewsByUserId";
 export { useGetUserReviewByGathering } from "./useGetUserReviewByGathering";
 export { usePostReview } from "./usePostReview";
 export { usePutReview } from "./usePutReview";

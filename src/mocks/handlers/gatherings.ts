@@ -1,7 +1,9 @@
 // src/mocks/handlers/gatherings.ts
 import { http, HttpResponse } from "msw";
+import qs from "qs";
 
 import { FULL_API_ENDPOINTS } from "@/lib/constants/endpoints";
+import { SORT_OPTIONS, SORT_OPTIONS_MAP } from "@/lib/constants/option";
 import {
   CreateGatheringType,
   DayOfWeek,
@@ -10,6 +12,7 @@ import {
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gatherings";
+import { isSortOptionKey } from "@/lib/utils/typeGuard";
 
 import { createPaginatedRes } from "../data/common";
 import {
@@ -27,10 +30,38 @@ export const gatheringsHandlers = [
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
-    // TODO const sort = url.searchParams.get("sort");
+    const location = url.searchParams.get("location");
+    const sort =
+      url.searchParams.get("sort") ?? qs.stringify(SORT_OPTIONS[0].value);
+
+    const filtered = location
+      ? REGULAR_GATHERINGS.filter((g) => g.location === location)
+      : REGULAR_GATHERINGS;
+
+    const [sortKey, sortDirection] = isSortOptionKey(sort)
+      ? SORT_OPTIONS_MAP[sort].value
+      : SORT_OPTIONS[0].value;
+
+    const sorted = filtered.sort((a, b) => {
+      const key = sortKey as keyof RegularGatheringType;
+      const aValue = a[key];
+      const bValue = b[key];
+
+      if (sortDirection === "asc") {
+        if (typeof aValue === "number" && typeof bValue === "number") {
+          return aValue - bValue;
+        }
+        return String(aValue).localeCompare(String(bValue));
+      } else {
+        if (typeof aValue === "number" && typeof bValue === "number") {
+          return bValue - aValue;
+        }
+        return String(bValue).localeCompare(String(aValue));
+      }
+    });
 
     return HttpResponse.json(
-      createPaginatedRes(REGULAR_GATHERINGS, {
+      createPaginatedRes(sorted, {
         page: Number(page),
         size: Number(size),
       }),
@@ -41,10 +72,15 @@ export const gatheringsHandlers = [
     const url = new URL(req.request.url);
     const page = url.searchParams.get("page");
     const size = url.searchParams.get("size");
+    const location = url.searchParams.get("location");
     // TODO const sort = url.searchParams.get("sort");
 
+    const filtered = location
+      ? QUICK_GATHERINGS.filter((g) => g.location === location)
+      : QUICK_GATHERINGS;
+
     return HttpResponse.json(
-      createPaginatedRes(QUICK_GATHERINGS, {
+      createPaginatedRes(filtered, {
         page: Number(page),
         size: Number(size),
       }),

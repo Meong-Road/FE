@@ -19,7 +19,6 @@ export default function GatheringInfoCard() {
           <div className="mb-6 flex items-center gap-2">
             <GatheringCard.DeadlineBadge />
           </div>
-          {/* 오늘 마감 */}
           <GatheringCard.Title className="mb-3" />
         </div>
         <GatheringCard.LikeBtn />

@@ -1,46 +1,47 @@
 import { useEffect, useRef } from "react";
 
+import {
+  KakaoMap,
+  KakaoMarker,
+  KakaoReverseGeocodePlaceType,
+  KakaoSearchedPlaceType,
+} from "@/lib/types/kakao";
+
 import { kakaoMapService } from "../_services/kakaoMapService";
 
 interface Props {
   mapRef: React.RefObject<HTMLDivElement | null>;
-  place: kakao.maps.services.PlaceType | null;
-  setLocation: (loc: kakao.maps.services.ReverseGeocodePlaceType) => void;
+  place: KakaoSearchedPlaceType | null;
+  setLocation: (loc: KakaoReverseGeocodePlaceType) => void;
 }
 
 export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
-  const map = useRef<kakao.maps.Map | null>(null);
-  const marker = useRef<kakao.maps.Marker | null>(null);
+  const map = useRef<KakaoMap | null>(null);
+  const marker = useRef<KakaoMarker | null>(null);
 
   useEffect(() => {
     const initMap = async () => {
       if (!mapRef.current || map.current) return;
 
       try {
-        await kakaoMapService.waitForKakaoMapLoad();
-
-        const {
-          map: m,
-          marker: mk,
-          location,
-        } = await kakaoMapService.initMapWithCurrLocation(
-          mapRef.current,
-          setLocation,
-        );
+        const { map: m, marker: mk } =
+          await kakaoMapService.initMapWithCurrLocation(
+            mapRef.current,
+            setLocation,
+          );
 
         map.current = m;
         marker.current = mk;
-        setLocation(location);
       } catch (error) {
         console.log("지도 초기화 실패:", error);
       }
     };
 
     initMap();
-  }, [mapRef, setLocation]);
+  }, [setLocation]);
 
   useEffect(() => {
-    if (!place || !map.current) return;
+    if (!place || !map.current || !marker.current) return;
 
     try {
       kakaoMapService.moveMarkerToPlace(
@@ -58,11 +59,11 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
     if (!map.current || !marker.current) return;
 
     try {
-      const loc = await kakaoMapService.updateToCurrLocation(
+      const location = await kakaoMapService.updateToCurrLocation(
         map.current,
         marker.current,
       );
-      setLocation(loc);
+      setLocation(location);
     } catch (error) {
       console.log("위치 reset 실패:", error);
     }

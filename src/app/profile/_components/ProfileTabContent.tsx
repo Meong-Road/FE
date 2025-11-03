@@ -27,5 +27,5 @@ export function ProfileTabContent() {
     }
   };
 
-  return <TabContent tabKey={tab}>{renderContent()}</TabContent>;
+  return <TabContent tabKey={tab as string}>{renderContent()}</TabContent>;
 }

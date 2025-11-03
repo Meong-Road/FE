@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from "react";
 
-import type { PetInfoModalProps } from "@/components/Modal/PetInfoModal/types/petInfoModal";
 import { useGetPet } from "@/hooks/queries/pets";
 import { transformPetToFormData } from "@/lib/utils/pet";
 
 import { usePetInfoForm } from "./usePetInfoForm";
 
-export function usePetInfoModal({
-  type,
-  petId,
-}: Pick<PetInfoModalProps, "type" | "petId">) {
+interface UsePetInfoModalProps {
+  type: "first-login" | "add-pet" | "edit-pet";
+  petId?: number;
+  isOpen: boolean;
+}
+
+export function usePetInfoModal({ type, petId, isOpen }: UsePetInfoModalProps) {
   const isEditMode = type === "edit-pet";
   const shouldFetchPet = isEditMode && !!petId;
 
@@ -41,7 +43,7 @@ export function usePetInfoModal({
         petType: "dog",
       });
     }
-  }, [isEditMode, initialData, form]);
+  }, [isEditMode, initialData, form, isOpen]);
 
   return {
     form,

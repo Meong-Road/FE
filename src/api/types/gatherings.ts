@@ -7,15 +7,33 @@ import {
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gatherings";
+import { LocationType } from "@/lib/types/reviews";
 
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
-export type GetRegularGatheringsReq = PaginationReq;
+export interface CommonGatheringFilters {
+  location?: LocationType | null;
+  hostId?: number | null;
+  isClosed?: boolean | null;
+  isPetRequired?: boolean | null;
+}
+
+export interface RegularGatheringFilters extends CommonGatheringFilters {
+  dayOfWeek?: string[] | null;
+}
+export interface QuickGatheringFilters extends CommonGatheringFilters {
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
+export type GetRegularGatheringsReq = PaginationReq &
+  Partial<RegularGatheringFilters>;
 export type GetRegularGatheringsRes = Response<
   PaginatedRes<RegularGatheringType>
 >;
 
-export type GetQuickGatheringsReq = PaginationReq;
+export type GetQuickGatheringsReq = PaginationReq &
+  Partial<QuickGatheringFilters>;
 export type GetQuickGatheringsRes = Response<PaginatedRes<QuickGatheringType>>;
 
 export type GetGatheringReq = Pick<GatheringType, "id">;
@@ -30,12 +48,20 @@ export type PostLikeRes = Response<string>;
 export type DeleteLikeReq = Pick<GatheringType, "id">;
 export type DeleteLikeRes = Response<string>;
 
+export type GatheringStatus =
+  | "RECRUITING"
+  | "CONFIRMED"
+  | "COMPLETED"
+  | "CANCELED";
+
 // GET /meong-road/gatherings/my - 내가 만든 모임 목록 조회
-export type GetMyGatheringsReq = PaginationReq;
+export type GetMyGatheringsReq = PaginationReq & { status?: GatheringStatus };
 export type GetMyGatheringsRes = Response<PaginatedRes<GatheringType>>;
 
 // GET /meong-road/gatherings/joined - 참석한 모임 목록 조회
-export type GetJoinedGatheringsReq = PaginationReq;
+export type GetJoinedGatheringsReq = PaginationReq & {
+  status?: GatheringStatus;
+};
 export type GetJoinedGatheringsRes = Response<
   PaginatedRes<GatheringType & { joinedAt: string }>
 >;

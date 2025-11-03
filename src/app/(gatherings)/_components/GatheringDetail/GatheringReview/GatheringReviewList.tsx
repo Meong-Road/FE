@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation";
 
 import { EmptyState, ErrorState, LoadingState } from "@/components/common";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/components/common/Pagination";
 import { ReviewCard } from "@/components/ReviewCard";
 import { useGetReviewsByGathering } from "@/hooks/queries/reviews";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";

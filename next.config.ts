@@ -19,13 +19,9 @@ const nextConfig: NextConfig = {
   },
 
   // API 프록시 설정
+  // HttpOnly 쿠키를 사용하므로 프록시 비활성화
   async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://52.79.131.132:8050/meong-road/:path*",
-      },
-    ];
+    return [];
   },
 
   webpack(config) {

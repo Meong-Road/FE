@@ -8,12 +8,18 @@ import { PATH } from "@/lib/constants/path";
 export function AuthButtons() {
   const router = useRouter();
 
+  const handleLoginClick = () => {
+    const currentPath = window.location.pathname;
+    const redirectUrl = `${PATH.SIGNIN}?redirect=${encodeURIComponent(currentPath)}`;
+    router.push(redirectUrl);
+  };
+
   return (
     <div className="flex items-center gap-1 text-[#8B8B8B]">
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => router.push(PATH.SIGNIN)}
+        onClick={handleLoginClick}
         className="cursor-pointer text-sm hover:bg-gray-300/10 hover:text-gray-500"
       >
         로그인

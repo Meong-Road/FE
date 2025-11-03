@@ -1,10 +1,5 @@
 type StorageType = "localStorage" | "sessionStorage";
 
-interface TokenPayload {
-  exp: number;
-  [key: string]: unknown;
-}
-
 // 기본 스토리지 유틸리티
 export const storageUtils = {
   setItem<T>(key: string, value: T, storageType: StorageType = "localStorage") {
@@ -37,48 +32,59 @@ export const storageUtils = {
   },
 };
 
-// 토큰 전용 스토리지
+/**
+ * @deprecated HttpOnly + Secure 쿠키 기반 인증으로 전환되어 더 이상 사용되지 않습니다.
+ * 쿠키는 백엔드가 자동으로 관리하며, 프론트엔드에서 토큰을 직접 저장/조회할 필요가 없습니다.
+ */
 export const tokenStorage = {
-  set(accessToken?: string | null, refreshToken?: string | null) {
-    if (accessToken) storageUtils.setItem("accessToken", accessToken);
-    if (refreshToken) storageUtils.setItem("refreshToken", refreshToken);
+  set() {
+    console.warn(
+      "tokenStorage.set() is deprecated. Tokens are now managed via HttpOnly cookies.",
+    );
   },
 
   getAccess(): string | null {
-    return storageUtils.getItem<string>("accessToken");
+    console.warn(
+      "tokenStorage.getAccess() is deprecated. Use cookie-based authentication.",
+    );
+    return null;
   },
 
   getRefresh(): string | null {
-    return storageUtils.getItem<string>("refreshToken");
+    console.warn(
+      "tokenStorage.getRefresh() is deprecated. Use cookie-based authentication.",
+    );
+    return null;
   },
 
   clear() {
-    storageUtils.removeItem("accessToken");
-    storageUtils.removeItem("refreshToken");
+    console.warn(
+      "tokenStorage.clear() is deprecated. Logout should be handled via API call.",
+    );
   },
 
   hasValidAccess(): boolean {
-    return this.isTokenValid("accessToken");
+    console.warn(
+      "tokenStorage.hasValidAccess() is deprecated. Check authentication via API.",
+    );
+    return false;
   },
 
   hasValidRefresh(): boolean {
-    return this.isTokenValid("refreshToken");
+    console.warn(
+      "tokenStorage.hasValidRefresh() is deprecated. Check authentication via API.",
+    );
+    return false;
   },
 
-  isTokenValid(tokenKey: string): boolean {
-    const token = storageUtils.getItem<string>(tokenKey);
-    if (!token) return false;
-
-    try {
-      const payload = this.parseTokenPayload<TokenPayload>(token);
-      return Date.now() < payload.exp * 1000;
-    } catch {
-      return false;
-    }
+  isTokenValid(): boolean {
+    return false;
   },
 
-  parseTokenPayload<T>(token: string) {
-    return JSON.parse(atob(token.split(".")[1])) as T;
+  parseTokenPayload<T>(): T {
+    throw new Error(
+      "Deprecated: Token parsing not supported in cookie-based auth",
+    );
   },
 };
 

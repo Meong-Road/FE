@@ -5,6 +5,7 @@ export const PATH = {
   // AUTH
   SIGNIN: "/signin",
   SIGNUP: "/signup",
+  OAUTH_CALLBACK: "/signin/callback",
   // GATHERINGS
   REGULAR: "/regular",
   QUICK: "/quick",

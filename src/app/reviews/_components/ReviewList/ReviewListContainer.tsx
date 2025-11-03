@@ -1,7 +1,7 @@
 "use client";
 
 import { EmptyState, ErrorState, SectionWrapper } from "@/components/common";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/components/common/Pagination";
 import { ReviewCardSkeletonList } from "@/components/ReviewCard";
 import { ReviewList } from "@/components/widget/reviews";
 import { useGetReviews } from "@/hooks/queries/reviews";
@@ -12,7 +12,7 @@ import { parseLocationParam } from "@/lib/utils/param";
 
 export default function ReviewListContainer() {
   const Params = useSearchParamsState({ location: SEOUL_ALL, page: "0" });
-  const location = parseLocationParam(Params.location);
+  const location = parseLocationParam(Params.location as string);
   const page = Number(Params.page);
 
   const {

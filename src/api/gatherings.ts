@@ -42,14 +42,20 @@ export const gatheringApi = {
   // 정기 모임 목록 조회
   getRegularGatherings: (params: GetRegularGatheringsReq) => {
     return customFetch.get<GetRegularGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/regular?${qs.stringify(params, {
+        arrayFormat: "repeat",
+        skipNulls: true,
+      })}`,
       { skipAuth: true },
     );
   },
   // 번개 모임 목록 조회
   getQuickGatherings: (params: GetQuickGatheringsReq) => {
     return customFetch.get<GetQuickGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify({ ...params }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/quick?${qs.stringify(params, {
+        arrayFormat: "repeat",
+        skipNulls: true,
+      })}`,
       { skipAuth: true },
     );
   },
@@ -83,9 +89,10 @@ export const gatheringApi = {
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
+    status,
   }: GetMyGatheringsReq) => {
     return customFetch.get<GetMyGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/my?${qs.stringify({ page, size, sort, status }, { arrayFormat: "comma" })}`,
     );
   },
   // GET /meong-road/gatherings/joined - 참석한 모임 목록 조회
@@ -93,9 +100,10 @@ export const gatheringApi = {
     page = 0,
     size = 10,
     sort = ["createdAt", "desc"],
+    status,
   }: GetJoinedGatheringsReq) => {
     return customFetch.get<GetJoinedGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/joined?${qs.stringify({ page, size, sort, status }, { arrayFormat: "comma" })}`,
     );
   },
   // 모임 참여 조회
@@ -131,7 +139,13 @@ export const gatheringApi = {
     sort = ["createdAt", "desc"],
   }: GetMyBookmarkedGatheringsReq) => {
     return customFetch.get<GetMyBookmarkedGatheringsRes>(
-      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify({ type, page, size, sort }, { arrayFormat: "comma" })}`,
+      `${API_ENDPOINTS.GATHERING}/bookmarks?${qs.stringify(
+        { type, page, size, sort },
+        {
+          arrayFormat: "comma",
+          skipNulls: true,
+        },
+      )}`,
     );
   },
   getParticipants: ({ id, page, size, sort }: GetParticipantsReq) => {

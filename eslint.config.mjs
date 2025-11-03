@@ -14,7 +14,13 @@ const eslintConfig = [
     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
     plugins: ["prettier", "react", "simple-import-sort"],
     rules: {
-      "prettier/prettier": ["error"],
+      "prettier/prettier": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
       "simple-import-sort/exports": "error",
       "import/first": "error",
       "import/newline-after-import": "error",

@@ -41,6 +41,7 @@ export type SocialProvider = "google" | "kakao";
 export interface PostSocialLoginReq {
   provider: SocialProvider;
   code: string; // OAuth 인증 코드
+  redirectUri: string; // OAuth 콜백 URL
 }
 
 export interface PostSocialLoginRes {

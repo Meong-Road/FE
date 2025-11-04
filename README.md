@@ -28,10 +28,26 @@ https://www.meong-road.site/regular
 |------|--------|--------|--------|--------|
 | 🔗 GitHub | [ddongguri-bing](https://github.com/ddongguri-bing) | [sn14188](https://github.com/sn14188) | [2hanbyeol1](https://github.com/2hanbyeol1) | [Sangmwi](https://github.com/Sangmwi) |
 
+</br>
+
+## 🚀 Tech Stack
+
+### Framework
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white)
+![typescript](https://img.shields.io/badge/typescript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+
+### Package Manager
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
+
+### Server State Manager
 
 
+### Styling
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![shadcnui](https://img.shields.io/badge/shadcnui-000000?style=flat-square&logo=shadcnui&logoColor=white)
 
-
+### Deploy
+![githubactions](https://img.shields.io/badge/githubactions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 
 # Meong Road Frontend
 

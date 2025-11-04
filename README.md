@@ -2,11 +2,6 @@
   <a href="https://www.meong-road.site/regular">
     <img width="550" height="275" alt="로고" src="https://github.com/user-attachments/assets/f2c2846e-06e5-4e32-9077-ef55086f600d" width="20%" height=auto/>
   </a>
-  </br>
-  </br>
-  ### 반려견 산책 모임 서비스 '멍로드'
-  </br>
-  </br>
 </div>
 
 # Meong Road Frontend

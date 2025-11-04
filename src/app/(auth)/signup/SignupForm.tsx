@@ -138,7 +138,7 @@ export default function SignupForm() {
         />
 
         {/* 소셜 로그인 버튼 */}
-        <Form.SocialButtons />
+        {/* <Form.SocialButtons /> */}
 
         {/* 로그인 링크 */}
         <Form.LoginLink />

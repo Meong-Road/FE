@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import {
@@ -13,31 +11,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/auth";
 import { useSignoutMutation } from "@/hooks/auth/useSignoutMutation";
-import { QUERY_KEYS } from "@/hooks/queries/queryKey";
 import { PATH } from "@/lib/constants/path";
 
 import UserProfileImage from "./UserProfileImage";
 
 export function UserProfileDropdown() {
   const router = useRouter();
-  const pathname = usePathname();
-  const queryClient = useQueryClient();
+
   const { user, isLoading } = useAuth();
   const { mutate: signoutMutation } = useSignoutMutation();
-  const isSigningOutRef = useRef(false);
-
-  // pathname이 변경되면 user invalidate
-  useEffect(() => {
-    if (isSigningOutRef.current && pathname === PATH.REGULAR) {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
-      isSigningOutRef.current = false;
-    }
-  }, [pathname, queryClient]);
 
   const handleSignout = () => {
     signoutMutation(undefined, {
       onSuccess: () => {
-        isSigningOutRef.current = true;
         router.push(PATH.REGULAR);
         toast.success("로그아웃에 성공했습니다.");
       },

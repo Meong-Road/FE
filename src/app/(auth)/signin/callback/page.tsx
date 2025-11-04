@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { useSocialLoginMutation } from "@/hooks/auth/useSocialLoginMutation";
@@ -111,10 +112,18 @@ function OAuthCallbackContent() {
 
   // 로딩 화면
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
-        <p className="text-gray-600">로그인 처리 중...</p>
+    <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm duration-300">
+      <div className="space-y-4 text-center">
+        <div className="relative">
+          <Loader2 className="text-primary-500 mx-auto h-12 w-12 animate-spin" />
+          <div className="absolute inset-0 mx-auto h-12 w-12 animate-ping opacity-20">
+            <Loader2 className="text-primary-500 h-full w-full" />
+          </div>
+        </div>
+        <div className="space-y-1">
+          <p className="text-lg font-semibold text-gray-900">로그인 처리 중</p>
+          <p className="text-sm text-gray-500">잠시만 기다려주세요...</p>
+        </div>
       </div>
     </div>
   );
@@ -124,10 +133,18 @@ export default function OAuthCallbackPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          <div className="text-center">
-            <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
-            <p className="text-gray-600">로딩 중...</p>
+        <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm duration-300">
+          <div className="space-y-4 text-center">
+            <div className="relative">
+              <Loader2 className="text-primary-500 mx-auto h-12 w-12 animate-spin" />
+              <div className="absolute inset-0 mx-auto h-12 w-12 animate-ping opacity-20">
+                <Loader2 className="text-primary-500 h-full w-full" />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <p className="text-lg font-semibold text-gray-900">로딩 중</p>
+              <p className="text-sm text-gray-500">잠시만 기다려주세요...</p>
+            </div>
           </div>
         </div>
       }

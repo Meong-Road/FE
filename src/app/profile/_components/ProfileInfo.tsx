@@ -8,7 +8,6 @@ interface ProfileInfoProps {
 export function ProfileInfo({ user }: ProfileInfoProps) {
   return (
     <ProfileCard>
-      <ProfileCard.Header>내 프로필</ProfileCard.Header>
       <ProfileCard.EditBtn userId={user.id} />
       <ProfileCard.Content>
         <ProfileCard.Image />

@@ -1,10 +1,38 @@
-<div>
+<div align="center">
   <a href="https://www.meong-road.site/regular">
-    <img width="550" height="275" alt="로고" src="https://github.com/user-attachments/assets/f2c2846e-06e5-4e32-9077-ef55086f600d" width="20%" height=auto/>
+    <img
+      src="https://github.com/user-attachments/assets/f2c2846e-06e5-4e32-9077-ef55086f600d"
+      alt="로고"
+      width="550"
+      height="275"
+    />
   </a>
+  <h3>반려견 산책 모임 서비스 '멍로드'</h3>
 </div>
 
-  ### 반려견 산책 모임 서비스 '멍로드'
+## 📌 OverView
+💻 **개요**  
+반려견과 함께할 친구를 찾기 어려운 문제를 해결하기 위해, 반려견 보호자와 비반려인이 함께 산책 모임을 즐길 수 있는 커뮤니티 플랫폼입니다.  
+정기·번개 모임을 통해 꾸준한 산책 루틴과 신뢰 기반의 건강한 반려 문화 형성을 목표로 합니다.  
+</br>
+📎 **배포 링크**  
+https://www.meong-road.site/regular  
+</br>
+🗓️ **개발 기간**  
+2025.09.15 - 2025.11.04  
+
+</br>
+
+## 👩🏻‍💻Developers🧑🏻‍💻
+| 👤 이름 | 이수빈 | 서웅덕 | 이한별 | 한상휘 |
+|------|--------|--------|--------|--------|
+| 🔗 GitHub | [ddongguri-bing](https://github.com/ddongguri-bing) | [sn14188](https://github.com/sn14188) | [2hanbyeol1](https://github.com/2hanbyeol1) | [Sangmwi](https://github.com/Sangmwi) |
+
+
+
+
+
+
 # Meong Road Frontend
 
 Next.js 15(App Router)와 React 19 기반으로 구축한 프론트엔드 애플리케이션입니다. TypeScript와 Tailwind CSS 4를 사용하며, React Query와 MSW(Mock Service Worker)로 데이터 페칭과 API 모킹 환경을 제공합니다.

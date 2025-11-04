@@ -1,6 +1,6 @@
 type StorageType = "localStorage" | "sessionStorage";
 
-// 기본 스토리지 유틸리티
+// 스토리지 유틸리티
 export const storageUtils = {
   setItem<T>(key: string, value: T, storageType: StorageType = "localStorage") {
     const storage =
@@ -87,5 +87,3 @@ export const tokenStorage = {
     );
   },
 };
-
-// 데이터 지속성 훅

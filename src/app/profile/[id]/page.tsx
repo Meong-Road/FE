@@ -45,7 +45,7 @@ export default function UserProfilePage() {
         </ProfileCard.Header>
         <ProfileCard.EditBtn userId={user.id} />
         <ProfileCard.Content>
-          <ProfileCard.Image />
+          <ProfileCard.Image userId={user.id} />
           <div className="flex flex-1 flex-col justify-between">
             <ProfileCard.NickName nickName={user.nickName || user.name} />
             <ProfileCard.Info name={user.name} email={user.email} />

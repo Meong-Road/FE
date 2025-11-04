@@ -1,12 +1,7 @@
 import { PATH } from "@/lib/constants/path";
 import { EGatheringState, GatheringType } from "@/lib/types/gatherings";
 
-import {
-  checkIsBefore,
-  formatDate,
-  formatDays,
-  getHoursBefore,
-} from "./dateTime";
+import { checkIsBefore, formatDate, formatDays } from "./dateTime";
 import { isRegularGathering } from "./typeGuard";
 
 /**
@@ -38,20 +33,14 @@ export const getGatheringState = (
   isAuthenticated: boolean,
   hasPet: boolean,
 ) => {
-  if (
-    checkIsBefore(
-      isRegularGathering(gathering)
-        ? gathering.registrationEnd
-        : getHoursBefore(gathering.dateTime, 3), // TODO: registrationEnd로 통일
-    )
-  )
+  if (!isAuthenticated) return EGatheringState.AUTH_REQUIRED;
+  if (checkIsBefore(gathering.registrationEnd))
     return EGatheringState.REGISTRATION_END_PASSED;
+  if (gathering.isPetRequired && !hasPet) return EGatheringState.PET_REQUIRED;
   if (gathering.participantCount >= 5) return EGatheringState.FIXED_GATHERING;
   if (gathering.participantCount >= gathering.capacity)
     return EGatheringState.CAPACITY_FULL;
   if (gathering.canceledAt !== null) return EGatheringState.CANCELED;
-  if (!isAuthenticated) return EGatheringState.AUTH_REQUIRED;
-  if (gathering.isPetRequired && !hasPet) return EGatheringState.PET_REQUIRED;
   return EGatheringState.GENERAL;
 };
 

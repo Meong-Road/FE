@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { ProfileCardContent } from "./ProfileCardContent";
 import { ProfileCardEditBtn } from "./ProfileCardEditBtn";
-import { ProfileCardHeader } from "./ProfileCardHeader";
 import { ProfileCardImage } from "./ProfileCardImage";
 import { ProfileCardInfo } from "./ProfileCardInfo";
 import { ProfileCardNickName } from "./ProfileCardNickName";
@@ -18,7 +17,6 @@ export function ProfileCard({ children, className }: ProfileCardProps) {
   );
 }
 
-ProfileCard.Header = ProfileCardHeader;
 ProfileCard.Content = ProfileCardContent;
 ProfileCard.Image = ProfileCardImage;
 ProfileCard.Info = ProfileCardInfo;

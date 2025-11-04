@@ -21,7 +21,7 @@ export default function UserProfilePage() {
   if (isPending) {
     return (
       <section>
-        <ProfileHeader title="유저페이지" />
+        <ProfileHeader title="유저 페이지" />
         <ProfilePageSkeleton />
       </section>
     );
@@ -30,7 +30,7 @@ export default function UserProfilePage() {
   if (isError || !user) {
     return (
       <section>
-        <ProfileHeader title="유저페이지" />
+        <ProfileHeader title="OO님의 프로필" />
         <ErrorState message="사용자 정보를 불러오는데 실패했습니다." />
       </section>
     );
@@ -38,14 +38,11 @@ export default function UserProfilePage() {
 
   return (
     <section>
-      <ProfileHeader title="유저페이지" />
+      <ProfileHeader title={`${user.nickName || user.name}님의 프로필`} />
       <ProfileCard>
-        <ProfileCard.Header>
-          {user.nickName || user.name}님의 프로필
-        </ProfileCard.Header>
         <ProfileCard.EditBtn userId={user.id} />
         <ProfileCard.Content>
-          <ProfileCard.Image />
+          <ProfileCard.Image userId={user.id} />
           <div className="flex flex-1 flex-col justify-between">
             <ProfileCard.NickName nickName={user.nickName || user.name} />
             <ProfileCard.Info name={user.name} email={user.email} />

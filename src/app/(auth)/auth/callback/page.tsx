@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -30,20 +30,48 @@ function OAuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setModalData, openModal } = usePetInfoModalStore();
-  const { mutate: socialLoginMutation } = useSocialLoginMutation();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const {
+    mutate: socialLoginMutation,
+    isPending,
+    isSuccess,
+    isError,
+  } = useSocialLoginMutation();
+  const hasExecuted = useRef(false);
 
   useEffect(() => {
+    console.log("🔄 useEffect 실행 - 상태:", {
+      hasExecuted: hasExecuted.current,
+      isPending,
+      isSuccess,
+      isError,
+    });
+
     // 중복 실행 방지
-    if (isProcessing) return;
+    if (hasExecuted.current || isPending) {
+      console.log("⏭️ 중복 실행 방지 또는 대기 중");
+      return;
+    }
 
     const code = searchParams.get("code");
     const state = searchParams.get("state");
     const error = searchParams.get("error");
     const errorDescription = searchParams.get("error_description");
 
+    console.log("📋 URL 파라미터:", {
+      code: code?.substring(0, 20) + "...",
+      state,
+      error,
+    });
+
+    // code가 없으면 실행하지 않음
+    if (!code && !error) {
+      console.log("⏭️ code와 error 모두 없음 - 실행 안 함");
+      return;
+    }
+
     // 에러가 있는 경우
     if (error) {
+      hasExecuted.current = true;
       toast.error(`소셜 로그인 실패: ${errorDescription || error}`);
       router.replace(PATH.SIGNIN);
       return;
@@ -51,6 +79,7 @@ function OAuthCallbackContent() {
 
     // 인증 코드가 없는 경우
     if (!code) {
+      hasExecuted.current = true;
       toast.error("인증 코드를 받지 못했습니다.");
       router.replace(PATH.SIGNIN);
       return;
@@ -70,46 +99,73 @@ function OAuthCallbackContent() {
       }
     }
 
-    setIsProcessing(true);
-
     // OAuth 콜백 URL (백엔드에 전달할 redirectUri - 처음에 사용한 것과 동일해야 함)
+    // pathname만 사용 (쿼리 파라미터 제외)
     const callbackUrl =
       typeof window !== "undefined"
-        ? window.location.origin + window.location.pathname
+        ? `${window.location.origin}${window.location.pathname}`
         : process.env.NEXT_PUBLIC_SITE_URL
           ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
           : "http://localhost:3000/signin/callback";
 
+    console.log("🔍 OAuth Callback Debug:", {
+      provider,
+      code: code?.substring(0, 20) + "...",
+      redirectUri: callbackUrl,
+    });
+
     // 백엔드 API에 인증 코드와 redirectUri 전송
-    socialLoginMutation(
-      { provider, code, redirectUri: callbackUrl },
-      {
-        onSuccess: (res) => {
-          toast.success("로그인에 성공했습니다.");
+    console.log("🚀 Mutation 실행 시작");
+    hasExecuted.current = true; // mutation 실행 직전에 플래그 설정
 
-          // 펫 정보 미제출 시 모달 표시
-          if (!res.result.user.isPetInfoSubmitted) {
-            setModalData("first-login");
-            openModal();
-            return;
-          }
+    try {
+      socialLoginMutation(
+        { provider, code, redirectUri: callbackUrl },
+        {
+          onSuccess: (res) => {
+            console.log("✅ onSuccess 콜백 실행됨:", res);
+            toast.success("로그인에 성공했습니다.");
 
-          // 리다이렉트 URL이 있으면 해당 페이지로, 없으면 기본 페이지로
-          router.replace(redirectUrl || PATH.REGULAR);
+            // 펫 정보 미제출 시 모달 표시
+            if (!res.result.user.isPetInfoSubmitted) {
+              console.log("📋 펫 정보 미제출 - 모달 표시");
+              setModalData("first-login");
+              openModal();
+              return;
+            }
+
+            // 리다이렉트 URL이 있으면 해당 페이지로, 없으면 기본 페이지로
+            const targetUrl = redirectUrl || PATH.REGULAR;
+            console.log("🔄 리다이렉트:", targetUrl);
+            router.replace(targetUrl);
+          },
+          onError: (error: Error) => {
+            console.error("❌ onError 콜백 실행됨:", error);
+            toast.error(`소셜 로그인 실패: ${error.message}`);
+            hasExecuted.current = false; // 실패 시 재시도 가능하도록
+            router.replace(PATH.SIGNIN);
+          },
+          onSettled: () => {
+            console.log(
+              "🏁 onSettled 콜백 실행됨 (성공/실패 관계없이 항상 실행)",
+            );
+          },
         },
-        onError: (error: Error) => {
-          toast.error(`소셜 로그인 실패: ${error.message}`);
-          router.replace(PATH.SIGNIN);
-        },
-      },
-    );
+      );
+      console.log("✅ Mutation 호출 완료 (동기 부분)");
+    } catch (err) {
+      console.error("💥 Mutation 호출 중 동기 에러:", err);
+      hasExecuted.current = false;
+    }
   }, [
     searchParams,
     router,
     setModalData,
     openModal,
     socialLoginMutation,
-    isProcessing,
+    isPending,
+    isSuccess,
+    isError,
   ]);
 
   // 로딩 화면

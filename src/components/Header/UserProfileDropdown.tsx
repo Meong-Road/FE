@@ -24,7 +24,7 @@ export function UserProfileDropdown() {
   const handleSignout = () => {
     signoutMutation(undefined, {
       onSuccess: () => {
-        router.push(PATH.REGULAR);
+        router.push(PATH.SIGNIN);
         toast.success("로그아웃에 성공했습니다.");
       },
       onError: (error: Error) => {

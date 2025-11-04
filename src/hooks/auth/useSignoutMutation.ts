@@ -10,6 +10,7 @@ export function useSignoutMutation() {
     mutationFn: () => authApi.signout(),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: QUERY_KEYS.users.my() });
+      queryClient.clear();
     },
   });
 }

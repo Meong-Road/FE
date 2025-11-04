@@ -2,6 +2,8 @@ import { customFetch } from "@/lib/api/customFetch";
 import { API_ENDPOINTS } from "@/lib/constants/endpoints";
 
 import {
+  GetUserByIdReq,
+  GetUserByIdRes,
   GetUserRes,
   PutUserImageReq,
   PutUserImageRes,
@@ -13,6 +15,13 @@ export const userApi = {
   // GET /meong-road/user/my - 내 회원 정보 확인
   getMyInfo: async (): Promise<GetUserRes> => {
     return await customFetch.get<GetUserRes>(`${API_ENDPOINTS.USER}/my`);
+  },
+
+  // GET /meong-road/user/{userId} - 타 회원 정보 조회
+  getUserById: async ({ userId }: GetUserByIdReq): Promise<GetUserByIdRes> => {
+    return await customFetch.get<GetUserByIdRes>(
+      `${API_ENDPOINTS.USER}/${userId}`,
+    );
   },
 
   // PUT /meong-road/user - 내 회원 정보 부분 수정

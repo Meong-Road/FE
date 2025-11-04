@@ -110,6 +110,36 @@ export const PET_REQUIRED_OPTIONS = [
   },
 ];
 
+export enum ECreatePetRequired {
+  REQUIRED = "C_REQUIRED",
+  OPTIONAL = "C_OPTIONAL",
+}
+
+export const CREATE_PET_REQUIRED_OPTIONS_MAP: Record<
+  ECreatePetRequired,
+  { value?: boolean; label: string }
+> = {
+  [ECreatePetRequired.REQUIRED]: {
+    value: true,
+    label: "반려견이 함께 해야 해요",
+  },
+  [ECreatePetRequired.OPTIONAL]: {
+    value: false,
+    label: "반려견 없이도 참여 가능해요",
+  },
+};
+
+export const CREATE_PET_REQUIRED_OPTIONS = [
+  {
+    id: ECreatePetRequired.REQUIRED,
+    ...CREATE_PET_REQUIRED_OPTIONS_MAP[ECreatePetRequired.REQUIRED],
+  },
+  {
+    id: ECreatePetRequired.OPTIONAL,
+    ...CREATE_PET_REQUIRED_OPTIONS_MAP[ECreatePetRequired.OPTIONAL],
+  },
+];
+
 export enum EIsClosed {
   SHOW_CLOSED = "SHOW_CLOSED",
   HIDE_CLOSED = "HIDE_CLOSED",

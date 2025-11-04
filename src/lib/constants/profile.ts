@@ -103,3 +103,22 @@ export const CREATED_SUB_TAB_LIST = [
   CREATED_SUB_TABS.CANCELED,
   CREATED_SUB_TABS.COMPLETED,
 ];
+
+/**
+ * 유저 프로필 탭 정보 (타인 프로필 페이지용)
+ */
+export const USER_PROFILE_TABS = {
+  PETS: {
+    label: "반려견 정보",
+    value: "pets",
+  },
+  REVIEWS: {
+    label: "작성한 리뷰",
+    value: "reviews",
+  },
+} as const;
+
+export const USER_PROFILE_TAB_LIST = [
+  USER_PROFILE_TABS.PETS,
+  USER_PROFILE_TABS.REVIEWS,
+];

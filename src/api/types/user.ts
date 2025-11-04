@@ -6,6 +6,10 @@ import { Response } from "./common";
 export type GetUserReq = void;
 export type GetUserRes = Response<UserType>;
 
+// GET /meong-road/user/{userId} - 타 회원 정보 조회
+export type GetUserByIdReq = { userId: number };
+export type GetUserByIdRes = Response<UserType>;
+
 // PUT /meong-road/user/my - 내 회원 정보 부분 수정
 export interface PutUserReq {
   image?: string;

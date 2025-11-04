@@ -1,6 +1,7 @@
 import { Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/auth";
 import { useUserInfoModalStore } from "@/store/modalStore";
 
 interface ProfileCardEditBtnProps {
@@ -12,7 +13,13 @@ export function ProfileCardEditBtn({
   userId,
   className,
 }: ProfileCardEditBtnProps) {
+  const { user } = useAuth();
   const { openModal } = useUserInfoModalStore();
+
+  // 본인 프로필이 아니면 버튼 숨김
+  if (user?.id !== userId) {
+    return null;
+  }
 
   const handleClick = () => {
     openModal("edit-user", userId);

@@ -23,6 +23,10 @@ https://www.meong-road.site
 🗓️ **개발 기간**  
 2025.09.15 - 2025.11.04  
 
+
+🎥 **시연 영상**
+https://drive.google.com/file/d/1LgqsgAKcneHQNsTeSZodP2tLIpFXGnyr/view?usp=drive_link
+
 </br>
 
 ## 👩🏻‍💻Developers🧑🏻‍💻

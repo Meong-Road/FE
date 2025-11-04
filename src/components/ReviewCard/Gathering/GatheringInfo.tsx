@@ -30,12 +30,25 @@ export function GatheringInfo({
   location,
   days,
 }: ReviewCardGatheringInfoProps) {
+  const parsedLocation = (() => {
+    if (!location) return null;
+
+    try {
+      const loc =
+        typeof location === "string" ? JSON.parse(location) : location;
+
+      return loc.region_2depth_name || loc.address_name || "위치 정보 없음";
+    } catch {
+      return typeof location === "string" ? location : "위치 정보 오류";
+    }
+  })();
+
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm">
       {location && (
         <>
           <Divider size="md" />
-          <InfoItem label="위치" value={location} />
+          <InfoItem label="위치" value={parsedLocation} />
         </>
       )}
       {days && (

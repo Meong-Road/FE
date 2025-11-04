@@ -27,6 +27,25 @@ interface GatheringCardInfoProps {
 
 export function GatheringCardInfo({ className }: GatheringCardInfoProps) {
   const { gathering } = useGatheringStateContext();
+  const locationText = (() => {
+    try {
+      const loc =
+        typeof gathering.location === "string"
+          ? JSON.parse(gathering.location)
+          : gathering.location;
+
+      return (
+        loc?.region_2depth_name ||
+        loc?.district ||
+        loc?.address_name ||
+        "위치 정보 없음"
+      );
+    } catch {
+      return typeof gathering.location === "string"
+        ? gathering.location
+        : "위치 정보 오류";
+    }
+  })();
 
   return (
     <div
@@ -37,23 +56,7 @@ export function GatheringCardInfo({ className }: GatheringCardInfoProps) {
     >
       <TextWrapper>
         <Title>위치</Title>
-        <Content>
-          <Content>
-            {(() => {
-              try {
-                const location = JSON.parse(gathering.location);
-
-                return (
-                  location.region_2depth_name ||
-                  location.district || // 이미 district로 들어간 것들이 있어서 임시로 넣었습니다
-                  "위치 정보 없음"
-                );
-              } catch (error) {
-                return "위치 정보 오류";
-              }
-            })()}
-          </Content>
-        </Content>
+        <Content>{locationText}</Content>
       </TextWrapper>
       {isRegularGathering(gathering) ? (
         <>

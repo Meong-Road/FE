@@ -49,6 +49,33 @@ https://www.meong-road.site/regular
 ### Deploy
 ![githubactions](https://img.shields.io/badge/githubactions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 
+### 주요 기술 스택
+
+[![VS Code](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)  
+[![pnpm](https://img.shields.io/badge/Package%20Manager-pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)  
+[![Next.js](https://img.shields.io/badge/Framework-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)  
+[![TypeScript](https://img.shields.io/badge/TypeScript-TS-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
+[![TailwindCSS](https://img.shields.io/badge/Styling-TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)  
+[![clsx](https://img.shields.io/badge/Utility-clsx-000000?style=for-the-badge&logo=clsx&logoColor=white)](https://github.com/lukeed/clsx)  
+[![twMerge](https://img.shields.io/badge/Utility-twMerge-000000?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://github.com/KyleAMathews/tw-merge)  
+[![Framer Motion](https://img.shields.io/badge/Animation-Framer%20Motion-0055FF?style=for-the-badge&logo=framermotion&logoColor=white)](https://www.framer.com/motion/)  
+[![shadcn/ui](https://img.shields.io/badge/Component-shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://github.com/shadcn/ui)  
+[![Zustand](https://img.shields.io/badge/State%20Manager-Zustand-00CB9D?style=for-the-badge&logo=zustand&logoColor=white)](https://github.com/pmndrs/zustand)  
+[![React Query](https://img.shields.io/badge/Server%20State-TANSTACK%20Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)](https://tanstack.com/query)  
+[![Jest](https://img.shields.io/badge/Test-Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)  
+[![MSW](https://img.shields.io/badge/Test-MSW-000000?style=for-the-badge&logo=msw&logoColor=white)](https://mswjs.io/)  
+[![ESLint](https://img.shields.io/badge/Code%20Quality-ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)  
+[![Prettier](https://img.shields.io/badge/Code%20Quality-Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white)](https://prettier.io/)  
+[![Husky](https://img.shields.io/badge/Git%20Hooks-Husky-000000?style=for-the-badge&logo=husky&logoColor=white)](https://typicode.github.io/husky/#/)  
+[![lint-staged](https://img.shields.io/badge/Git%20Hooks-lint-staged-000000?style=for-the-badge&logo=lint-staged&logoColor=white)](https://github.com/okonet/lint-staged)  
+[![GitHub Actions](https://img.shields.io/badge/Deploy-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/features/actions)  
+[![SVGR](https://img.shields.io/badge/Tooling-SVGR-000000?style=for-the-badge&logo=svgr&logoColor=white)](https://react-svgr.com/)  
+[![Zod](https://img.shields.io/badge/Library-Zod-000000?style=for-the-badge&logo=zod&logoColor=white)](https://github.com/colinhacks/zod)  
+[![Zep](https://img.shields.io/badge/Collaboration-Zep-000000?style=for-the-badge&logo=zep&logoColor=white)](https://zep.so/)  
+[![Discord](https://img.shields.io/badge/Collaboration-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/)  
+[![Figma](https://img.shields.io/badge/Collaboration-Figma-000000?style=for-the-badge&logo=figma&logoColor=white)](https://figma.com/)
+
+
 # Meong Road Frontend
 
 Next.js 15(App Router)와 React 19 기반으로 구축한 프론트엔드 애플리케이션입니다. TypeScript와 Tailwind CSS 4를 사용하며, React Query와 MSW(Mock Service Worker)로 데이터 페칭과 API 모킹 환경을 제공합니다.

@@ -15,6 +15,8 @@ import {
   GetReviewRes,
   GetReviewsByGatheringReq,
   GetReviewsByGatheringRes,
+  GetReviewsByUserIdReq,
+  GetReviewsByUserIdRes,
   GetReviewsReq,
   GetReviewsRes,
   GetUserReviewByGatheringReq,
@@ -60,6 +62,16 @@ const REVIEW_API = {
   }: GetMyReviewsReq) => {
     return customFetch.get<GetMyReviewsRes>(
       `${API_ENDPOINTS.REVIEW}/my?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
+    );
+  },
+  getReviewsByUserId: ({
+    userId,
+    page = 0,
+    size = 10,
+    sort = ["createdAt", "desc"],
+  }: GetReviewsByUserIdReq) => {
+    return customFetch.get<GetReviewsByUserIdRes>(
+      `${API_ENDPOINTS.REVIEW}/users/${userId}?${qs.stringify({ page, size, sort }, { arrayFormat: "comma" })}`,
     );
   },
   getReview: ({ reviewId }: GetReviewReq) => {

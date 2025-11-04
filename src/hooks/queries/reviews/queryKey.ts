@@ -16,6 +16,8 @@ export const REVIEWS_QUERY_KEYS = {
   ],
   myReviews: (options: PaginationReq) =>
     [...REVIEWS_QUERY_KEYS.all(), "my", options] as const,
+  byUserId: (userId: number, options: PaginationReq) =>
+    [...REVIEWS_QUERY_KEYS.all(), "user", userId, options] as const,
   reviewableGatherings: (options: PaginationOptions) =>
     [...REVIEWS_QUERY_KEYS.all(), "reviewable-gatherings", options] as const,
   userReview: (gatheringId: number) =>

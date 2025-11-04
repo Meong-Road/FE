@@ -10,6 +10,7 @@ import {
 } from "@/hooks/queries/gatherings";
 import { useCancelGathering } from "@/hooks/queries/gatherings/useCancelGathering";
 import { useGetIsParticipating } from "@/hooks/queries/gatherings/useGetIsParticipating";
+import { useGetMyPets } from "@/hooks/queries/pets/useGetMyPets";
 import { GATHERING_STATE_MESSAGE } from "@/lib/constants/gathering";
 import { PATH } from "@/lib/constants/path";
 import { EGatheringState } from "@/lib/types/gatherings";

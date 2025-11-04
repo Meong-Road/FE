@@ -43,6 +43,14 @@ export interface ReviewCardGatheringTitleProps {
 }
 
 export interface ReviewCardGatheringInfoProps {
-  location: ReviewType["gathering"]["location"];
+  location:
+    | string
+    | null
+    | {
+        address_name?: string;
+        region_1depth_name?: string;
+        region_2depth_name?: string;
+        latlng?: { lat: number; lng: number };
+      };
   days: string;
 }

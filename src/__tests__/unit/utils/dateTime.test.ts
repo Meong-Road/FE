@@ -3,11 +3,13 @@ import {
   checkIsBefore,
   formatDate,
   formatDateShort,
+  formatDateToISOString,
   formatDays,
   getHoursBefore,
   getRegistrationDeadlineInfo,
   getTimeAgo,
-} from "./dateTime";
+  subtractHoursFromDateTime,
+} from "../../../lib/utils/dateTime";
 
 describe("dateTime", () => {
   beforeEach(() => {
@@ -21,25 +23,25 @@ describe("dateTime", () => {
   });
 
   describe("formatDate", () => {
-    it("문자열 날짜를 올바른 형식으로 포맷해야 한다", () => {
+    test("문자열 날짜를 올바른 형식으로 포맷해야 한다", () => {
       const date = "2025-09-29T18:30:00";
       const result = formatDate(date);
       expect(result).toBe("25. 09. 29 (월) 18:30");
     });
 
-    it("Date 객체를 올바른 형식으로 포맷해야 한다", () => {
+    test("Date 객체를 올바른 형식으로 포맷해야 한다", () => {
       const date = new Date("2025-12-25T09:15:00");
       const result = formatDate(date);
       expect(result).toBe("25. 12. 25 (목) 09:15");
     });
 
-    it("연도를 두 자리로 표시해야 한다", () => {
+    test("연도를 두 자리로 표시해야 한다", () => {
       const date = "2030-06-15T14:45:00";
       const result = formatDate(date);
       expect(result).toBe("30. 06. 15 (토) 14:45");
     });
 
-    it("한국어 요일을 올바르게 표시해야 한다", () => {
+    test("한국어 요일을 올바르게 표시해야 한다", () => {
       // 각 요일별 테스트
       const testCases = [
         { date: "2025-09-29T12:00:00", expected: "25. 09. 29 (월) 12:00" }, // 월요일
@@ -58,25 +60,25 @@ describe("dateTime", () => {
   });
 
   describe("getRegistrationDeadlineInfo", () => {
-    it("이미 마감된 경우 '모집 마감'을 반환해야 한다", () => {
+    test("이미 마감된 경우 '모집 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T09:00:00"; // 1시간 전
       const result = getRegistrationDeadlineInfo(registrationEnd);
       expect(result).toBe("모집 마감");
     });
 
-    it("마감까지 남은 시간이 1시간 이내인 경우, 'n분 후 마감'을 반환해야 한다", () => {
+    test("마감까지 남은 시간이 1시간 이내인 경우, 'n분 후 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-01T10:30:00"; // 30분 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
       expect(result).toBe("30분 후 마감");
     });
 
-    it("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 후 마감'을 반환해야 한다", () => {
+    test("마감까지 남은 시간이 24시간 이내인 경우, 'n시간 후 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-02T09:00:00"; // 23시간 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
       expect(result).toBe("23시간 후 마감");
     });
 
-    it("마감까지 남은 시간이 24시간 이상인 경우, 'n일 후 마감'을 반환해야 한다", () => {
+    test("마감까지 남은 시간이 24시간 이상인 경우, 'n일 후 마감'을 반환해야 한다", () => {
       const registrationEnd = "2025-10-04T10:00:00"; // 3일 뒤
       const result = getRegistrationDeadlineInfo(registrationEnd);
       expect(result).toBe("3일 후 마감");
@@ -84,37 +86,37 @@ describe("dateTime", () => {
   });
 
   describe("getTimeAgo", () => {
-    it("방금 전을 반환해야 한다", () => {
+    test("방금 전을 반환해야 한다", () => {
       const createdAt = "2025-10-01T09:59:50"; // 10초 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("방금 전");
     });
 
-    it("10분 전을 반환해야 한다", () => {
+    test("10분 전을 반환해야 한다", () => {
       const createdAt = "2025-10-01T09:50:00"; // 정확히 10분 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("10분 전");
     });
 
-    it("1시간 전을 반환해야 한다", () => {
+    test("1시간 전을 반환해야 한다", () => {
       const createdAt = "2025-10-01T09:00:00"; // 정확히 1시간 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("1시간 전");
     });
 
-    it("1일 전을 반환해야 한다", () => {
+    test("1일 전을 반환해야 한다", () => {
       const createdAt = "2025-09-30T10:00:00"; // 하루 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("1일 전");
     });
 
-    it("2일 전을 반환해야 한다", () => {
+    test("2일 전을 반환해야 한다", () => {
       const createdAt = "2025-09-29T10:00:00"; // 이틀 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("2일 전");
     });
 
-    it("7일 전부터는 날짜를 반환해야 한다", () => {
+    test("7일 전부터는 날짜를 반환해야 한다", () => {
       const createdAt = "2025-09-24T10:00:00"; // 7일 전
       const result = getTimeAgo(createdAt);
       expect(result).toBe("2025.09.24");
@@ -122,7 +124,7 @@ describe("dateTime", () => {
   });
 
   describe("checkIsBefore", () => {
-    it("date와 dateToCompare보다 이전인 경우 true를 반환해야 한다", () => {
+    test("date와 dateToCompare보다 이전인 경우 true를 반환해야 한다", () => {
       const date = new Date("2025-10-01T09:00:00");
       const dateToCompare1 = new Date("2025-10-01T10:00:00");
       const result1 = checkIsBefore(date, dateToCompare1);
@@ -131,7 +133,7 @@ describe("dateTime", () => {
       expect(result2).toBe(true);
     });
 
-    it("date가 dateToCompare보다 이후인 경우 false를 반환해야 한다", () => {
+    test("date가 dateToCompare보다 이후인 경우 false를 반환해야 한다", () => {
       const date = new Date("2025-10-01T11:00:00");
       const dateToCompare = new Date("2025-10-01T10:00:00");
       const result1 = checkIsBefore(date, dateToCompare);
@@ -140,7 +142,7 @@ describe("dateTime", () => {
       expect(result2).toBe(false);
     });
 
-    it("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
+    test("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
       const date = new Date("2025-10-01T10:00:00");
       const result1 = checkIsBefore(date, date);
       expect(result1).toBe(false);
@@ -150,7 +152,7 @@ describe("dateTime", () => {
   });
 
   describe("checkIsAfter", () => {
-    it("date가 dateToCompare보다 이후인 경우 true를 반환해야 한다", () => {
+    test("date가 dateToCompare보다 이후인 경우 true를 반환해야 한다", () => {
       const date = new Date("2025-10-01T11:00:00");
       const dateToCompare = new Date("2025-10-01T10:00:00");
       const result1 = checkIsAfter(date, dateToCompare);
@@ -159,7 +161,7 @@ describe("dateTime", () => {
       expect(result2).toBe(true);
     });
 
-    it("date와 dateToCompare보다 더 이전인 경우 false를 반환해야 한다", () => {
+    test("date와 dateToCompare보다 더 이전인 경우 false를 반환해야 한다", () => {
       const date = new Date("2025-10-01T09:00:00");
       const dateToCompare1 = new Date("2025-10-01T10:00:00");
       const result1 = checkIsAfter(date, dateToCompare1);
@@ -168,7 +170,7 @@ describe("dateTime", () => {
       expect(result2).toBe(false);
     });
 
-    it("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
+    test("date와 dateToCompare이 같은 경우 false를 반환해야 한다", () => {
       const date = new Date("2025-10-01T10:00:00");
       const result1 = checkIsAfter(date, date);
       expect(result1).toBe(false);
@@ -178,7 +180,7 @@ describe("dateTime", () => {
   });
 
   describe("getHoursBefore", () => {
-    it("3시간 전을 반환해야 한다", () => {
+    test("3시간 전을 반환해야 한다", () => {
       const date = new Date("2025-10-01T10:00:00");
       const result = getHoursBefore(date, 3);
       expect(result).toEqual(new Date("2025-10-01T07:00:00"));
@@ -186,7 +188,7 @@ describe("dateTime", () => {
   });
 
   describe("formatDateShort", () => {
-    it("날짜를 올바른 형식으로 포맷해야 한다", () => {
+    test("날짜를 올바른 형식으로 포맷해야 한다", () => {
       const date = "2025-10-01T10:00:00";
       const result = formatDateShort(date);
       expect(result).toBe("2025.10.01");
@@ -194,10 +196,92 @@ describe("dateTime", () => {
   });
 
   describe("formatDays", () => {
-    it("요일 배열을 올바른 형식으로 포맷해야 한다", () => {
+    test("요일 배열을 올바른 형식으로 포맷해야 한다", () => {
       const days = ["MON", "WED", "FRI"];
       const result = formatDays(days);
       expect(result).toBe("월, 수, 금");
+    });
+  });
+
+  describe("formatDateToISOString", () => {
+    test("Date 객체를 YYYY-MM-DD 형식의 문자열로 변환해야 한다", () => {
+      const date = new Date();
+      const result = formatDateToISOString(date);
+      expect(result).toBe("2025-10-01");
+    });
+
+    test("월과 일이 한 자리수일 때 0으로 채워져야 한다", () => {
+      const date = new Date("2025-01-01T10:00:00");
+      const result = formatDateToISOString(date);
+      expect(result).toBe("2025-01-01");
+    });
+
+    test("다양한 날짜에 대해 올바른 형식을 반환해야 한다", () => {
+      const testCases = [
+        { date: new Date("2024-01-01T10:00:00"), expected: "2024-01-01" },
+        { date: new Date("2025-12-24T00:00:00"), expected: "2025-12-24" },
+        { date: new Date("2026-03-16T12:30:45"), expected: "2026-03-16" },
+      ];
+
+      testCases.forEach(({ date, expected }) => {
+        expect(formatDateToISOString(date)).toBe(expected);
+      });
+    });
+  });
+
+  describe("subtractHoursFromDateTime", () => {
+    test("기본값 3시간을 빼야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2025-10-01T07:00:00");
+    });
+
+    test("지정된 시간만큼 빼야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime, 5);
+      expect(result).toBe("2025-10-01T05:00:00");
+    });
+
+    test("시간이 음수가 되면 이전 날로 넘어가야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime, 11);
+      expect(result).toBe("2025-09-30T23:00:00");
+    });
+
+    test("정확히 24시간을 빼면 하루 전으로 넘어가야 한다", () => {
+      const dateTime = "2025-10-01T10:00";
+      const result = subtractHoursFromDateTime(dateTime, 24);
+      expect(result).toBe("2025-09-30T10:00:00");
+    });
+
+    test("분 정보를 유지해야 한다", () => {
+      const dateTime = "2025-10-01T10:30";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2025-10-01T07:30:00");
+    });
+
+    test("월이 바뀌는 경우를 처리해야 한다", () => {
+      const dateTime = "2025-10-01T01:00";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2025-09-30T22:00:00");
+    });
+
+    test("해가 바뀌는 경우를 처리해야 한다", () => {
+      const dateTime = "2025-01-01T01:00";
+      const result = subtractHoursFromDateTime(dateTime);
+      expect(result).toBe("2024-12-31T22:00:00");
+    });
+
+    test("다양한 시간과 분 조합을 처리해야 한다", () => {
+      const testCases = [
+        { dateTime: "2025-01-01T01:21", expected: "2024-12-31T22:21:00" },
+        { dateTime: "2025-10-01T10:48", expected: "2025-10-01T07:48:00" },
+        { dateTime: "2025-12-25T00:30", expected: "2025-12-24T21:30:00" },
+      ];
+
+      testCases.forEach(({ dateTime, expected }) => {
+        expect(subtractHoursFromDateTime(dateTime)).toBe(expected);
+      });
     });
   });
 });

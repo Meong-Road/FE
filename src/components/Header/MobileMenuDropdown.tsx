@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   DropdownMenu,
@@ -10,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/auth";
-import { useSignout } from "@/hooks/auth/useSignout";
+import { useSignoutMutation } from "@/hooks/auth/useSignoutMutation";
 import { PATH } from "@/lib/constants/path";
 import { cn } from "@/lib/utils";
 
@@ -37,13 +38,20 @@ export function MobileMenuDropdown() {
   const router = useRouter();
   const pathname = usePathname();
   const { user } = useAuth();
-  const signout = useSignout();
+  const { mutate: signoutMutation } = useSignoutMutation();
 
   const isActive = (href: string) => pathname.startsWith(href);
 
   const handleSignout = () => {
-    signout();
-    router.push(PATH.SIGNIN);
+    signoutMutation(undefined, {
+      onSuccess: () => {
+        router.push(PATH.REGULAR);
+        toast.success("로그아웃에 성공했습니다.");
+      },
+      onError: (error: Error) => {
+        toast.error(`로그아웃 실패: ${error.message}`);
+      },
+    });
   };
 
   return (

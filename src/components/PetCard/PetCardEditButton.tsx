@@ -1,18 +1,27 @@
 import { Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/auth";
 import { usePetInfoModalStore } from "@/store/modalStore";
 
 interface PetCardEditButtonProps {
   petId: number;
+  petOwnerId: number;
   className?: string;
 }
 
 export function PetCardEditButton({
   petId,
+  petOwnerId,
   className,
 }: PetCardEditButtonProps) {
+  const { user } = useAuth();
   const { setModalData, openModal } = usePetInfoModalStore();
+
+  // 본인의 반려견이 아니면 버튼 숨김
+  if (user?.id !== petOwnerId) {
+    return null;
+  }
 
   const handleClick = () => {
     setModalData("edit-pet", petId);

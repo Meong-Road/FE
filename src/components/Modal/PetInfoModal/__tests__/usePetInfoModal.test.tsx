@@ -102,17 +102,17 @@ describe("usePetInfoModal Hook 테스트", () => {
   };
 
   describe("초기 로딩 상태 테스트", () => {
-    it("first-login 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
+    test("first-login 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
       const { result } = renderHookWithType("first-login");
       expect(result.current.isPending).toBe(false);
     });
 
-    it("add-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
+    test("add-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
       const { result } = renderHookWithType("add-pet");
       expect(result.current.isPending).toBe(false);
     });
 
-    it("edit-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
+    test("edit-pet 타입 모달의 초기 로딩 상태가 false인지 테스트", () => {
       // edit-pet 모드에서는 enabled: true로 설정되어 있지만, 데이터가 없으면 로딩이 false
       mockGetPet.mockReturnValue({
         data: undefined,
@@ -126,7 +126,7 @@ describe("usePetInfoModal Hook 테스트", () => {
   });
 
   describe("useEffect 테스트", () => {
-    it("edit-pet 타입 모달일 때 기존 데이터를 불러오는지 테스트", async () => {
+    test("edit-pet 타입 모달일 때 기존 데이터를 불러오는지 테스트", async () => {
       const mockInitialPetData = createMockPetInfoResponse({ neuter: true });
 
       mockGetPet.mockReturnValue({
@@ -151,7 +151,7 @@ describe("usePetInfoModal Hook 테스트", () => {
   });
 
   describe("isDirty 상태 테스트", () => {
-    it("edit-pet 타입 모달에서 초기 상태일 때 isDirty가 false인지 테스트", async () => {
+    test("edit-pet 타입 모달에서 초기 상태일 때 isDirty가 false인지 테스트", async () => {
       const mockInitialPetData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({
@@ -165,7 +165,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.isDirty).toBe(false);
     });
 
-    it("edit-pet 타입 모달에서 변경사항이 없을 때 isDirty가 false인지 테스트", async () => {
+    test("edit-pet 타입 모달에서 변경사항이 없을 때 isDirty가 false인지 테스트", async () => {
       const mockInitialPetData = createMockPetInfoResponse({ neuter: null });
 
       mockGetPet.mockReturnValue({
@@ -179,12 +179,12 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.isDirty).toBe(false);
     });
 
-    it("first-login 타입 모달에서 isDirty가 false인지 테스트(초기 상태)", () => {
+    test("first-login 타입 모달에서 isDirty가 false인지 테스트(초기 상태)", () => {
       const { result } = renderHookWithType("first-login");
       expect(result.current.isDirty).toBe(false);
     });
 
-    it("add-pet 타입 모달에서 isDirty가 false인지 테스트(초기 상태)", () => {
+    test("add-pet 타입 모달에서 isDirty가 false인지 테스트(초기 상태)", () => {
       const { result } = renderHookWithType("add-pet");
       expect(result.current.isDirty).toBe(false);
     });
@@ -192,7 +192,7 @@ describe("usePetInfoModal Hook 테스트", () => {
 
   // TODO: handleSubmit이 컴포넌트로 이동했으므로 mutation 훅들을 직접 테스트
   describe("mutation 훅 테스트", () => {
-    it("first-login 타입일 때 usePostPet 훅이 올바르게 설정되는지 테스트", () => {
+    test("first-login 타입일 때 usePostPet 훅이 올바르게 설정되는지 테스트", () => {
       const { result } = renderHookWithType("first-login");
 
       // 훅이 정상적으로 반환되는지 확인
@@ -201,7 +201,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.isDirty).toBe(false);
     });
 
-    it("add-pet 타입일 때 usePostPet 훅이 올바르게 설정되는지 테스트", () => {
+    test("add-pet 타입일 때 usePostPet 훅이 올바르게 설정되는지 테스트", () => {
       const { result } = renderHookWithType("add-pet");
 
       // 훅이 정상적으로 반환되는지 확인
@@ -210,7 +210,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       expect(result.current.isDirty).toBe(false);
     });
 
-    it("edit-pet 타입일 때 usePutPet 훅이 올바르게 설정되는지 테스트", () => {
+    test("edit-pet 타입일 때 usePutPet 훅이 올바르게 설정되는지 테스트", () => {
       const mockInitialPetData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({
@@ -229,7 +229,7 @@ describe("usePetInfoModal Hook 테스트", () => {
     });
   });
 
-  it("API 에러 발생 시 에러 처리가 올바르게 되는지 테스트", async () => {
+  test("API 에러 발생 시 에러 처리가 올바르게 되는지 테스트", async () => {
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -251,7 +251,7 @@ describe("usePetInfoModal Hook 테스트", () => {
     consoleSpy.mockRestore();
   });
 
-  it("API 호출 중 로딩 상태가 true로 변경되는지 테스트", async () => {
+  test("API 호출 중 로딩 상태가 true로 변경되는지 테스트", async () => {
     // 로딩 상태를 시뮬레이션
     mockGetPet.mockReturnValue({
       data: undefined,
@@ -268,7 +268,7 @@ describe("usePetInfoModal Hook 테스트", () => {
   });
 
   describe("데이터 변환 테스트", () => {
-    it("API 응답 데이터가 올바르게 폼 데이터로 변환되는지 테스트", async () => {
+    test("API 응답 데이터가 올바르게 폼 데이터로 변환되는지 테스트", async () => {
       const mockData = createMockPetInfoResponse({
         image: "https://example.com/dog.jpg",
         neuter: false,
@@ -293,7 +293,7 @@ describe("usePetInfoModal Hook 테스트", () => {
       });
     });
 
-    it("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
+    test("neuter가 null일 때 undefined로 변환되는지 테스트", async () => {
       const mockData = createMockPetInfoResponse();
 
       mockGetPet.mockReturnValue({

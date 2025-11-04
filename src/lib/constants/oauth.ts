@@ -4,6 +4,9 @@
  * Google, Kakao OAuth 2.0 인증에 필요한 클라이언트 정보와 URL을 관리합니다.
  */
 
+// callback 경로
+export const OAUTH_CALLBACK_PATH = "/signin/callback";
+
 // OAuth Provider별 설정
 export const OAUTH_CONFIG = {
   google: {
@@ -20,18 +23,24 @@ export const OAUTH_CONFIG = {
 } as const;
 
 /**
- * OAuth Provider별 콜백 URL 반환
+ * OAuth Provider별 콜백 URL 반환 (프론트엔드)
  *
- * Google/Kakao 개발자 콘솔에 등록된 백엔드 redirect URI를 반환합니다.
- * OAuth 제공자는 이 URL로 인증 코드를 전달합니다.
+ * Google/Kakao OAuth 인증 후 돌아올 프론트엔드 페이지 URL을 반환합니다.
+ * 이 URL은 Google/Kakao 개발자 콘솔에 등록되어야 합니다.
  *
- * @param provider - 소셜 로그인 제공자 (google | kakao)
- * @returns 백엔드 OAuth 콜백 URL
+ * @returns 프론트엔드 OAuth 콜백 URL (/auth/callback 또는 /signin/callback)
  */
-export function getOAuthCallbackUrl(provider: "google" | "kakao"): string {
-  return provider === "google"
-    ? "https://api.meong-road.site:8050/meong-road/auth/google"
-    : "https://api.meong-road.site:8050/meong-road/auth/kakao";
+export function getOAuthCallbackUrl(): string {
+  if (typeof window !== "undefined") {
+    // 프로덕션: /auth/callback, 로컬: /signin/callback
+    const isLocalhost = window.location.hostname === "localhost";
+    const callbackPath = isLocalhost ? "/signin/callback" : "/auth/callback";
+    return `${window.location.origin}${callbackPath}`;
+  }
+  // 서버 사이드에서는 환경 변수 또는 기본값 사용
+  return process.env.NEXT_PUBLIC_SITE_URL
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+    : `http://localhost:3000/signin/callback`;
 }
 
 /**
@@ -53,7 +62,7 @@ export function getOAuthUrl(
     redirect_uri: redirectUri,
     response_type: "code",
     scope: config.scope,
-    ...(state && { state }),
+    // ...(state && { state }),
   });
 
   return `${config.authUrl}?${params.toString()}`;

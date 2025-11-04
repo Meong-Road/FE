@@ -13,7 +13,7 @@ interface FormRadioProps
   name: string;
   options: RadioOption[];
   value?: string;
-  onChange?: (value: RadioOption) => void;
+  onChange?: (value: RadioOption["value"]) => void; // react-hook-form 용
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   disabled?: boolean;
 }
@@ -24,13 +24,13 @@ export const Radio = React.forwardRef<HTMLInputElement, FormRadioProps>(
     ref,
   ) {
     const handleChange = (option: RadioOption) => {
-      onChange?.(option);
+      onChange?.(option.value);
     };
 
     return (
       <div className={cn("flex w-full gap-2.5", className)} {...rest}>
         {options.map((option, index) => {
-          const isChecked = value === option.id;
+          const isChecked = value === option.value;
           const inputRef = index === 0 ? ref : undefined;
 
           return (

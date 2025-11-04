@@ -62,7 +62,7 @@ export function getOAuthUrl(
     redirect_uri: redirectUri,
     response_type: "code",
     scope: config.scope,
-    // ...(state && { state }),
+    ...(state && { state }),
   });
 
   return `${config.authUrl}?${params.toString()}`;

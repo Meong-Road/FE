@@ -7,7 +7,7 @@ import { format, isValid, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 
-import { PET_REQUIRED_OPTIONS } from "@/lib/constants/option";
+import { CREATE_PET_REQUIRED_OPTIONS } from "@/lib/constants/option";
 import { EGatheringType } from "@/lib/types/gatherings";
 import { formatDateToISOString } from "@/lib/utils/dateTime";
 
@@ -120,7 +120,7 @@ export default function GatheringDetails({ type }: GatheringDetailsProps) {
               <Form.Control>
                 <Form.Radio
                   className="max-h-10 text-sm md:text-base"
-                  options={PET_REQUIRED_OPTIONS}
+                  options={CREATE_PET_REQUIRED_OPTIONS}
                   {...field}
                 />
               </Form.Control>

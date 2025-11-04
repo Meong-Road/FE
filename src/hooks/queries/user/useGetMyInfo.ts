@@ -29,5 +29,7 @@ export const useGetMyInfo = ({
     retry: (failureCount) => {
       return failureCount < 3;
     },
+    // 캐시가 없을 때 즉시 undefined를 반환하도록 설정
+    placeholderData: undefined,
   });
 };

@@ -9,9 +9,9 @@ const UserInfoFormSchema = z
       .string()
       .trim()
       .min(2, "닉네임을 2자 이상 입력해주세요.")
-      .max(8, "닉네임은 8자 이하로 입력해주세요.")
+      .max(18, "닉네임은 18자 이하로 입력해주세요.")
       .regex(
-        /^[가-힣a-zA-Z0-9]+$/,
+        /^[가-힣a-zA-Z0-9_]+$/,
         "초성, 특수문자, 공백은 사용할 수 없습니다.",
       ),
     nickNameCheckPassed: z.boolean(),

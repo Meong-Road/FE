@@ -10,5 +10,6 @@ export const useGetPetsByUserId = (userId: number) => {
     queryFn: () => petsApi.getPetInfoByUserId(userId),
     select: (data) => data.result,
     enabled: !!userId,
+    retry: false,
   });
 };

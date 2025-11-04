@@ -82,7 +82,7 @@ export default function UserPetCardSection({
   }
 
   if (isError || !pets) {
-    return <ErrorState message="반려견 정보를 불러오는데 실패했습니다." />;
+    return <ErrorState message="등록된 반려견이 없어요" />;
   }
 
   if (pets.length === 0) {

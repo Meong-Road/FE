@@ -20,5 +20,6 @@ export function useGetUserReviewByGathering(
       }),
     select: (data) => data.result,
     enabled: options?.enabled !== false,
+    retry: false,
   });
 }

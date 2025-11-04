@@ -16,7 +16,7 @@ import { Radio } from "./FormRadio";
 import { FormRatingInput as RatingInput } from "./FormRatingInput";
 import { Select } from "./FormSelect";
 import { SignupLink } from "./FormSignupLink";
-import { SocialButtons } from "./FormSocialButtons";
+// import { SocialButtons } from "./FormSocialButtons";
 import { SubmitButton } from "./FormSubmitButton";
 import { Textarea } from "./FormTextarea";
 import { Title } from "./FormTitle";
@@ -32,7 +32,7 @@ export const Form = Object.assign(BaseForm, {
   SubmitButton,
   Input,
   Title,
-  SocialButtons,
+  // SocialButtons,
   LoginLink,
   SignupLink,
   Select,

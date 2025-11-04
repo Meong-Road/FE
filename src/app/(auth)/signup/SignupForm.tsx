@@ -22,7 +22,7 @@ export default function SignupForm() {
       onSuccess: (res) => {
         toast.success("회원가입에 성공했습니다.");
 
-        if (res.success && !res.result.isPetInfoSubmitted) {
+        if (res.success && !res.result.user.isPetInfoSubmitted) {
           setModalData("first-login");
           openModal();
           return;
@@ -138,7 +138,7 @@ export default function SignupForm() {
         />
 
         {/* 소셜 로그인 버튼 */}
-        <Form.SocialButtons />
+        {/* <Form.SocialButtons /> */}
 
         {/* 로그인 링크 */}
         <Form.LoginLink />

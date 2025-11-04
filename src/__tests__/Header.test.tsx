@@ -76,8 +76,10 @@ jest.mock("@/hooks/auth", () => ({
   useAuth: jest.fn(),
 }));
 
-jest.mock("@/hooks/auth/useSignout", () => ({
-  useSignout: jest.fn(() => jest.fn()),
+jest.mock("@/hooks/auth/useSignoutMutation", () => ({
+  useSignoutMutation: jest.fn(() => ({
+    mutate: jest.fn(),
+  })),
 }));
 
 // DropdownMenu 모킹

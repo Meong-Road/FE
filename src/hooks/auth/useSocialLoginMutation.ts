@@ -1,7 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { authApi } from "@/api/auth";
 import { PostSocialLoginReq, PostSocialLoginRes } from "@/api/types/auth";
+
+import { QUERY_KEYS } from "../queries/queryKey";
 
 /**
  * OAuth 소셜 로그인 Mutation Hook (HttpOnly 쿠키 기반)
@@ -34,11 +36,13 @@ import { PostSocialLoginReq, PostSocialLoginRes } from "@/api/types/auth";
  * ```
  */
 export function useSocialLoginMutation() {
+  const queryClient = useQueryClient();
   return useMutation<PostSocialLoginRes, Error, PostSocialLoginReq>({
-    mutationFn: async (payload: PostSocialLoginReq) => {
-      // 백엔드가 HttpOnly 쿠키로 토큰을 자동 설정하므로
-      // 프론트엔드에서 별도 저장 불필요
-      return await authApi.socialLogin(payload);
+    mutationFn: (payload: PostSocialLoginReq) => {
+      return authApi.socialLogin(payload);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.my() });
     },
   });
 }

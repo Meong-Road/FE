@@ -9,7 +9,7 @@ export interface PostSignupReq {
   password: string;
 }
 
-export type PostSignupRes = Response<UserType>;
+export type PostSignupRes = Response<{ user: UserType }>;
 
 // Signin
 export interface PostSigninReq {
@@ -17,7 +17,7 @@ export interface PostSigninReq {
   password: string;
 }
 
-export type PostSigninRes = Response<UserType>;
+export type PostSigninRes = Response<{ user: UserType }>;
 
 // Duplicate Check
 export interface GetEmailDuplicateCheckReq {

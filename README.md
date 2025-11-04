@@ -2,13 +2,9 @@
   <a href="https://www.meong-road.site/regular">
     <img width="550" height="275" alt="로고" src="https://github.com/user-attachments/assets/f2c2846e-06e5-4e32-9077-ef55086f600d" width="20%" height=auto/>
   </a>
-  </br>
-  </br>
-  ### 반려견 산책 모임 서비스 '멍로드'
-  </br>
-  </br>
 </div>
 
+  ### 반려견 산책 모임 서비스 '멍로드'
 # Meong Road Frontend
 
 Next.js 15(App Router)와 React 19 기반으로 구축한 프론트엔드 애플리케이션입니다. TypeScript와 Tailwind CSS 4를 사용하며, React Query와 MSW(Mock Service Worker)로 데이터 페칭과 API 모킹 환경을 제공합니다.

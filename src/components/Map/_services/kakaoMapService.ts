@@ -251,6 +251,8 @@ export const kakaoMapService = {
     const marker = kakaoMapService.createMarker(map, latlng);
     const location = await kakaoMapService.reverseGeocode(latlng);
 
+    onMapClick(location);
+
     kakaoMapService.bindMapClick(map, async (clickedLatLng) => {
       marker.setPosition(clickedLatLng);
       const clickedPlace = await kakaoMapService.reverseGeocode(clickedLatLng);

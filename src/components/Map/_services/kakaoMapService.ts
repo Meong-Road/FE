@@ -316,7 +316,7 @@ export const kakaoMapService = {
     let location: KakaoReverseGeocodePlaceType;
 
     try {
-      let savedLatLng: KakaoLatLng | null = null;
+      let savedLatLng: { lat: number; lng: number } | null = null;
 
       if (draftKey) {
         const draft = localStorage.getItem(draftKey);
@@ -332,10 +332,7 @@ export const kakaoMapService = {
       }
 
       if (savedLatLng) {
-        latlng = new window.kakao.maps.LatLng(
-          savedLatLng.getLat,
-          savedLatLng.getLng,
-        );
+        latlng = new window.kakao.maps.LatLng(savedLatLng.lat, savedLatLng.lng);
         location = await kakaoMapService.reverseGeocode(latlng);
         toast.success("임시 저장된 위치가 복원되었습니다");
       } else {

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 import {
   KakaoMap,
@@ -16,19 +17,25 @@ interface Props {
 }
 
 export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
+  const pathname = usePathname();
   const map = useRef<KakaoMap | null>(null);
   const marker = useRef<KakaoMarker | null>(null);
+  const draftKey = pathname.includes("/regular")
+    ? "gathering-draft-regular"
+    : pathname.includes("/quick")
+      ? "gathering-draft-quick"
+      : null;
 
   useEffect(() => {
     const initMap = async () => {
       if (!mapRef.current || map.current) return;
 
       try {
-        const { map: m, marker: mk } =
-          await kakaoMapService.initMapWithCurrLocation(
-            mapRef.current,
-            setLocation,
-          );
+        const { map: m, marker: mk } = await kakaoMapService.initMapWithSession(
+          mapRef.current,
+          setLocation,
+          draftKey,
+        );
 
         map.current = m;
         marker.current = mk;
@@ -38,7 +45,7 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
     };
 
     initMap();
-  }, [setLocation]);
+  }, [mapRef, setLocation, draftKey]);
 
   useEffect(() => {
     if (!place || !map.current || !marker.current) return;

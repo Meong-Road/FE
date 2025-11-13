@@ -1,4 +1,5 @@
 import { GatheringCard } from "@/components/GatheringCard";
+import { GatheringCardCopyLinkButton } from "@/components/GatheringCard/GatheringCardCopyLinkButton";
 import ProgressBar from "@/components/ProgressBar";
 import { useGatheringStateContext } from "@/hooks/context/useGatheringStateContext";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,10 @@ export default function GatheringInfoCard() {
           <div className="mb-6 flex items-center gap-2">
             <GatheringCard.DeadlineBadge />
           </div>
-          <GatheringCard.Title className="mb-3" />
+          <div className="mb-3 flex items-center gap-2">
+            <GatheringCard.Title />
+            <GatheringCardCopyLinkButton />
+          </div>
         </div>
         <GatheringCard.LikeBtn />
       </div>

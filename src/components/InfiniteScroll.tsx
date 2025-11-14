@@ -1,8 +1,9 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 
+import useMinimumRendering from "@/hooks/useMinimumRendering";
 import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { cn } from "@/lib/utils";
 
@@ -43,25 +44,15 @@ export default function InfiniteScroll<T>({
   minimumLoadingTime = 500,
 }: InfiniteScrollProps<T>) {
   const { ref, inView } = useInView();
-  const [showSkeleton, setShowSkeleton] = useState(isPending);
+  const { isRendering } = useMinimumRendering({
+    minRenderTime: minimumLoadingTime,
+  });
 
   useEffect(() => {
     if (inView) fetchNextPage();
   }, [inView, fetchNextPage]);
 
-  useEffect(() => {
-    if (isPending) {
-      setShowSkeleton(true);
-    } else {
-      const timer = setTimeout(() => {
-        setShowSkeleton(false);
-      }, minimumLoadingTime);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isPending, minimumLoadingTime]);
-
-  if (showSkeleton)
+  if (isPending || isRendering)
     return (
       <ul className={cn("grid grid-cols-1 gap-y-6", className)}>
         <Iterator count={DEFAULT_LIST_OPTIONS.size}>

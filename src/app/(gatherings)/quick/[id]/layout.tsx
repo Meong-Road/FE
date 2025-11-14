@@ -1,3 +1,6 @@
+import { Metadata } from "next";
+import { headers } from "next/headers";
+
 import { gatheringApi } from "@/api/gatherings";
 import { GatheringType } from "@/lib/types/gatherings";
 
@@ -6,8 +9,30 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export async function generateMetaData({ params }: LayoutProps) {
+async function getSiteUrl(): Promise<string> {
+  // 서버 사이드에서 요청 헤더로부터 호스트 가져오기
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = headersList.get("x-forwarded-proto") || "http";
+
+  if (host) {
+    return `${protocol}://${host}`;
+  }
+
+  // 환경 변수가 있으면 사용
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+
+  // 기본값 (프로덕션 URL)
+  return "https://meong-road.site";
+}
+
+export async function generateMetadata({
+  params,
+}: LayoutProps): Promise<Metadata> {
   const { id } = await params;
+  const siteUrl = await getSiteUrl();
 
   try {
     const response = await gatheringApi.getGathering({ id: Number(id) });
@@ -19,8 +44,6 @@ export async function generateMetaData({ params }: LayoutProps) {
       };
     }
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_API_URL || "https://meong-road.site";
     const imageUrl = gathering.image
       ? gathering.image.startsWith("http")
         ? gathering.image
@@ -50,7 +73,7 @@ export async function generateMetaData({ params }: LayoutProps) {
       ? `${gathering.description.substring(0, 150)}${
           gathering.description.length > 150 ? "..." : ""
         }`
-      : `${locationText}에서 진행되는 ${gathering.name} 모임입니다.`;
+      : `${locationText()}에서 진행되는 ${gathering.name} 모임입니다.`;
 
     return {
       title: `${gathering.name} | 멍로드`,

@@ -1,0 +1,86 @@
+import { gatheringApi } from "@/api/gatherings";
+import { GatheringType } from "@/lib/types/gatherings";
+
+interface LayoutProps {
+  params: Promise<{ id: string }>;
+  children: React.ReactNode;
+}
+
+export async function generateMetaData({ params }: LayoutProps) {
+  const { id } = await params;
+
+  try {
+    const response = await gatheringApi.getGathering({ id: Number(id) });
+    const gathering = response.result as GatheringType;
+
+    if (!gathering) {
+      return {
+        title: "멍로드 | 모임을 찾을 수 없습니다",
+      };
+    }
+
+    const siteUrl =
+      process.env.NEXT_PUBLIC_API_URL || "https://meong-road.site";
+    const imageUrl = gathering.image
+      ? gathering.image.startsWith("http")
+        ? gathering.image
+        : `${siteUrl}${gathering.image}`
+      : `${siteUrl}/images/dog.svg`;
+
+    const locationText = () => {
+      try {
+        const loc =
+          typeof gathering.location === "string"
+            ? JSON.parse(gathering.location)
+            : gathering.location;
+        return (
+          loc?.region_2depth_name ||
+          loc?.district ||
+          loc?.address_name ||
+          "위치 정보 없음"
+        );
+      } catch {
+        return typeof gathering.location === "string"
+          ? gathering.location
+          : "위치 정보 없음";
+      }
+    };
+
+    const description = gathering.description
+      ? `${gathering.description.substring(0, 150)}${
+          gathering.description.length > 150 ? "..." : ""
+        }`
+      : `${locationText}에서 진행되는 ${gathering.name} 모임입니다.`;
+
+    return {
+      title: `${gathering.name} | 멍로드`,
+      description,
+      openGraph: {
+        title: gathering.name,
+        description,
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: gathering.name,
+          },
+        ],
+        type: "website",
+        siteName: "멍로드",
+        locale: "ko_KR",
+      },
+    };
+  } catch {
+    console.error("Failed to fetch gathering for metadata");
+    return {
+      title: "모임 상세 | 멍로드",
+    };
+  }
+}
+
+export default async function RegularGatheringDetailLayout({
+  children,
+}: LayoutProps) {
+  return <>{children}</>;
+}

@@ -4,7 +4,7 @@ import { UserType } from "@/lib/types/user";
  * Mock 사용자 데이터
  */
 export const mockCurrentUser: UserType = {
-  id: 1,
+  id: 99999,
   email: "test@test.com",
   name: "멍로드",
   nickName: "멍로드",

@@ -38,9 +38,9 @@ export const useGetMyInfo = ({
       }
     },
     select: (data) => data?.result ?? null,
-    staleTime: Infinity, // 데이터 항상 신선함 (캐시 무제한)
-    gcTime: Infinity, // 가비지 컬렉션 비활성화 (캐시 영구 유지)
+    staleTime: Infinity,
+    gcTime: Infinity,
     enabled,
-    retry: false, // 에러 시 재시도 안 함 (이미 queryFn에서 처리)
+    retry: false,
   });
 };

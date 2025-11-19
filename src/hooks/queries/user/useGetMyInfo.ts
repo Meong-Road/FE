@@ -5,6 +5,16 @@ import { ApiError } from "@/lib/api/customFetch";
 
 import { QUERY_KEYS } from "../queryKey";
 
+/**
+ * 현재 로그인한 사용자 정보 조회 훅 (HttpOnly 쿠키 기반)
+ *
+ * @description
+ * - 401/400 에러 시 null 반환 (에러 로깅 없음)
+ * - customFetch에서 자동으로 refresh 시도
+ * - 캐시 무제한 유지 (staleTime/gcTime: Infinity)
+ *
+ * @returns user: 사용자 정보 | null
+ */
 export const useGetMyInfo = ({
   enabled = true,
 }: {
@@ -16,9 +26,14 @@ export const useGetMyInfo = ({
       try {
         return await userApi.getMyInfo();
       } catch (error) {
-        if (error instanceof ApiError && error.statusCode === 401) {
+        // 인증 관련 에러는 조용히 처리 (로그인하지 않은 상태)
+        if (
+          error instanceof ApiError &&
+          [401, 400].includes(error.statusCode)
+        ) {
           return null;
         }
+        // 다른 에러는 그대로 전파
         throw error;
       }
     },
@@ -26,8 +41,6 @@ export const useGetMyInfo = ({
     staleTime: Infinity,
     gcTime: Infinity,
     enabled,
-    retry: (failureCount) => {
-      return failureCount < 3;
-    },
+    retry: false,
   });
 };

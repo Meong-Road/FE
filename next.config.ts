@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { PATH } from "@/lib/constants/path";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -22,6 +24,17 @@ const nextConfig: NextConfig = {
   // HttpOnly 쿠키를 사용하므로 프록시 비활성화
   async rewrites() {
     return [];
+  },
+
+  // 루트 경로를 정규 모임 페이지로 리다이렉트
+  async redirects() {
+    return [
+      {
+        source: PATH.HOME,
+        destination: PATH.REGULAR,
+        permanent: false, // 307 임시 리다이렉트
+      },
+    ];
   },
 
   webpack(config) {

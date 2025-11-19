@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
-
-import { PATH } from "@/lib/constants/path";
+// 루트 페이지는 next.config.ts의 redirects 설정에 의해 /regular로 자동 리다이렉트됨
 
 export default function Home() {
-  redirect(PATH.REGULAR);
+  return null;
 }

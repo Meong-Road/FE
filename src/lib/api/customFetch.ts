@@ -20,6 +20,33 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * 토큰 갱신 중복 방지를 위한 전역 플래그
+ * - 동시에 여러 요청에서 401 발생 시 refresh를 한 번만 수행
+ */
+let isRefreshing = false;
+let refreshPromise: Promise<void> | null = null;
+
+/**
+ * 리프레시 토큰으로 액세스 토큰 갱신
+ * - HttpOnly 쿠키 기반 (자동으로 쿠키 포함/저장)
+ * - 실패 시 ApiError throw
+ */
+async function refreshToken(): Promise<void> {
+  const response = await fetch(`${BASE_URL}${PREFIX}/auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new ApiError(response.status, error.message || "토큰 갱신 실패");
+  }
+
+  await response.json(); // 새 토큰은 쿠키에 자동 저장
+}
+
 // 공통 fetch 요청 함수
 async function request<T>(
   endpoint: string,
@@ -50,6 +77,27 @@ async function request<T>(
     // 4. 응답 처리 or 에러 Throw
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
+
+      // 4-1. 401 에러 시 자동 토큰 갱신 시도 (refresh API 자체는 제외)
+      if (response.status === 401 && !endpoint.includes("/auth/refresh")) {
+        // 중복 갱신 방지: 이미 갱신 중이면 기존 Promise 재사용
+        if (!isRefreshing) {
+          isRefreshing = true;
+          refreshPromise = refreshToken().finally(() => {
+            isRefreshing = false;
+            refreshPromise = null;
+          });
+        }
+
+        try {
+          await refreshPromise; // 갱신 완료 대기
+          return request<T>(endpoint, options); // 갱신 성공 → 원래 요청 재시도
+        } catch (refreshError) {
+          throw refreshError; // 갱신 실패 → 에러 전파 (queryFn에서 처리)
+        }
+      }
+
+      // 4-2. 다른 에러는 즉시 전파
       throw new ApiError(
         response.status,
         error.message || `HTTP Error ${response.status}`,

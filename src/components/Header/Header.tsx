@@ -47,7 +47,7 @@ export default function Header({ className }: { className?: string }) {
       )}
     >
       <div className="flex w-full max-w-[1280px] items-center justify-between px-4 sm:px-8">
-        <Link href={PATH.REGULAR} className="shrink-0">
+        <Link href="/" className="shrink-0">
           <Logo width={92} />
         </Link>
 

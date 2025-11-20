@@ -27,15 +27,15 @@ const nextConfig: NextConfig = {
   },
 
   // 루트 경로를 정규 모임 페이지로 리다이렉트
-  async redirects() {
-    return [
-      {
-        source: PATH.HOME,
-        destination: PATH.REGULAR,
-        permanent: false, // 307 임시 리다이렉트
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: PATH.HOME,
+  //       destination: PATH.REGULAR,
+  //       permanent: false, // 307 임시 리다이렉트
+  //     },
+  //   ];
+  // },
 
   webpack(config) {
     // Grab the existing rule that handles SVG imports

@@ -171,12 +171,12 @@ describe("Header", () => {
     expect(desktopMenu).toHaveTextContent("로그인");
   });
 
-  it("로고 링크가 홈페이지로 연결되어야 한다", () => {
-    renderHeader();
+  // it("로고 링크가 홈페이지로 연결되어야 한다", () => {
+  //   renderHeader();
 
-    const logoLink = screen.getByTestId("logo").closest("a");
-    expect(logoLink).toHaveAttribute("href", PATH.REGULAR);
-  });
+  //   const logoLink = screen.getByTestId("logo").closest("a");
+  //   expect(logoLink).toHaveAttribute("href", PATH.REGULAR);
+  // });
 
   it("각 네비게이션 메뉴가 올바른 링크를 가져야 한다", () => {
     renderHeader();

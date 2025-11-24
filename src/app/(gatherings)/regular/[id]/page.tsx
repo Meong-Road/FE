@@ -45,10 +45,14 @@ function RegularGatheringDetailPageContent() {
     return;
   }
 
+  const parsedLocation = JSON.parse(gathering.location);
+
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
-      <GatheringLocationSection locationPayload={gathering.location} />
+      <GatheringLocationSection
+        locationPayload={parsedLocation.region_2depth_name}
+      />
       <GatheringIntroductionSection description={gathering.description} />
       <GatheringReviewSection />
     </>

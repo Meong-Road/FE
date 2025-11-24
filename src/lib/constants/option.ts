@@ -1,6 +1,6 @@
 import { PaginationReq } from "@/api/types/common";
 
-import { LocationType } from "../types/reviews";
+import { DistrictWithAllType } from "../types/location";
 
 export const DEFAULT_LIST_OPTIONS: Pick<PaginationReq, "size" | "sort"> = {
   size: 12,
@@ -8,7 +8,7 @@ export const DEFAULT_LIST_OPTIONS: Pick<PaginationReq, "size" | "sort"> = {
 };
 
 export const LOCATION_OPTIONS_MAP: Record<
-  LocationType,
+  DistrictWithAllType,
   { value?: string; label: string }
 > = {
   ["서울 전체"]: { value: undefined, label: "서울 전체" },
@@ -40,7 +40,7 @@ export const LOCATION_OPTIONS_MAP: Record<
 
 export const LOCATION_OPTIONS = Object.entries(LOCATION_OPTIONS_MAP).map(
   ([key, option]) => ({
-    id: key as LocationType,
+    id: key as DistrictWithAllType,
     ...option,
   }),
 );

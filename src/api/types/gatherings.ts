@@ -7,12 +7,12 @@ import {
   QuickGatheringType,
   RegularGatheringType,
 } from "@/lib/types/gatherings";
-import { LocationType } from "@/lib/types/reviews";
+import { DistrictParam } from "@/lib/types/reviews";
 
 import { PaginatedRes, PaginationReq, Response } from "./common";
 
 export interface CommonGatheringFilters {
-  location?: LocationType | null;
+  location?: DistrictParam;
   hostId?: number | null;
   isClosed?: boolean | null;
   isPetRequired?: boolean | null;

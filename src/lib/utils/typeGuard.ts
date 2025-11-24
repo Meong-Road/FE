@@ -10,7 +10,7 @@ import {
   QuickGatheringType,
   RegularGatheringType,
 } from "../types/gatherings";
-import { LocationParamType } from "../types/reviews";
+import { DistrictParam } from "../types/reviews";
 
 export const isQuickGathering = (
   gathering: GatheringType,
@@ -26,7 +26,7 @@ export const isRegularGathering = (
 
 export const isLocationParamType = (
   location: string | null,
-): location is LocationParamType => {
+): location is DistrictParam => {
   if (location === null) return true;
   return SEOUL_DISTRICTS.some((l) => l === location);
 };

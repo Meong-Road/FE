@@ -1,13 +1,13 @@
 import { PaginationOptions, PaginationReq } from "@/api/types/common";
 import { GetReviewDashboardReq } from "@/api/types/reviews";
-import { LocationParamType } from "@/lib/types/reviews";
+import { DistrictParam } from "@/lib/types/reviews";
 
 export const REVIEWS_QUERY_KEYS = {
   all: () => ["reviews"] as const,
   lists: () => [...REVIEWS_QUERY_KEYS.all(), "list"] as const,
   list: (
     options: PaginationReq,
-    filters: { location?: LocationParamType; gatheringId?: number },
+    filters: { location?: DistrictParam; gatheringId?: number },
   ) => [...REVIEWS_QUERY_KEYS.lists(), options, filters] as const,
   dashboards: () => [...REVIEWS_QUERY_KEYS.all(), "dashboard"] as const,
   dashboard: ({ location }: GetReviewDashboardReq) => [

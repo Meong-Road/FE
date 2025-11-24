@@ -230,40 +230,6 @@ export const kakaoMapService = {
     return kakaoMapService.reverseGeocode(latlng);
   },
 
-  // TODO: 이제 사용하지 않음
-  /**
-   * 현재 위치 기준으로 맵과 마커 초기화
-   * @param container 맵을 렌더링할 HTML 요소
-   * @param onMapClick 맵 클릭 시 실행할 콜백
-   * @returns 맵, 마커, 위치 정보
-   */
-  initMapWithCurrLocation: async (
-    container: HTMLDivElement,
-    onMapClick: (loc: KakaoReverseGeocodePlaceType) => void,
-  ): Promise<{
-    map: KakaoMap;
-    marker: KakaoMarker;
-    location: KakaoReverseGeocodePlaceType;
-  }> => {
-    await kakaoMapService.waitForKakaoMapLoad();
-
-    const latlng = await kakaoMapService.getCurrentLatLng();
-    const map = kakaoMapService.createMap(container, latlng);
-    const marker = kakaoMapService.createMarker(map, latlng);
-    const location = await kakaoMapService.reverseGeocode(latlng);
-
-    onMapClick(location);
-
-    kakaoMapService.bindMapClick(map, async (clickedLatLng) => {
-      marker.setPosition(clickedLatLng);
-      const clickedPlace = await kakaoMapService.reverseGeocode(clickedLatLng);
-      toast.success("위치가 변경되었습니다");
-      onMapClick(clickedPlace);
-    });
-
-    return { map, marker, location };
-  },
-
   /**
    * 정적인 카카오맵을 생성
    * @param container 맵을 렌더링할 HTML 요소
@@ -301,6 +267,52 @@ export const kakaoMapService = {
     return { map, marker };
   },
 
+  restoreSavedLocation: async (
+    draftKey: string | null,
+  ): Promise<KakaoLatLng | null> => {
+    if (!draftKey) return null;
+
+    try {
+      const draft = localStorage.getItem(draftKey);
+      if (!draft) return null;
+
+      const parsed = JSON.parse(draft);
+      const location = parsed?.location ? JSON.parse(parsed.location) : null;
+      const coords = location?.latlng;
+
+      if (coords?.lat && coords?.lng) {
+        return new window.kakao.maps.LatLng(coords.lat, coords.lng);
+      }
+    } catch {
+      return null;
+    }
+
+    return null;
+  },
+
+  resolveInitialLocation: async (
+    draftKey: string | null,
+  ): Promise<{
+    latlng: KakaoLatLng;
+    location: KakaoReverseGeocodePlaceType;
+  }> => {
+    const restored = await kakaoMapService.restoreSavedLocation(draftKey);
+
+    if (restored) {
+      toast.success("임시 저장된 위치가 복원되었습니다");
+      return {
+        latlng: restored,
+        location: await kakaoMapService.reverseGeocode(restored),
+      };
+    }
+
+    const current = await kakaoMapService.getCurrentLatLng();
+    return {
+      latlng: current,
+      location: await kakaoMapService.reverseGeocode(current),
+    };
+  },
+
   initMapWithSession: async (
     container: HTMLDivElement,
     onMapClick: (loc: KakaoReverseGeocodePlaceType) => void,
@@ -312,46 +324,18 @@ export const kakaoMapService = {
   }> => {
     await kakaoMapService.waitForKakaoMapLoad();
 
-    let latlng: KakaoLatLng;
-    let location: KakaoReverseGeocodePlaceType;
-
-    try {
-      let savedLatLng: { lat: number; lng: number } | null = null;
-
-      if (draftKey) {
-        const draft = localStorage.getItem(draftKey);
-        if (draft) {
-          const parsed = JSON.parse(draft);
-          if (parsed?.location) {
-            const loc = JSON.parse(parsed.location);
-            if (loc?.latlng?.lat && loc?.latlng?.lng) {
-              savedLatLng = loc.latlng;
-            }
-          }
-        }
-      }
-
-      if (savedLatLng) {
-        latlng = new window.kakao.maps.LatLng(savedLatLng.lat, savedLatLng.lng);
-        location = await kakaoMapService.reverseGeocode(latlng);
-        toast.success("임시 저장된 위치가 복원되었습니다");
-      } else {
-        throw new Error("");
-      }
-    } catch {
-      const currLatLng = await kakaoMapService.getCurrentLatLng();
-      latlng = currLatLng;
-      location = await kakaoMapService.reverseGeocode(currLatLng);
-    }
+    const { latlng, location } =
+      await kakaoMapService.resolveInitialLocation(draftKey);
 
     const map = kakaoMapService.createMap(container, latlng);
     const marker = kakaoMapService.createMarker(map, latlng);
 
     kakaoMapService.bindMapClick(map, async (clickedLatLng) => {
       marker.setPosition(clickedLatLng);
-      const clickedPlace = await kakaoMapService.reverseGeocode(clickedLatLng);
+      const clickedLocation =
+        await kakaoMapService.reverseGeocode(clickedLatLng);
       toast.success("위치가 변경되었습니다");
-      onMapClick(clickedPlace);
+      onMapClick(clickedLocation);
     });
 
     onMapClick(location);

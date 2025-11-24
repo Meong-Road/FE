@@ -55,8 +55,8 @@ export const kakaoMapService = {
         },
         () => {
           toast.error("현재 위치를 가져올 수 없어 기본 위치로 이동합니다");
-          const default_location = getDefaultLatLng();
-          resolve(default_location);
+          const defaultLocation = getDefaultLatLng();
+          resolve(defaultLocation);
         },
       );
     });
@@ -188,29 +188,29 @@ export const kakaoMapService = {
    * 클릭한 장소로 맵을 이동시키고 location 갱신
    * @param map 맵 인스턴스
    * @param marker 마커 인스턴스
-   * @param place 이동할 장소
+   * @param searchedPlace 이동할 장소
    * @param setLocation 위치 상태 갱신하는 함수
    * @returns
    */
   moveMarkerToPlace: (
     map: KakaoMap,
     marker: KakaoMarker,
-    place: KakaoSearchedPlaceType,
+    searchedPlace: KakaoSearchedPlaceType,
     setLocation: (loc: KakaoReverseGeocodePlaceType) => void,
   ): void => {
     const latlng = new window.kakao.maps.LatLng(
-      Number(place.y),
-      Number(place.x),
+      Number(searchedPlace.y),
+      Number(searchedPlace.x),
     );
 
     moveMapAndMarker(map, marker, latlng);
     toast.success("위치가 변경되었습니다");
 
     setLocation({
-      address_name: place.address_name,
-      region_1depth_name: place.address_name.split(" ")[0],
-      region_2depth_name: place.address_name.split(" ")[1] ?? "",
-      latlng: { lat: Number(place.y), lng: Number(place.x) },
+      address_name: searchedPlace.address_name,
+      region_1depth_name: searchedPlace.address_name.split(" ")[0],
+      region_2depth_name: searchedPlace.address_name.split(" ")[1] ?? "",
+      latlng: { lat: Number(searchedPlace.y), lng: Number(searchedPlace.x) },
     });
   },
 
@@ -240,8 +240,8 @@ export const kakaoMapService = {
     container: HTMLDivElement,
     payload: string,
   ): Promise<{ map: KakaoMap; marker: KakaoMarker }> => {
-    const parsed = parseLocationPayload(payload);
-    const { lat, lng } = parsed.latlng;
+    const location = parseLocationPayload(payload);
+    const { lat, lng } = location.latlng;
 
     await kakaoMapService.waitForKakaoMapLoad();
 
@@ -258,7 +258,7 @@ export const kakaoMapService = {
     const marker = kakaoMapService.createMarker(map, locPosition);
     const customOverlay = new kakao.maps.CustomOverlay({
       position: locPosition,
-      content: createCustomOverlay(parsed.address_name),
+      content: createCustomOverlay(location.address_name),
       yAnchor: 1.8,
     });
 

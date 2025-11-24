@@ -4,6 +4,7 @@ import {
   KakaoMarker,
   KakaoSearchedPlaceType,
 } from "../types/kakao";
+import { LocationType } from "../types/location";
 
 /**
  * 기본 좌표 (서울시청) 리턴
@@ -15,29 +16,22 @@ export const getDefaultLatLng = (): KakaoLatLng => {
 /**
  * JSON 문자열 위치 정보 파싱; 실패 시 기본 좌표 리턴
  */
-export const parseLocationPayload = (
-  payload: string,
-): {
-  address_name: string;
-  region_1depth_name: string;
-  region_2depth_name: string;
-  latlng: { lat: number; lng: number };
-} => {
+export const parseLocationPayload = (payload: string): LocationType => {
   try {
-    const parsed = JSON.parse(payload);
+    const location = JSON.parse(payload);
 
     // 구버전: district로 들어감
-    if ("district" in parsed) {
+    if ("district" in location) {
       return {
-        address_name: parsed.district ?? "",
+        address_name: location.district ?? "",
         region_1depth_name: "서울",
-        region_2depth_name: parsed.district ?? "",
-        latlng: parsed.latlng ?? { lat: 37.566826, lng: 126.9786567 },
+        region_2depth_name: location.district ?? "",
+        latlng: location.latlng ?? { lat: 37.566826, lng: 126.9786567 },
       };
     }
 
     // 신버전
-    return parsed;
+    return location;
   } catch {
     // 구구버전: 위치 정보 없음
     return {

@@ -40,7 +40,7 @@ export default function useKakaoMap({ mapRef, place, setLocation }: Props) {
         map.current = m;
         marker.current = mk;
       } catch (error) {
-        console.log("지도 초g기화 실패:", error);
+        console.log("지도 초기화 실패:", error);
       }
     };
 

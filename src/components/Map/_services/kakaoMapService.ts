@@ -267,6 +267,12 @@ export const kakaoMapService = {
     return { map, marker };
   },
 
+  /**
+   * localStorage에 저장된 위치 정보 복원
+   *
+   * @param draftKey localStorage key
+   * @returns 복원된 좌표 또는 null
+   */
   restoreSavedLocation: async (
     draftKey: string | null,
   ): Promise<KakaoLatLng | null> => {
@@ -290,6 +296,12 @@ export const kakaoMapService = {
     return null;
   },
 
+  /**
+   * 복원 가능한 위치가 있으면 리턴, 없으면 현재 위치 리턴
+   *
+   * @param draftKey localStorage key
+   * @returns 지도 초기화에 필요한 latlng, location 정보
+   */
   resolveInitialLocation: async (
     draftKey: string | null,
   ): Promise<{
@@ -313,6 +325,14 @@ export const kakaoMapService = {
     };
   },
 
+  /**
+   * 지도 & 마커를 초기화하고 저장된 위치 또는 현재 위치를 반영
+   *
+   * @param container 지도를 렌더링할 HTML 요소
+   * @param onMapClick 위치 변경 시 실행할 콜백
+   * @param draftKey localStorage key
+   * @returns 초기 map, marker, location 정보
+   */
   initMapWithSession: async (
     container: HTMLDivElement,
     onMapClick: (loc: KakaoReverseGeocodePlaceType) => void,

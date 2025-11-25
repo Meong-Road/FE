@@ -45,7 +45,9 @@ function QuickGatheringDetailPageContent() {
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
-      <GatheringLocationSection locationPayload={gathering.location} />
+      <GatheringLocationSection
+        locationPayload={JSON.parse(gathering.location).region_2depth_name}
+      />
       <GatheringIntroductionSection description={gathering.description} />
     </>
   );

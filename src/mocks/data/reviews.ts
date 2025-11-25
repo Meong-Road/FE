@@ -1,5 +1,6 @@
 import { EGatheringType, RegularGatheringType } from "@/lib/types/gatherings";
-import { LocationType, ReviewScore, ReviewType } from "@/lib/types/reviews";
+import { DistrictType } from "@/lib/types/location";
+import { ReviewScore, ReviewType } from "@/lib/types/reviews";
 
 import { USERS } from "./users";
 
@@ -23,7 +24,12 @@ export const mockReviews: ReviewType[] = [
       description:
         "서울숲의 상쾌한 공기를 마시며 반려견과 함께 힐링하는 시간을 가져요. 사회성 기르기에도 최고!",
       days: ["SAT", "SUN"],
-      location: "성동구",
+      location: JSON.stringify({
+        address_name: "서울 성동구",
+        region_1depth_name: "서울",
+        region_2depth_name: "성동구",
+        latlng: { lat: 37.566826, lng: 126.9786567 },
+      }),
       participantCount: 8,
       capacity: 15,
       image:
@@ -51,7 +57,12 @@ export const mockReviews: ReviewType[] = [
       description:
         "아름다운 석촌호수 야경을 보며 반려견과 낭만적인 밤 산책을 즐겨보세요.",
       days: ["WED"],
-      location: "송파구",
+      location: JSON.stringify({
+        address_name: "서울 송파구",
+        region_1depth_name: "서울",
+        region_2depth_name: "송파구",
+        latlng: { lat: 37.566826, lng: 126.9786567 },
+      }),
       participantCount: 5,
       capacity: 10,
       image:
@@ -79,7 +90,12 @@ export const mockReviews: ReviewType[] = [
       description:
         "넓은 올림픽공원에서 마음껏 뛰어놀고 싶은 강아지들을 위한 정기 모임입니다. 스트레스 확 풀어요!",
       days: ["SAT"],
-      location: "송파구",
+      location: JSON.stringify({
+        address_name: "서울 송파구",
+        region_1depth_name: "서울",
+        region_2depth_name: "송파구",
+        latlng: { lat: 37.566826, lng: 126.9786567 },
+      }),
       participantCount: 12,
       capacity: 20,
       image:
@@ -107,7 +123,12 @@ export const mockReviews: ReviewType[] = [
       description:
         "돗자리 펴고 맛있는 간식도 나눠먹고, 이야기도 나누는 힐링 번개 모임입니다.",
       days: ["FRI"],
-      location: "서초구",
+      location: JSON.stringify({
+        address_name: "서울 서초구",
+        region_1depth_name: "서울",
+        region_2depth_name: "서초구",
+        latlng: { lat: 37.566826, lng: 126.9786567 },
+      }),
       participantCount: 6,
       capacity: 12,
       image:
@@ -135,7 +156,12 @@ export const mockReviews: ReviewType[] = [
       description:
         "5kg 미만 소형견 친구들 모여라! 연남동 카페거리에서 산책도 하고 펫프렌들리 카페에서 쉬어가요.",
       days: ["THU"],
-      location: "마포구",
+      location: JSON.stringify({
+        address_name: "서울 마포구",
+        region_1depth_name: "서울",
+        region_2depth_name: "마포구",
+        latlng: { lat: 37.566826, lng: 126.9786567 },
+      }),
       participantCount: 4,
       capacity: 6,
       image:
@@ -158,7 +184,7 @@ export const mockReviews: ReviewType[] = [
       "선유도공원",
       "도산공원",
     ];
-    const locationDistricts: LocationType[] = [
+    const locationDistricts: DistrictType[] = [
       "영등포구",
       "강북구",
       "용산구",
@@ -223,7 +249,12 @@ export const mockReviews: ReviewType[] = [
       name: `${locationNames[i % locationNames.length]} ${gatheringTypes[i % gatheringTypes.length]}`,
       description: "함께 산책하며 즐거운 추억을 만들어요.",
       days: ["SAT"],
-      location: locationDistricts[i % locationDistricts.length],
+      location: JSON.stringify({
+        address_name: `서울 ${locationDistricts[i % locationDistricts.length]}`,
+        region_1depth_name: "서울",
+        region_2depth_name: locationDistricts[i % locationDistricts.length],
+        latlng: { lat: 37.566826, lng: 126.9786567 },
+      }),
       participantCount: (i % 7) + 3,
       capacity: 10 + (i % 5),
       image: gatheringImages[i % gatheringImages.length],

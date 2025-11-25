@@ -35,7 +35,10 @@ export const gatheringsHandlers = [
       url.searchParams.get("sort") ?? qs.stringify(SORT_OPTIONS[0].value);
 
     const filtered = location
-      ? REGULAR_GATHERINGS.filter((g) => g.location === location)
+      ? REGULAR_GATHERINGS.filter((g) => {
+          const loc = JSON.parse(g.location);
+          return loc.region_2depth_name === location;
+        })
       : REGULAR_GATHERINGS;
 
     const [sortKey, sortDirection] = isSortOptionKey(sort)
@@ -76,7 +79,10 @@ export const gatheringsHandlers = [
     // TODO const sort = url.searchParams.get("sort");
 
     const filtered = location
-      ? QUICK_GATHERINGS.filter((g) => g.location === location)
+      ? QUICK_GATHERINGS.filter((g) => {
+          const loc = JSON.parse(g.location);
+          return loc.region_2depth_name === location;
+        })
       : QUICK_GATHERINGS;
 
     return HttpResponse.json(

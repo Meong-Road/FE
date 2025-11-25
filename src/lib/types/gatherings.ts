@@ -1,6 +1,5 @@
 import { DAY_OF_WEEK } from "@/lib/constants/date";
 
-import { LocationType } from "./reviews";
 import { UserType } from "./user";
 
 export type DayOfWeek = (typeof DAY_OF_WEEK)[number];
@@ -25,7 +24,7 @@ export interface CommonGatheringType {
   name: string;
   description: string;
   registrationEnd: string; // date
-  location: LocationType;
+  location: string;
   participantCount: number;
   capacity: number;
   image: string | null;

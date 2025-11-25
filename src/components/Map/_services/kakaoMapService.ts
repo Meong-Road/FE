@@ -55,8 +55,8 @@ export const kakaoMapService = {
         },
         () => {
           toast.error("현재 위치를 가져올 수 없어 기본 위치로 이동합니다");
-          const default_location = getDefaultLatLng();
-          resolve(default_location);
+          const defaultLocation = getDefaultLatLng();
+          resolve(defaultLocation);
         },
       );
     });
@@ -188,29 +188,29 @@ export const kakaoMapService = {
    * 클릭한 장소로 맵을 이동시키고 location 갱신
    * @param map 맵 인스턴스
    * @param marker 마커 인스턴스
-   * @param place 이동할 장소
+   * @param searchedPlace 이동할 장소
    * @param setLocation 위치 상태 갱신하는 함수
    * @returns
    */
   moveMarkerToPlace: (
     map: KakaoMap,
     marker: KakaoMarker,
-    place: KakaoSearchedPlaceType,
+    searchedPlace: KakaoSearchedPlaceType,
     setLocation: (loc: KakaoReverseGeocodePlaceType) => void,
   ): void => {
     const latlng = new window.kakao.maps.LatLng(
-      Number(place.y),
-      Number(place.x),
+      Number(searchedPlace.y),
+      Number(searchedPlace.x),
     );
 
     moveMapAndMarker(map, marker, latlng);
     toast.success("위치가 변경되었습니다");
 
     setLocation({
-      address_name: place.address_name,
-      region_1depth_name: place.address_name.split(" ")[0],
-      region_2depth_name: place.address_name.split(" ")[1] ?? "",
-      latlng: { lat: Number(place.y), lng: Number(place.x) },
+      address_name: searchedPlace.address_name,
+      region_1depth_name: searchedPlace.address_name.split(" ")[0],
+      region_2depth_name: searchedPlace.address_name.split(" ")[1] ?? "",
+      latlng: { lat: Number(searchedPlace.y), lng: Number(searchedPlace.x) },
     });
   },
 
@@ -231,37 +231,6 @@ export const kakaoMapService = {
   },
 
   /**
-   * 현재 위치 기준으로 맵과 마커 초기화
-   * @param container 맵을 렌더링할 HTML 요소
-   * @param onMapClick 맵 클릭 시 실행할 콜백
-   * @returns 맵, 마커, 위치 정보
-   */
-  initMapWithCurrLocation: async (
-    container: HTMLDivElement,
-    onMapClick: (loc: KakaoReverseGeocodePlaceType) => void,
-  ): Promise<{
-    map: KakaoMap;
-    marker: KakaoMarker;
-    location: KakaoReverseGeocodePlaceType;
-  }> => {
-    await kakaoMapService.waitForKakaoMapLoad();
-
-    const latlng = await kakaoMapService.getCurrentLatLng();
-    const map = kakaoMapService.createMap(container, latlng);
-    const marker = kakaoMapService.createMarker(map, latlng);
-    const location = await kakaoMapService.reverseGeocode(latlng);
-
-    kakaoMapService.bindMapClick(map, async (clickedLatLng) => {
-      marker.setPosition(clickedLatLng);
-      const clickedPlace = await kakaoMapService.reverseGeocode(clickedLatLng);
-      toast.success("위치가 변경되었습니다");
-      onMapClick(clickedPlace);
-    });
-
-    return { map, marker, location };
-  },
-
-  /**
    * 정적인 카카오맵을 생성
    * @param container 맵을 렌더링할 HTML 요소
    * @param payload JSON 문자열
@@ -271,8 +240,8 @@ export const kakaoMapService = {
     container: HTMLDivElement,
     payload: string,
   ): Promise<{ map: KakaoMap; marker: KakaoMarker }> => {
-    const parsed = parseLocationPayload(payload);
-    const { lat, lng } = parsed.latlng;
+    const location = parseLocationPayload(payload);
+    const { lat, lng } = location.latlng;
 
     await kakaoMapService.waitForKakaoMapLoad();
 
@@ -289,12 +258,108 @@ export const kakaoMapService = {
     const marker = kakaoMapService.createMarker(map, locPosition);
     const customOverlay = new kakao.maps.CustomOverlay({
       position: locPosition,
-      content: createCustomOverlay(parsed.address_name),
+      content: createCustomOverlay(location.address_name),
       yAnchor: 1.8,
     });
 
     customOverlay.setMap(map);
 
     return { map, marker };
+  },
+
+  /**
+   * localStorage에 저장된 위치 정보 복원
+   *
+   * @param draftKey localStorage key
+   * @returns 복원된 좌표 또는 null
+   */
+  restoreSavedLocation: async (
+    draftKey: string | null,
+  ): Promise<KakaoLatLng | null> => {
+    if (!draftKey) return null;
+
+    try {
+      const draft = localStorage.getItem(draftKey);
+      if (!draft) return null;
+
+      const parsed = JSON.parse(draft);
+      const location = parsed?.location ? JSON.parse(parsed.location) : null;
+      const coords = location?.latlng;
+
+      if (coords?.lat && coords?.lng) {
+        return new window.kakao.maps.LatLng(coords.lat, coords.lng);
+      }
+    } catch {
+      return null;
+    }
+
+    return null;
+  },
+
+  /**
+   * 복원 가능한 위치가 있으면 리턴, 없으면 현재 위치 리턴
+   *
+   * @param draftKey localStorage key
+   * @returns 지도 초기화에 필요한 latlng, location 정보
+   */
+  resolveInitialLocation: async (
+    draftKey: string | null,
+  ): Promise<{
+    latlng: KakaoLatLng;
+    location: KakaoReverseGeocodePlaceType;
+  }> => {
+    const restored = await kakaoMapService.restoreSavedLocation(draftKey);
+
+    if (restored) {
+      toast.success("임시 저장된 위치가 복원되었습니다");
+      return {
+        latlng: restored,
+        location: await kakaoMapService.reverseGeocode(restored),
+      };
+    }
+
+    const current = await kakaoMapService.getCurrentLatLng();
+    return {
+      latlng: current,
+      location: await kakaoMapService.reverseGeocode(current),
+    };
+  },
+
+  /**
+   * 지도 & 마커를 초기화하고 저장된 위치 또는 현재 위치를 반영
+   *
+   * @param container 지도를 렌더링할 HTML 요소
+   * @param onMapClick 위치 변경 시 실행할 콜백
+   * @param draftKey localStorage key
+   * @returns 초기 map, marker, location 정보
+   */
+  initMapWithSession: async (
+    container: HTMLDivElement,
+    onMapClick: (loc: KakaoReverseGeocodePlaceType) => void,
+    draftKey: string | null,
+  ): Promise<{
+    map: KakaoMap;
+    marker: KakaoMarker;
+    location: KakaoReverseGeocodePlaceType;
+  }> => {
+    await kakaoMapService.waitForKakaoMapLoad();
+
+    const { latlng, location } =
+      await kakaoMapService.resolveInitialLocation(draftKey);
+
+    const map = kakaoMapService.createMap(container, latlng);
+    const marker = kakaoMapService.createMarker(map, latlng);
+
+    kakaoMapService.bindMapClick(map, async (clickedLatLng) => {
+      marker.setPosition(clickedLatLng);
+      const clickedLocation =
+        await kakaoMapService.reverseGeocode(clickedLatLng);
+      toast.success("위치가 변경되었습니다");
+      onMapClick(clickedLocation);
+    });
+
+    onMapClick(location);
+
+    return { map, marker, location };
   },
 };

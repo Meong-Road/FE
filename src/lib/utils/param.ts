@@ -14,7 +14,7 @@ import {
   SORT_OPTIONS_MAP,
   SortOptionValue,
 } from "../constants/option";
-import { LocationParamType } from "../types/reviews";
+import { DistrictParam } from "../types/reviews";
 
 import { isLocationParamType } from "./typeGuard";
 
@@ -25,7 +25,7 @@ import { isLocationParamType } from "./typeGuard";
  */
 export const parseLocationParam = (
   locationParam: string | null,
-): LocationParamType => {
+): DistrictParam => {
   if (!locationParam || locationParam === SEOUL_ALL) return null;
   return isLocationParamType(locationParam) ? locationParam : null;
 };

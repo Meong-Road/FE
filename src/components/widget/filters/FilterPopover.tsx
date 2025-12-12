@@ -40,7 +40,7 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
   const { isPetRequired, isClosed, dayOfWeek, startDate, endDate } =
     useSearchParamsState({
       isPetRequired: PET_REQUIRED_OPTIONS[0].id,
-      isClosed: IS_CLOSED_OPTIONS[0].id,
+      isClosed: IS_CLOSED_OPTIONS[1].id,
     });
 
   const [date, setDate] = useState<DateRange>({

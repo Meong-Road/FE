@@ -150,11 +150,11 @@ export const IS_CLOSED_OPTIONS_MAP: Record<
   { value?: boolean; label: string }
 > = {
   [EIsClosed.SHOW_CLOSED]: {
-    value: undefined,
+    value: true,
     label: "모임 마감된 모임도 표시",
   },
   [EIsClosed.HIDE_CLOSED]: {
-    value: true,
+    value: false,
     label: "모임 마감된 모임은 보지 않기",
   },
 };

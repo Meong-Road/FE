@@ -33,14 +33,18 @@ export const getGatheringState = (
   isAuthenticated: boolean,
   hasPet: boolean,
 ) => {
-  if (!isAuthenticated) return EGatheringState.AUTH_REQUIRED;
+  // 인증 여부와 관계없이 먼저 체크: 취소여부, 모집 마감, 인원 마감
+  if (gathering.canceledAt !== null) return EGatheringState.CANCELED;
   if (checkIsBefore(gathering.registrationEnd))
     return EGatheringState.REGISTRATION_END_PASSED;
-  if (gathering.isPetRequired && !hasPet) return EGatheringState.PET_REQUIRED;
-  if (gathering.participantCount >= 5) return EGatheringState.FIXED_GATHERING;
   if (gathering.participantCount >= gathering.capacity)
     return EGatheringState.CAPACITY_FULL;
-  if (gathering.canceledAt !== null) return EGatheringState.CANCELED;
+
+  // 인증 필요 상태: 로그인 안 한 사용자, 반려견 필수 여부, 모임 개설 확정
+  if (!isAuthenticated) return EGatheringState.AUTH_REQUIRED;
+  if (gathering.isPetRequired && !hasPet) return EGatheringState.PET_REQUIRED;
+  if (gathering.participantCount >= 5) return EGatheringState.FIXED_GATHERING;
+
   return EGatheringState.GENERAL;
 };
 

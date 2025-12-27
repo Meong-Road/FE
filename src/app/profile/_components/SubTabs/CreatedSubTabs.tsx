@@ -1,10 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { Tab } from "@/components/Tab";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
-import { PATH } from "@/lib/constants/path";
 import {
   CREATED_SUB_TAB_LIST,
   CREATED_SUB_TABS,
@@ -18,26 +15,26 @@ const radioOptions = CREATED_SUB_TAB_LIST.map((tab) => ({
 }));
 
 export default function CreatedSubTabs() {
-  const router = useRouter();
-  const currentTab = useSearchParamsState({
+  const {
+    params: { tab, createdTab },
+    setParams,
+  } = useSearchParamsState({
     tab: PROFILE_TABS.CREATED.value,
     createdTab: CREATED_SUB_TABS.RECRUITING.value,
   });
 
   const handleTabChange = (createdTab: string | boolean) => {
-    router.push(
-      `${PATH.MY_PROFILE}?tab=${currentTab.tab}&createdTab=${String(createdTab)}`,
-      {
-        scroll: false,
-      },
-    );
+    setParams({
+      tab: tab ?? PROFILE_TABS.CREATED.value,
+      createdTab: String(createdTab),
+    });
   };
 
   return (
     <Tab.Radio
       name="created-tabs"
       options={radioOptions}
-      value={currentTab.createdTab}
+      value={createdTab}
       onChange={handleTabChange}
     />
   );

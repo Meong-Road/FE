@@ -9,7 +9,9 @@ import JoinedSubTabs from "../SubTabs/JoinedSubTabs";
 import JoinedStatusSection from "./JoinedStatusSection";
 
 export default function JoinedSection() {
-  const { joinedTab } = useSearchParamsState({
+  const {
+    params: { joinedTab },
+  } = useSearchParamsState({
     joinedTab: JOINED_SUB_TABS.RECRUITING.value,
   });
 

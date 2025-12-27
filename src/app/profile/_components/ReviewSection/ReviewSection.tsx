@@ -10,7 +10,9 @@ import WritableReviewSection from "./WritableReviewSection";
 import WrittenReviewSection from "./WrittenReviewSection";
 
 export default function ReviewSection() {
-  const { reviewTab } = useSearchParamsState({
+  const {
+    params: { reviewTab },
+  } = useSearchParamsState({
     reviewTab: REVIEW_SUB_TABS.WRITABLE.value,
   });
 

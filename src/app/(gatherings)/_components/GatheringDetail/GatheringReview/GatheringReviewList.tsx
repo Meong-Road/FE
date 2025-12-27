@@ -14,7 +14,9 @@ export default function GatheringReviewList({
   className,
 }: GatheringReviewListProps) {
   const { id } = useParams();
-  const { page } = useSearchParamsState({
+  const {
+    params: { page },
+  } = useSearchParamsState({
     page: "0",
   });
 

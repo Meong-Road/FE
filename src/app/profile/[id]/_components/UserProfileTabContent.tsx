@@ -11,7 +11,9 @@ interface UserProfileTabContentProps {
 }
 
 export function UserProfileTabContent({ userId }: UserProfileTabContentProps) {
-  const { tab } = useSearchParamsState({ tab: USER_PROFILE_TABS.PETS.value });
+  const {
+    params: { tab },
+  } = useSearchParamsState({ tab: USER_PROFILE_TABS.PETS.value });
 
   switch (tab) {
     case USER_PROFILE_TABS.PETS.value:

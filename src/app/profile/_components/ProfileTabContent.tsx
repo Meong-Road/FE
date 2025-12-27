@@ -10,7 +10,9 @@ import PetCardSection from "./PetCardSection/PetCardSection";
 import ReviewSection from "./ReviewSection/ReviewSection";
 
 export function ProfileTabContent() {
-  const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });
+  const {
+    params: { tab },
+  } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });
 
   const renderContent = () => {
     switch (tab) {

@@ -4,7 +4,9 @@ import { PATH } from "@/lib/constants/path";
 import { PROFILE_TAB_LIST, PROFILE_TABS } from "@/lib/constants/profile";
 
 export function ProfileTabs() {
-  const { tab } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });
+  const {
+    params: { tab },
+  } = useSearchParamsState({ tab: PROFILE_TABS.JOINED.value });
 
   return (
     <Tab className="mt-12 sm:mt-16">

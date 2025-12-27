@@ -1,7 +1,5 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
 import SortingArrows from "@/assets/icons/sorting-arrows.svg";
 import {
   Select,
@@ -17,18 +15,14 @@ interface SortBySelectorProps {
   onSortChange?: (value: string) => void;
 }
 export default function SortBySelector({ onSortChange }: SortBySelectorProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { sort } = useSearchParamsState();
+  const {
+    params: { sort },
+    setParams,
+  } = useSearchParamsState();
 
   const handleSortChange = (value: string) => {
     onSortChange?.(value);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("sort", value);
-    params.set("page", "0"); // 정렬 기준 변경 시 첫 페이지로
-
-    router.push(`${pathname}?${params.toString()}`);
+    setParams({ sort: value, page: "0" }); // 정렬 기준 변경 시 첫 페이지로
   };
 
   return (

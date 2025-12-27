@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Filter from "@/assets/icons/filter.svg";
 import Radio from "@/components/common/Radio";
@@ -37,52 +36,32 @@ function FilterPopoverTitle({ title }: FilterPopoverTitleProps) {
 }
 
 export default function FilterPopover({ type }: FilterPopoverProps) {
-  const { isPetRequired, isClosed, dayOfWeek, startDate, endDate } =
-    useSearchParamsState({
-      isPetRequired: PET_REQUIRED_OPTIONS[0].id,
-      isClosed: IS_CLOSED_OPTIONS[1].id,
-    });
+  const {
+    params: { isPetRequired, isClosed, dayOfWeek, startDate, endDate },
+    setParams,
+  } = useSearchParamsState({
+    isPetRequired: PET_REQUIRED_OPTIONS[0].id,
+    isClosed: IS_CLOSED_OPTIONS[1].id,
+  });
 
   const [date, setDate] = useState<DateRange>({
     from: startDate ? new Date(startDate) : undefined,
     to: endDate ? new Date(endDate) : undefined,
   });
 
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const handleFilterChange = (
-    param: { key: string; value?: unknown } | { key: string; value: unknown }[],
-  ) => {
-    const setParam = (key: string, value: unknown) => {
-      if (value) {
-        params.set(key, String(value));
-        params.set("page", "0"); // 필터 변경 시 첫 페이지로
-      }
-    };
-
-    const params = new URLSearchParams(searchParams.toString());
-    if (Array.isArray(param)) {
-      param.forEach(({ key, value }) => setParam(key, value));
-    } else {
-      setParam(param.key, param.value);
-    }
-    router.push(`${pathname}?${params.toString()}`);
+  const handleFilterChange = (param: { key: string; value?: string }) => {
+    if (param.value) setParams({ [param.key]: param.value, page: "0" });
   };
 
   useEffect(() => {
-    handleFilterChange([
-      {
-        key: "startDate",
-        value: date.from ? `${formatDateToISOString(date.from)}` : undefined,
-      },
-      {
-        key: "endDate",
-        value: date.to ? `${formatDateToISOString(date.to)}` : undefined,
-      },
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    handleFilterChange({
+      key: "startDate",
+      value: date.from ? `${formatDateToISOString(date.from)}` : undefined,
+    });
+    handleFilterChange({
+      key: "endDate",
+      value: date.to ? `${formatDateToISOString(date.to)}` : undefined,
+    });
   }, [date]);
 
   return (

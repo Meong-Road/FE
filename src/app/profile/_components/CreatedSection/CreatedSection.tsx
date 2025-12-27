@@ -9,7 +9,9 @@ import CreatedSubTabs from "../SubTabs/CreatedSubTabs";
 import CreatedStatusSection from "./CreatedStatusSection";
 
 export default function CreatedSection() {
-  const { createdTab } = useSearchParamsState({
+  const {
+    params: { createdTab },
+  } = useSearchParamsState({
     createdTab: CREATED_SUB_TABS.RECRUITING.value,
   });
 

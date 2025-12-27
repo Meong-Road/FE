@@ -54,13 +54,10 @@ export default function FilterPopover({ type }: FilterPopoverProps) {
   };
 
   useEffect(() => {
-    handleFilterChange({
-      key: "startDate",
-      value: date.from ? `${formatDateToISOString(date.from)}` : undefined,
-    });
-    handleFilterChange({
-      key: "endDate",
-      value: date.to ? `${formatDateToISOString(date.to)}` : undefined,
+    setParams({
+      startDate: date.from ? `${formatDateToISOString(date.from)}` : undefined,
+      endDate: date.to ? `${formatDateToISOString(date.to)}` : undefined,
+      page: "0",
     });
   }, [date]);
 

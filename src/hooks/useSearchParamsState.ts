@@ -22,10 +22,11 @@ export function useSearchParamsState(
     return result;
   }, [searchParams, defaults]);
 
-  const setParams = (newParams: Record<string, string>) => {
+  const setParams = (newParams: Record<string, string | undefined>) => {
     const params = new URLSearchParams(searchParams.toString());
     Object.entries(newParams).forEach(([key, value]) => {
-      params.set(key, value);
+      if (value) params.set(key, value);
+      else params.delete(key);
     });
     window.history.replaceState(null, "", `${pathname}?${params.toString()}`);
   };

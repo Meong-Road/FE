@@ -11,7 +11,9 @@ import {
 export function UserProfileTabs() {
   const params = useParams();
   const userId = params.id as string;
-  const { tab } = useSearchParamsState({ tab: USER_PROFILE_TABS.PETS.value });
+  const {
+    params: { tab },
+  } = useSearchParamsState({ tab: USER_PROFILE_TABS.PETS.value });
 
   return (
     <Tab className="mt-12 sm:mt-16">

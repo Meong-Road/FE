@@ -11,9 +11,11 @@ import { DEFAULT_LIST_OPTIONS } from "@/lib/constants/option";
 import { parseLocationParam } from "@/lib/utils/param";
 
 export default function ReviewListContainer() {
-  const Params = useSearchParamsState({ location: SEOUL_ALL, page: "0" });
-  const location = parseLocationParam(Params.location as string);
-  const page = Number(Params.page);
+  const {
+    params: { location: locationParam, page: pageParam },
+  } = useSearchParamsState({ location: SEOUL_ALL, page: "0" });
+  const location = parseLocationParam(locationParam!);
+  const page = Number(pageParam);
 
   const {
     data: reviews,

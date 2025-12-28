@@ -10,7 +10,9 @@ import { PATH } from "@/lib/constants/path";
 import { EGatheringType } from "@/lib/types/gatherings";
 
 export default function FavoritesList() {
-  const { tab } = useSearchParamsState({ tab: "regular" });
+  const {
+    params: { tab },
+  } = useSearchParamsState({ tab: "regular" });
   const isQuickTab = tab === "quick";
 
   const infiniteQueryResult = useGetInfiniteBookmarkedGatherings(

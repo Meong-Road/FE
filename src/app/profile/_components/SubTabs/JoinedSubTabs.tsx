@@ -1,10 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { Tab } from "@/components/Tab";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
-import { PATH } from "@/lib/constants/path";
 import {
   JOINED_SUB_TAB_LIST,
   JOINED_SUB_TABS,
@@ -18,26 +15,26 @@ const radioOptions = JOINED_SUB_TAB_LIST.map((tab) => ({
 }));
 
 export default function JoinedSubTabs() {
-  const router = useRouter();
-  const currentTab = useSearchParamsState({
+  const {
+    params: { tab, joinedTab },
+    setParams,
+  } = useSearchParamsState({
     tab: PROFILE_TABS.JOINED.value,
     joinedTab: JOINED_SUB_TABS.RECRUITING.value,
   });
 
   const handleTabChange = (joinedTab: string | boolean) => {
-    router.push(
-      `${PATH.MY_PROFILE}?tab=${currentTab.tab}&joinedTab=${String(joinedTab)}`,
-      {
-        scroll: false,
-      },
-    );
+    setParams({
+      tab: tab ?? PROFILE_TABS.JOINED.value,
+      joinedTab: String(joinedTab),
+    });
   };
 
   return (
     <Tab.Radio
       name="joined-tabs"
       options={radioOptions}
-      value={currentTab.joinedTab}
+      value={joinedTab}
       onChange={handleTabChange}
     />
   );

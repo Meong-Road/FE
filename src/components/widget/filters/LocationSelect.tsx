@@ -1,7 +1,5 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
 import ChevronDownIcon from "@/assets/icons/arrow-down.svg";
 import {
   Select,
@@ -18,20 +16,16 @@ interface LocationSelectProps {
 }
 
 export function LocationSelect({ onLocationChange }: LocationSelectProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { location } = useSearchParamsState({
+  const {
+    params: { location },
+    setParams,
+  } = useSearchParamsState({
     location: LOCATION_OPTIONS[0].id,
   });
 
   const handleLocationChange = (location: string) => {
     onLocationChange?.(location);
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("location", location);
-    params.set("page", "0"); // 지역 변경 시 첫 페이지로
-    router.push(`${pathname}?${params.toString()}`);
+    setParams({ location, page: "0" }); // 지역 변경 시 첫 페이지로
   };
 
   return (

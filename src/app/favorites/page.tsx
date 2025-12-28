@@ -10,7 +10,9 @@ import FavoritesList from "./_components/FavoritesList";
 const DEFAULT_TAB = "regular";
 
 export default function Favorites() {
-  const { tab } = useSearchParamsState({ tab: DEFAULT_TAB });
+  const {
+    params: { tab },
+  } = useSearchParamsState({ tab: DEFAULT_TAB });
 
   return (
     <section>

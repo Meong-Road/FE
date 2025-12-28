@@ -10,7 +10,7 @@ import { PATH } from "@/lib/constants/path";
 import { parseGatheringFilterParam } from "@/lib/utils/param";
 
 export default function RegularGatheringCardList() {
-  const params = useSearchParamsState();
+  const { params } = useSearchParamsState();
 
   const infiniteQueryResult = useGetInfiniteRegularGatherings({
     ...DEFAULT_LIST_OPTIONS,

@@ -1,10 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { Tab } from "@/components/Tab";
 import { useSearchParamsState } from "@/hooks/useSearchParamsState";
-import { PATH } from "@/lib/constants/path";
 import {
   PROFILE_TABS,
   REVIEW_SUB_TAB_LIST,
@@ -18,26 +15,26 @@ const radioOptions = REVIEW_SUB_TAB_LIST.map((tab) => ({
 }));
 
 export default function ReviewSubTabs() {
-  const router = useRouter();
-  const currentTab = useSearchParamsState({
+  const {
+    params: { tab, reviewTab },
+    setParams,
+  } = useSearchParamsState({
     tab: PROFILE_TABS.REVIEWS.value,
     reviewTab: REVIEW_SUB_TABS.WRITABLE.value,
   });
 
   const handleTabChange = (reviewTab: string | boolean) => {
-    router.push(
-      `${PATH.MY_PROFILE}?tab=${currentTab.tab}&reviewTab=${String(reviewTab)}`,
-      {
-        scroll: false,
-      },
-    );
+    setParams({
+      tab: tab ?? PROFILE_TABS.JOINED.value,
+      reviewTab: String(reviewTab),
+    });
   };
 
   return (
     <Tab.Radio
       name="review-tabs"
       options={radioOptions}
-      value={currentTab.reviewTab}
+      value={reviewTab}
       onChange={handleTabChange}
     />
   );

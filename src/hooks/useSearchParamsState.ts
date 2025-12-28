@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface UseSearchParamsStateOptions {
   [key: string]: string | undefined;
@@ -12,6 +12,7 @@ export function useSearchParamsState(
 ) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const params = useMemo(() => {
     const result: Record<string, string | undefined> = defaults;
@@ -28,7 +29,7 @@ export function useSearchParamsState(
       if (value) params.set(key, value);
       else params.delete(key);
     });
-    window.history.replaceState(null, "", `${pathname}?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return { params, setParams };

@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "torip.s3.ap-northeast-2.amazonaws.com",
+        hostname: "torip.s3.ap-southeast-2.amazonaws.com",
       },
     ],
   },

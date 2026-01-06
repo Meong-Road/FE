@@ -114,9 +114,6 @@ export default function PetInfoModal() {
                     <Dog width={150} height={150} />
                   </Form.ImageUpload>
                 </Form.Control>
-                <span className="mt-4 flex justify-center text-base font-medium text-zinc-700">
-                  사진을 등록해주세요
-                </span>
               </Form.Item>
             )}
           />

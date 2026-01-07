@@ -48,9 +48,7 @@ function RegularGatheringDetailPageContent() {
   return (
     <>
       <GatheringInfoSection gathering={gathering} />
-      <GatheringLocationSection
-        locationPayload={JSON.parse(gathering.location).region_2depth_name}
-      />
+      <GatheringLocationSection locationPayload={gathering.location} />
       <GatheringIntroductionSection description={gathering.description} />
       <GatheringReviewSection />
     </>

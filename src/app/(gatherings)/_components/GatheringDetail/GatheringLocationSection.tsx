@@ -16,6 +16,7 @@ export default function GatheringLocationSection({
 
   useEffect(() => {
     if (!mapRef.current) return;
+
     kakaoMapService.createStaticMap(mapRef.current, locationPayload);
   }, [locationPayload]);
 
